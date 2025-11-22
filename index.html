@@ -1,96 +1,237 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer src="/_vercel/insights/script.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@exampledev/new.css@1.1.2/new.min.css"
-    />
-    <title>Vercel HTML Starter</title>
-    <meta
-      name="description"
-      content="High-performance HTML based website template."
-    />
-  </head>
-  <body>
-    <h1>Vercel HTML Starter</h1>
-    <p>
-      This template is a simple, but powerful single
-      <code>index.html</code> file deployed to
-      <a href="https://vercel.com">Vercel</a>. When your site is deployed, all
-      static assets (like HTML, JavaScript, CSS, images, and more) are deployed
-      globally to every
-      <a href="https://vercel.com/docs/concepts/edge-network/overview"
-        >Vercel Edge Network</a
-      >
-      region.
-    </p>
-    <h2>Simple, privacy-friendly analytics</h2>
-    <p>
-      Want to understand your visitor traffic? Vercel Analytics gives you
-      first-party, privacy-friendly traffic analytics for your HTML site. This
-      template is already configured using the following script:
-    </p>
-    <pre><code>&lt;script defer src="/_vercel/insights/script.js"&gt;&lt;/script&gt;</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/analytics">Vercel Analytics</a>.
-    </p>
-    <h2>Integrated with git</h2>
-    <p>
-      Deploying updates to your site is as simple as
-      <code>git push</code> thanks to Vercel's advanced
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-      Support for GitHub, GitLab, Bitbucket is zero-configuration, and with the
-      flexible Vercel CLI and API, you can integrate with any tool possible.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/git">Git Integration</a>.
-    </p>
-    <h2>Fast <code>gzip</code> compression</h2>
-    <p>
-      To help ensure the smallest possible file sizes for your static assets,
-      the Vercel Edge Network compresses files by default using
-      <code>gzip</code>. You can also optionally use
-      <code>brotli</code> compressesion if you prefer.
-    </p>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/edge-network/compression"
-        >compression</a
-      >.
-    </p>
-    <h2>Advanced routing configuration</h2>
-    <p>
-      Vercel gives you a variety of ways to configure the routing of your
-      website. For example, adding redirects, rewrites, or headers to your page.
-      While you can use <code>vercel.json</code> to define these through JSON,
-      you can also express your routing configuration as code using
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-    <p>
-      Middleware runs before the
-      <a href="https://vercel.com/docs/concepts/edge-network/caching"
-        >Vercel Edge Network Cache</a
-      >, so you can configure routing exactly as your application needs. For
-      example, this template uses <code>middleware.js</code> defined in the root
-      of the repository to add additional security headers to the site:
-    </p>
-    <pre><code>referrer-policy: origin-when-cross-origin
-strict-transport-security: max-age=31536000; includeSubDomains; preload
-x-content-type-options: nosniff
-x-dns-prefetch-control: on
-x-frame-options: DENY</code></pre>
-    <p>
-      Learn more about
-      <a href="https://vercel.com/docs/concepts/functions/edge-middleware"
-        >Vercel Edge Middleware</a
-      >.
-    </p>
-  </body>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema C.U.R.A. | Nivel Enfermero</title>
+    
+    <!-- Fuente Inter (Limpia, moderna, legible) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Íconos de trazo fino y profesional) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada para el Azul Argentino -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medical: {
+                            primary: '#004E85', // El azul solicitado
+                            light: '#E6F0F5',  // Fondo muy suave
+                            alert: '#FEFCE8',  // Fondo amarillo alerta
+                            alertText: '#854D0E'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Ajustes finos para legibilidad en pantallas de alto brillo */
+        body {
+            -webkit-font-smoothing: antialiased;
+            background-color: #F3F4F6;
+        }
+        .card-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="pb-12 pt-16">
+
+    <!-- 1. ENCABEZADO FIJO -->
+    <header class="fixed top-0 left-0 w-full bg-medical-primary text-white h-16 flex items-center px-4 shadow-md z-50 justify-between">
+        <div class="flex items-center gap-3">
+            <div class="bg-white/10 p-1.5 rounded text-white">
+                <i class="ph ph-first-aid text-2xl"></i>
+            </div>
+            <div>
+                <h1 class="text-sm font-bold leading-tight uppercase tracking-wide">Emergencia Médica</h1>
+                <p class="text-[10px] opacity-80 font-medium tracking-wider">NIVEL ENFERMERO</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <i class="ph ph-qr-code text-2xl opacity-50"></i>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL (Mobile First, ancho limitado para simular vista de scanner/móvil) -->
+    <main class="max-w-md mx-auto px-4 py-4 space-y-4">
+
+        <!-- 2. TARJETA PRINCIPAL DEL PACIENTE -->
+        <section class="bg-white rounded-lg card-shadow border border-gray-200 p-4 relative overflow-hidden">
+            <!-- Banda lateral decorativa -->
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-medical-primary"></div>
+            
+            <div class="flex items-start gap-4">
+                <!-- Foto (Placeholder) -->
+                <div class="flex-shrink-0">
+                    <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border-2 border-medical-light overflow-hidden">
+                        <!-- TODO: reemplazar por tu foto tipo DNI -->
+                        <img src="https://media.licdn.com/dms/image/v2/D4E03AQEQ-TDFNeuJYw/profile-displayphoto-crop_800_800/B4EZo32kXkJgAI-/0/1761873644276?e=1765411200&v=beta&t=OmZQVsVHiyURmibUyJKj0_pmNIFwBjEs7uOYGuD1aXM" alt="Paciente" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <!-- Datos Personales -->
+                <div class="flex-grow">
+                    <h2 class="text-lg font-bold text-gray-900 leading-tight">FRANCO A. PAGANINI</h2>
+                    <div class="mt-1 space-y-0.5">
+                        <p class="text-sm text-gray-600 font-medium flex items-center gap-1">
+                            <span class="text-xs text-gray-400 uppercase">DNI</span> 
+                            <!-- TODO: completar con tu DNI real -->
+                            41.316.202
+                        </p>
+                        <p class="text-sm text-gray-600 font-medium flex items-center gap-1">
+                            <span class="text-xs text-gray-400 uppercase">NAC</span> 
+                            <!-- TODO: completar con tu fecha de nacimiento y edad -->
+                            17/10/1998 (27)
+                        </p>
+                        <p class="text-sm text-gray-600 font-medium flex items-center gap-1">
+                            <span class="text-xs text-gray-400 uppercase">GS</span> 
+                            <!-- TODO: completar con tu grupo sanguíneo si lo querés mostrar -->
+                            <span class="font-bold text-medical-primary">O+</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de Acción -->
+            <div class="mt-4 pt-3 border-t border-gray-100">
+                <button class="w-full bg-white border border-medical-primary text-medical-primary hover:bg-medical-light active:bg-blue-100 font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2 transition-colors">
+                    <i class="ph-fill ph-phone-outgoing text-lg"></i>
+                    Llamar Contacto de Emergencia
+                </button>
+            </div>
+        </section>
+
+        <!-- 6. ADVERTENCIAS URGENTES -->
+        <section class="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 flex items-start gap-3 shadow-sm">
+            <i class="ph-fill ph-warning text-yellow-600 text-2xl mt-0.5"></i>
+            <div>
+                <h3 class="text-yellow-800 font-bold text-sm uppercase tracking-wide mb-1">Advertencias Críticas</h3>
+                <ul class="text-sm text-yellow-900 space-y-1 font-medium">
+                    <li class="flex items-center gap-2">• Portador de placa de osteosíntesis en hombro derecho (PHILOS 3,5 mm).</li>
+                    <li class="flex items-center gap-2">• Informar siempre antes de realizar estudios con Resonancia Magnética.</li>
+                    <li class="flex items-center gap-2">• Tratamiento psiquiátrico activo con psicofármacos (control de conciencia y riesgo de caídas).</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 3. CONDICIONES CLÍNICAS -->
+        <section>
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1 tracking-wider">Condiciones Clínicas Relevantes</h3>
+            <div class="grid grid-cols-1 gap-2">
+                
+                <!-- Accidente / secuela ortopédica -->
+                <div class="bg-white border border-gray-200 rounded flex items-center p-3 card-shadow">
+                    <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mr-3">
+                        <i class="ph-fill ph-bus text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-gray-800">Accidente de tránsito 05/2025</p>
+                        <p class="text-xs text-gray-500">Secuela de fractura de húmero proximal derecho</p>
+                    </div>
+                </div>
+
+                <!-- Trastorno de ansiedad / pánico -->
+                <div class="bg-white border border-gray-200 rounded flex items-center p-3 card-shadow">
+                    <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mr-3">
+                        <i class="ph-fill ph-brain text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-gray-800">Trastorno de ansiedad</p>
+                        <p class="text-xs text-gray-500">Antecedentes de crisis de angustia y pánico</p>
+                    </div>
+                </div>
+
+                <!-- Trastorno del sueño / uso de hipnóticos -->
+                <div class="bg-white border border-gray-200 rounded flex items-center p-3 card-shadow">
+                    <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mr-3">
+                        <i class="ph-fill ph-moon-stars text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-gray-800">Trastorno del sueño</p>
+                        <p class="text-xs text-gray-500">Uso de hipnóticos de forma crónica</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. IMPLANTES / DISPOSITIVOS -->
+        <section>
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1 tracking-wider">Implantes / Prótesis</h3>
+            <div class="bg-white border border-gray-200 rounded card-shadow">
+                <div class="p-3 flex items-start gap-3">
+                    <i class="ph ph-bone text-gray-400 text-xl mt-0.5"></i>
+                    <div>
+                        <p class="text-sm font-semibold text-gray-800">Placa PHILOS 3,5 mm</p>
+                        <p class="text-xs text-gray-500">Osteosíntesis de húmero proximal derecho</p>
+                        <p class="text-[11px] text-gray-400 mt-1">Material informado como titanio. Requiere verificación antes de RM.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. MEDICACIÓN RELEVANTE -->
+        <section>
+            <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1 tracking-wider">Medicación Actual (Relevante en Urgencias)</h3>
+            <div class="bg-white border border-gray-200 rounded card-shadow overflow-hidden">
+                <ul class="divide-y divide-gray-100">
+                    <li class="p-3 flex justify-between items-center hover:bg-gray-50">
+                        <span class="text-sm font-medium text-gray-800">Escitalopram</span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Antidepresivo ISRS</span>
+                    </li>
+                    <li class="p-3 flex justify-between items-center hover:bg-gray-50">
+                        <span class="text-sm font-medium text-gray-800">Bupropión 150 mg/día</span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Antidepresivo / dopaminérgico</span>
+                    </li>
+                    <li class="p-3 flex justify-between items-center hover:bg-gray-50">
+                        <span class="text-sm font-medium text-gray-800">Aripiprazol 5 mg/día</span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Antipsicótico atípico</span>
+                    </li>
+                    <li class="p-3 flex justify-between items-center hover:bg-gray-50">
+                        <span class="text-sm font-medium text-gray-800">Clonazepam</span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Benzodiacepina</span>
+                    </li>
+                    <li class="p-3 flex justify-between items-center hover:bg-gray-50">
+                        <span class="text-sm font-medium text-gray-800">Zolpidem 10 mg nocturno</span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Hipnótico</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        
+        <div class="h-4"></div> <!-- Espaciador -->
+
+    </main>
+
+    <!-- 7. FOOTER SIMPLE -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center mt-auto">
+        <div class="flex flex-col items-center justify-center gap-3">
+            <!-- Logo subido por el usuario -->
+            <div class="w-12 h-12 opacity-90">
+                <img src="logo_mano_blanca.jpg" alt="Logo Sistema CURA" class="w-full h-full object-contain grayscale hover:grayscale-0 transition-all duration-500">
+            </div>
+            
+            <div>
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Sistema C.U.R.A.</p>
+                <p class="text-[10px] text-gray-400 mt-1">Acceso Seguro Nivel 2 (Enfermería)</p>
+                <p class="text-[9px] text-gray-300 mt-2">Ministerio de Salud Pública</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
 </html>

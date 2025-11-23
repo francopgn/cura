@@ -681,7 +681,12 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const target = document.getElementById('sumate');
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+       const y = target.getBoundingClientRect().top + window.pageYOffset;
+window.scrollTo({
+  top: y - 20, // margen suave arriba
+  behavior: 'smooth'
+});
+
       }
     });
   }

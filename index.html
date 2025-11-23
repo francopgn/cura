@@ -111,10 +111,10 @@
              class="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
             QUIERO SUMARME
           </button>
-          <a href="#informacion"
+          <button id="btn-info" type="button"
              class="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
             Obtén más información
-          </a>
+          </button>
         </div>
 
         <p class="mt-6 text-[11px] text-cura-accentLight">
@@ -707,6 +707,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const provinciaSelect = document.querySelector('select[name="provincia"]');
@@ -715,9 +716,9 @@ document.addEventListener('DOMContentLoaded', function () {
   async function cargarCiudades() {
     if (!provinciaSelect || !ciudadSelect) return;
     const prov = provinciaSelect.value;
-    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+    ciudadSelect.innerHTML = '<option value="">' + 'Cargando ciudades...' + '</option>';
     if (!prov) {
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      ciudadSelect.innerHTML = '<option value="">' + 'Seleccioná una ciudad' + '</option>';
       return;
     }
     try {
@@ -725,16 +726,18 @@ document.addEventListener('DOMContentLoaded', function () {
       const res = await fetch(url);
       if (!res.ok) throw new Error();
       const data = await res.json();
-      const localidades = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es'));
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      localidades.forEach(nombre => {
+      const localidades = (data.localidades || []).map(l => l.nombre).sort(function (a, b) {
+        return a.localeCompare(b, 'es');
+      });
+      ciudadSelect.innerHTML = '<option value="">' + 'Seleccioná una ciudad' + '</option>';
+      localidades.forEach(function (nombre) {
         const opt = document.createElement('option');
         opt.value = nombre;
         opt.textContent = nombre;
         ciudadSelect.appendChild(opt);
       });
     } catch (e) {
-      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+      ciudadSelect.innerHTML = '<option value="">' + 'No se pudieron cargar las ciudades' + '</option>';
     }
   }
 
@@ -742,11 +745,17 @@ document.addEventListener('DOMContentLoaded', function () {
     provinciaSelect.addEventListener('change', cargarCiudades);
   }
 
-  const btn = document.getElementById('btn-sumate');
-  const target = document.getElementById('sumate');
+  const btnSumate = document.getElementById('btn-sumate');
+  const targetSumate = document.getElementById('sumate');
+  const btnInfo = document.getElementById('btn-info');
+  const targetInfo = document.getElementById('informacion');
 
-  function smoothScrollTo(element, duration = 1200) {
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - 20;
+  function smoothScrollTo(element, duration, offset) {
+    if (!element) return;
+    if (duration === undefined) duration = 1700;
+    if (offset === undefined) offset = 200;
+
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
     const startY = window.pageYOffset;
     const distance = targetY - startY;
     let startTime = null;
@@ -765,14 +774,22 @@ document.addEventListener('DOMContentLoaded', function () {
     requestAnimationFrame(animation);
   }
 
-  if (btn && target) {
-    btn.addEventListener('click', function (e) {
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', function (e) {
       e.preventDefault();
-      smoothScrollTo(target, 1200);
+      smoothScrollTo(targetSumate, 1700, 200);
+    });
+  }
+
+  if (btnInfo && targetInfo) {
+    btnInfo.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(targetInfo, 1700, 200);
     });
   }
 });
 </script>
+
 
 </body>
 

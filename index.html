@@ -48,24 +48,65 @@
         }
     </style>
 </head>
-<body class="pb-12 pt-16">
+<body class="min-h-screen flex flex-col pt-20">
 
-    <!-- 1. ENCABEZADO FIJO -->
-    <header class="fixed top-0 left-0 w-full bg-medical-primary text-white h-16 flex items-center px-4 shadow-md z-50 justify-between">
- <div class="flex items-center">
-    <img src="/logo_cura.png" 
-         alt="Logo Salud" 
-        class="h-40 w-auto object-contain">
+
+<!-- 1. ENCABEZADO FIJO -->
+<header class="fixed top-0 left-0 w-full bg-medical-primary text-white h-20 flex items-center px-4 shadow-md z-50 justify-between">
+
+    <!-- IZQUIERDA: Escudo -->
+    <div class="flex items-center gap-3">
+        <img src="/logo_cura.png"
+             alt="Escudo Argentina"
+             class="h-20 w-auto object-contain">
+
+        <div>
+            <h1 class="text-base font-bold leading-tight uppercase tracking-wide">
+                SISTEMA DE SALUD DIGITAL NACIONAL C.U.R.A.
+            </h1>
+            <p class="text-[11px] opacity-80 font-medium tracking-wider">
+                NIVEL DE ACCESO 2 (URGENCIAS)
+            </p>
+        </div>
+    </div>
+
+    <!-- DERECHA: Isotipo CURA -->
+<!-- DERECHA: Usuario + hora -->
+<div class="flex flex-col items-end leading-tight">
+
+    <!-- Usuario -->
+    <span class="text-[11px] font-medium tracking-wider text-white opacity-90">
+        Usuario: FABIAN ALONSO — M.P.: 14615 — M.N.: 115238
+    </span>
+
+    <!-- Hora dinámica -->
+    <span id="hora-acceso"
+          class="text-[11px] font-medium tracking-wider text-white opacity-80">
+    </span>
 </div>
-            <div>
-                <h1 class="text-sm font-bold leading-tight uppercase tracking-wide">SISTEMA DE SALUD DIGITAL NACIONAL C.U.R.A.</h1>
-                <p class="text-[10px] opacity-80 font-medium tracking-wider">NIVEL DE ACCESO 2 (URGENCIAS)</p>
-            </div>
-        </div>
-        <div class="text-right">
-            <i class="ph ph-qr-code text-2xl opacity-50"></i>
-        </div>
-    </header>
+
+<script>
+    const ahora = new Date();
+    const formato = ahora.toLocaleString('es-AR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+    document.getElementById('hora-acceso').textContent =
+        "Acceso registrado: " + formato;
+</script>
+
+
+
+
+
+</header>
+
+
 
     <!-- CONTENEDOR PRINCIPAL (Mobile First, ancho limitado para simular vista de scanner/móvil) -->
     <main class="max-w-md mx-auto px-4 py-4 space-y-4">
@@ -219,7 +260,7 @@
     </main>
 
     <!-- 7. FOOTER SIMPLE -->
-    <footer class="bg-white border-t border-gray-200 py-6 text-center mt-auto">
+    <footer class="mt-auto bg-white border-t border-gray-200 py-6 text-center">
         <div class="flex flex-col items-center justify-center gap-3">
             <!-- Logo subido por el usuario -->
             <div class="w-50 h-12 opacity-90">

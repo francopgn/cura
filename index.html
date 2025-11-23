@@ -490,22 +490,22 @@
       </div>
 
  <form id="newsletter-form"
-      class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
-  <input
-    name="email"
-    type="email"
-    required
-    placeholder="Correo electrónico"
-    class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"
-  />
+            class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
+        <input
+          name="email"
+          type="email"
+          required
+          placeholder="Correo electrónico"
+          class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"
+        />
 
-  <button
-    type="submit"
-    class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition"
-  >
-    OBTENER INFORMACIÓN
-  </button>
-</form>
+        <button
+          type="submit"
+          class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition"
+        >
+          OBTENER INFORMACIÓN
+        </button>
+      </form>
 
     </section>
 
@@ -733,6 +733,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
+
+<!-- MODAL NEWSLETTER -->
+<div id="newsletter-modal"
+     class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+  <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+    <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="h-6 w-6 text-green-500"
+           viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z"
+              clip-rule="evenodd" />
+      </svg>
+    </div>
+
+    <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
+    <p class="text-sm text-gray-600 mb-4">
+      Vas a recibir cualquier novedad sobre el proyecto.<br>
+      Recordá <strong>SUMARTE</strong> si aún no lo hiciste para ser parte de la historia
+      de modernización en Salud.
+    </p>
+
+    <button id="newsletter-modal-ok"
+            class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">
+      OK
+    </button>
+  </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const provinciaSelect = document.querySelector('select[name="provincia"]');
@@ -817,106 +847,168 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<!-- MODAL NEWSLETTER -->
-<div id="newsletter-modal"
-     class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
-  <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
-    <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-      <svg xmlns="http://www.w3.org/2000/svg"
-           class="h-6 w-6 text-green-500"
-           viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z"
-              clip-rule="evenodd" />
-      </svg>
-    </div>
-
-    <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
-    <p class="text-sm text-gray-600 mb-4">
-      Vas a recibir cualquier novedad sobre el proyecto.<br>
-      Recordá <strong>SUMARTE</strong> si aún no lo hiciste para ser parte de la historia
-      de modernización en Salud.
-    </p>
-
-    <button id="newsletter-modal-ok"
-            class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">
-      OK
-    </button>
-  </div>
-</div>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('newsletter-form');
-  const modal = document.getElementById('newsletter-modal');
-  const card  = modal ? modal.querySelector('.modal-card') : null;
-  const okBtn = document.getElementById('newsletter-modal-ok');
+  // ----- FORM SUMATE -> FormSubmit + Brevo (/api/sumate) -----
+  const sumateForm    = document.getElementById('sumate-form');
+  const sumateModal   = document.getElementById('sumate-modal');
+  const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+  const sumateOkBtn   = document.getElementById('sumate-modal-ok');
 
-  if (!form || !modal || !card || !okBtn) return;
-
-  function abrirModal() {
-    modal.classList.remove('hidden');
+  function abrirSumateModal() {
+    if (!sumateModal || !sumateCard) return;
+    sumateModal.classList.remove('hidden');
     requestAnimationFrame(function () {
-      modal.classList.add('show');
-      card.classList.add('show');
+      sumateModal.classList.add('show');
+      sumateCard.classList.add('show');
     });
   }
 
-  function cerrarModal() {
-    modal.classList.remove('show');
-    card.classList.remove('show');
+  function cerrarSumateModal() {
+    if (!sumateModal || !sumateCard) return;
+    sumateModal.classList.remove('show');
+    sumateCard.classList.remove('show');
     setTimeout(function () {
-      modal.classList.add('hidden');
+      sumateModal.classList.add('hidden');
     }, 250);
   }
 
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
+  if (sumateForm && sumateModal && sumateCard && sumateOkBtn) {
+    sumateForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    var submitBtn = form.querySelector('button[type="submit"]');
-    var originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando…';
-
-    try {
-      const emailInput = form.querySelector('input[name="email"]');
-      const email = emailInput ? emailInput.value.trim() : '';
-
-      if (!email) {
-        alert('Ingresá un correo electrónico válido.');
-        return;
+      const submitBtn = sumateForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando…';
       }
 
-      const response = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-      });
+      try {
+        const formData = new FormData(sumateForm);
+        const email = (formData.get('email') || '').toString().trim();
 
-      if (!response.ok) {
-        throw new Error();
+        // 1) Envío a FormSubmit (correo a contacto@leycura.org)
+        const formSubmitPromise = fetch(sumateForm.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+        });
+
+        // 2) Envío a Brevo (lista / segmento SUMARME)
+        let brevoPromise = Promise.resolve();
+        if (email) {
+          const payload = {
+            email: email,
+            tipo: 'SUMARME'
+          };
+          brevoPromise = fetch('/api/sumate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        const [formRes] = await Promise.all([formSubmitPromise, brevoPromise]);
+        if (!formRes.ok) {
+          throw new Error('Error al enviar el formulario');
+        }
+
+        sumateForm.reset();
+        abrirSumateModal();
+      } catch (err) {
+        alert('Ocurrió un error. Intentá nuevamente.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    });
+
+    sumateOkBtn.addEventListener('click', cerrarSumateModal);
+    sumateModal.addEventListener('click', function (e) {
+      if (e.target === sumateModal) cerrarSumateModal();
+    });
+  }
+
+  // ----- FORM NEWSLETTER -> Brevo (/api/newsletter) -----
+  const newsletterForm = document.getElementById('newsletter-form');
+  const newsletterModal = document.getElementById('newsletter-modal');
+  const newsletterCard  = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
+  const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
+
+  function abrirNewsletterModal() {
+    if (!newsletterModal || !newsletterCard) return;
+    newsletterModal.classList.remove('hidden');
+    requestAnimationFrame(function () {
+      newsletterModal.classList.add('show');
+      newsletterCard.classList.add('show');
+    });
+  }
+
+  function cerrarNewsletterModal() {
+    if (!newsletterModal || !newsletterCard) return;
+    newsletterModal.classList.remove('show');
+    newsletterCard.classList.remove('show');
+    setTimeout(function () {
+      newsletterModal.classList.add('hidden');
+    }, 250);
+  }
+
+  if (newsletterForm && newsletterModal && newsletterCard && newsletterOkBtn) {
+    newsletterForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando…';
       }
 
-      form.reset();
-      abrirModal();
-    } catch (err) {
-      alert('Ocurrió un error. Intentá nuevamente.');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  });
+      try {
+        const emailInput = newsletterForm.querySelector('input[name="email"]');
+        const email = emailInput ? emailInput.value.trim() : '';
+        if (!email) {
+          alert('Ingresá un correo electrónico válido.');
+          return;
+        }
 
-  okBtn.addEventListener('click', cerrarModal);
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal) cerrarModal();
-  });
+        const response = await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email })
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al registrar tu suscripción');
+        }
+
+        newsletterForm.reset();
+        abrirNewsletterModal();
+      } catch (err) {
+        alert('Ocurrió un error. Intentá nuevamente.');
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    });
+
+    newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
+    newsletterModal.addEventListener('click', function (e) {
+      if (e.target === newsletterModal) cerrarNewsletterModal();
+    });
+  }
 });
 </script>
-
 
 </body>
 

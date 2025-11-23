@@ -9,25 +9,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email } = req.body || {};
+    const { email, tipo } = req.body || {};
     if (!email) {
       return res.status(400).json({ error: 'Email requerido' });
     }
 
-    const newsletterListId = process.env.BREVO_NEWSLETTER_LIST_ID
-      ? parseInt(process.env.BREVO_NEWSLETTER_LIST_ID, 10)
+    const sumateListId = process.env.BREVO_SUMATE_LIST_ID
+      ? parseInt(process.env.BREVO_SUMATE_LIST_ID, 10)
       : null;
 
     const payload = {
       email: email,
       updateEnabled: true,
       attributes: {
-        ORIGEN: 'NEWSLETTER'
+        ORIGEN: tipo || 'SUMARME'
       }
     };
 
-    if (newsletterListId && !Number.isNaN(newsletterListId)) {
-      payload.listIds = [newsletterListId];
+    if (sumateListId && !Number.isNaN(sumateListId)) {
+      payload.listIds = [sumateListId];
     }
 
     const response = await fetch('https://api.brevo.com/v3/contacts', {
@@ -41,15 +41,14 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok && response.status !== 400) {
-      // 400 suele ser "ya existe el contacto", lo tratamos como éxito
       const text = await response.text();
-      console.error('Error Brevo newsletter:', response.status, text);
+      console.error('Error Brevo sumate:', response.status, text);
       return res.status(500).json({ error: 'Error al registrar contacto en Brevo' });
     }
 
     return res.status(200).json({ ok: true });
   } catch (err) {
-    console.error('Excepción newsletter:', err);
+    console.error('Excepción sumate:', err);
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
 }

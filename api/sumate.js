@@ -1,55 +1,70 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
+    res.status(405).json({ error: 'Método no permitido' });
+    return;
   }
 
   const apiKey = process.env.BREVO_API_KEY;
+  const listIdStr = process.env.BREVO_SUMATE_LIST_ID; // debería ser "6"
+
   if (!apiKey) {
-    return res.status(500).json({ error: 'Falta BREVO_API_KEY en las variables de entorno' });
+    res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });
+    return;
   }
 
   try {
-    const { email } = req.body || {};
-    if (!email || typeof email !== 'string') {
-      return res.status(400).json({ error: 'Email requerido' });
+    let body = req.body;
+
+    if (!body || typeof body === 'string') {
+      try {
+        body = JSON.parse(body || '{}');
+      } catch (e) {
+        body = {};
+      }
+    }
+
+    const email = (body.email || '').trim();
+
+    if (!email) {
+      res.status(400).json({ error: 'Email inválido' });
+      return;
     }
 
     const payload = {
-      email: email.trim(),
+      email,
       updateEnabled: true,
       attributes: {
         ORIGEN: 'SUMARME'
       }
     };
 
-    // Lista específica para los que se suman, si está configurada
-    const listIdStr = process.env.BREVO_SUMATE_LIST_ID;
     if (listIdStr) {
-      const idNum = parseInt(listIdStr, 10);
-      if (!isNaN(idNum)) {
-        payload.listIds = [idNum];
+      const listIdNum = Number(listIdStr);
+      if (!Number.isNaN(listIdNum)) {
+        payload.listIds = [listIdNum];
       }
     }
 
-    const response = await fetch('https://api.brevo.com/v3/contacts', {
+    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-        'api-key': apiKey
+        'accept': 'application/json',
+        'api-key': apiKey,
+        'content-type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
 
-    if (!response.ok && response.status !== 400) {
-      const text = await response.text();
-      console.error('Error Brevo sumate:', response.status, text);
-      return res.status(500).json({ error: 'Error al registrar contacto en Brevo' });
+    if (!brevoRes.ok) {
+      const text = await brevoRes.text();
+      console.error('Error Brevo sumate:', text);
+      res.status(502).json({ error: 'Error al registrar el email en Brevo' });
+      return;
     }
 
-    return res.status(200).json({ ok: true });
+    res.status(200).json({ success: true });
   } catch (err) {
-    console.error('Excepción sumate:', err);
-    return res.status(500).json({ error: 'Error interno del servidor' });
+    console.error('Error en API sumate:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 }

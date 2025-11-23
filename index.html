@@ -675,22 +675,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const sumateLink = document.querySelector('a[href="#sumate"]');
-  if (sumateLink) {
-    sumateLink.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.getElementById('sumate');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
-});
-</script>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
   const provinciaSelect = document.querySelector('select[name="provincia"]');
   const ciudadSelect = document.getElementById('ciudad-select');
 
@@ -727,8 +711,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const btn = document.getElementById('btn-sumate');
   const target = document.getElementById('sumate');
 
-  function smoothScrollTo(element, duration = 1200) {
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - 20;
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const btn = document.getElementById('btn-sumate');
+  const target = document.getElementById('sumate');
+
+  function smoothScrollTo(element, duration = 1700) {
+    const navbarOffset = 120; // deja el título perfecto sin cortar
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
     const startY = window.pageYOffset;
     const distance = targetY - startY;
     let startTime = null;
@@ -737,11 +727,29 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!startTime) startTime = currentTime;
       const timeElapsed = currentTime - startTime;
       const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+
+      // easing más suave y elegante
+      const ease = 1 - Math.pow(1 - progress, 3);
+
       window.scrollTo(0, startY + distance * ease);
+
       if (timeElapsed < duration) {
         requestAnimationFrame(animation);
       }
+    }
+
+    requestAnimationFrame(animation);
+  }
+
+  if (btn && target) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(target, 1700);
+    });
+  }
+});
+</script>
+
     }
 
     requestAnimationFrame(animation);

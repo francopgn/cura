@@ -684,11 +684,41 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       const target = document.getElementById('sumate');
       if (target) {
-       const y = target.getBoundingClientRect().top + window.pageYOffset;
-window.scrollTo({
-  top: y - 20, // margen suave arriba
-  behavior: 'smooth'
-});
+       function smoothScrollTo(element, duration = 900) {
+  const targetY = element.getBoundingClientRect().top + window.pageYOffset - 20;
+  const startY = window.pageYOffset;
+  const diff = targetY - startY;
+  let start;
+
+  function step(timestamp) {
+    if (!start) start = timestamp;
+    const time = timestamp - start;
+    const percent = Math.min(time / duration, 1);
+
+    // easeOutCubic = suave al inicio y más lento al final
+    const easing = 1 - Math.pow(1 - percent, 3);
+
+    window.scrollTo(0, startY + diff * easing);
+
+    if (time < duration) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+const sumateLink = document.querySelector('a[href="#sumate"]');
+if (sumateLink) {
+  sumateLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.getElementById('sumate');
+    if (target) {
+      smoothScrollTo(target, 1200); // duración 1.2s — MUY SUAVE
+    }
+  });
+}
+
 
       }
     });

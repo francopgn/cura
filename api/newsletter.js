@@ -10,38 +10,40 @@ export default async function handler(req, res) {
 
   try {
     const { email } = req.body || {};
-    if (!email) {
+    if (!email || typeof email !== 'string') {
       return res.status(400).json({ error: 'Email requerido' });
     }
 
-    const newsletterListId = process.env.BREVO_NEWSLETTER_LIST_ID
-      ? parseInt(process.env.BREVO_NEWSLETTER_LIST_ID, 10)
-      : null;
-
+    // Armar payload para Brevo
     const payload = {
-      email: email,
+      email: email.trim(),
       updateEnabled: true,
       attributes: {
         ORIGEN: 'NEWSLETTER'
       }
     };
 
-    if (newsletterListId && !Number.isNaN(newsletterListId)) {
-      payload.listIds = [newsletterListId];
+    // Si configuraste una lista específica para newsletter, la agregamos
+    const listIdStr = process.env.BREVO_NEWSLETTER_LIST_ID;
+    if (listIdStr) {
+      const idNum = parseInt(listIdStr, 10);
+      if (!isNaN(idNum)) {
+        payload.listIds = [idNum];
+      }
     }
 
     const response = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
-        'api-key': apiKey,
-        'content-type': 'application/json'
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'api-key': apiKey
       },
       body: JSON.stringify(payload)
     });
 
     if (!response.ok && response.status !== 400) {
-      // 400 suele ser "ya existe el contacto", lo tratamos como éxito
+      // 400 suele ser "ya existe el contacto", lo tratamos como error suave
       const text = await response.text();
       console.error('Error Brevo newsletter:', response.status, text);
       return res.status(500).json({ error: 'Error al registrar contacto en Brevo' });

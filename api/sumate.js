@@ -9,33 +9,34 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, tipo } = req.body || {};
-    if (!email) {
+    const { email } = req.body || {};
+    if (!email || typeof email !== 'string') {
       return res.status(400).json({ error: 'Email requerido' });
     }
 
-    const sumateListId = process.env.BREVO_SUMATE_LIST_ID
-      ? parseInt(process.env.BREVO_SUMATE_LIST_ID, 10)
-      : null;
-
     const payload = {
-      email: email,
+      email: email.trim(),
       updateEnabled: true,
       attributes: {
-        ORIGEN: tipo || 'SUMARME'
+        ORIGEN: 'SUMARME'
       }
     };
 
-    if (sumateListId && !Number.isNaN(sumateListId)) {
-      payload.listIds = [sumateListId];
+    // Lista específica para los que se suman, si está configurada
+    const listIdStr = process.env.BREVO_SUMATE_LIST_ID;
+    if (listIdStr) {
+      const idNum = parseInt(listIdStr, 10);
+      if (!isNaN(idNum)) {
+        payload.listIds = [idNum];
+      }
     }
 
     const response = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
-        'api-key': apiKey,
-        'content-type': 'application/json'
+        accept: 'application/json',
+        'content-type': 'application/json',
+        'api-key': apiKey
       },
       body: JSON.stringify(payload)
     });

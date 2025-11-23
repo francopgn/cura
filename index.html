@@ -133,7 +133,7 @@
     </p>
 
     <p class="text-sm text-white">
-      Una credencial digital única y segura que unifica toda la información médica de cada persona. La Historia Clínica deja de estar dispersa: acompaña al paciente a cualquier lugar, en cualquier momento y en cualquier institución del país.
+      Una credencial digital única y segura que unifica toda la información médica de cada persona. La Historia Clínica deja de estar dispersa: acompaña al paciente a cualquier lugar, en cualquier momento y en cualquier institución del país. Fin del papeleo, los trámites repetidos, los estudios duplicados y la burocracia que frena la atención.
     </p>
 
     <p class="text-sm text-white">
@@ -303,7 +303,74 @@
     </section>
 
     <!-- CONTACTO -->
-    <section id="contacto" class="space-y-6">
+    
+<!-- SUMATE -->
+<section id="sumate" class="space-y-6">
+  <div class="max-w-2xl">
+    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
+    <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
+  </div>
+
+  <form id="sumate-form"
+        action="https://formsubmit.co/ajax/contacto@leycura.org"
+        method="POST"
+        class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+
+    <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
+    <input type="hidden" name="_template" value="box">
+    <input type="hidden" name="_captcha" value="false">
+
+    <div class="grid md:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
+        <input name="nombre" required
+               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
+        <input name="apellido" required
+               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
+        <input name="provincia" required
+               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
+        <input name="ciudad" required
+               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
+      <input type="email" name="email" required
+             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+    </div>
+
+    <div>
+      <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
+      <input name="dni"
+             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+    </div>
+
+    <button type="submit"
+            class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">
+      Enviar
+    </button>
+
+    <p class="text-[10px] text-cura-accentLight mt-1">
+      Los campos marcados con * son obligatorios.
+    </p>
+  </form>
+</section>
+
+
+<section id="contacto" class="space-y-6">
       <div class="max-w-2xl">
         <h2 class="text-xl md:text-2xl font-bold text-white mb-2">
           Comunícate con nosotros
@@ -327,9 +394,6 @@
           </div>
           <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">
             Esta iniciativa no solicita aportes económicos. Tu apoyo se basa en informarte, difundir y acompañar el proceso.
-          </div>
-             <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">
-            Te necesitamos para hacer historia, solo con tu firma es que vamos a poder avanzar con el proyecto, sumate.
           </div>
         </div>
 
@@ -507,6 +571,73 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+
+<!-- MODAL SUMATE -->
+<div id="sumate-modal"
+     class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+  <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+    <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="h-6 w-6 text-green-500"
+           viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z"
+              clip-rule="evenodd" />
+      </svg>
+    </div>
+    <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por sumarte!</h2>
+    <p class="text-sm text-gray-600 mb-4">
+      En breve nos contactaremos para enviarte el formulario de junta de firmas y puedas ser parte del futuro de Argentina.
+    </p>
+    <button id="sumate-modal-ok"
+            class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">
+      OK
+    </button>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const sumateForm = document.getElementById('sumate-form');
+  const sumateModal = document.getElementById('sumate-modal');
+  const sumateCard = sumateModal.querySelector('.modal-card');
+  const sumateOk = document.getElementById('sumate-modal-ok');
+
+  function openS() {
+    sumateModal.classList.remove('hidden');
+    requestAnimationFrame(()=> {
+      sumateModal.classList.add('show');
+      sumateCard.classList.add('show');
+    });
+  }
+  function closeS() {
+    sumateModal.classList.remove('show');
+    sumateCard.classList.remove('show');
+    setTimeout(()=> sumateModal.classList.add('hidden'),250);
+  }
+
+  sumateOk.addEventListener('click', closeS);
+  sumateModal.addEventListener('click', e=>{ if(e.target===sumateModal) closeS(); });
+
+  if(sumateForm){
+    sumateForm.addEventListener('submit', async e=>{
+      e.preventDefault();
+      try{
+        const res=await fetch(sumateForm.action,{
+          method:'POST',
+          body:new FormData(sumateForm),
+          headers:{'Accept':'application/json'}
+        });
+        if(!res.ok) throw new Error();
+        sumateForm.reset();
+        openS();
+      } catch(e){ alert("Error enviando el formulario"); }
+    });
+  }
+});
+</script>
+
 </body>
 
 </html>

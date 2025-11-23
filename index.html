@@ -633,60 +633,78 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  const sumateForm = document.getElementById('sumate-form');
-  const sumateModal = document.getElementById('sumate-modal');
-  const sumateCard = sumateModal.querySelector('.modal-card');
-  const sumateOk = document.getElementById('sumate-modal-ok');
+  const provinciaSelect = document.querySelector('select[name="provincia"]');
+  const ciudadSelect = document.getElementById('ciudad-select');
 
-  function openS() {
-    sumateModal.classList.remove('hidden');
-    requestAnimationFrame(()=> {
-      sumateModal.classList.add('show');
-      sumateCard.classList.add('show');
-    });
+  async function cargarCiudades() {
+    if (!provinciaSelect || !ciudadSelect) return;
+    const prov = provinciaSelect.value;
+    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+    if (!prov) {
+      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      return;
+    }
+    try {
+      const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const localidades = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es'));
+      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      localidades.forEach(nombre => {
+        const opt = document.createElement('option');
+        opt.value = nombre;
+        opt.textContent = nombre;
+        ciudadSelect.appendChild(opt);
+      });
+    } catch (e) {
+      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+    }
   }
-  function closeS() {
-    sumateModal.classList.remove('show');
-    sumateCard.classList.remove('show');
-    setTimeout(()=> sumateModal.classList.add('hidden'),250);
+
+  if (provinciaSelect) {
+    provinciaSelect.addEventListener('change', cargarCiudades);
   }
 
-  sumateOk.addEventListener('click', closeS);
-  sumateModal.addEventListener('click', e=>{ if(e.target===sumateModal) closeS(); });
+  
+  const btn = document.getElementById('btn-sumate');
+  const target = document.getElementById('sumate');
 
-  if(sumateForm){
-    sumateForm.addEventListener('submit', async e=>{
-      e.preventDefault();
-      try{
-        const res=await fetch(sumateForm.action,{
-          method:'POST',
-          body:new FormData(sumateForm),
-          headers:{'Accept':'application/json'}
-        });
-        if(!res.ok) throw new Error();
-        sumateForm.reset();
-        openS();
-      } catch(e){ alert("Error enviando el formulario"); }
-    });
-  }
-});
-</script>
+  function smoothScrollTo(element, duration = 1700) {
+    const navbarOffset = 200;
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
 
+    function animation(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const sumateLink = document.querySelector('a[href="#sumate"]');
-  if (sumateLink) {
-    sumateLink.addEventListener('click', function (e) {
-      e.preventDefault();
-      const target = document.getElementById('sumate');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo(0, startY + distance * ease);
+
+      if (timeElapsed < duration) {
+        requestAnimationFrame(animation);
       }
+    }
+
+    requestAnimationFrame(animation);
+  }
+
+  if (btn && target) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(target, 1700);
     });
   }
+
 });
 </script>
+
+
+
 
 
 <script>

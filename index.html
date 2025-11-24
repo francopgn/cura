@@ -566,12 +566,13 @@
           Bienvenido, tenemos novedades
         </h2>
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 text-[11px] sm:text-[13px] text-cura-accentLight">
-          <p class="sm:max-w-[65%] leading-snug">
-            La ley será presentada por primera vez del 28 al 30 de abril de 2026 en el
-            V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
-          </p>
+     <p class="sm:max-w-[65%] leading-snug">
+  La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>
+  en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
+</p>
+
           <p class="sm:max-w-[30%] leading-snug">
-            Próximamente más información sobre la presentación y materiales descargables.
+            Próximamente más información sobre la presentación.
           </p>
         </div>
       </div>
@@ -1085,8 +1086,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // Abrir apenas carga la página
   abrirNovedades();
 
-  // Cerrar automático a los 20 segundos
-  setTimeout(cerrarNovedades, 20000);
+  // Cerrar automático a los 10 segundos
+  setTimeout(cerrarNovedades, 10000);
 
   // Cerrar con el botón ✕
   if (closeBtn) {

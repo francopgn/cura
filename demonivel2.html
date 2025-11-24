@@ -76,8 +76,8 @@
 </span>
 
             <span id="hora-acceso"
-                  class="text-[9px] sm:text-[11px] font-medium tracking-wider text-white opacity-80 text-right">
-            </span>
+      class="text-[9px] sm:text-[11px] font-medium tracking-wider text-white opacity-80 text-right">
+</span>
         </div>
     </div>
 </header>
@@ -94,8 +94,10 @@
         second: '2-digit'
     });
 
-    document.getElementById('hora-acceso').textContent = formato + " Acceso registrado.";
+    document.getElementById('hora-acceso').innerHTML =
+        formato + '<br>Acceso registrado.';
 </script>
+
 
 
 <!-- CONTENEDOR PRINCIPAL -->
@@ -305,6 +307,7 @@
 
 </body>
 </html>
+
 
 
 

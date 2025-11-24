@@ -704,9 +704,9 @@ document.addEventListener('DOMContentLoaded', function () {
   async function cargarCiudades() {
     if (!provinciaSelect || !ciudadSelect) return;
     const prov = provinciaSelect.value;
-    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+    ciudadSelect.innerHTML = '<option value="">' + 'Cargando ciudades...' + '</option>';
     if (!prov) {
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      ciudadSelect.innerHTML = '<option value="">' + 'Seleccioná una ciudad' + '</option>';
       return;
     }
     try {
@@ -714,16 +714,17 @@ document.addEventListener('DOMContentLoaded', function () {
       const res = await fetch(url);
       if (!res.ok) throw new Error();
       const data = await res.json();
-      const localidades = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es'));
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      localidades.forEach(nombre => {
+      const localidades = (data.localidades || []).map(function (l) { return l.nombre; })
+        .sort(function (a, b) { return a.localeCompare(b, 'es'); });
+      ciudadSelect.innerHTML = '<option value="">' + 'Seleccioná una ciudad' + '</option>';
+      localidades.forEach(function (nombre) {
         const opt = document.createElement('option');
         opt.value = nombre;
         opt.textContent = nombre;
         ciudadSelect.appendChild(opt);
       });
     } catch (e) {
-      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+      ciudadSelect.innerHTML = '<option value="">' + 'No se pudieron cargar las ciudades' + '</option>';
     }
   }
 
@@ -731,15 +732,22 @@ document.addEventListener('DOMContentLoaded', function () {
     provinciaSelect.addEventListener('change', cargarCiudades);
   }
 
-  const btnSumate   = document.getElementById('btn-sumate');
-  const btnInfo     = document.getElementById('btn-info');
-  const linkSumarte = document.getElementById('link-sumarte');
-  const targetSumate = document.getElementById('sumate');
-  const targetInfo   = document.getElementById('informacion');
+  const btnSumate      = document.getElementById('btn-sumate');
+  const targetSumate   = document.getElementById('sumate');
+  const btnInfo        = document.getElementById('btn-info');
+  const targetInfo     = document.getElementById('informacion');
+  const targetContacto = document.getElementById('contacto');
 
-  function smoothScrollTo(element, duration = 1700) {
-    const navbarOffset = 200;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
+  // links de menú / footer
+  const navInfoLinks     = document.querySelectorAll('a[href="#informacion"]');
+  const navContactoLinks = document.querySelectorAll('a[href="#contacto"]');
+
+  function smoothScrollTo(element, duration, offset) {
+    if (!element) return;
+    if (duration === undefined) duration = 1700;
+    if (offset === undefined) offset = 200;
+
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
     const startY = window.pageYOffset;
     const distance = targetY - startY;
     let startTime = null;
@@ -748,10 +756,8 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!startTime) startTime = currentTime;
       const timeElapsed = currentTime - startTime;
       const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-
+      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
       window.scrollTo(0, startY + distance * ease);
-
       if (timeElapsed < duration) {
         requestAnimationFrame(animation);
       }
@@ -760,20 +766,42 @@ document.addEventListener('DOMContentLoaded', function () {
     requestAnimationFrame(animation);
   }
 
-  function attachScroll(element, target) {
-    if (element && target) {
-      element.addEventListener('click', function (e) {
-        e.preventDefault();
-        smoothScrollTo(target, 1700);
-      });
-    }
+  // Botón "QUIERO SUMARME"
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(targetSumate, 1700, 200);
+    });
   }
 
-  attachScroll(btnSumate, targetSumate);
-  attachScroll(btnInfo, targetInfo);
-  attachScroll(linkSumarte, targetSumate);
+  // Botón "Obtén más información"
+  if (btnInfo && targetInfo) {
+    btnInfo.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(targetInfo, 1700, 200);
+    });
+  }
+
+  // Link "Información" (navbar y footer)
+  navInfoLinks.forEach(function (link) {
+    if (!targetInfo) return;
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(targetInfo, 1700, 200);
+    });
+  });
+
+  // Link "Contacto" (navbar y footer)
+  navContactoLinks.forEach(function (link) {
+    if (!targetContacto) return;
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      smoothScrollTo(targetContacto, 1700, 200);
+    });
+  });
 });
 </script>
+
 
 
 

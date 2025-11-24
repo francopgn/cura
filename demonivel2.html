@@ -77,9 +77,10 @@
 </span>
 
 
-            <span id="hora-acceso"
-      class="text-[9px] sm:text-[11px] font-medium tracking-wider text-white opacity-80 text-right">
+   <span id="hora-acceso"
+      class="text-[9px] sm:text-[11px] font-medium tracking-wider text-white opacity-80 text-right leading-tight">
 </span>
+
         </div>
     </div>
 </header>
@@ -101,8 +102,11 @@
     });
 
     document.getElementById('hora-acceso').innerHTML =
-        fecha + "<br>" + hora + " — Acceso registrado.";
+        fecha + "<br>" +
+        hora + "<br>" +
+        "Acceso registrado.";
 </script>
+
 
 
 
@@ -316,6 +320,7 @@
 
 </body>
 </html>
+
 
 
 

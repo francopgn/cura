@@ -93,9 +93,11 @@
         minute: '2-digit',
         second: '2-digit'
     });
-    document.getElementById('hora-acceso').textContent =
-        "Acceso registrado: " + formato;
+    
+    document.getElementById('hora-acceso').innerHTML =
+        "Acceso registrado:&nbsp;&nbsp;" + formato;
 </script>
+
 
 <!-- CONTENEDOR PRINCIPAL -->
 <main class="max-w-lg mx-auto px-4 sm:px-6 py-4 space-y-4">
@@ -304,6 +306,7 @@
 
 </body>
 </html>
+
 
 
 

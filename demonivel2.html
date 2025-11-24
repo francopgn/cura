@@ -84,16 +84,19 @@
         </div>
     </div>
 </header>
-
 <script>
     const ahora = new Date();
 
-    const fecha = ahora.toLocaleDateString('es-AR', {
+    // obtenemos fecha normal
+    let fecha = ahora.toLocaleDateString('es-AR', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
         day: 'numeric'
     });
+
+    // FIX: evitar que "2025" se vaya a la línea siguiente
+    fecha = fecha.replace(" de ", " de&nbsp;");
 
     const hora = ahora.toLocaleTimeString('es-AR', {
         hour: '2-digit',
@@ -106,6 +109,8 @@
         hora + "<br>" +
         "Acceso registrado.";
 </script>
+
+
 
 
 
@@ -320,6 +325,7 @@
 
 </body>
 </html>
+
 
 
 

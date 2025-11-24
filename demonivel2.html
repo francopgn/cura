@@ -87,7 +87,7 @@
 <script>
     const ahora = new Date();
 
-    // obtenemos fecha normal
+    // Fecha completa
     let fecha = ahora.toLocaleDateString('es-AR', {
         weekday: 'long',
         year: 'numeric',
@@ -95,21 +95,43 @@
         day: 'numeric'
     });
 
-    // FIX: evitar que "2025" se vaya a la línea siguiente
-    fecha = fecha.replace(" de ", " de&nbsp;");
+    // Diccionario de abreviaturas
+    const meses = {
+        "enero": "ene",
+        "febrero": "feb",
+        "marzo": "mar",
+        "abril": "abr",
+        "mayo": "may",
+        "junio": "jun",
+        "julio": "jul",
+        "agosto": "ago",
+        "septiembre": "sep",
+        "octubre": "oct",
+        "noviembre": "nov",
+        "diciembre": "dic"
+    };
 
+    // Reemplazar mes largo por abreviado
+    for (const mesLargo in meses) {
+        if (fecha.includes(mesLargo)) {
+            fecha = fecha.replace(mesLargo, meses[mesLargo]);
+            break;
+        }
+    }
+
+    // Hora
     const hora = ahora.toLocaleTimeString('es-AR', {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
     });
 
+    // Colocar cada cosa en su línea
     document.getElementById('hora-acceso').innerHTML =
         fecha + "<br>" +
         hora + "<br>" +
         "Acceso registrado.";
 </script>
-
 
 
 
@@ -325,6 +347,7 @@
 
 </body>
 </html>
+
 
 
 

@@ -785,12 +785,14 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---- LINKS DEL NAVBAR ----
 
   // INICIO
-  navInicioLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      smoothScrollTo(targetInicio);
-    });
+// INICIO (sin offset)
+navInicioLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    smoothScrollTo(targetInicio, 1700, 0);  
   });
+});
+
 
   // INFORMACIÓN
   navInfoLinks.forEach(link => {

@@ -87,7 +87,7 @@
 <script>
     const ahora = new Date();
 
-    // Fecha completa
+    // Fecha completa en español
     let fecha = ahora.toLocaleDateString('es-AR', {
         weekday: 'long',
         year: 'numeric',
@@ -95,7 +95,7 @@
         day: 'numeric'
     });
 
-    // Diccionario de abreviaturas
+    // Abreviaturas
     const meses = {
         "enero": "ene",
         "febrero": "feb",
@@ -111,13 +111,15 @@
         "diciembre": "dic"
     };
 
-    // Reemplazar mes largo por abreviado
+    // Reemplazar por mes abreviado
     for (const mesLargo in meses) {
         if (fecha.includes(mesLargo)) {
             fecha = fecha.replace(mesLargo, meses[mesLargo]);
-            break;
         }
     }
+
+    // Capitalizar primera letra ("domingo" → "Domingo")
+    fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
 
     // Hora
     const hora = ahora.toLocaleTimeString('es-AR', {
@@ -126,12 +128,13 @@
         second: '2-digit'
     });
 
-    // Colocar cada cosa en su línea
+    // Insertar en 3 líneas
     document.getElementById('hora-acceso').innerHTML =
         fecha + "<br>" +
         hora + "<br>" +
         "Acceso registrado.";
 </script>
+
 
 
 
@@ -347,6 +350,7 @@
 
 </body>
 </html>
+
 
 
 

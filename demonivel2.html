@@ -84,23 +84,20 @@
 
 <script>
     const ahora = new Date();
-
-    const fecha = ahora.toLocaleDateString('es-AR', {
+    const formato = ahora.toLocaleString('es-AR', {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
-    });
-
-    const hora = ahora.toLocaleTimeString('es-AR', {
+        day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
     });
 
     document.getElementById('hora-acceso').innerHTML =
-        fecha + "<br>" + hora + " — Acceso registrado.";
+        formato + '<br>Acceso registrado.';
 </script>
+
 
 
 
@@ -312,6 +309,7 @@
 
 </body>
 </html>
+
 
 
 

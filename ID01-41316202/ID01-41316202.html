@@ -45,35 +45,10 @@
         .card-shadow {
             box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
         }
-
-        /* POPUP */
-        .popup {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #004E85;
-            color: #fff;
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-size: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s ease;
-            z-index: 9999;
-        }
-        .popup.show {
-            opacity: 1;
-        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col pt-28 sm:pt-24 font-sans">
-
-<!-- POPUP -->
-<div id="popup" class="popup">
-  <p>Esto es lo que vería un enfermero de primeros auxilios al escanear tu credencial C.U.R.A.</p>
-</div>
 
 <!-- HEADER -->
 <header class="fixed top-0 left-0 w-full bg-medical-primary text-white shadow-md z-50">
@@ -92,8 +67,8 @@
 
         <div class="flex flex-col items-end leading-tight min-w-0 w-full">
             <span class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-90 text-right leading-tight">
-                Usuario: FABIAN ALONSO<br>
-                <span>M.P.: 14615 - M.N.: 115238</span>
+                PROTECTO DE LEY C.U.R.A.<br>
+                <span>LEYCURA.ORG</span>
             </span>
             <span id="hora-acceso"
                 class="text-[9px] sm:text-[11px] tracking-wider opacity-80 text-right leading-tight">
@@ -175,9 +150,6 @@
             </ul>
         </div>
     </section>
-
-    <!-- MÁS SECCIONES — idénticas a tu versión original — -->
-    <!-- (Condiciones clínicas, implantes, medicación, etc.) -->
 
     <section>
         <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Condiciones Clínicas Relevantes</h3>
@@ -275,34 +247,5 @@
     </div>
 </footer>
 
-<!-- SCRIPT POPUP -->
-<script>
-window.onload = function () {
-    const popup = document.getElementById("popup");
-    popup.classList.add("show");
-    setTimeout(() => popup.classList.remove("show"), 6000);
-};
-</script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

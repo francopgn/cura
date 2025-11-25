@@ -39,14 +39,13 @@
 
   /* --- ESTILOS DE LA CREDENCIAL 3D --- */
   .perspective-1000 {
-    perspective: 1000px;
+    perspective: 1200px; /* Perspectiva un poco más lejana para menos distorsión */
   }
   
   .card-container {
     position: relative;
-    width: 100%;
-    /* Ajusta la altura base si tus imágenes tienen otra proporción */
-    height: 220px; 
+    width: 320px;  /* Ancho fijo para consistencia */
+    height: 200px; /* Alto fijo estilo tarjeta */
     z-index: 10;
   }
 
@@ -55,12 +54,11 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote suave */
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     transform-style: preserve-3d;
     cursor: pointer;
   }
 
-  /* Estado girado */
   .card-inner.flipped {
     transform: rotateY(180deg);
   }
@@ -71,28 +69,51 @@
     left: 0;
     width: 100%;
     height: 100%;
-    -webkit-backface-visibility: hidden; /* Safari */
-    backface-visibility: hidden;         /* Estándar */
-    border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    /* BORDES Y SOMBRAS CORREGIDOS */
+    border-radius: 16px; /* Borde bien redondeado */
+    overflow: hidden;    /* Recorta la imagen estrictamente */
+    
+    /* Sombra profunda para dar volumen */
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+      0 2px 4px -1px rgba(0, 0, 0, 0.06),
+      0 20px 25px -5px rgba(0, 0, 0, 0.5), /* Sombra principal oscura */
+      inset 0 0 0 1px rgba(255, 255, 255, 0.15); /* Borde interno sutil para definición */
   }
 
-  /* FRENTE: z-index mayor para asegurar que se ve primero */
+  /* Brillo plástico sobre la imagen */
+  .card-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      125deg, 
+      rgba(255,255,255,0.3) 0%, 
+      rgba(255,255,255,0.05) 30%, 
+      transparent 50%, 
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
   .card-front {
-    background-color: #fff;
+    background-color: #fff; /* Fondo blanco por si la imagen tarda o es transparente */
     transform: rotateY(0deg);
     z-index: 2;
   }
 
-  /* DORSO: Rotado 180 grados inicialmente */
   .card-back {
     background-color: #fff;
     transform: rotateY(180deg);
     z-index: 1;
   }
 
-  /* Animación de flotación */
   @keyframes floatCard {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-12px); }
@@ -101,7 +122,6 @@
     animation: floatCard 5s ease-in-out infinite;
   }
   
-  /* Pausar animación al pasar el mouse para facilitar el click */
   .card-container:hover .animate-float {
     animation-play-state: paused;
   }
@@ -116,25 +136,18 @@
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
-
     <div class="flex items-center gap-2">
-      <img src="/logo.png"
-           alt="Logo C.U.R.A."
-           class="h-16 w-auto object-contain shrink-0" />
+      <img src="/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
       <div class="leading-tight">
         <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
         <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
       </div>
     </div>
-
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
       <a href="#inicio" class="text-cura-accentLight hover:text-white">Inicio</a>
       <a href="#informacion" class="text-cura-accentLight hover:text-white">Información</a>
       <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
-      <a href="/random/demo-random.html"
-         class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
-        Demo Enfermero
-      </a>
+      <a href="/random/demo-random.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demo Enfermero</a>
     </nav>
   </div>
 </header>
@@ -145,9 +158,7 @@
     <section class="grid md:grid-cols-2 gap-10 items-center">
       
       <div>
-        <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">
-          LEY C.U.R.A.
-        </p>
+        <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">LEY C.U.R.A.</p>
         <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow">
           Diseñando el futuro de la Salud Pública Argentina
         </h1>
@@ -156,12 +167,10 @@
         </p>
 
         <div class="flex flex-wrap gap-3">
-          <button id="btn-sumate" type="button"
-             class="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
+          <button id="btn-sumate" type="button" class="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
             QUIERO SUMARME
           </button>
-          <button id="btn-info" type="button"
-             class="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
+          <button id="btn-info" type="button" class="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
             Obtén más información
           </button>
         </div>
@@ -175,14 +184,16 @@
         
         <div class="absolute inset-0 bg-cura-accent/30 blur-3xl rounded-full -z-10 transform scale-75"></div>
         
-        <div class="card-container max-w-[340px] animate-float">
+        <div class="card-container animate-float">
           <div id="credencial-3d" class="card-inner" onclick="this.classList.toggle('flipped')">
             
             <div class="card-face card-front">
+              <div class="card-shine"></div>
               <img src="credencial-frente.png" alt="Credencial Frente" class="w-full h-full object-cover">
             </div>
 
             <div class="card-face card-back">
+              <div class="card-shine"></div>
               <img src="credencial-dorso.png" alt="Credencial Dorso" class="w-full h-full object-cover">
             </div>
 
@@ -196,99 +207,44 @@
 
     </section>
 
-
     <section class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-8">
       <div class="absolute -top-6 -right-4 w-28 h-28 rounded-full bg-cura-accent/25 blur-2xl"></div>
       
       <div class="relative z-10 grid md:grid-cols-3 gap-6 items-start">
         <div class="md:col-span-1 space-y-3">
-          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide">
-            SISTEMA C.U.R.A.
-          </p>
-          <h2 class="text-xl font-bold text-white">
-            Tu salud, simplificada y segura.
-          </h2>
+          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide">SISTEMA C.U.R.A.</p>
+          <h2 class="text-xl font-bold text-white">Tu salud, simplificada y segura.</h2>
           <p class="text-sm text-white/90 leading-relaxed">
            La Ley C.U.R.A. crea la Credencial Única para que tu historia clínica viaje con vos. Un solo sistema que garantiza atención rápida, justa y sin papeles.
           </p>
           <div class="pt-2">
-             <span class="inline-block px-2 py-1 rounded bg-cura-primaryDark/50 text-[10px] text-cura-accentLight border border-cura-accent/30">
-                #LeyCURA
-             </span>
+             <span class="inline-block px-2 py-1 rounded bg-cura-primaryDark/50 text-[10px] text-cura-accentLight border border-cura-accent/30">#LeyCURA</span>
           </div>
         </div>
 
         <div class="md:col-span-2 grid sm:grid-cols-2 gap-3 text-xs text-cura-accentLight">
-          
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-            <strong class="text-white block mb-1">Acceso Inmediato</strong>
-            Accedé a tu información médica desde cualquier centro de salud del país.
-          </div>
-
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-            <strong class="text-white block mb-1">Chau Papel</strong>
-            Órdenes, recetas, troqueles y estudios pasan a formato 100% digital.
-          </div>
-
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-            <strong class="text-white block mb-1">Recetas Automáticas</strong>
-            Firmas digitales al instante sin necesidad de ir al consultorio solo a renovar.
-          </div>
-
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-            <strong class="text-white block mb-1">Emergencias QR</strong>
-            Ambulancias y guardias ven tus alergias y medicación crítica escaneando tu credencial.
-          </div>
-
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-            <strong class="text-white block mb-1">Eficiencia PAMI</strong>
-            Reducción de burocracia, turnos más rápidos y traslados automatizados.
-          </div>
-
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-            <strong class="text-white block mb-1">Seguridad de Datos</strong>
-            Cada profesional ve solo lo necesario. Auditoría y privacidad garantizada.
-          </div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Acceso Inmediato</strong>Accedé a tu información médica desde cualquier lugar.</div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Chau Papel</strong>Órdenes, recetas y estudios 100% digitales.</div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Recetas Automáticas</strong>Firmas digitales al instante sin ir al consultorio.</div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Emergencias QR</strong>Datos críticos escaneando tu credencial.</div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Eficiencia PAMI</strong>Reducción de burocracia y turnos rápidos.</div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Seguridad de Datos</strong>Privacidad garantizada y auditada.</div>
         </div>
       </div>
     </section>
 
-
     <section id="informacion" class="space-y-6">
       <div class="max-w-2xl">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">
-          Creada para mejorar la salud de todos
-        </h2>
-        <p class="text-sm md:text-base text-cura-accentLight">
-          La Ley C.U.R.A. impulsa un acceso más ágil, seguro y equitativo a la información clínica en todo el país.
-        </p>
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Creada para mejorar la salud de todos</h2>
+        <p class="text-sm md:text-base text-cura-accentLight">La Ley C.U.R.A. impulsa un acceso más ágil, seguro y equitativo.</p>
       </div>
-
      <div class="grid md:grid-cols-3 gap-4">
-      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-        <h3 class="text-sm font-semibold text-white mb-1">Unificación</h3>
-        <p class="text-xs text-cura-accentLight">Un solo identificador de salud integrando datos públicos y privados.</p>
-      </div>
-      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-        <h3 class="text-sm font-semibold text-white mb-1">Seguridad y privacidad</h3>
-        <p class="text-xs text-cura-accentLight">Accesos por niveles y confidencialidad estricta.</p>
-      </div>
-      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-        <h3 class="text-sm font-semibold text-white mb-1">Interoperabilidad</h3>
-        <p class="text-xs text-cura-accentLight">Tu historia clínica viaja con vos a donde vayas.</p>
-      </div>
-      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-        <h3 class="text-sm font-semibold text-white mb-1">Fin del papeleo</h3>
-        <p class="text-xs text-cura-accentLight">Evitá pérdidas de estudios y órdenes médicas.</p>
-      </div>
-      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-        <h3 class="text-sm font-semibold text-white mb-1">Ahorro para el sistema</h3>
-        <p class="text-xs text-cura-accentLight">Menos errores y costos administrativos, más inversión en salud.</p>
-      </div>
-      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-        <h3 class="text-sm font-semibold text-white mb-1">Más tiempo médico</h3>
-        <p class="text-xs text-cura-accentLight">Menos carga burocrática, más tiempo para el paciente.</p>
-      </div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Unificación</h3><p class="text-xs text-cura-accentLight">Un solo identificador de salud.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Seguridad</h3><p class="text-xs text-cura-accentLight">Confidencialidad estricta.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Interoperabilidad</h3><p class="text-xs text-cura-accentLight">Tu historia clínica viaja con vos.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Fin del papeleo</h3><p class="text-xs text-cura-accentLight">Evitá pérdidas de estudios.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Ahorro</h3><p class="text-xs text-cura-accentLight">Menos costos administrativos.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Más tiempo médico</h3><p class="text-xs text-cura-accentLight">Más tiempo para el paciente.</p></div>
     </div>
     </section>
 
@@ -297,87 +253,34 @@
         <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
         <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
       </div>
-
-      <form id="sumate-form"
-            action="https://formsubmit.co/ajax/contacto@leycura.org"
-            method="POST"
-            class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
-
+      <form id="sumate-form" action="https://formsubmit.co/ajax/contacto@leycura.org" method="POST" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
         <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
-        <input type="hidden" name="_captcha" value="false">
-
         <div class="grid md:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
-            <input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
-            <input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-          </div>
+          <div><label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label><input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+          <div><label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label><input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
         </div>
-
         <div class="grid md:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
-            <select name="provincia" required
-                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-              <option value="">Seleccioná una provincia</option>
-              <option value="Buenos Aires">Buenos Aires</option>
-              <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
-              <option value="Córdoba">Córdoba</option>
-              <option value="Santa Fe">Santa Fe</option>
-              </select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
-            <select name="ciudad" id="ciudad-select" required
-                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-              <option value="">Seleccioná una ciudad</option>
-            </select>
-          </div>
+          <div><label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label><select name="provincia" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary"><option value="">Seleccioná una provincia</option><option value="Buenos Aires">Buenos Aires</option><option value="CABA">CABA</option><option value="Córdoba">Córdoba</option><option value="Santa Fe">Santa Fe</option></select></div>
+          <div><label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label><select name="ciudad" id="ciudad-select" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary"><option value="">Seleccioná una ciudad</option></select></div>
         </div>
-
-        <div>
-          <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
-          <input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-        </div>
-
-        <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">
-          Enviar
-        </button>
+        <div><label class="block text-xs font-medium text-red-400 mb-1">Email *</label><input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+        <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">Enviar</button>
       </form>
     </section>
 
     <section id="contacto" class="space-y-6">
       <div class="max-w-2xl">
         <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Comunícate con nosotros</h2>
-        <p class="text-sm text-cura-accentLight">Nos interesa escuchar tus dudas y aportes.</p>
       </div>
-
-     <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="grid md:grid-cols-2 gap-8 items-start">
         <div class="space-y-4">
-          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">
-            Esta iniciativa no solicita aportes económicos. Tu apoyo se basa en informarte y difundir.
-          </div>
-          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">
-            Este proyecto solo va a ser posible con tu firma. <a href="#sumate" class="underline font-semibold">Sumate ahora</a>.
-          </div>
+          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">No solicitamos aportes económicos.</div>
+          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Este proyecto solo es posible con tu firma.</div>
         </div>
-
-        <form class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3"
-              action="https://formsubmit.co/contacto@leycura.org" method="POST">
-          <div>
-            <label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label>
-            <input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label>
-            <textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"></textarea>
-          </div>
-          <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
-            Enviar
-          </button>
+        <form class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="https://formsubmit.co/contacto@leycura.org" method="POST">
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Email *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"></textarea></div>
+          <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">Enviar</button>
         </form>
       </div>
     </section>
@@ -388,11 +291,8 @@
         <p class="text-sm text-cura-accentLight">Obtené información sobre los avances de la ley.</p>
       </div>
       <form id="newsletter-form" class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
-        <input name="email" type="email" required placeholder="Correo electrónico"
-               class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary" />
-        <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
-          OBTENER INFORMACIÓN
-        </button>
+        <input name="email" type="email" required placeholder="Correo electrónico" class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary" />
+        <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">OBTENER INFORMACIÓN</button>
       </form>
     </section>
 
@@ -400,7 +300,7 @@
 
   <footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
     <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+      <p>Copyright © 2025 C.U.R.A.</p>
       <div class="flex flex-wrap gap-3">
         <a href="#informacion" class="hover:text-white">Información</a>
         <a href="/demonivel2.html" target="_blank" class="hover:text-white">Demo QR Nivel 2</a>
@@ -414,9 +314,7 @@
       <div class="flex items-start justify-between gap-3">
         <div class="flex-1">
           <h2 class="text-sm sm:text-base font-semibold text-white mb-1">Bienvenido, tenemos novedades</h2>
-          <p class="text-[11px] sm:text-[13px] text-cura-accentLight leading-snug">
-            La ley será presentada por primera vez del 28 al 30 de abril de 2026.
-          </p>
+          <p class="text-[11px] sm:text-[13px] text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026.</p>
         </div>
         <button type="button" class="ml-2 text-cura-accentLight/80 hover:text-white text-xs sm:text-sm font-semibold" id="novedades-close-btn">✕</button>
       </div>
@@ -441,12 +339,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   // 1. SCROLL SUAVE
-  function smoothScrollTo(element) {
-    if(!element) return;
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
-  const links = document.querySelectorAll('a[href^="#"]');
-  links.forEach(link => {
+  function smoothScrollTo(element) { if(!element) return; element.scrollIntoView({ behavior: 'smooth' }); }
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const target = document.getElementById(this.getAttribute('href').substring(1));
@@ -467,9 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
          const d = await r.json();
          const locs = (d.localidades||[]).map(l=>l.nombre).sort();
          ciuSel.innerHTML = '<option>Seleccioná ciudad</option>';
-         locs.forEach(n => {
-           const o = document.createElement('option'); o.value=n; o.textContent=n; ciuSel.appendChild(o);
-         });
+         locs.forEach(n => { const o = document.createElement('option'); o.value=n; o.textContent=n; ciuSel.appendChild(o); });
        } catch(e) { ciuSel.innerHTML='<option>Error</option>'; }
     });
   }
@@ -479,13 +371,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const m = document.getElementById(id);
     if(!m) return;
     const c = m.querySelector('.modal-card');
-    if(show) {
-      m.classList.remove('hidden');
-      requestAnimationFrame(() => { m.classList.add('show'); c.classList.add('show'); });
-    } else {
-      m.classList.remove('show'); c.classList.remove('show');
-      setTimeout(() => m.classList.add('hidden'), 250);
-    }
+    if(show) { m.classList.remove('hidden'); requestAnimationFrame(() => { m.classList.add('show'); c.classList.add('show'); }); }
+    else { m.classList.remove('show'); c.classList.remove('show'); setTimeout(() => m.classList.add('hidden'), 250); }
   }
 
   setTimeout(() => toggleModal('novedades-modal', true), 500);
@@ -497,7 +384,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const sumateForm = document.getElementById('sumate-form');
   if(sumateForm) {
     sumateForm.addEventListener('submit', (e) => {
-       // e.preventDefault(); // Descomentar para evitar envío real en pruebas
        setTimeout(() => { sumateForm.reset(); toggleModal('sumate-modal', true); }, 1000);
     });
     document.getElementById('sumate-modal-ok').addEventListener('click', () => toggleModal('sumate-modal', false));
@@ -514,6 +400,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+
+</body>
+</html>
 
 </body>
 </html>

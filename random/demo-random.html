@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema C.U.R.A. | Nivel 2</title>
+    <title>Sistema C.U.R.A. | Nivel 2 (Demo Aleatoria)</title>
     
     <!-- Fuente Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,13 +56,13 @@
 <header class="fixed top-0 left-0 w-full bg-medical-primary text-white shadow-md z-50">
     <div class="w-full px-4 py-2 flex flex-row items-center justify-between gap-2">
         <div class="flex items-center gap-3 min-w-0">
-            <img src="/logo_cura.png" class="h-12 sm:h-16 w-auto object-contain">
+            <img src="/logo_cura.png" class="h-12 sm:h-16 w-auto object-contain" alt="Logo C.U.R.A.">
             <div class="leading-tight">
                 <h1 class="text-[11px] sm:text-sm font-bold uppercase tracking-wide">
                     SISTEMA DE SALUD DIGITAL C.U.R.A.
                 </h1>
                 <p class="text-[10px] sm:text-[11px] opacity-80 tracking-wider">
-                    NIVEL DE ACCESO 2 (URGENCIAS)
+                    NIVEL DE ACCESO 2 (URGENCIAS) · DEMO ALEATORIA
                 </p>
             </div>
         </div>
@@ -77,69 +79,6 @@
     </div>
 </header>
 
-<!-- SCRIPT FECHA + HORA -->
-<script>
-    const ahora = new Date();
-
-    let fecha = ahora.toLocaleDateString('es-AR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-
-    const meses = {
-        "enero": "ene", "febrero": "feb", "marzo": "mar", "abril": "abr",
-        "mayo": "may", "junio": "jun", "julio": "jul", "agosto": "ago",
-        "septiembre": "sep", "octubre": "oct", "noviembre": "nov", "diciembre": "dic"
-    };
-    for (const mes in meses) {
-        if (fecha.includes(mes)) fecha = fecha.replace(mes, meses[mes]);
-    }
-
-    fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
-
-    const hora = ahora.toLocaleTimeString('es-AR', {
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
-
-    document.getElementById('hora-acceso').innerHTML =
-        fecha + "<br>" + hora + "<br>" + "Acceso registrado.";
-</script>
-
-<!-- SCRIPT EDAD AUTOMÁTICA -->
-<script>
-function calcularEdadDesdeTexto(idFecha, idEdad) {
-    const spanFecha = document.getElementById(idFecha);
-    const spanEdad = document.getElementById(idEdad);
-    if (!spanFecha || !spanEdad) return;
-
-    const fechaStr = spanFecha.textContent.trim(); // "DD/MM/YYYY"
-    const partes = fechaStr.split('/');
-    if (partes.length !== 3) return;
-
-    const dia = parseInt(partes[0], 10);
-    const mes = parseInt(partes[1], 10) - 1; // 0–11
-    const anio = parseInt(partes[2], 10);
-
-    const nacimiento = new Date(anio, mes, dia);
-    const hoy = new Date();
-
-    let edad = hoy.getFullYear() - nacimiento.getFullYear();
-    const diffMes = hoy.getMonth() - nacimiento.getMonth();
-
-    if (diffMes < 0 || (diffMes === 0 && hoy.getDate() < nacimiento.getDate())) {
-        edad--;
-    }
-
-    spanEdad.textContent = edad;
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    calcularEdadDesdeTexto('fecha-nac', 'edad');
-});
-</script>
-
 <!-- CONTENIDO PRINCIPAL -->
 <main class="max-w-lg mx-auto px-4 sm:px-6 py-4 space-y-4">
 
@@ -148,27 +87,34 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="absolute left-0 top-0 bottom-0 w-1 bg-medical-primary"></div>
         
         <div class="flex items-start gap-4">
-            <div class="w-16 h-16 rounded-full bg-gray-200 border-2 border-medical-light overflow-hidden">
-                <img src="https://media.licdn.com/dms/image/v2/D4E03AQEQ-TDFNeuJYw/profile-displayphoto-crop_800_800/B4EZo32kXkJgAI-/0/1761873644276?e=1765411200&v=beta&t=OmZQVsVHiyURmibUyJKj0_pmNIFwBjEs7uOYGuD1aXM" class="w-full h-full object-cover">
+            <div class="w-16 h-16 rounded-full bg-gray-200 border-2 border-medical-light overflow-hidden flex-shrink-0">
+                <img id="foto-paciente" src="" class="w-full h-full object-cover" alt="Foto paciente">
             </div>
 
             <div class="flex-grow">
-                <h2 class="text-lg font-bold text-gray-900 leading-tight">FRANCO AGUSTÍN PAGANINI</h2>
+                <h2 id="nombre-completo" class="text-lg font-bold text-gray-900 leading-tight">
+                    PACIENTE DEMO
+                </h2>
                 <div class="mt-1 space-y-0.5">
-                    <p class="text-sm text-gray-600 font-medium">D.N.I.: 41.316.202</p>
                     <p class="text-sm text-gray-600 font-medium">
-                        NAC.: <span id="fecha-nac">17/10/1998</span> (<span id="edad"></span> AÑOS)
+                        D.N.I.: <span id="dni"></span>
                     </p>
-                    <p class="text-sm text-gray-600 font-medium">TIPO DE SANGRE: <span class="font-bold text-medical-primary">O+</span></p>
+                    <p class="text-sm text-gray-600 font-medium">
+                        NAC.: <span id="fecha-nac"></span> (<span id="edad"></span> AÑOS)
+                    </p>
+                    <p class="text-sm text-gray-600 font-medium">
+                        TIPO DE SANGRE: <span id="tipo-sangre" class="font-bold text-medical-primary"></span>
+                    </p>
                 </div>
             </div>
         </div>
 
         <div class="mt-4 pt-3 border-t border-gray-100">
-            <button onclick="window.location.href='tel:+5491130058421'"
-                class="w-full border border-medical-primary text-medical-primary hover:bg-medical-light font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2">
+            <!-- Botón sin funcionalidad real -->
+            <button type="button"
+                class="w-full border border-medical-primary text-medical-primary bg-white hover:bg-medical-light font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2 cursor-default">
                 <i class="ph-fill ph-phone-outgoing text-lg"></i>
-                Llamar Contacto de Emergencia
+                Llamar Contacto de Emergencia (demo)
             </button>
         </div>
     </section>
@@ -178,91 +124,34 @@ document.addEventListener("DOMContentLoaded", function () {
         <i class="ph-fill ph-warning text-yellow-600 text-2xl mt-0.5"></i>
         <div>
             <h3 class="text-yellow-800 font-bold text-sm uppercase mb-1">Advertencias Críticas</h3>
-            <ul class="text-sm text-yellow-900 space-y-1 font-medium leading-snug">
-                <li>• Portador de placa de osteosíntesis en hombro derecho (PHILOS 3,5 mm).</li>
-                <li>• Informar siempre antes de realizar estudios con Resonancia Magnética.</li>
-                <li>• Tratamiento psiquiátrico activo con psicofármacos (riesgo de caídas).</li>
+            <ul id="lista-advertencias" class="text-sm text-yellow-900 space-y-1 font-medium leading-snug">
+                <!-- JS -->
             </ul>
         </div>
     </section>
 
+    <!-- CONDICIONES CLÍNICAS -->
     <section>
         <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Condiciones Clínicas Relevantes</h3>
-        <div class="grid grid-cols-1 gap-2">
-
-            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <i class="ph-fill ph-bus text-lg"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Accidente de tránsito 05/2025</p>
-                    <p class="text-xs text-gray-500">Secuela de fractura de húmero proximal derecho</p>
-                </div>
-            </div>
-
-            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
-                    <i class="ph-fill ph-brain text-lg"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Trastorno de ansiedad</p>
-                    <p class="text-xs text-gray-500">Crisis de angustia y pánico</p>
-                </div>
-            </div>
-
-            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                    <i class="ph-fill ph-moon-stars text-lg"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Trastorno del sueño</p>
-                    <p class="text-xs text-gray-500">Uso crónico de hipnóticos</p>
-                </div>
-            </div>
-
+        <div id="lista-condiciones" class="grid grid-cols-1 gap-2">
+            <!-- JS -->
         </div>
     </section>
 
+    <!-- IMPLANTES / OPERACIONES -->
     <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Implantes / Prótesis</h3>
-        <div class="bg-white border rounded card-shadow">
-            <div class="p-3 flex gap-3">
-                <i class="ph ph-bone text-gray-400 text-xl mt-0.5"></i>
-                <div>
-                    <p class="text-sm font-semibold text-gray-800">Placa PHILOS 3,5 mm</p>
-                    <p class="text-xs text-gray-500">Osteosíntesis húmero proximal derecho</p>
-                    <p class="text-[11px] text-gray-400 mt-1">
-                        Material informado como titanio. Verificar antes de RM.
-                    </p>
-                </div>
-            </div>
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Implantes / Operaciones</h3>
+        <div id="lista-implantes" class="space-y-2">
+            <!-- JS -->
         </div>
     </section>
 
+    <!-- MEDICACIÓN ACTUAL -->
     <section>
         <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Medicación Actual</h3>
         <div class="bg-white border rounded card-shadow overflow-hidden">
-            <ul class="divide-y divide-gray-100">
-                <li class="p-3 flex justify-between items-center">
-                    <span class="text-sm font-medium">Escitalopram 20mg / día</span>
-                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">ISRS</span>
-                </li>
-                <li class="p-3 flex justify-between items-center">
-                    <span class="text-sm font-medium">Bupropión 150 mg / día</span>
-                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Dopaminérgico</span>
-                </li>
-                <li class="p-3 flex justify-between items-center">
-                    <span class="text-sm font-medium">Aripiprazol 5 mg / día</span>
-                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Antipsicótico</span>
-                </li>
-                <li class="p-3 flex justify-between items-center">
-                    <span class="text-sm font-medium">Clonazepam 2mg / día</span>
-                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">BZD</span>
-                </li>
-                <li class="p-3 flex justify-between items-center">
-                    <span class="text-sm font-medium">Zolpidem 10 mg / día</span>
-                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Hipnótico</span>
-                </li>
+            <ul id="lista-medicacion" class="divide-y divide-gray-100">
+                <!-- JS -->
             </ul>
         </div>
     </section>
@@ -275,12 +164,307 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="flex flex-col items-center gap-3">
         <div class="w-50 h-12 opacity-90">
             <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg"
-                 class="w-full h-full object-contain grayscale hover:grayscale-0 transition-all">
+                 class="w-full h-full object-contain grayscale hover:grayscale-0 transition-all"
+                 alt="Ministerio de Salud">
         </div>
         <p class="text-xs font-bold text-gray-500 uppercase">Sistema C.U.R.A.</p>
-        <p class="text-[10px] text-gray-400">Acceso Seguro Nivel 2</p>
+        <p class="text-[10px] text-gray-400">Acceso Seguro Nivel 2 · Datos aleatorios de demostración</p>
     </div>
 </footer>
+
+<!-- SCRIPT LÓGICA DEMO -->
+<script>
+    // Utilidades
+    function randInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    function choice(arr) {
+        return arr[randInt(0, arr.length - 1)];
+    }
+    function fechaRandom(inicioAnio, finAnio) {
+        const anio = randInt(inicioAnio, finAnio);
+        const mes = randInt(1, 12);
+        const diaMax = [4,6,9,11].includes(mes) ? 30 : (mes === 2 ? 28 : 31);
+        const dia = randInt(1, diaMax);
+        return { dia, mes, anio };
+    }
+    function formatearFecha(d, m, a) {
+        const dd = d.toString().padStart(2, '0');
+        const mm = m.toString().padStart(2, '0');
+        return dd + '/' + mm + '/' + a;
+    }
+    function calcularEdad(d, m, a) {
+        const nacimiento = new Date(a, m - 1, d);
+        const hoy = new Date();
+        let edad = hoy.getFullYear() - nacimiento.getFullYear();
+        const diffMes = hoy.getMonth() - nacimiento.getMonth();
+        if (diffMes < 0 || (diffMes === 0 && hoy.getDate() < nacimiento.getDate())) {
+            edad--;
+        }
+        return edad;
+    }
+
+    const nombresM = ['Franco', 'Juan', 'Matías', 'Lucas', 'Santiago', 'Agustín', 'Nicolás', 'Tomás', 'Facundo', 'Alejandro'];
+    const nombresF = ['Luciana', 'María', 'Sofía', 'Camila', 'Valentina', 'Julieta', 'Carla', 'Rocío', 'Florencia', 'Antonella'];
+    const apellidos = ['Paganini', 'Gómez', 'Rodríguez', 'Fernández', 'López', 'Pérez', 'Sánchez', 'Álvarez', 'García', 'Romero'];
+    const gruposSanguineos = ['O+', 'O-', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-'];
+
+    const condicionesCatalogo = [
+        {
+            id: 'dm2',
+            titulo: 'Diabetes mellitus tipo 2',
+            subtitulo: 'En tratamiento ambulatorio',
+            advertencias: [
+                'Controlar glucemias capilares si el paciente está consciente.',
+                'Evitar hipoglucemias: verificar última dosis de hipoglucemiantes.'
+            ],
+            medicacion: [
+                { nombre: 'Metformina 850 mg cada 12 hs', tipo: 'Hipoglucemiante' },
+                { nombre: 'Insulina NPH según esquema', tipo: 'Insulina' }
+            ]
+        },
+        {
+            id: 'hta',
+            titulo: 'Hipertensión arterial',
+            subtitulo: 'Controlada con medicación',
+            advertencias: [
+                'Controlar presión arterial al ingreso.',
+                'Evitar descensos bruscos de la PA.'
+            ],
+            medicacion: [
+                { nombre: 'Enalapril 10 mg cada 12 hs', tipo: 'IECA' },
+                { nombre: 'Hidroclorotiazida 25 mg / día', tipo: 'Diurético' }
+            ]
+        },
+        {
+            id: 'ansiedad',
+            titulo: 'Trastorno de ansiedad generalizada',
+            subtitulo: 'Tratamiento psiquiátrico activo',
+            advertencias: [
+                'Ante crisis de angustia, contener verbalmente y evaluar sedación.',
+                'Riesgo de somnolencia por psicofármacos.'
+            ],
+            medicacion: [
+                { nombre: 'Sertralina 100 mg / día', tipo: 'ISRS' },
+                { nombre: 'Clonazepam 0,5–1 mg / día', tipo: 'BZD' }
+            ]
+        },
+        {
+            id: 'dislipidemia',
+            titulo: 'Dislipidemia mixta',
+            subtitulo: 'Tratamiento preventivo cardiovascular',
+            advertencias: [
+                'Evaluar riesgo cardiovascular global.'
+            ],
+            medicacion: [
+                { nombre: 'Atorvastatina 20 mg / día', tipo: 'Estatina' }
+            ]
+        },
+        {
+            id: 'asma',
+            titulo: 'Asma bronquial',
+            subtitulo: 'Leve a moderada',
+            advertencias: [
+                'Consultar por uso reciente de broncodilatadores.',
+                'Tener en cuenta antecedentes de broncoespasmo en urgencia.'
+            ],
+            medicacion: [
+                { nombre: 'Salbutamol inhalador a demanda', tipo: 'Broncodilatador' },
+                { nombre: 'Budesonida inhalatoria 2 veces por día', tipo: 'Corticoide inhalado' }
+            ]
+        }
+    ];
+
+    const implantesCatalogo = [
+        {
+            titulo: 'Placa PHILOS 3,5 mm',
+            detalle: 'Osteosíntesis húmero proximal derecho',
+            advertencia: 'Portador de material de osteosíntesis. Verificar compatibilidad con RM.'
+        },
+        {
+            titulo: 'Prótesis total de rodilla derecha',
+            detalle: 'Artrosis severa de rodilla',
+            advertencia: 'Evitar maniobras bruscas sobre la articulación protésica.'
+        },
+        {
+            titulo: 'Stent coronario',
+            detalle: 'Antecedente de síndrome coronario agudo',
+            advertencia: 'Paciente antiagregado/anticoagulado. No suspender medicación sin cardiología.'
+        },
+        {
+            titulo: 'Colecistectomía laparoscópica',
+            detalle: 'Colelitiasis sintomática',
+            advertencia: 'Ante dolor abdominal, considerar otros diagnósticos (sin vesícula).'
+        }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fecha y hora header
+        const ahora = new Date();
+        let fecha = ahora.toLocaleDateString('es-AR', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        const meses = {
+            "enero": "ene", "febrero": "feb", "marzo": "mar", "abril": "abr",
+            "mayo": "may", "junio": "jun", "julio": "jul", "agosto": "ago",
+            "septiembre": "sep", "octubre": "oct", "noviembre": "nov", "diciembre": "dic"
+        };
+        for (const mes in meses) {
+            if (fecha.includes(mes)) fecha = fecha.replace(mes, meses[mes]);
+        }
+        fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+        const hora = ahora.toLocaleTimeString('es-AR', {
+            hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+        document.getElementById('hora-acceso').innerHTML =
+            fecha + "<br>" + hora + "<br>" + "Acceso registrado.";
+
+        // Sexo, nombre, apellido
+        const sexo = Math.random() < 0.5 ? 'M' : 'F';
+        const nombre = sexo === 'M' ? choice(nombresM) : choice(nombresF);
+        const apellido = choice(apellidos);
+        document.getElementById('nombre-completo').textContent = nombre + ' ' + apellido;
+
+        // Foto randomuser
+        const fotoUrl = 'https://randomuser.me/api/portraits/' + (sexo === 'M' ? 'men/' : 'women/') + randInt(1, 99) + '.jpg';
+        document.getElementById('foto-paciente').src = fotoUrl;
+
+        // DNI
+        const dni = randInt(15000000, 50000000);
+        document.getElementById('dni').textContent = dni.toLocaleString('es-AR');
+
+        // Fecha nacimiento + edad
+        const fn = fechaRandom(1940, 2010);
+        const fechaNacStr = formatearFecha(fn.dia, fn.mes, fn.anio);
+        const edad = calcularEdad(fn.dia, fn.mes, fn.anio);
+        document.getElementById('fecha-nac').textContent = fechaNacStr;
+        document.getElementById('edad').textContent = edad;
+
+        // Tipo sangre
+        const tipoSangre = choice(gruposSanguineos);
+        document.getElementById('tipo-sangre').textContent = tipoSangre;
+
+        // Condiciones (1–3)
+        const condicionesElegidas = [];
+        const indicesDisponibles = condicionesCatalogo.map((_, i) => i);
+        const cantidadCond = randInt(1, 3);
+        for (let i = 0; i < cantidadCond; i++) {
+            if (!indicesDisponibles.length) break;
+            const idx = indicesDisponibles.splice(randInt(0, indicesDisponibles.length - 1), 1)[0];
+            condicionesElegidas.push(condicionesCatalogo[idx]);
+        }
+
+        const contCond = document.getElementById('lista-condiciones');
+        condicionesElegidas.forEach(cond => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bg-white border rounded p-3 flex gap-3 card-shadow';
+
+            const icono = document.createElement('div');
+            icono.className = 'w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center';
+            icono.innerHTML = '<i class="ph-fill ph-heartbeat text-lg"></i>';
+
+            const texto = document.createElement('div');
+            const titulo = document.createElement('p');
+            titulo.className = 'text-sm font-bold text-gray-800';
+            titulo.textContent = cond.titulo;
+            const subt = document.createElement('p');
+            subt.className = 'text-xs text-gray-500';
+            subt.textContent = cond.subtitulo;
+
+            texto.appendChild(titulo);
+            texto.appendChild(subt);
+            wrapper.appendChild(icono);
+            wrapper.appendChild(texto);
+            contCond.appendChild(wrapper);
+        });
+
+        // Implantes (0–2)
+        const implantesElegidos = [];
+        const indicesImpl = implantesCatalogo.map((_, i) => i);
+        const cantidadImpl = randInt(0, 2);
+        for (let i = 0; i < cantidadImpl; i++) {
+            if (!indicesImpl.length) break;
+            const idx = indicesImpl.splice(randInt(0, indicesImpl.length - 1), 1)[0];
+            implantesElegidos.push(implantesCatalogo[idx]);
+        }
+
+        // Advertencias
+        const advertencias = [];
+        condicionesElegidas.forEach(c => advertencias.push(...c.advertencias));
+        implantesElegidos.forEach(i => advertencias.push(i.advertencia));
+        if (advertencias.length === 0) {
+            advertencias.push('Paciente sin advertencias críticas registradas. Evaluar antecedentes al ingreso.');
+        }
+        const ulAdv = document.getElementById('lista-advertencias');
+        advertencias.forEach(texto => {
+            const li = document.createElement('li');
+            li.textContent = '• ' + texto;
+            ulAdv.appendChild(li);
+        });
+
+        // Render implantes
+        const contImpl = document.getElementById('lista-implantes');
+        if (implantesElegidos.length === 0) {
+            const sin = document.createElement('p');
+            sin.className = 'text-xs text-gray-500 italic';
+            sin.textContent = 'Sin implantes ni cirugías relevantes registradas.';
+            contImpl.appendChild(sin);
+        } else {
+            implantesElegidos.forEach(impl => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border rounded card-shadow';
+                const inner = document.createElement('div');
+                inner.className = 'p-3 flex gap-3';
+                const icon = document.createElement('div');
+                icon.className = 'w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center';
+                icon.innerHTML = '<i class="ph ph-first-aid text-lg"></i>';
+                const txt = document.createElement('div');
+                const t = document.createElement('p');
+                t.className = 'text-sm font-semibold text-gray-800';
+                t.textContent = impl.titulo;
+                const d = document.createElement('p');
+                d.className = 'text-xs text-gray-500';
+                d.textContent = impl.detalle;
+                txt.appendChild(t);
+                txt.appendChild(d);
+                inner.appendChild(icon);
+                inner.appendChild(txt);
+                card.appendChild(inner);
+                contImpl.appendChild(card);
+            });
+        }
+
+        // Medicación coherente
+        const medsMap = new Map();
+        condicionesElegidas.forEach(cond => {
+            cond.medicacion.forEach(m => {
+                if (!medsMap.has(m.nombre)) {
+                    medsMap.set(m.nombre, m.tipo);
+                }
+            });
+        });
+        if (medsMap.size === 0) {
+            medsMap.set('Paracetamol 500 mg a demanda', 'Analgésico');
+        }
+        const ulMeds = document.getElementById('lista-medicacion');
+        medsMap.forEach((tipo, nombre) => {
+            const li = document.createElement('li');
+            li.className = 'p-3 flex justify-between items-center';
+            const spanNombre = document.createElement('span');
+            spanNombre.className = 'text-sm font-medium';
+            spanNombre.textContent = nombre;
+            const spanTipo = document.createElement('span');
+            spanTipo.className = 'text-xs bg-gray-100 px-2 py-1 rounded';
+            spanTipo.textContent = tipo;
+            li.appendChild(spanNombre);
+            li.appendChild(spanTipo);
+            ulMeds.appendChild(li);
+        });
+    });
+</script>
 
 </body>
 </html>

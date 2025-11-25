@@ -48,46 +48,76 @@
     opacity: 1;
   }
 
-  /* --- ESTILOS PARA LA CREDENCIAL GIRATORIA --- */
+  /* --- ESTILOS MEJORADOS PARA LA CREDENCIAL 3D --- */
   .perspective-1000 {
     perspective: 1000px;
   }
+  
   .card-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    transition: transform 0.8s;
+    transition: transform 0.8s cubic-bezier(0.4, 0.2, 0.2, 1); /* Giro más natural */
     transform-style: preserve-3d;
     cursor: pointer;
   }
-  /* Clase que activa el giro */
+  
+  /* Estado girado */
   .card-inner.is-flipped {
     transform: rotateY(180deg);
   }
+
+  /* Estilos comunes para ambas caras */
   .card-face {
     position: absolute;
     width: 100%;
     height: 100%;
     -webkit-backface-visibility: hidden; /* Safari */
-    backface-visibility: hidden;
-    border-radius: 1rem; /* Borde redondeado */
+    backface-visibility: hidden;         /* Estándar */
+    
+    /* CORRECCIÓN DE BORDES (Dientes de sierra) */
+    border-radius: 16px; 
     overflow: hidden;
+    /* Trucos para suavizar bordes en 3D: */
+    transform: translateZ(0); 
+    outline: 1px solid transparent;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
   }
+
+  /* FRENTE: Visible inicialmente */
+  .card-front {
+    transform: rotateY(0deg);
+    z-index: 2;
+    background-color: white; /* Evita transparencias raras */
+  }
+
+  /* DORSO: Rotado 180° inicialmente (mirando atrás) */
+  /* Cuando la tarjeta gire 180°, esta cara quedará en 0° (mirando al frente) */
   .card-back {
     transform: rotateY(180deg);
+    z-index: 1;
+    background-color: white;
   }
   
-  /* Animación suave de flotación */
+  /* La imagen debe cubrir todo perfectamente */
+  .card-face img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px; /* Doble seguridad para los bordes */
+  }
+
+  /* Animación de flotación */
   @keyframes float {
     0% { transform: translateY(0px); }
-    50% { transform: translateY(-12px); }
+    50% { transform: translateY(-10px); }
     100% { transform: translateY(0px); }
   }
   .floating-anim {
     animation: float 5s ease-in-out infinite;
   }
-  /* Pausar flotación al girar para evitar mareos */
+  
+  /* Pausar flotación al girar */
   .card-inner.is-flipped .floating-anim {
     animation-play-state: paused;
   }
@@ -163,12 +193,12 @@
       
         <div id="credencial-3d" class="card-inner h-[220px] floating-anim" onclick="this.classList.toggle('is-flipped')">
       
-          <div class="card-face">
-            <img src="credencial-frente.png" alt="Credencial Frente" class="w-full h-full object-cover">
+          <div class="card-face card-front">
+            <img src="credencial-frente.png" alt="Credencial Frente">
           </div>
       
-          <div class="card-back">
-            <img src="credencial-dorso.png" alt="Credencial Dorso" class="w-full h-full object-cover">
+          <div class="card-face card-back">
+            <img src="credencial-dorso.png" alt="Credencial Dorso">
           </div>
       
         </div>
@@ -192,7 +222,6 @@
       </div>
 
  <div class="grid md:grid-cols-3 gap-4">
-
   <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
     <h3 class="text-sm font-semibold text-white mb-1">Unificación</h3>
     <p class="text-xs text-cura-accentLight">
@@ -265,9 +294,7 @@
       Disponible en todo el país y en instituciones del exterior compatibles.
     </p>
   </div>
-
 </div>
-
     </section>
 
     <section id="sumate" class="space-y-6">
@@ -591,13 +618,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     form.addEventListener('submit', function(e) {
-       // Aquí iría tu lógica real de envío (fetch)
-       // Simulamos éxito para la demo visual:
        if(!form.action.includes('ajax')) e.preventDefault(); 
-       // Si usas FormSubmit real, deja que el formulario se envíe o usa AJAX.
-       // Para este ejemplo de "texto plano", asumo que quieres la UI funcional.
-       // Si usas formsubmit por ajax, descomenta la lógica de tu script original.
-       // Por simplicidad, aquí solo mostramos el modal al "enviar".
        setTimeout(() => { form.reset(); open(); }, 500);
     });
 

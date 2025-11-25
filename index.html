@@ -39,15 +39,14 @@
 
   /* --- ESTILOS DE LA CREDENCIAL 3D --- */
   .perspective-container {
-    perspective: 1500px; /* Perspectiva profunda para evitar distorsión */
+    perspective: 1500px; 
   }
   
   .card-container {
     position: relative;
-    /* TAMAÑO AUMENTADO */
     width: 100%;
-    max-width: 420px; 
-    aspect-ratio: 1.58 / 1; /* Relación de aspecto estándar de tarjeta ID */
+    max-width: 420px; /* TAMAÑO PERFECTO MANTENIDO */
+    aspect-ratio: 1.58 / 1; 
     margin: 0 auto;
     z-index: 20;
   }
@@ -57,13 +56,12 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); /* Giro fluido */
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     transform-style: preserve-3d;
     cursor: pointer;
-    will-change: transform; /* Optimización de renderizado */
+    will-change: transform;
   }
 
-  /* Estado girado */
   .card-inner.is-flipped {
     transform: rotateY(180deg);
   }
@@ -78,40 +76,37 @@
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     
-    /* CORRECCIÓN DIENTES DE SIERRA (Anti-aliasing) */
-    border-radius: 20px; /* Bordes más redondeados */
+    /* CORRECCIÓN DE BORDES BLANCOS */
+    border-radius: 20px;
+    background-color: transparent !important; /* CLAVE: Fondo transparente para que no se vean esquinas blancas */
     overflow: hidden;
     
-    /* Trucos para suavizar bordes en Chrome/Safari */
+    /* Suavizado de bordes */
     transform: translateZ(0); 
-    outline: 1px solid transparent;
-    box-shadow: 0 0 1px rgba(0,0,0,0); /* Fuerza el subpixel rendering */
-    
-    /* Sombra suave */
-    box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
+    box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); 
+    /* Elimina el outline transparente que a veces causa artefactos, usamos clipping estricto */
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
 
-  /* La imagen debe cubrir todo */
+  /* La imagen */
   .card-face img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 20px; /* Coincidir con el padre */
+    border-radius: 20px;
   }
 
   /* FRENTE */
   .card-front {
     z-index: 2;
     transform: rotateY(0deg);
-    background: #fff;
   }
 
   /* DORSO */
   .card-back {
     z-index: 1;
     transform: rotateY(180deg);
-    background: #fff;
   }
 
   /* Animación Flotante */
@@ -122,7 +117,7 @@
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
-  /* Pausar animación al pasar el mouse para facilitar el click */
+  
   .card-container:hover .animate-float {
     animation-play-state: paused;
   }
@@ -358,8 +353,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // --- SCRIPT PARA GIRAR LA CREDENCIAL ---
-  // Se usa un EventListener directo para garantizar que el click funcione
+  // --- SCRIPT CLICK CREDENCIAL ---
   const card = document.getElementById('credencial-giratoria');
   if (card) {
     card.addEventListener('click', function() {
@@ -367,9 +361,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // --- RESTO DE SCRIPTS (Scroll, Modales, Ciudades) ---
-  
-  // Scroll Suave
+  // --- RESTO DE SCRIPTS ---
   function smoothScrollTo(element) { if(!element) return; element.scrollIntoView({ behavior: 'smooth' }); }
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
@@ -379,7 +371,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Ciudades
   const provSel = document.querySelector('select[name="provincia"]');
   const ciuSel = document.getElementById('ciudad-select');
   if(provSel && ciuSel) {
@@ -397,7 +388,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Modales
   function toggleModal(id, show) {
     const m = document.getElementById(id);
     if(!m) return;

@@ -4,6 +4,16 @@
       "source": "/ID01-41316202",
       "destination": "/ID01-41316202/ID41316202.html",
       "permanent": false
+    },
+    {
+      "source": "/ID02-42721702",
+      "destination": "/ID02-42721702/ID42721702.html",
+      "permanent": false
+    },
+    {
+      "source": "/ID03-10091690",
+      "destination": "/ID03-10091690/ID10091690.html",
+      "permanent": false
     }
   ]
 }

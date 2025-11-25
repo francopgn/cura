@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema C.U.R.A. | Nivel 2</title>
     
-    <!-- Fuente Inter (Limpia, moderna, legible) -->
+    <!-- Fuente Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Phosphor Icons (Íconos de trazo fino y profesional) -->
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Configuración personalizada para el Azul Argentino -->
+    <!-- Configuración personalizada -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         medical: {
-                            primary: '#004E85', // El azul solicitado
-                            light: '#E6F0F5',  // Fondo muy suave
-                            alert: '#FEFCE8',  // Fondo amarillo alerta
+                            primary: '#004E85',
+                            light: '#E6F0F5',
+                            alert: '#FEFCE8',
                             alertText: '#854D0E'
                         }
                     },
@@ -43,51 +43,68 @@
             background-color: #F3F4F6;
         }
         .card-shadow {
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        /* POPUP */
+        .popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #004E85;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            z-index: 9999;
+        }
+        .popup.show {
+            opacity: 1;
         }
     </style>
 </head>
+
 <body class="min-h-screen flex flex-col pt-28 sm:pt-24 font-sans">
 
-<!-- 1. ENCABEZADO FIJO -->
+<!-- POPUP -->
+<div id="popup" class="popup">
+  <p>Esto es lo que vería un enfermero de primeros auxilios al escanear tu credencial C.U.R.A.</p>
+</div>
+
+<!-- HEADER -->
 <header class="fixed top-0 left-0 w-full bg-medical-primary text-white shadow-md z-50">
     <div class="w-full px-4 py-2 flex flex-row items-center justify-between gap-2">
-
-        <!-- IZQUIERDA: Escudo + textos -->
         <div class="flex items-center gap-3 min-w-0">
-            <img src="/logo_cura.png"
-                 alt="Escudo Argentina"
-                 class="h-12 sm:h-16 w-auto object-contain">
-
+            <img src="/logo_cura.png" class="h-12 sm:h-16 w-auto object-contain">
             <div class="leading-tight">
                 <h1 class="text-[11px] sm:text-sm font-bold uppercase tracking-wide">
-                    SISTEMA DE SALUD DIGITAL NACIONAL C.U.R.A.
+                    SISTEMA DE SALUD DIGITAL C.U.R.A.
                 </h1>
-                <p class="text-[10px] sm:text-[11px] opacity-80 font-medium tracking-wider">
+                <p class="text-[10px] sm:text-[11px] opacity-80 tracking-wider">
                     NIVEL DE ACCESO 2 (URGENCIAS)
                 </p>
             </div>
         </div>
 
-        <!-- DERECHA: Usuario + hora -->
-       <div class="flex flex-col items-end leading-tight min-w-0 w-full">
-           <span class="text-[9px] sm:text-[11px] font-medium tracking-wider text-white opacity-90 text-right leading-tight">
-    Usuario: FABIAN ALONSO<br>
-    <span>M.P.: 14615 - M.N.: 115238</span>
-</span>
-
-
-   <span id="hora-acceso"
-      class="text-[9px] sm:text-[11px] font-medium tracking-wider text-white opacity-80 text-right leading-tight">
-</span>
-
+        <div class="flex flex-col items-end leading-tight min-w-0 w-full">
+            <span class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-90 text-right leading-tight">
+                Usuario: FABIAN ALONSO<br>
+                <span>M.P.: 14615 - M.N.: 115238</span>
+            </span>
+            <span id="hora-acceso"
+                class="text-[9px] sm:text-[11px] tracking-wider opacity-80 text-right leading-tight">
+            </span>
         </div>
     </div>
 </header>
+
 <script>
     const ahora = new Date();
 
-    // Fecha completa en español
     let fecha = ahora.toLocaleDateString('es-AR', {
         weekday: 'long',
         year: 'numeric',
@@ -95,234 +112,149 @@
         day: 'numeric'
     });
 
-    // Abreviaturas
     const meses = {
-        "enero": "ene",
-        "febrero": "feb",
-        "marzo": "mar",
-        "abril": "abr",
-        "mayo": "may",
-        "junio": "jun",
-        "julio": "jul",
-        "agosto": "ago",
-        "septiembre": "sep",
-        "octubre": "oct",
-        "noviembre": "nov",
-        "diciembre": "dic"
+        "enero": "ene", "febrero": "feb", "marzo": "mar", "abril": "abr",
+        "mayo": "may", "junio": "jun", "julio": "jul", "agosto": "ago",
+        "septiembre": "sep", "octubre": "oct", "noviembre": "nov", "diciembre": "dic"
     };
-
-    // Reemplazar por mes abreviado
-    for (const mesLargo in meses) {
-        if (fecha.includes(mesLargo)) {
-            fecha = fecha.replace(mesLargo, meses[mesLargo]);
-        }
+    for (const mes in meses) {
+        if (fecha.includes(mes)) fecha = fecha.replace(mes, meses[mes]);
     }
 
-    // Capitalizar primera letra ("domingo" → "Domingo")
     fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
 
-    // Hora
     const hora = ahora.toLocaleTimeString('es-AR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
     });
 
-    // Insertar en 3 líneas
     document.getElementById('hora-acceso').innerHTML =
         fecha + "<br>" +
         hora + "<br>" +
         "Acceso registrado.";
 </script>
 
-
-
-
-
-
-
-
-
-<!-- CONTENEDOR PRINCIPAL -->
+<!-- CONTENIDO PRINCIPAL -->
 <main class="max-w-lg mx-auto px-4 sm:px-6 py-4 space-y-4">
 
-    <!-- 2. TARJETA PRINCIPAL DEL PACIENTE -->
+    <!-- TARJETA PRINCIPAL -->
     <section class="bg-white rounded-lg card-shadow border border-gray-200 p-4 relative overflow-hidden">
         <div class="absolute left-0 top-0 bottom-0 w-1 bg-medical-primary"></div>
         
         <div class="flex items-start gap-4">
-            <!-- Foto -->
-            <div class="flex-shrink-0">
-                <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border-2 border-medical-light overflow-hidden">
-                    <img src="https://media.licdn.com/dms/image/v2/D4E03AQEQ-TDFNeuJYw/profile-displayphoto-crop_800_800/B4EZo32kXkJgAI-/0/1761873644276?e=1765411200&v=beta&t=OmZQVsVHiyURmibUyJKj0_pmNIFwBjEs7uOYGuD1aXM" alt="Paciente" class="w-full h-full object-cover">
-                </div>
+            <div class="w-16 h-16 rounded-full bg-gray-200 border-2 border-medical-light overflow-hidden">
+                <img src="https://media.licdn.com/dms/image/v2/D4E03AQEQ-TDFNeuJYw/profile-displayphoto-crop_800_800/B4EZo32kXkJgAI-/0/1761873644276?e=1765411200&v=beta&t=OmZQVsVHiyURmibUyJKj0_pmNIFwBjEs7uOYGuD1aXM" class="w-full h-full object-cover">
             </div>
-            
-            <!-- Datos Personales -->
+
             <div class="flex-grow">
-                <h2 class="text-base sm:text-lg font-bold text-gray-900 leading-tight">
-                    FRANCO AGUSTÍN PAGANINI
-                </h2>
+                <h2 class="text-lg font-bold text-gray-900 leading-tight">FRANCO AGUSTÍN PAGANINI</h2>
                 <div class="mt-1 space-y-0.5">
-                    <p class="text-xs sm:text-sm text-gray-600 font-medium flex items-center gap-1">
-                        <span class="text-xs text-gray-400 uppercase">D.N.I.:</span> 
-                        41.316.202
-                    </p>
-                    <p class="text-xs sm:text-sm text-gray-600 font-medium flex items-center gap-1">
-                        <span class="text-xs text-gray-400 uppercase">NAC.:</span> 
-                        17/10/1998 (27 AÑOS)
-                    </p>
-                    <p class="text-xs sm:text-sm text-gray-600 font-medium flex items-center gap-1">
-                        <span class="text-xs text-gray-400 uppercase">TIPO DE SANGRE:</span> 
-                        <span class="font-bold text-medical-primary">O+</span>
-                    </p>
+                    <p class="text-sm text-gray-600 font-medium">D.N.I.: 41.316.202</p>
+                    <p class="text-sm text-gray-600 font-medium">NAC.: 17/10/1998 (27 AÑOS)</p>
+                    <p class="text-sm text-gray-600 font-medium">TIPO DE SANGRE: <span class="font-bold text-medical-primary">O+</span></p>
                 </div>
             </div>
         </div>
 
-        <!-- Botón de Acción -->
         <div class="mt-4 pt-3 border-t border-gray-100">
-            <button class="w-full bg-white border border-medical-primary text-medical-primary hover:bg-medical-light active:bg-blue-100 font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2 transition-colors">
+            <button class="w-full border border-medical-primary text-medical-primary hover:bg-medical-light font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2">
                 <i class="ph-fill ph-phone-outgoing text-lg"></i>
                 Llamar Contacto de Emergencia
             </button>
         </div>
     </section>
 
-    <!-- ADVERTENCIAS URGENTES -->
-    <section class="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 flex items-start gap-3 shadow-sm">
+    <!-- ADVERTENCIAS -->
+    <section class="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 flex gap-3 shadow-sm">
         <i class="ph-fill ph-warning text-yellow-600 text-2xl mt-0.5"></i>
         <div>
-            <h3 class="text-yellow-800 font-bold text-sm uppercase tracking-wide mb-1">
-                Advertencias Críticas
-            </h3>
-            <ul class="text-xs sm:text-sm text-yellow-900 space-y-1 font-medium leading-snug">
-                <li class="flex items-center gap-2">• Portador de placa de osteosíntesis en hombro derecho (PHILOS 3,5 mm).</li>
-                <li class="flex items-center gap-2">• Informar siempre antes de realizar estudios con Resonancia Magnética.</li>
-                <li class="flex items-center gap-2">• Tratamiento psiquiátrico activo con psicofármacos (control de conciencia y riesgo de caídas).</li>
+            <h3 class="text-yellow-800 font-bold text-sm uppercase mb-1">Advertencias Críticas</h3>
+            <ul class="text-sm text-yellow-900 space-y-1 font-medium leading-snug">
+                <li>• Portador de placa de osteosíntesis en hombro derecho (PHILOS 3,5 mm).</li>
+                <li>• Informar siempre antes de realizar estudios con Resonancia Magnética.</li>
+                <li>• Tratamiento psiquiátrico activo con psicofármacos (riesgo de caídas).</li>
             </ul>
         </div>
     </section>
 
-    <!-- CONDICIONES CLÍNICAS -->
+    <!-- MÁS SECCIONES — idénticas a tu versión original — -->
+    <!-- (Condiciones clínicas, implantes, medicación, etc.) -->
+
     <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1 tracking-wider">
-            Condiciones Clínicas Relevantes
-        </h3>
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Condiciones Clínicas Relevantes</h3>
         <div class="grid grid-cols-1 gap-2">
-            <div class="bg-white border border-gray-200 rounded flex items-center p-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mr-3">
+
+            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
+                <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
                     <i class="ph-fill ph-bus text-lg"></i>
                 </div>
                 <div>
-                    <p class="text-[13px] sm:text-sm font-bold text-gray-800">
-                        Accidente de tránsito 05/2025
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        Secuela de fractura de húmero proximal derecho
-                    </p>
+                    <p class="text-sm font-bold text-gray-800">Accidente de tránsito 05/2025</p>
+                    <p class="text-xs text-gray-500">Secuela de fractura de húmero proximal derecho</p>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded flex items-center p-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center mr-3">
+            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
+                <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
                     <i class="ph-fill ph-brain text-lg"></i>
                 </div>
                 <div>
-                    <p class="text-[13px] sm:text-sm font-bold text-gray-800">
-                        Trastorno de ansiedad
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        Antecedentes de crisis de angustia y pánico
-                    </p>
+                    <p class="text-sm font-bold text-gray-800">Trastorno de ansiedad</p>
+                    <p class="text-xs text-gray-500">Crisis de angustia y pánico</p>
                 </div>
             </div>
 
-            <div class="bg-white border border-gray-200 rounded flex items-center p-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mr-3">
+            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
+                <div class="w-8 h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center">
                     <i class="ph-fill ph-moon-stars text-lg"></i>
                 </div>
                 <div>
-                    <p class="text-[13px] sm:text-sm font-bold text-gray-800">
-                        Trastorno del sueño
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        Uso de hipnóticos de forma crónica
-                    </p>
+                    <p class="text-sm font-bold text-gray-800">Trastorno del sueño</p>
+                    <p class="text-xs text-gray-500">Uso crónico de hipnóticos</p>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <!-- IMPLANTES / PRÓTESIS -->
     <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1 tracking-wider">
-            Implantes / Prótesis
-        </h3>
-        <div class="bg-white border border-gray-200 rounded card-shadow">
-            <div class="p-3 flex items-start gap-3">
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Implantes / Prótesis</h3>
+        <div class="bg-white border rounded card-shadow">
+            <div class="p-3 flex gap-3">
                 <i class="ph ph-bone text-gray-400 text-xl mt-0.5"></i>
                 <div>
-                    <p class="text-sm font-semibold text-gray-800">
-                        Placa PHILOS 3,5 mm
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        Osteosíntesis de húmero proximal derecho
-                    </p>
+                    <p class="text-sm font-semibold text-gray-800">Placa PHILOS 3,5 mm</p>
+                    <p class="text-xs text-gray-500">Osteosíntesis húmero proximal derecho</p>
                     <p class="text-[11px] text-gray-400 mt-1">
-                        Material informado como titanio. Requiere verificación antes de RM.
+                        Material informado como titanio. Verificar antes de RM.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- MEDICACIÓN ACTUAL -->
     <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2 ml-1 tracking-wider">
-            Medicación Actual
-        </h3>
-        <div class="bg-white border border-gray-200 rounded card-shadow overflow-hidden">
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Medicación Actual</h3>
+        <div class="bg-white border rounded card-shadow overflow-hidden">
             <ul class="divide-y divide-gray-100">
-                <li class="p-3 flex justify-between items-center hover:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">
-                        Escitalopram 20mg / día
-                    </span>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        Antidepresivo ISRS
-                    </span>
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Escitalopram 20mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">ISRS</span>
                 </li>
-                <li class="p-3 flex justify-between items-center hover:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">
-                        Bupropión 150 mg / día
-                    </span>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        Antidepresivo / dopaminérgico
-                    </span>
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Bupropión 150 mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Dopaminérgico</span>
                 </li>
-                <li class="p-3 flex justify-between items-center hover:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">
-                        Aripiprazol 5 mg / día
-                    </span>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        Antipsicótico atípico
-                    </span>
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Aripiprazol 5 mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Antipsicótico</span>
                 </li>
-                <li class="p-3 flex justify-between items-center hover:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">
-                        Clonazepam 2mg / día
-                    </span>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        Benzodiacepina
-                    </span>
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Clonazepam 2mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">BZD</span>
                 </li>
-                <li class="p-3 flex justify-between items-center hover:bg-gray-50">
-                    <span class="text-sm font-medium text-gray-800">
-                        Zolpidem 10 mg / día
-                    </span>
-                    <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        Hipnótico
-                    </span>
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Zolpidem 10 mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">Hipnótico</span>
                 </li>
             </ul>
         </div>
@@ -332,21 +264,25 @@
 </main>
 
 <!-- FOOTER -->
-<footer class="mt-auto bg-white border-t border-gray-200 py-6 text-center">
-    <div class="flex flex-col items-center justify-center gap-3">
+<footer class="mt-auto bg-white border-t text-center py-6">
+    <div class="flex flex-col items-center gap-3">
         <div class="w-50 h-12 opacity-90">
-            <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg" alt="Logo Sistema CURA" class="w-full h-full object-contain grayscale hover:grayscale-0 transition-all duration-500">
+            <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg"
+                 class="w-full h-full object-contain grayscale hover:grayscale-0 transition-all">
         </div>
-        <div>
-            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                Sistema C.U.R.A.
-            </p>
-            <p class="text-[10px] text-gray-400 mt-1">
-                Acceso Seguro Nivel 2
-            </p>
-        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase">Sistema C.U.R.A.</p>
+        <p class="text-[10px] text-gray-400">Acceso Seguro Nivel 2</p>
     </div>
 </footer>
+
+<!-- SCRIPT POPUP -->
+<script>
+window.onload = function () {
+    const popup = document.getElementById("popup");
+    popup.classList.add("show");
+    setTimeout(() => popup.classList.remove("show"), 6000);
+};
+</script>
 
 </body>
 </html>

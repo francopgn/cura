@@ -31,13 +31,25 @@
   </script>
 
 <style>
-  /* --- ESTILOS GENERALES (Modales y Animaciones) --- */
-  .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
-  .modal-backdrop.show { opacity: 1; }
-  .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
-  .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+  /* --- ANIMACIONES DE MODALES (Del Original) --- */
+  .modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .modal-backdrop.show {
+    opacity: 1;
+  }
+  .modal-card {
+    transform: scale(0.9) translateY(10px);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  .modal-card.show {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
 
-  /* --- ESTILOS DE LA CREDENCIAL 3D --- */
+  /* --- ESTILOS DE LA CREDENCIAL 3D (Nueva Estética) --- */
   .perspective-container {
     perspective: 1500px; 
   }
@@ -45,7 +57,7 @@
   .card-container {
     position: relative;
     width: 100%;
-    max-width: 420px; /* Tamaño grande solicitado */
+    max-width: 420px; /* Tamaño grande */
     aspect-ratio: 1.58 / 1; 
     margin: 0 auto;
     z-index: 20;
@@ -76,9 +88,9 @@
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     
-    /* CORRECCIÓN DE BORDES */
+    /* CORRECCIÓN DE BORDES Y FONDO TRANSPARENTE */
     border-radius: 20px;
-    background-color: transparent !important; /* Transparente para evitar bordes blancos */
+    background-color: transparent !important; 
     overflow: hidden;
     
     /* Suavizado */
@@ -123,18 +135,25 @@
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
+
     <div class="flex items-center gap-2">
-      <img src="/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
+      <img src="/logo.png"
+           alt="Logo C.U.R.A."
+           class="h-16 w-auto object-contain shrink-0" />
       <div class="leading-tight">
         <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
         <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
       </div>
     </div>
+
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
       <a href="#inicio" class="text-cura-accentLight hover:text-white">Inicio</a>
       <a href="#informacion" class="text-cura-accentLight hover:text-white">Información</a>
       <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
-      <a href="/random/demo-random.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demo Enfermero</a>
+      <a href="/random/demo-random.html"
+         class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
+        Demo Enfermero
+      </a>
     </nav>
   </div>
 </header>
@@ -189,7 +208,6 @@
           (Hacé click en la credencial para girarla)
         </p>
       </div>
-
     </section>
 
 
@@ -248,20 +266,21 @@
           La Ley C.U.R.A. impulsa un acceso más ágil, seguro y equitativo a la información clínica en todo el país.
         </p>
       </div>
-      <div class="grid md:grid-cols-3 gap-4">
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Unificación</h3><p class="text-xs text-cura-accentLight">Un solo identificador de salud por persona.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Seguridad y privacidad</h3><p class="text-xs text-cura-accentLight">Accesos por niveles y auditorías estrictas.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Interoperabilidad</h3><p class="text-xs text-cura-accentLight">Tu historia clínica viaja con vos.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Fin del papeleo</h3><p class="text-xs text-cura-accentLight">Órdenes y estudios digitales.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Recetas automáticas</h3><p class="text-xs text-cura-accentLight">Firmas digitales al instante.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">PAMI sin burocracia</h3><p class="text-xs text-cura-accentLight">Turnos ágiles y menos trámites.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Emergencias</h3><p class="text-xs text-cura-accentLight">El QR salva vidas identificando alergias.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Evita repetir estudios</h3><p class="text-xs text-cura-accentLight">Historial previo disponible al instante.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Más tiempo médico</h3><p class="text-xs text-cura-accentLight">Menos carga administrativa.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Turnos ágiles</h3><p class="text-xs text-cura-accentLight">Agenda integrada nacional.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Ahorro al sistema</h3><p class="text-xs text-cura-accentLight">Menos errores y costos operativos.</p></div>
-         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Alcance global</h3><p class="text-xs text-cura-accentLight">Compatible con estándares internacionales.</p></div>
-      </div>
+
+     <div class="grid md:grid-cols-3 gap-4">
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Unificación</h3><p class="text-xs text-cura-accentLight">Un solo identificador de salud por persona, integrando datos de hospitales públicos, privados y de la seguridad social.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Seguridad y privacidad</h3><p class="text-xs text-cura-accentLight">Accesos por niveles, auditorías y confidencialidad estricta de los datos de cada paciente.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Interoperabilidad</h3><p class="text-xs text-cura-accentLight">LLeva tu historia clinica a donde sea que vayas, podrás acceder a tu historia clinica desde cualquier ciudad o provincia.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Fin del papeleo</h3><p class="text-xs text-cura-accentLight">Órdenes, estudios y certificados pasan a digital, evitando pérdidas, sellos y trámites repetidos.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Recetas automáticas</h3><p class="text-xs text-cura-accentLight">Firmas digitales automáticas: no hace falta volver al consultorio para renovar o validar recetas.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">PAMI sin burocracia</h3><p class="text-xs text-cura-accentLight">Turnos ágiles, menos trámites presenciales y traslados automatizados para movilidad reducida.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Mejor atención en emergencias</h3><p class="text-xs text-cura-accentLight">El QR permite identificar a la persona y ver alergias y medicación en segundos.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Evita estudios repetidos</h3><p class="text-xs text-cura-accentLight">Los médicos ven estudios previos al instante, evitando repetir análisis innecesarios.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Más tiempo para el paciente</h3><p class="text-xs text-cura-accentLight">Menos carga administrativa, más tiempo real de atención y acompañamiento.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Turnos sin vueltas</h3><p class="text-xs text-cura-accentLight">Agenda integrada para reducir esperas entre hospitales, clínicas y obras sociales.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Ahorro para todo el sistema</h3><p class="text-xs text-cura-accentLight">Menos errores, menos pérdidas y menos costos administrativos que se reinvierten en salud.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Información en el país y exterior</h3><p class="text-xs text-cura-accentLight">Disponible en todo el país y en instituciones del exterior que usen estándares compatibles.</p></div>
+     </div>
     </section>
 
     <section id="sumate" class="space-y-6">
@@ -274,7 +293,7 @@
             action="https://formsubmit.co/ajax/contacto@leycura.org"
             method="POST"
             class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
-        
+
         <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
         <input type="hidden" name="_template" value="box">
         <input type="hidden" name="_captcha" value="false">
@@ -293,27 +312,47 @@
         <div class="grid md:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
-            <select name="provincia" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+            <select name="provincia" required
+                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
               <option value="">Seleccioná una provincia</option>
               <option value="Buenos Aires">Buenos Aires</option>
-              <option value="Ciudad Autónoma de Buenos Aires">CABA</option>
+              <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
               <option value="Córdoba">Córdoba</option>
-              <option value="Santa Fe">Santa Fe</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
               <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
               <option value="Tucumán">Tucumán</option>
-              </select>
+            </select>
           </div>
           <div>
             <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
-            <select name="ciudad" id="ciudad-select" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+            <select name="ciudad" id="ciudad-select" required
+                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
               <option value="">Seleccioná una ciudad</option>
             </select>
           </div>
         </div>
 
-        <div><label class="block text-xs font-medium text-red-400 mb-1">Email *</label><input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+        <div><label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label><input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
         <div><label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label><input name="dni" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Teléfono (opcional)</label><input name="telefono" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label><input name="telefono" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
 
         <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">Enviar</button>
         <p class="text-[10px] text-cura-accentLight mt-1">Los campos marcados con * son obligatorios.</p>
@@ -323,25 +362,27 @@
     <section id="contacto" class="space-y-6">
       <div class="max-w-2xl">
         <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Comunícate con nosotros</h2>
-        <p class="text-sm text-cura-accentLight">Toda pregunta es válida. Nos interesa escuchar tus dudas.</p>
+        <p class="text-sm text-cura-accentLight">Toda pregunta es válida. Nos interesa escuchar tus dudas, aportes y propuestas para que puedas formar parte de esta gran revolución sanitaria.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 items-start">
         <div class="space-y-4">
-          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos.</div>
-          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Este proyecto solo es posible con tu firma. <a href="#sumate" class="underline font-semibold">Sumate</a>.</div>
+          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se basa en informarte, difundir y acompañar el proceso.</div>
+          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Este proyecto solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">sumarte</a> y ser parte de la historia.</div>
         </div>
 
-        <form class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="https://formsubmit.co/contacto@leycura.org" method="POST">
-          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label><input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"></textarea></div>
+        <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="https://formsubmit.co/contacto@leycura.org" method="POST">
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label><input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"></textarea></div>
           <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">Enviar</button>
+          <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.</p>
         </form>
 
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
           <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
         </div>
       </div>
     </section>
@@ -349,17 +390,17 @@
     <section class="space-y-4">
       <div class="max-w-2xl">
         <h2 class="text-lg md:text-xl font-bold text-white mb-1">MANTENTE CONECTADO</h2>
-        <p class="text-sm text-cura-accentLight">Obtené información sobre los avances de la ley.</p>
+        <p class="text-sm text-cura-accentLight">Obtené información sobre los avances de la ley y sobre cómo podés formar parte de esta historia.</p>
       </div>
       <form id="newsletter-form" class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
-        <input name="email" type="email" required placeholder="Correo electrónico" class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary" />
+        <input name="email" type="email" required placeholder="Correo electrónico" class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
         <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">OBTENER INFORMACIÓN</button>
       </form>
     </section>
 
     <section class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md">
       <h3 class="text-sm font-semibold text-white mb-1">Tenemos novedades</h3>
-      <p class="text-xs text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026.</p>
+      <p class="text-xs text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</p>
     </section>
 
   </main>
@@ -380,32 +421,54 @@
       <div class="flex items-start justify-between gap-3">
         <div class="flex-1">
           <h2 class="text-sm sm:text-base font-semibold text-white mb-1">Bienvenido, tenemos novedades</h2>
-          <p class="text-[11px] sm:text-[13px] text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026.</p>
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 text-[11px] sm:text-[13px] text-cura-accentLight">
+            <p class="sm:max-w-[65%] leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</p>
+            <p class="sm:max-w-[30%] leading-snug">Próximamente más información sobre la presentación.</p>
+          </div>
         </div>
         <button type="button" class="ml-2 text-cura-accentLight/80 hover:text-white text-xs sm:text-sm font-semibold" id="novedades-close-btn">✕</button>
       </div>
     </div>
   </div>
 
+  <div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+      </div>
+      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2>
+      <p class="text-sm text-gray-600 mb-4">Tu mensaje se ha enviado correctamente. Pronto nos pondremos en contacto.</p>
+      <button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">OK</button>
+    </div>
+  </div>
+
   <div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
     <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+      </div>
       <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por sumarte!</h2>
-      <p class="text-sm text-gray-600 mb-4">En breve nos contactaremos.</p>
+      <p class="text-sm text-gray-600 mb-4">En breve nos contactaremos para enviarte el formulario de junta de firmas.</p>
       <button id="sumate-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button>
     </div>
   </div>
 
   <div id="newsletter-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
     <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+      </div>
       <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
-      <button id="newsletter-modal-ok" class="mt-4 px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button>
+      <p class="text-sm text-gray-600 mb-4">Vas a recibir cualquier novedad sobre el proyecto.</p>
+      <button id="newsletter-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold mt-4">OK</button>
     </div>
   </div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // --- SCRIPT 1: CREDENCIAL 3D ---
+  // --- 1. CREDENCIAL GIRATORIA (NUEVO) ---
   const card = document.getElementById('credencial-giratoria');
   if (card) {
     card.addEventListener('click', function() {
@@ -413,100 +476,245 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // --- SCRIPT 2: SCROLL SUAVE Y BOTONES HERO ---
-  function smoothScrollTo(element) { 
-    if(!element) return; 
-    element.scrollIntoView({ behavior: 'smooth' }); 
+  // --- 2. CIUDADES Y GEOREF (ORIGINAL) ---
+  const provinciaSelect = document.querySelector('select[name="provincia"]');
+  const ciudadSelect = document.getElementById('ciudad-select');
+
+  async function cargarCiudades() {
+    if (!provinciaSelect || !ciudadSelect) return;
+    const prov = provinciaSelect.value;
+    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+    if (!prov) {
+      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      return;
+    }
+    try {
+      const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const localidades = (data.localidades || [])
+        .map(l => l.nombre)
+        .sort((a, b) => a.localeCompare(b, 'es'));
+
+      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      localidades.forEach(nombre => {
+        const opt = document.createElement('option');
+        opt.value = nombre;
+        opt.textContent = nombre;
+        ciudadSelect.appendChild(opt);
+      });
+    } catch (e) {
+      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+    }
   }
 
-  // Links del Navbar
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const target = document.getElementById(this.getAttribute('href').substring(1));
-      smoothScrollTo(target);
-    });
+  if (provinciaSelect) {
+    provinciaSelect.addEventListener('change', cargarCiudades);
+  }
+
+  // --- 3. SCROLL SUAVE Y BOTONES HERO (ORIGINAL) ---
+  const btnSumate      = document.getElementById('btn-sumate');
+  const targetSumate   = document.getElementById('sumate');
+  const btnInfo        = document.getElementById('btn-info');
+  const targetInfo     = document.getElementById('informacion');
+  const targetContacto = document.getElementById('contacto');
+  const targetInicio   = document.getElementById('inicio');
+
+  const navInicioLinks    = document.querySelectorAll('a[href="#inicio"]');
+  const navInfoLinks      = document.querySelectorAll('a[href="#informacion"]');
+  const navContactoLinks  = document.querySelectorAll('a[href="#contacto"]');
+
+  function smoothScrollTo(element, duration = 1700, offset = 200) {
+    if (!element) return;
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      window.scrollTo(0, startY + distance * ease);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+    requestAnimationFrame(animation);
+  }
+
+  // Event Listeners Scroll
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
+  }
+  if (btnInfo && targetInfo) {
+    btnInfo.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
+  }
+  navInicioLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInicio, 1700, 0); });
+  });
+  navInfoLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
+  });
+  navContactoLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto); });
   });
 
-  // Botones del Hero (QUIERO SUMARME / MAS INFO)
-  const btnSumate = document.getElementById('btn-sumate');
-  const btnInfo = document.getElementById('btn-info');
-  const targetSumate = document.getElementById('sumate');
-  const targetInfo = document.getElementById('informacion');
 
-  if(btnSumate && targetSumate) {
-    btnSumate.addEventListener('click', () => smoothScrollTo(targetSumate));
+  // --- 4. FORMULARIO CONTACTO (ORIGINAL) ---
+  const formContact = document.getElementById('contact-form');
+  const modalContact = document.getElementById('success-modal');
+  const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
+  const okBtnContact = document.getElementById('success-modal-ok');
+
+  function abrirModalContact() {
+    if(!modalContact) return;
+    modalContact.classList.remove('hidden');
+    requestAnimationFrame(() => { modalContact.classList.add('show'); cardContact.classList.add('show'); });
   }
-  if(btnInfo && targetInfo) {
-    btnInfo.addEventListener('click', () => smoothScrollTo(targetInfo));
+  function cerrarModalContact() {
+    if(!modalContact) return;
+    modalContact.classList.remove('show'); cardContact.classList.remove('show');
+    setTimeout(() => { modalContact.classList.add('hidden'); }, 250);
   }
 
-  // --- SCRIPT 3: CARGA DE CIUDADES (API GEOREF) ---
-  const provSel = document.querySelector('select[name="provincia"]');
-  const ciuSel = document.getElementById('ciudad-select');
-  if(provSel && ciuSel) {
-    provSel.addEventListener('change', async () => {
-       const prov = provSel.value;
-       ciuSel.innerHTML = '<option>Cargando...</option>';
-       if(!prov) { ciuSel.innerHTML='<option>Seleccioná ciudad</option>'; return; }
-       try {
-         const r = await fetch('https://apis.datos.gob.ar/georef/api/localidades?max=5000&campos=nombre&provincia='+encodeURIComponent(prov));
-         const d = await r.json();
-         const locs = (d.localidades||[]).map(l=>l.nombre).sort();
-         ciuSel.innerHTML = '<option>Seleccioná ciudad</option>';
-         locs.forEach(n => { const o = document.createElement('option'); o.value=n; o.textContent=n; ciuSel.appendChild(o); });
-       } catch(e) { ciuSel.innerHTML='<option>Error</option>'; }
+  if (formContact && modalContact && okBtnContact) {
+    formContact.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = formContact.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch(formContact.action, {
+          method: 'POST',
+          body: new FormData(formContact),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error();
+        formContact.reset();
+        abrirModalContact();
+      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); } 
+      finally { submitBtn.disabled = false; submitBtn.textContent = originalText; }
     });
+    okBtnContact.addEventListener('click', cerrarModalContact);
+    modalContact.addEventListener('click', function (e) { if (e.target === modalContact) cerrarModalContact(); });
   }
 
-  // --- SCRIPT 4: MODALES Y FORMULARIOS (BREVO/FORMSUBMIT) ---
-  function toggleModal(id, show) {
-    const m = document.getElementById(id);
-    if(!m) return;
-    const c = m.querySelector('.modal-card');
-    if(show) { m.classList.remove('hidden'); requestAnimationFrame(() => { m.classList.add('show'); c.classList.add('show'); }); }
-    else { m.classList.remove('show'); c.classList.remove('show'); setTimeout(() => m.classList.add('hidden'), 250); }
+  // --- 5. FORMULARIO SUMATE (ORIGINAL) ---
+  const sumateForm    = document.getElementById('sumate-form');
+  const sumateModal   = document.getElementById('sumate-modal');
+  const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+  const sumateOkBtn   = document.getElementById('sumate-modal-ok');
+
+  function abrirSumateModal() {
+    if (!sumateModal) return;
+    sumateModal.classList.remove('hidden');
+    requestAnimationFrame(function () { sumateModal.classList.add('show'); sumateCard.classList.add('show'); });
+  }
+  function cerrarSumateModal() {
+    if (!sumateModal) return;
+    sumateModal.classList.remove('show'); sumateCard.classList.remove('show');
+    setTimeout(function () { sumateModal.classList.add('hidden'); }, 250);
   }
 
-  // Novedades (Auto)
-  setTimeout(() => toggleModal('novedades-modal', true), 500);
-  setTimeout(() => toggleModal('novedades-modal', false), 10000);
-  const novClose = document.getElementById('novedades-close-btn');
-  if(novClose) novClose.addEventListener('click', () => toggleModal('novedades-modal', false));
+  if (sumateForm && sumateModal && sumateOkBtn) {
+    sumateForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = sumateForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
 
-  // Form Sumate (Lógica Completa Original)
-  const sumateForm = document.getElementById('sumate-form');
-  const sumateOk = document.getElementById('sumate-modal-ok');
-  if(sumateForm && sumateOk) {
-    sumateForm.addEventListener('submit', async function(e) {
-       e.preventDefault();
-       // Simulación visual de envío (puedes restaurar la lógica fetch real aquí si tienes los endpoints configurados)
-       // Para asegurar funcionalidad sin backend real en esta demo, mostramos éxito visualmente:
-       const btn = sumateForm.querySelector('button');
-       const txt = btn.textContent;
-       btn.textContent = 'Enviando...';
-       btn.disabled = true;
-       
-       // Simulamos delay de red
-       setTimeout(() => {
-         sumateForm.reset();
-         btn.textContent = txt;
-         btn.disabled = false;
-         toggleModal('sumate-modal', true);
-       }, 1500);
+      try {
+        const formData = new FormData(sumateForm);
+        const email = (formData.get('email') || '').toString().trim();
+        // 1) FormSubmit
+        const formSubmitPromise = fetch(sumateForm.action, {
+          method: 'POST', headers: { 'Accept': 'application/json' }, body: formData
+        });
+        // 2) Brevo
+        let brevoPromise = Promise.resolve();
+        if (email) {
+          const payload = { email: email, tipo: 'SUMARME' };
+          brevoPromise = fetch('/api/sumate', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+          });
+        }
+        const [formRes] = await Promise.all([formSubmitPromise, brevoPromise]);
+        if (!formRes.ok) throw new Error('Error al enviar el formulario');
+        sumateForm.reset();
+        abrirSumateModal();
+      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); }
+      finally { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } }
     });
-    sumateOk.addEventListener('click', () => toggleModal('sumate-modal', false));
+    sumateOkBtn.addEventListener('click', cerrarSumateModal);
+    sumateModal.addEventListener('click', function (e) { if (e.target === sumateModal) cerrarSumateModal(); });
   }
-  
-  // Newsletter Form
-  const newsForm = document.getElementById('newsletter-form');
-  const newsOk = document.getElementById('newsletter-modal-ok');
-  if(newsForm && newsOk) {
-    newsForm.addEventListener('submit', (e) => {
-       e.preventDefault();
-       setTimeout(() => { newsForm.reset(); toggleModal('newsletter-modal', true); }, 1000);
+
+  // --- 6. NEWSLETTER (ORIGINAL) ---
+  const newsletterForm = document.getElementById('newsletter-form');
+  const newsletterModal = document.getElementById('newsletter-modal');
+  const newsletterCard  = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
+  const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
+
+  function abrirNewsletterModal() {
+    if (!newsletterModal) return;
+    newsletterModal.classList.remove('hidden');
+    requestAnimationFrame(function () { newsletterModal.classList.add('show'); newsletterCard.classList.add('show'); });
+  }
+  function cerrarNewsletterModal() {
+    if (!newsletterModal) return;
+    newsletterModal.classList.remove('show'); newsletterCard.classList.remove('show');
+    setTimeout(function () { newsletterModal.classList.add('hidden'); }, 250);
+  }
+
+  if (newsletterForm && newsletterModal && newsletterOkBtn) {
+    newsletterForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
+
+      try {
+        const emailInput = newsletterForm.querySelector('input[name="email"]');
+        const email = emailInput ? emailInput.value.trim() : '';
+        if (!email) { alert('Ingresá un correo electrónico válido.'); return; }
+
+        const response = await fetch('/api/newsletter', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email })
+        });
+        if (!response.ok) throw new Error('Error al registrar tu suscripción');
+        newsletterForm.reset();
+        abrirNewsletterModal();
+      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); }
+      finally { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } }
     });
-    newsOk.addEventListener('click', () => toggleModal('newsletter-modal', false));
+    newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
+    newsletterModal.addEventListener('click', function (e) { if (e.target === newsletterModal) cerrarNewsletterModal(); });
+  }
+
+  // --- 7. MODAL NOVEDADES (ORIGINAL) ---
+  const novModal = document.getElementById('novedades-modal');
+  if (novModal) {
+    const novCard = novModal.querySelector('.modal-card');
+    const novCloseBtn = document.getElementById('novedades-close-btn');
+
+    function abrirNovedades() {
+      novModal.classList.remove('hidden');
+      requestAnimationFrame(function () { novModal.classList.add('show'); if (novCard) novCard.classList.add('show'); });
+    }
+    function cerrarNovedades() {
+      novModal.classList.remove('show');
+      if (novCard) novCard.classList.remove('show');
+      setTimeout(function () { novModal.classList.add('hidden'); }, 250);
+    }
+
+    abrirNovedades();
+    setTimeout(cerrarNovedades, 10000); // 10s auto-cierre
+
+    if (novCloseBtn) novCloseBtn.addEventListener('click', cerrarNovedades);
+    novModal.addEventListener('click', function (e) { if (e.target === novModal) cerrarNovedades(); });
   }
 
 });

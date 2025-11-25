@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,36 +46,10 @@
         .card-shadow {
             box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
         }
-
-        /* POPUP */
-        .popup {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #004E85;
-            color: #fff;
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.6s ease;
-            z-index: 9999;
-            max-width: 280px;
-        }
-        .popup.show {
-            opacity: 1;
-        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col pt-28 sm:pt-24 font-sans">
-
-<!-- POPUP -->
-<div id="popup" class="popup">
-  <p>Todos los datos e imágenes aquí proporcionados son ficticios.</p>
-</div>
 
 <!-- HEADER -->
 <header class="fixed top-0 left-0 w-full bg-medical-primary text-white shadow-md z-50">
@@ -92,10 +67,21 @@
         </div>
 
         <div class="flex flex-col items-end leading-tight min-w-0 w-full">
-            <span class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-90 text-right leading-tight">
-                PROYECTO DE LEY C.U.R.A.<br>
-                <span>LEYCURA.ORG</span>
-            </span>
+<div class="flex flex-col items-end leading-tight min-w-0 w-full">
+    <span id="medico-linea-1"
+          class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-90 text-right leading-tight">
+        <!-- Nombre del médico -->
+    </span>
+
+    <span id="medico-linea-2"
+          class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-80 text-right leading-tight">
+        <!-- MP y MN -->
+    </span>
+
+    <span id="hora-acceso"
+        class="text-[9px] sm:text-[11px] tracking-wider opacity-80 text-right leading-tight">
+    </span>
+</div>
             <span id="hora-acceso"
                 class="text-[9px] sm:text-[11px] tracking-wider opacity-80 text-right leading-tight">
             </span>
@@ -196,7 +182,7 @@
     </div>
 </footer>
 
-<!-- SCRIPT LÓGICA DEMO + POPUP -->
+<!-- SCRIPT LÓGICA DEMO -->
 <script>
     // Utilidades
     function randInt(min, max) {
@@ -428,6 +414,7 @@
             li.textContent = '• ' + texto;
             ulAdv.appendChild(li);
         });
+        
 
         // Render implantes
         const contImpl = document.getElementById('lista-implantes');
@@ -487,15 +474,42 @@
             li.appendChild(spanTipo);
             ulMeds.appendChild(li);
         });
-
-        // Popup
-        const popup = document.getElementById('popup');
-        if (popup) {
-            popup.classList.add('show');
-            setTimeout(() => popup.classList.remove('show'), 6000);
-        }
     });
+    
 </script>
+
+    <script>
+// Funciones auxiliares
+function randInt(min, max) { 
+    return Math.floor(Math.random() * (max - min + 1)) + min; 
+}
+function choice(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Listas de nombres reales argentinos
+const nombresMedicos = [
+    "Fabián","Nicolás","Martín","Lucas","Sebastián","Gustavo",
+    "Mariano","Hernán","Ezequiel","Ramiro","Diego","Julián",
+    "Roberto","Jorge","Carlos","Daniel","Pablo"
+];
+
+const apellidosMedicos = [
+    "Alonso","Gutiérrez","Paz","Fernández","Rivas","Pereyra",
+    "Soria","Vega","Sánchez","Aguirre","Torres","Silvestre",
+    "Molina","Roldán","Acosta","Tapia","Benítez"
+];
+
+// Generar médico aleatorio
+const medicoNombreCompleto = choice(nombresMedicos) + " " + choice(apellidosMedicos);
+const mp = randInt(10000, 99999);     // 5 dígitos
+const mn = randInt(100000, 999999);   // 6 dígitos
+
+// Insertar en pantalla
+document.getElementById("medico-linea-1").textContent = "Usuario: " + medicoNombreCompleto;
+document.getElementById("medico-linea-2").textContent = "M.P.: " + mp + " - M.N.: " + mn;
+</script>
+
 
 </body>
 </html>

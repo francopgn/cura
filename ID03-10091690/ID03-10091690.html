@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema C.U.R.A. | Nivel 2</title>
+    
+    <!-- Fuente Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración personalizada -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        medical: {
+                            primary: '#004E85',
+                            light: '#E6F0F5',
+                            alert: '#FEFCE8',
+                            alertText: '#854D0E'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            background-color: #F3F4F6;
+        }
+        .card-shadow {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col pt-28 sm:pt-24 font-sans">
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 w-full bg-medical-primary text-white shadow-md z-50">
+    <div class="w-full px-4 py-2 flex flex-row items-center justify-between gap-2">
+        <div class="flex items-center gap-3 min-w-0">
+            <img src="/logo_cura.png" class="h-12 sm:h-16 w-auto object-contain">
+            <div class="leading-tight">
+                <h1 class="text-[11px] sm:text-sm font-bold uppercase tracking-wide">
+                    SISTEMA DE SALUD DIGITAL C.U.R.A.
+                </h1>
+                <p class="text-[10px] sm:text-[11px] opacity-80 tracking-wider">
+                    NIVEL DE ACCESO 2 (URGENCIAS)
+                </p>
+            </div>
+        </div>
+
+        <div class="flex flex-col items-end leading-tight min-w-0 w-full">
+            <span class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-90 text-right leading-tight">
+                PROTECTO DE LEY C.U.R.A.<br>
+                <span>LEYCURA.ORG</span>
+            </span>
+            <span id="hora-acceso"
+                class="text-[9px] sm:text-[11px] tracking-wider opacity-80 text-right leading-tight">
+            </span>
+        </div>
+    </div>
+</header>
+
+<script>
+    const ahora = new Date();
+
+    let fecha = ahora.toLocaleDateString('es-AR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    const meses = {
+        "enero": "ene", "febrero": "feb", "marzo": "mar", "abril": "abr",
+        "mayo": "may", "junio": "jun", "julio": "jul", "agosto": "ago",
+        "septiembre": "sep", "octubre": "oct", "noviembre": "nov", "diciembre": "dic"
+    };
+    for (const mes in meses) {
+        if (fecha.includes(mes)) fecha = fecha.replace(mes, meses[mes]);
+    }
+
+    fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+
+    const hora = ahora.toLocaleTimeString('es-AR', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+
+    document.getElementById('hora-acceso').innerHTML =
+        fecha + "<br>" +
+        hora + "<br>" +
+        "Acceso registrado.";
+</script>
+
+<script>
+<script>
+function calcularEdad(fechaStr) {
+    const partes = fechaStr.split('/'); // "DD/MM/YYYY"
+    const nacimiento = new Date(partes[2], partes[1] - 1, partes[0]);
+    const hoy = new Date();
+
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const m = hoy.getMonth() - nacimiento.getMonth();
+
+    if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+        edad--;
+    }
+    return edad;
+}
+
+const fechaTexto = document.getElementById("fecha-nac").innerText.trim();
+document.getElementById("edad").innerText = calcularEdad(fechaTexto);
+</script>
+
+
+// Fecha que tenés en la tarjeta:
+const edad = calcularEdad("19/12/1951");
+document.getElementById("edad").innerText = edad;
+</script>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main class="max-w-lg mx-auto px-4 sm:px-6 py-4 space-y-4">
+
+    <!-- TARJETA PRINCIPAL -->
+    <section class="bg-white rounded-lg card-shadow border border-gray-200 p-4 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-1 bg-medical-primary"></div>
+        
+        <div class="flex items-start gap-4">
+            <div class="w-16 h-16 rounded-full bg-gray-200 border-2 border-medical-light overflow-hidden">
+                <img src="/ID03-10091690/profile.jpg" class="w-full h-full object-cover">
+            </div>
+
+            <div class="flex-grow">
+                <h2 class="text-lg font-bold text-gray-900 leading-tight">LUCIANA TELLO VIERA</h2>
+                <div class="mt-1 space-y-0.5">
+                    <p class="text-sm text-gray-600 font-medium">D.N.I.: 10.091.690</p>
+<p class="text-sm text-gray-600 font-medium">
+    NAC.: <span id="fecha-nac">19/12/1951</span> (<span id="edad"></span> AÑOS)
+</p>
+
+</p>
+
+                    <p class="text-sm text-gray-600 font-medium">TIPO DE SANGRE: <span class="font-bold text-medical-primary">A+</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-gray-100">
+      <button onclick="window.location.href='tel:+5491157595097'"
+    class="w-full border border-medical-primary text-medical-primary hover:bg-medical-light font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2">
+    <i class="ph-fill ph-phone-outgoing text-lg"></i>
+    Llamar Contacto de Emergencia
+</button>
+
+        </div>
+    </section>
+
+    <!-- ADVERTENCIAS -->
+    <section class="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 flex gap-3 shadow-sm">
+        <i class="ph-fill ph-warning text-yellow-600 text-2xl mt-0.5"></i>
+        <div>
+              <h3 class="text-yellow-800 font-bold text-sm uppercase tracking-wide mb-1">Advertencias Críticas</h3>
+                <ul class="text-sm text-yellow-900 space-y-1 font-medium">
+                    <li class="flex items-center gap-2">• Portador de bomba de morfina</li>
+                    <li class="flex items-center gap-2">• Informar siempre antes de realizar estudios con Resonancia Magnética.</li>
+					<li class="flex items-center gap-2">• Presenta hipertensión arterial reactiva al estrés. Ver medicamentos</li>
+                    <li class="flex items-center gap-2">• Tratamiento psiquiátrico activo con psicofármacos (control de conciencia y riesgo de caídas).</li>
+                </ul>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Condiciones Clínicas Relevantes</h3>
+        <div class="grid grid-cols-1 gap-2">
+
+
+            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
+                <div class="w-8 h-8 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center">
+                    <i class="ph-fill ph-brain text-lg"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800">Trastorno de ansiedad</p>
+                    <p class="text-xs text-gray-500">Crisis de angustia y pánico</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Implantes / Operaciones</h3>
+        <div class="bg-white border rounded card-shadow">
+            <div class="p-3 flex gap-3">
+                <img src="/surgery.png" class="w-7 h-7 object-contain opacity-90 mt-0.5" alt="Cirugía / Implantes">
+                <div>
+                    <p class="text-sm font-semibold text-gray-800">Apendicectomía</p>
+                    <p class="text-xs text-gray-500">xxxxx</p>
+                </div>
+				 <div>
+                    <p class="text-sm font-semibold text-gray-800">Colecistecomía</p>
+                    <p class="text-xs text-gray-500">xxxxx</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Medicación Actual</h3>
+        <div class="bg-white border rounded card-shadow overflow-hidden">
+            <ul class="divide-y divide-gray-100">
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Sertralina 100mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">ISRS</span>
+                </li>
+                <li class="p-3 flex justify-between items-center">
+                    <span class="text-sm font-medium">Clonazepam 2mg / día</span>
+                    <span class="text-xs bg-gray-100 px-2 py-1 rounded">BZD</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="h-4"></div>
+</main>
+
+<!-- FOOTER -->
+<footer class="mt-auto bg-white border-t text-center py-6">
+    <div class="flex flex-col items-center gap-3">
+        <div class="w-50 h-12 opacity-90">
+            <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg"
+                 class="w-full h-full object-contain grayscale hover:grayscale-0 transition-all">
+        </div>
+        <p class="text-xs font-bold text-gray-500 uppercase">Sistema C.U.R.A.</p>
+        <p class="text-[10px] text-gray-400">Acceso Seguro Nivel 2</p>
+    </div>
+</footer>
+
+</body>
+</html>

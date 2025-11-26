@@ -46,7 +46,12 @@ body {
 .popup {
     position: fixed;
     top: 20px;
-    right: 20px;
+    
+    /* CAMBIA ESTO (Antes decía right: 20px;) */
+    left: 50%;
+    transform: translateX(-50%);
+    /* -------------------------------------- */
+
     background-color: #004E85;
     color: #fff;
     padding: 15px 20px;
@@ -58,6 +63,9 @@ body {
     transition: opacity 0.6s ease;
     z-index: 9999;
     max-width: 280px;
+    
+    /* Agrega esto si quieres que el texto dentro también se centre */
+    text-align: center; 
 }
 .popup.show { opacity: 1; }
 </style>
@@ -353,6 +361,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 </body>
 </html>
+
 
 
 

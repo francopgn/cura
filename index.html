@@ -403,7 +403,7 @@
 
     <section class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md">
       <h3 class="text-sm font-semibold text-white mb-1">Tenemos novedades</h3>
-      <p class="text-xs text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</p>
+      <p class="text-xs text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el <strong>V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</strong>strong></p>
     </section>
 
   </main>
@@ -717,7 +717,7 @@ navInicioLinks.forEach(link => {
     }
 
     abrirNovedades();
-    setTimeout(cerrarNovedades, 10000); // 10s auto-cierre
+    setTimeout(cerrarNovedades, 5000); // 10s auto-cierre
 
     if (novCloseBtn) novCloseBtn.addEventListener('click', cerrarNovedades);
     novModal.addEventListener('click', function (e) { if (e.target === novModal) cerrarNovedades(); });

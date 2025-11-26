@@ -77,7 +77,7 @@
         <a href="/index.html" class="text-cura-accentLight hover:text-white transition-colors flex items-center gap-1">
             <span>←</span> Volver a la página principal
         </a>
-        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold">
+        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">
             Sumate
         </a>
         <a href="/random/demo-random.html"
@@ -88,14 +88,136 @@
     </div>
   </header>
 
-  <!-- Contenido Principal (Espacio para futura info) -->
+  <!-- Contenido Principal -->
   <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
     
-    <section class="text-center py-10">
-        <h1 class="text-3xl font-bold text-white mb-4">Información sobre el Proyecto</h1>
-        <p class="text-cura-accentLight max-w-2xl mx-auto">
-            Aquí podrás encontrar próximamente los detalles técnicos, artículos de la ley y documentación adicional sobre la implementación del sistema C.U.R.A.
-        </p>
+    <section>
+        <h1 class="text-3xl font-bold text-white mb-8 text-center md:text-left">Información sobre el Proyecto</h1>
+        
+        <!-- Grid Principal: Bio + Contenidos -->
+        <div class="grid md:grid-cols-12 gap-8 items-start">
+            
+            <!-- COLUMNA IZQUIERDA: BIOGRAFÍA (Sticky para que acompañe el scroll) -->
+            <div class="md:col-span-4 lg:col-span-3 sticky top-24">
+                <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-lg flex flex-col items-center text-center">
+                    
+                    <!-- Foto Circular -->
+                    <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-cura-accent mb-4 shadow-md bg-white">
+                        <!-- Reemplazar src con la foto real -->
+                        <img src="https://via.placeholder.com/150" alt="Franco Agustin Paganini" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- Nombre -->
+                    <h2 class="text-xl font-bold text-white mb-3">Franco Agustin Paganini</h2>
+                    
+                    <!-- Botón LinkedIn -->
+                    <a href="https://linkedin.com/in/franco-paganini" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077b5] hover:bg-[#005e93] text-white text-sm font-semibold rounded-md transition-colors w-full justify-center mb-4">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        LinkedIn
+                    </a>
+
+                    <!-- Línea Separadora -->
+                    <div class="w-full border-t border-white/20 my-2"></div>
+
+                    <!-- Texto Biografía -->
+                    <div class="text-sm text-cura-accentLight text-left mt-3 space-y-3 leading-relaxed">
+                        <p>
+                            Aquí puedes escribir tu biografía profesional. Cuenta un poco sobre tu experiencia, tu rol en el proyecto Ley C.U.R.A. y tu visión sobre la salud digital.
+                        </p>
+                        <p>
+                            Este espacio es ideal para destacar tus logros y conectar con quienes visitan la página.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA DERECHA: RECUADROS EDITABLES (Grilla) -->
+            <div class="md:col-span-8 lg:col-span-9">
+                <div class="grid sm:grid-cols-2 gap-4">
+                    
+                    <!-- Recuadro 1 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Fundamentos de la Ley</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Explicación detallada sobre por qué es necesaria la unificación de datos y cómo impacta positivamente en la sociedad.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 2 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Implementación Técnica</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Detalles sobre la infraestructura de blockchain y seguridad que garantizarán la privacidad de los datos.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 3 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Alcance Federal</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Cómo se integrarán las provincias y municipios al sistema nacional de salud digital de manera progresiva.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 4 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Beneficios Médicos</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Herramientas para profesionales: acceso rápido a historias clínicas, reducción de errores y diagnósticos precisos.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 5 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Marco Legal</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Análisis de las leyes vigentes de protección de datos y cómo la Ley C.U.R.A. se adapta y mejora la normativa actual.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 6 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Participación Ciudadana</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Mecanismos para que la sociedad civil audite y proponga mejoras continuas al sistema.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 7 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Roadmap 2026</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Cronograma tentativo de desarrollo, pruebas piloto y lanzamiento oficial en el congreso.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 8 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Preguntas Frecuentes</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Respuestas a las dudas más comunes sobre seguridad, acceso y uso de la credencial digital.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 9 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Equipo de Trabajo</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Conoce a los profesionales, desarrolladores y especialistas en salud que impulsan este proyecto.
+                        </p>
+                    </div>
+
+                    <!-- Recuadro 10 -->
+                    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-colors">
+                        <h3 class="text-base font-bold text-white mb-2">Recursos Descargables</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">
+                            Acceso a PDFs, whitepapers y material gráfico para difundir la iniciativa en tu comunidad.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- SECCIÓN SUMATE (Replicada del Index) -->
@@ -202,6 +324,40 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+  // --- SCROLL SUAVE (SMOOTH SCROLL) ---
+  function smoothScrollTo(element, duration = 1700, offset = 100) {
+    if (!element) return;
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      window.scrollTo(0, startY + distance * ease);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+    requestAnimationFrame(animation);
+  }
+
+  // Activar smooth scroll para los links con clase 'nav-scroll-link' o href="#sumate"
+  const scrollLinks = document.querySelectorAll('a[href^="#"]');
+  scrollLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId !== '#') {
+              const targetElement = document.querySelector(targetId);
+              if (targetElement) {
+                  e.preventDefault();
+                  smoothScrollTo(targetElement);
+              }
+          }
+      });
+  });
 
   // --- CIUDADES Y GEOREF ---
   const provinciaSelect = document.querySelector('select[name="provincia"]');

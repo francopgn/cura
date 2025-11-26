@@ -94,17 +94,21 @@
     <section>
         <h1 class="text-3xl font-bold text-white mb-8 text-center md:text-left">Información sobre el Proyecto</h1>
         
-        <!-- Grid Principal: Bio + Contenidos -->
+        <!-- Grid Principal -->
         <div class="grid md:grid-cols-12 gap-8 items-start">
             
-            <!-- COLUMNA IZQUIERDA: BIOGRAFÍA (Sticky) -->
-            <!-- Ajustado a md:col-span-5 y lg:col-span-4 para buen balance -->
-            <div class="md:col-span-5 lg:col-span-4 sticky top-24">
+            <!-- 
+               COLUMNA IZQUIERDA: BIOGRAFÍA 
+               - order-2: En celular va SEGUNDO (abajo).
+               - md:order-1: En PC va PRIMERO (izquierda).
+               - md:sticky md:top-24: Se pega al scroll SOLO en PC.
+               - self-start: Evita que el sticky se rompa si el contenedor flex crece.
+            -->
+            <div class="md:col-span-5 lg:col-span-4 order-2 md:order-1 md:sticky md:top-24 self-start">
                 <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-lg flex flex-col items-center text-center">
                     
                     <!-- Foto Circular -->
                     <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-cura-accent mb-4 shadow-md bg-white">
-                        <!-- Foto real -->
                         <img src="https://media.licdn.com/dms/image/v2/D4D03AQH_6Hwe5o0lNA/profile-displayphoto-scale_400_400/B4DZq8uewJGgAg-/0/1764102894265?e=1766016000&v=beta&t=SAnN0L37gfKv16mUk1CagmLaPKUjwvYfCNasGXT9Gds" alt="Franco Agustin Paganini" class="w-full h-full object-cover">
                     </div>
                     
@@ -138,9 +142,12 @@
                 </div>
             </div>
 
-            <!-- COLUMNA DERECHA: RECUADROS EDITABLES (Grilla) -->
-            <!-- Ajustado a md:col-span-7 y lg:col-span-8 para completar los 12 -->
-            <div class="md:col-span-7 lg:col-span-8">
+            <!-- 
+                COLUMNA DERECHA: RECUADROS EDITABLES 
+                - order-1: En celular va PRIMERO (arriba).
+                - md:order-2: En PC va SEGUNDO (derecha).
+            -->
+            <div class="md:col-span-7 lg:col-span-8 order-1 md:order-2">
                 <div class="grid sm:grid-cols-2 gap-4">
                     
                     <!-- Recuadro 1 -->
@@ -260,7 +267,7 @@
             <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
             <select name="provincia" required
                     class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-              <option value="">Seleccioná una ciudad</option>
+              <option value="">Seleccioná una provincia</option>
               <option value="Buenos Aires">Buenos Aires</option>
               <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
               <option value="Catamarca">Catamarca</option>

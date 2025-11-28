@@ -839,7 +839,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-dni-front').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-sangre').textContent = sangreTxt;
     document.getElementById('cred-fecha-nac').textContent = genFechaNac();
-    document.getElementById('cred-domicilio').innerHTML = `${randItem(ciudades)}<br>${randItem(provincias)}`;
+    // Selección coherente de domicilio
+    const provinciasKeys = Object.keys(localidadesCoherentes); // Obtiene lista de provincias
+    const provElegida = randItem(provinciasKeys); // Elige una provincia
+    const ciudadElegida = randItem(localidadesCoherentes[provElegida]); // Elige ciudad de ESA provincia
+    document.getElementById('cred-domicilio').innerHTML = `${ciudadElegida}<br>${provElegida}`;
     document.getElementById('cred-contactos').innerHTML = genTel();
 
     document.getElementById('cred-antecedentes').innerHTML = antecedentesTxt;

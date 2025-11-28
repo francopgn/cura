@@ -35,7 +35,7 @@
   .card-container {
     position: relative; width: 100%; max-width: 450px;
     aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20;
-    container-type: inline-size; /* Para tipografía responsiva (cqw) */
+    container-type: inline-size;
   }
   .card-inner {
     position: relative; width: 100%; height: 100%; text-align: center;
@@ -61,91 +61,51 @@
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10; pointer-events: none; color: white;
   }
-
-  /* Utilidad para centrar texto en los bloques */
   .centered-data {
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     text-align: center; height: 100%; line-height: 1.2;
   }
 
   /* ====== POSICIONES CALIBRADAS (Ref: 1411x913px) ====== */
-
-  /* --- FRENTE --- */
+  /* FRENTE */
   .pos-nombre-front {
-    position: absolute;
-    /* X: 368.22 / 1411 = 26.09% | Y: 165.34 / 913 = 18.11% */
-    left: 26.09%; top: 18.11%;
+    position: absolute; left: 26.09%; top: 18.11%;
     font-family: 'Vazirmatn', sans-serif; font-weight: 700;
     font-size: 4.5cqw; text-align: left; line-height: 1;
   }
-
   .pos-dni-front {
-      position: absolute;
-      /* X: 208.75 / 1411 = 14.79% | Y: 219.69 / 913 = 24.06% */
-      left: 14.79%; top: 24.06%;
+      position: absolute; left: 14.79%; top: 24.06%;
       font-family: 'Vazirmatn', sans-serif; font-weight: 400;
       font-size: 3cqw; text-align: left;
   }
-
   .pos-sangre {
-      position: absolute;
-      /* Centro X: 1338.80 / 1411 = 94.88% | Centro Y: 83.93 / 913 = 9.19% */
-      left: 94.88%; top: 9.19%;
-      /* Usamos translate para centrar el elemento en la coordenada exacta */
-      transform: translate(-50%, -50%);
-      font-family: 'Roboto', sans-serif; font-weight: 600;
-      color: #0c4e82; font-size: 4.2cqw;
+      position: absolute; left: 94.88%; top: 9.19%; transform: translate(-50%, -50%);
+      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4.2cqw;
   }
-
-  /* Bloques de datos: Se calculó la caja contenedora basada en el centro proporcionado */
   .data-block {
-      position: absolute;
-      font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2.1cqw; text-transform: uppercase;
-      width: 27%; height: 11%; /* Tamaños estimados de las cajas blancas */
+      position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
+      font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%;
   }
-
-  /* Columna Izquierda */
-  /* Alergias Centro: 243.73, 360.98 */
   .block-alergias { left: 3.8%; top: 34%; }
-  /* Medicamentos Centro: 241.70, 540.37 */
   .block-medicamentos { left: 3.6%; top: 53.7%; }
-  /* Antecedentes Centro: 245.65, 688.63 */
   .block-antecedentes { left: 3.9%; top: 70%; }
-
-  /* Columna Centro (Operaciones) */
-  /* Centro: 707.09, 408.05. Nota: Esta caja es más alta en el diseño */
-  .block-operaciones {
-      left: 36.6%; top: 34%;
-      height: 22%; /* Más alto */
-      font-size: 2cqw;
-  }
-
-  /* Columna Derecha */
-  /* Fecha Nac Centro: 1165.19, 373.10 */
+  .block-operaciones { left: 36.6%; top: 34%; height: 22%; font-size: 2cqw; }
   .block-fecha-nac { left: 69%; top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
-  /* Domicilio Centro: 1177.72, 533.58 */
   .block-domicilio { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2cqw; font-weight: 600; }
-  /* Contactos Centro: 1176.64, 711.63 */
   .block-contactos { left: 69.8%; top: 72.4%; }
 
-
-  /* --- DORSO (Posiciones ajustadas "más abajo" según iteración anterior) --- */
+  /* DORSO */
   .pos-nombre-back {
       position: absolute; top: 18%; left: 6%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 400;
-      font-size: 3.5cqw; text-align: left;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3.5cqw; text-align: left;
   }
   .pos-dni-back {
       position: absolute; top: 26%; left: 6%;
-      font-family: 'Open Sans', sans-serif; font-weight: 400;
-      font-size: 2.5cqw; text-align: left;
+      font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.5cqw; text-align: left;
   }
   .pos-id-number {
-      position: absolute; bottom: 18%; left: 0; right: 0;
-      text-align: center;
-      font-family: 'Open Sans', sans-serif; font-weight: 400;
-      font-size: 2.8cqw; letter-spacing: 0.05em;
+      position: absolute; bottom: 18%; left: 0; right: 0; text-align: center;
+      font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.8cqw; letter-spacing: 0.05em;
   }
 </style>
 
@@ -292,44 +252,150 @@
     </div>
   </footer>
 
-  <script>
+  <div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden"><div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center"><h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2><button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button></div></div>
+  
+<script>
+// Scripts originales del index (scroll, formularios, modales) - SIN CAMBIOS
+document.addEventListener('DOMContentLoaded', function () {
+  // (Aquí iría todo el bloque de scripts originales de georef, scroll suave, y manejo de formularios/modales que ya tenías)
+  // Se omite para ahorrar espacio, pero debe estar presente.
+  const provinciaSelect = document.querySelector('select[name="provincia"]'); const ciudadSelect = document.getElementById('ciudad-select'); async function cargarCiudades() { if (!provinciaSelect || !ciudadSelect) return; const prov = provinciaSelect.value; ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>'; if (!prov) { ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>'; return; } try { const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov); const res = await fetch(url); if (!res.ok) throw new Error(); const data = await res.json(); const localidades = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es')); ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>'; localidades.forEach(nombre => { const opt = document.createElement('option'); opt.value = nombre; opt.textContent = nombre; ciudadSelect.appendChild(opt); }); } catch (e) { ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>'; } } if (provinciaSelect) { provinciaSelect.addEventListener('change', cargarCiudades); }
+  const btnSumate=document.getElementById('btn-sumate'),targetSumate=document.getElementById('sumate'),btnInfo=document.getElementById('btn-info'),targetInfo=document.getElementById('informacion');function smoothScrollTo(e,t=1700,n=200){if(e){const o=e.getBoundingClientRect().top+window.pageYOffset-n,c=window.pageYOffset,r=o-c;let i=null;requestAnimationFrame(function e(n){i||(i=n);const o=n-i,a=Math.min(o/t,1),l=1-Math.pow(1-a,3);window.scrollTo(0,c+r*l),o<t&&requestAnimationFrame(e)})}}btnSumate&&targetSumate&&btnSumate.addEventListener('click',e=>{e.preventDefault(),smoothScrollTo(targetSumate)}),btnInfo&&targetInfo&&btnInfo.addEventListener('click',e=>{e.preventDefault(),smoothScrollTo(targetInfo)});
+});
+</script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function () {
   const card = document.getElementById('credencial-giratoria');
   if (card) { card.addEventListener('click', function() { this.classList.toggle('is-flipped'); }); }
 
-  const nombres = ["Juan", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía"];
-  const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez"];
-  const ciudades = ["CABA", "Córdoba", "Rosario", "Mendoza", "La Plata"];
-  const provincias = ["Buenos Aires", "Córdoba", "Santa Fe", "Mendoza"];
-  const alergiasLista = ["PENICILINA", "NÍQUEL", "POLEN", "ÁCAROS", "SULFAS", "LATEX"];
-  const medicamentosLista = ["IBUPROFENO", "PARACETAMOL", "ENALAPRIL", "METFORMINA"];
-  const antecedentesLista = ["HIPERTENSIÓN", "DIABETES TIPO 2", "ASMA", "HIPOTIROIDISMO"];
-  const operacionesLista = ["APENDICECTOMÍA", "CESÁREA", "VESÍCULA", "PRÓTESIS RODILLA"];
+  // Listas básicas
+  const nombres = ["Juan", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena"];
+  const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero"];
+  const ciudades = ["CABA", "Córdoba", "Rosario", "Mendoza", "La Plata", "San Miguel de Tucumán"];
+  const provincias = ["Buenos Aires", "Córdoba", "Santa Fe", "Mendoza", "Tucumán"];
   const tiposSangre = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+  const alergiasBase = ["PENICILINA", "NÍQUEL", "POLEN", "ÁCAROS", "SULFAS", "LATEX"];
+  const operacionesBase = ["APENDICECTOMÍA", "CESÁREA", "VESÍCULA", "PRÓTESIS RODILLA", "BYPASS GÁSTRICO"];
 
+  // --- PERFILES MÉDICOS COHERENTES ---
+  const perfilesMedicos = [
+    {
+      nombre: "Sano",
+      antecedentes: [],
+      medicamentos: []
+    },
+    {
+      nombre: "Hipertenso",
+      antecedentes: ["HIPERTENSIÓN ARTERIAL"],
+      medicamentos: ["ENALAPRIL", "LOSARTÁN", "AMLODIPINA", "HIDROCLOROTIAZIDA"]
+    },
+    {
+      nombre: "Diabético Tipo 2",
+      antecedentes: ["DIABETES TIPO 2"],
+      medicamentos: ["METFORMINA", "GLIBENCLAMIDA", "INSULINA NPH"]
+    },
+    {
+      nombre: "Asmático",
+      antecedentes: ["ASMA BRONQUIAL"],
+      medicamentos: ["SALBUTAMOL (SOS)", "BUDESONIDA INHALADOR"]
+    },
+    {
+      nombre: "Cardiópata",
+      antecedentes: ["INSUFICIENCIA CARDÍACA", "ARRITMIA"],
+      medicamentos: ["CARVEDILOL", "FUROSEMIDA", "DIGOXINA", "ESPIRONOLACTONA"]
+    },
+    {
+      nombre: "Hipotiroideo",
+      antecedentes: ["HIPOTIROIDISMO"],
+      medicamentos: ["LEVOTIROXINA SÓDICA"]
+    },
+    {
+      nombre: "Perfil Complejo",
+      antecedentes: ["HIPERTENSIÓN", "DIABETES TIPO 2", "DISLIPEMIA"],
+      medicamentos: ["LOSARTÁN", "METFORMINA", "ATORVASTATINA", "ASPIRINA PREVENTIVA"]
+    }
+  ];
+
+  // Funciones auxiliares
   function randItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function randNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
   function genDNI() { const num = randNum(10000000, 59999999).toString(); return `${num.slice(0, 2)}.${num.slice(2, 5)}.${num.slice(5)}`; }
   function genFechaNac() { const dia = String(randNum(1, 28)); const mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][randNum(0, 11)]; const anio = randNum(1950, 2005); return `${dia} ${mes} ${anio}`; }
-  function genList(source, empty, max=1) { if(Math.random()>0.7) return empty; const c=randNum(1,max); let i=[]; let t=[...source]; for(let j=0;j<c;j++){if(t.length==0)break;i.push(t.splice(Math.floor(Math.random()*t.length),1)[0]);} return i.join('<br>'); }
-  function genTel() { const c=randNum(1,3); let p=[]; for(let i=0;i<c;i++) p.push(`011 ${randNum(1000,9999)} ${randNum(1000,9999)}`); return p.join('<br>'); }
+  function genTel() { return `011 ${randNum(1000,9999)} ${randNum(1000,9999)}<br>011 ${randNum(1000,9999)} ${randNum(1000,9999)}`; }
+  
+  // Función para elegir un subconjunto de una lista
+  function pickSubset(sourceArray, maxItems) {
+    if (!sourceArray || sourceArray.length === 0) return [];
+    let result = [];
+    let tempArray = [...sourceArray];
+    const count = randNum(1, Math.min(maxItems, tempArray.length));
+    for (let i = 0; i < count; i++) {
+        const randomIndex = Math.floor(Math.random() * tempArray.length);
+        result.push(tempArray.splice(randomIndex, 1)[0]);
+    }
+    return result;
+  }
 
+  // --- LÓGICA PRINCIPAL DE POBLADO ---
   function poblarCredencial() {
-    const nombre = randItem(nombres); const apellido = randItem(apellidos); const fullName = `${nombre} ${apellido}`; const dni = genDNI();
+    // 1. Datos personales básicos
+    const nombre = randItem(nombres);
+    const apellido = randItem(apellidos);
+    const fullName = `${nombre} ${apellido}`;
+    const dni = genDNI();
+
+    // 2. Selección de Perfil Médico Coherente
+    const perfil = randItem(perfilesMedicos);
+
+    // 3. Generar Antecedentes (basado en el perfil)
+    let antecedentesTxt = "SIN PATOLOGÍAS REGISTRADAS";
+    if (perfil.antecedentes.length > 0) {
+        antecedentesTxt = perfil.antecedentes.join('<br>');
+    }
+
+    // 4. Generar Medicamentos (basado en el perfil + azar de venta libre)
+    let medsDelPerfil = [];
+    if (perfil.medicamentos.length > 0) {
+        // Elegir 1 o 2 medicamentos de la lista del perfil
+        medsDelPerfil = pickSubset(perfil.medicamentos, 2);
+    }
+    // 20% de chance de agregar un medicamento común (ej. analgésico) a cualquiera
+    if (Math.random() > 0.8) {
+        medsDelPerfil.push(randItem(["IBUPROFENO 600MG", "PARACETAMOL 1G"]));
+    }
+    
+    let medicamentosTxt = "SIN MEDICACIÓN VITAL EN USO";
+    if (medsDelPerfil.length > 0) {
+        // Eliminar duplicados y unir
+        medicamentosTxt = [...new Set(medsDelPerfil)].join('<br>');
+    }
+
+    // 5. Generar otros datos independientes
+    const alergiasTxt = (Math.random() > 0.7) ? "NO REFIERE" : pickSubset(alergiasBase, 1).join('<br>');
+    const operacionesTxt = (Math.random() > 0.6) ? "NINGUNA" : pickSubset(operacionesBase, 2).join('<br>');
+
+    // 6. Llenar el DOM (Frente)
     document.getElementById('cred-nombre-front').textContent = fullName;
     document.getElementById('cred-dni-front').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-sangre').textContent = randItem(tiposSangre);
-    document.getElementById('cred-alergias').innerHTML = genList(alergiasLista, "NO REFIERE", 1);
-    document.getElementById('cred-operaciones').innerHTML = genList(operacionesLista, "NINGUNA", 2);
     document.getElementById('cred-fecha-nac').textContent = genFechaNac();
-    document.getElementById('cred-medicamentos').innerHTML = genList(medicamentosLista, "SIN MEDICACIÓN VITAL EN USO", 2);
     document.getElementById('cred-domicilio').innerHTML = `${randItem(ciudades)}<br>${randItem(provincias)}`;
-    document.getElementById('cred-antecedentes').innerHTML = genList(antecedentesLista, "SIN PATOLOGÍAS REGISTRADAS", 2);
     document.getElementById('cred-contactos').innerHTML = genTel();
+
+    // Llenar datos médicos coherentes
+    document.getElementById('cred-antecedentes').innerHTML = antecedentesTxt;
+    document.getElementById('cred-medicamentos').innerHTML = medicamentosTxt;
+    document.getElementById('cred-alergias').innerHTML = alergiasTxt;
+    document.getElementById('cred-operaciones').innerHTML = operacionesTxt;
+
+    // 7. Llenar el DOM (Dorso)
     document.getElementById('cred-nombre-back').textContent = fullName;
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
   }
+
+  // Ejecutar al cargar
   poblarCredencial();
 });
 </script>

@@ -61,28 +61,27 @@
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10; pointer-events: none; color: white;
   }
-  /* Clase base para contenedores que necesitan ajuste de texto */
+  
+  /* Clase para contenedores cuyo texto debe ajustarse si se desborda */
   .adjustable-text-container {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centrado vertical por defecto */
-    align-items: center;     /* Centrado horizontal por defecto */
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    overflow: hidden;        /* Importante para que el script detecte el desbordamiento */
-    white-space: normal;     /* Permite múltiples líneas */
+    overflow: hidden; /* CRÍTICO: Para detectar el desbordamiento */
+    white-space: normal;
   }
 
-  /* ====== POSICIONES CALIBRADAS (Ref: 1411x913px) ====== */
+  /* ====== POSICIONES CALIBRADAS (Volvemos a los tamaños ideales) ====== */
   /* FRENTE */
   .pos-nombre-front {
     position: absolute; left: 26.09%; top: 18.11%;
-    width: 50%; height: 6%; /* Definimos un área para el nombre */
+    width: 55%; height: 7%;
     font-family: 'Vazirmatn', sans-serif; font-weight: 700;
-    /* font-size inicial grande, el script lo reducirá */
-    font-size: 5cqw; 
+    font-size: 4.5cqw; /* Tamaño ideal */
     text-align: left; line-height: 1.1;
-    align-items: flex-start; /* Alineación izquierda */
-    justify-content: flex-start;
+    align-items: flex-start; justify-content: flex-start;
   }
   .pos-dni-front {
       position: absolute; left: 14.79%; top: 24.06%;
@@ -91,25 +90,23 @@
   }
   .pos-sangre {
       position: absolute; left: 94.88%; top: 9.19%; transform: translate(-50%, -50%);
-      width: 10%; height: 16%; /* Definimos el área del círculo */
+      width: 10%; height: 16%;
       font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; 
-      /* font-size inicial grande, el script lo reducirá */
-      font-size: 5cqw;
-      display: flex; justify-content: center; align-items: center; /* Centrado total */
+      font-size: 4.2cqw; /* Tamaño ideal */
+      display: flex; justify-content: center; align-items: center;
   }
   .data-block {
       position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
-      /* font-size inicial grande, el script lo reducirá */
-      font-size: 3cqw; 
-      text-transform: uppercase; width: 27%; height: 11%; line-height: 1.1;
+      font-size: 2.1cqw; /* Tamaño ideal base */
+      text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
   }
   .block-alergias { left: 3.8%; top: 34%; }
   .block-medicamentos { left: 3.6%; top: 53.7%; }
   .block-antecedentes { left: 3.9%; top: 70%; }
-  .block-operaciones { left: 36.6%; top: 34%; height: 22%; }
+  .block-operaciones { left: 36.6%; top: 34%; height: 22%; font-size: 2cqw; }
   .block-fecha-nac { left: 69%; top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
   .block-domicilio { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2cqw; font-weight: 600; }
-  .block-contactos { left: 69.8%; top: 72.4%; font-size: 1.8cqw; }
+  .block-contactos { left: 69.8%; top: 72.4%; font-size: 1.9cqw; }
 
   /* DORSO */
   .pos-nombre-back {
@@ -325,21 +322,26 @@ document.addEventListener('DOMContentLoaded', function () {
     return result;
   }
 
-  // --- FUNCIÓN ROBUSTA PARA AJUSTAR TAMAÑO DE TEXTO ---
-  function ajustarTexto(elementoId) {
+  // --- NUEVA FUNCIÓN DE AJUSTE: "SHRINK TO FIT" ---
+  function fitTextToContainer(elementId) {
       const el = document.getElementById(elementoId);
-      if (!el || el.textContent.trim() === "") return;
+      if (!el || !el.textContent.trim()) return;
 
-      // Empezamos con un tamaño grande
-      let size = 5; // en cqw
-      el.style.fontSize = size + "cqw";
+      // 1. Restaurar al tamaño original del CSS
+      el.style.fontSize = ''; 
 
-      // Reducimos hasta que no haya desbordamiento ni vertical ni horizontal
-      let safetyCounter = 0;
-      while ( (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth) && safetyCounter < 50 && size > 0.5 ) {
-          size -= 0.1;
-          el.style.fontSize = size + "cqw";
-          safetyCounter++;
+      // 2. Verificar si se desborda (alto o ancho) con una pequeña tolerancia
+      if (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) {
+          // Obtener el tamaño actual en píxeles
+          let currentSizePx = parseFloat(window.getComputedStyle(el).fontSize);
+
+          // 3. Bucle de reducción: Achicar 5% mientras siga desbordado
+          let safety = 0;
+          while ((el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && currentSizePx > 8 && safety < 50) {
+              currentSizePx *= 0.95; // Reducir un 5%
+              el.style.fontSize = `${currentSizePx}px`;
+              safety++;
+          }
       }
   }
 
@@ -377,16 +379,16 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
 
-    // --- APLICAR AJUSTE DE TEXTO DESPUÉS DE LLENAR ---
-    // Esperamos a que el navegador renderice para calcular dimensiones
+    // --- APLICAR AJUSTE "SHRINK TO FIT" ---
+    // Esperamos a que el navegador renderice
     setTimeout(() => {
-        ajustarTexto('cred-nombre-front');
-        ajustarTexto('cred-sangre');
-        ajustarTexto('cred-antecedentes');
-        ajustarTexto('cred-medicamentos');
-        ajustarTexto('cred-alergias');
-        ajustarTexto('cred-operaciones');
-        // Domicilio y Contactos suelen estar bien, pero se pueden añadir si es necesario
+        fitTextToContainer('cred-sangre');
+        fitTextToContainer('cred-antecedentes');
+        fitTextToContainer('cred-medicamentos');
+        fitTextToContainer('cred-alergias');
+        fitTextToContainer('cred-operaciones');
+        fitTextToContainer('cred-domicilio');
+        fitTextToContainer('cred-contactos');
     }, 50);
   }
 

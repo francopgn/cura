@@ -569,8 +569,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnInfo && targetInfo) {
     btnInfo.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
   }
-  navInicioLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInicio, 1700, 0); });
+navInicioLinks.forEach(link => {
+    link.addEventListener('click', e => { 
+        e.preventDefault(); 
+        // Al poner 'document.body', le decimos que vaya al techo total de la web
+        smoothScrollTo(document.body, 1700, 0); 
+    });
   });
   navInfoLinks.forEach(link => {
     link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });

@@ -871,7 +871,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-nombre-back').textContent = fullName;
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
     // Genera un número aleatorio entre 10 y 99 para el ID
-    const randomIdNum = randNum(04, 99);
+    const randomIdNum = randNum(10, 99);
     document.getElementById('cred-id-number').textContent = `ID${randomIdNum}-${dni.replace(/\./g, '')}`;
   }
 

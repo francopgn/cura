@@ -1,153 +1,164 @@
-/* Reseteo básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* --- ANIMACIONES DE MODALES (Originales) --- */
+.modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+.modal-backdrop.show { opacity: 1; }
+.modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+.modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+
+/* --- ESTILOS DE LA CREDENCIAL 3D --- */
+.perspective-container { perspective: 1500px; }
+
+/* Wrapper para posicionamiento */
+.card-container-wrapper {
+  position: relative;
+  width: 100%;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f2f5;
-    font-family: 'Open Sans', sans-serif; /* Fuente fallback */
-}
-
-/* Contenedor con perspectiva para el efecto 3D */
 .card-container {
-    perspective: 1000px;
-    width: 600px; /* Ancho de la tarjeta basado en las imágenes */
-    height: 380px; /* Alto de la tarjeta */
-    cursor: pointer;
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Tamaño grande basado en tus imágenes */
+  aspect-ratio: 1.58 / 1; 
+  margin: 0 auto;
+  z-index: 20;
+  cursor: pointer;
 }
 
-/* La tarjeta en sí, que girará */
 .card {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.8s;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Clase que se añade para girar la tarjeta */
 .card.is-flipped {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
-/* Estilos comunes para ambas caras */
 .card-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* Oculta la cara trasera al girar */
-    background-size: cover;
-    background-position: center;
-    border-radius: 15px; /* Ajusta según el diseño de la imagen */
-    color: white;
-    font-family: 'Open Sans', sans-serif; /* Por defecto */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background-size: cover;
+  background-position: center;
+  border-radius: 15px; /* Ajustado al borde de tu imagen */
+  /* Sombras y suavizado */
+  box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  overflow: hidden;
 }
 
-/* Cara frontal */
-.card-front {
-    transform: rotateY(0deg);
+.card-front { transform: rotateY(0deg); }
+.card-back { transform: rotateY(180deg); }
+
+/* Animación Flotante */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+.animate-float .card-container {
+  animation: float 6s ease-in-out infinite;
+}
+.card-container:hover {
+  animation-play-state: paused;
 }
 
-/* Cara trasera, rotada inicialmente 180 grados */
-.card-back {
-    transform: rotateY(180deg);
+/* --- ESTILOS TEXTOS SOBRE CREDENCIAL --- */
+/* Usamos porcentajes para que sea responsive */
+
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  line-height: 1.1;
+  color: white; /* Blanco puro por defecto */
 }
 
-/* --- ESTILOS DE LOS DATOS --- */
-
-/* Contenedores de datos posicionados absolutamente */
-.data-container {
-    position: absolute;
-}
-
-/* Texto centrado dentro de sus secciones */
-.centered-text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    text-align: center;
-    width: 100%;
-}
-
-/* --- FRENTE --- */
-
-.full-name-front {
-    top: 20px;
-    left: 25px;
-    font-family: 'Vazirmatn', sans-serif;
-    font-size: 24px; /* Tamaño ajustado para el frente según ejemplo visual */
-    font-weight: bold;
+/* FRENTE */
+.name-front {
+  position: absolute;
+  top: 19%; left: 4%;
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 4.8cqw; /* Relativo al ancho del contenedor */
+  font-weight: 700;
+  color: white;
 }
 
 .dni-front {
-    top: 50px;
-    left: 25px;
-    font-family: 'Open Sans', sans-serif; /* Alternativa a Myriad Pro */
-    font-size: 16px;
+  position: absolute;
+  top: 30%; left: 4%;
+  font-family: 'Vazirmatn', sans-serif; /* Mismo que nombre */
+  font-size: 3.2cqw;
+  font-weight: 400;
+  color: white;
 }
 
 .blood-type {
-    top: 25px;
-    right: 35px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    font-size: 18px; /* 11pt aprox */
-    color: #0c4e82;
-    background-color: white; /* Fondo blanco circular */
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  top: 6%; right: 6%;
+  width: 7%; height: 11%;
+  display: flex; justify-content: center; align-items: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 3.6cqw; /* 11pt aprox escalado */
+  color: #0c4e82; /* Azul pedido */
+  background: white;
+  border-radius: 50%;
 }
 
-/* Secciones de datos del frente */
-.data-section {
-    position: absolute;
-    /* Bordes para visualizar las áreas, quitar al finalizar */
-    /* border: 1px solid rgba(255, 0, 0, 0.3); */
+/* Bloques de datos (Alergias, medicamentos, etc) */
+.data-block {
+  position: absolute;
+  width: 29%;
+  height: 15%;
+  font-family: 'Open Sans', sans-serif; /* Reemplazo Myriad Pro */
+  font-weight: 600; /* Semibold */
+  font-size: 2cqw; /* ~7.09pt escalado */
 }
 
-.section-alergias { top: 95px; left: 20px; width: 180px; height: 60px; font-size: 10px; /* 7.09pt */ font-weight: 600; }
-.section-operaciones { top: 95px; left: 210px; width: 180px; height: 60px; font-size: 9.5px; /* 6.86pt */ font-weight: 600; }
-.section-fecha-nac { top: 95px; left: 400px; width: 180px; height: 60px; font-size: 12px; font-weight: bold; }
+.block-alergias { top: 37%; left: 3.5%; }
+.block-operaciones { top: 37%; left: 35.5%; font-size: 1.9cqw; } /* Un poco mas chico 6.86pt */
+.block-fecha-nac { top: 37%; left: 67.5%; }
 
-.section-medicamentos { top: 175px; left: 20px; width: 180px; height: 60px; font-size: 10px; /* 7.1pt */ font-weight: 600; }
-.section-domicilio { top: 175px; left: 400px; width: 180px; height: 60px; font-size: 10px; /* 7.09pt */ font-weight: 600; }
+.block-medicamentos { top: 58%; left: 3.5%; }
+/* Espacio central vacío */
+.block-domicilio { top: 58%; left: 67.5%; }
 
-.section-antecedentes { top: 255px; left: 20px; width: 180px; height: 60px; font-size: 10px; font-weight: 600; }
-.section-contactos { top: 255px; left: 400px; width: 180px; height: 60px; font-size: 10px; /* 7.09pt */ font-weight: 600; }
+.block-antecedentes { top: 79%; left: 3.5%; }
+/* Espacio central vacío */
+.block-contactos { top: 79%; left: 67.5%; }
 
 
-/* --- DORSO --- */
-
-.full-name-back {
-    top: 25px;
-    left: 25px;
-    font-family: 'Vazirmatn', sans-serif;
-    font-size: 14px; /* 10.68pt aprox */
+/* DORSO */
+.name-back {
+  position: absolute;
+  top: 6%; left: 4%;
+  font-family: 'Vazirmatn', sans-serif;
+  font-size: 3.5cqw; /* ~10.68pt */
+  font-weight: 400;
+  color: white;
 }
 
 .dni-back {
-    top: 45px;
-    left: 25px;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 11px; /* 8.39pt aprox */
+  position: absolute;
+  top: 13%; left: 4%;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2.3cqw; /* ~8.39pt */
+  color: white;
 }
 
 .id-number {
-    bottom: 75px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Open Sans', sans-serif;
-    font-size: 12.5px; /* 9.4pt aprox */
-    letter-spacing: 1px;
+  position: absolute;
+  bottom: 22%; left: 0; right: 0;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2.6cqw; /* ~9.4pt */
+  color: white;
+  letter-spacing: 0.05em;
 }
+
+/* Habilitar Container Queries para los tamaños de fuente relativos */
+.card { container-type: inline-size; }

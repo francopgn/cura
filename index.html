@@ -723,8 +723,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // --- DATOS BÁSICOS ---
   const nombres = ["Juan", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena", "Martín", "Julia"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero", "Sosa", "Torres"];
-  const ciudades = ["CABA", "Córdoba", "Rosario", "Mendoza", "La Plata", "San Miguel de Tucumán", "Mar del Plata"];
-  const provincias = ["Buenos Aires", "Córdoba", "Santa Fe", "Mendoza", "Tucumán"];
+// Datos de localidad coherentes (Provincia -> Lista de ciudades)
+  const localidadesCoherentes = {
+      "CABA": ["Ciudad Autónoma de Buenos Aires"],
+      "Buenos Aires": ["La Plata", "Mar del Plata", "Bahía Blanca", "General Rodríguez"],
+      "Córdoba": ["Córdoba Capital", "Villa Carlos Paz", "Río Cuarto"],
+      "Santa Fe": ["Rosario", "Santa Fe Capital", "Rafaela"],
+      "Mendoza": ["Mendoza Capital", "San Rafael", "Godoy Cruz"],
+      "Tucumán": ["San Miguel de Tucumán", "Tafí Viejo"]
+  };
   
   // TIPO DE SANGRE: Lista simplificada (sin AB) para asegurar que entre en el círculo
   const tiposSangre = ["A+", "A-", "B+", "B-", "O+", "O-"];

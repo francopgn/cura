@@ -854,7 +854,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // 4. Llenar el DOM (Dorso)
     document.getElementById('cred-nombre-back').textContent = fullName;
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
-    document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
+    // Genera un número aleatorio entre 10 y 99 para el ID
+    const randomIdNum = randNum(04, 99);
+    document.getElementById('cred-id-number').textContent = `ID${randomIdNum}-${dni.replace(/\./g, '')}`;
   }
 
   // Ejecutar al cargar

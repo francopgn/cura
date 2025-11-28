@@ -73,7 +73,7 @@
     white-space: normal;
   }
 
-  /* ====== POSICIONES CALIBRADAS (Volvemos a los tamaños ideales) ====== */
+  /* ====== POSICIONES CALIBRADAS (Tamaños ideales base) ====== */
   /* FRENTE */
   .pos-nombre-front {
     position: absolute; left: 3.50%; top: 15%;
@@ -86,15 +86,15 @@
       font-size: 3cqw; text-align: left;
   }
   .pos-sangre {
-      position: absolute; left: 94.88%; top: 9%; transform: translate(-50%, -50%);
+      position: absolute; left: 94.88%; top: 9.19%; transform: translate(-50%, -50%);
       width: 10%; height: 16%;
       font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; 
-      font-size: 4cqw; /* Tamaño ideal */
+      font-size: 4.2cqw;
       display: flex; justify-content: center; align-items: center;
   }
   .data-block {
       position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2.1cqw; /* Tamaño ideal base */
+      font-size: 2.1cqw;
       text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
   }
   .block-alergias { left: 3.8%; top: 34%; }
@@ -319,25 +319,40 @@ document.addEventListener('DOMContentLoaded', function () {
     return result;
   }
 
-  // --- NUEVA FUNCIÓN DE AJUSTE: "SHRINK TO FIT" ---
+  // --- NUEVA FUNCIÓN DE AJUSTE: "SHRINK TO FIT" (Con esteroides) ---
   function fitTextToContainer(elementId) {
       const el = document.getElementById(elementoId);
       if (!el || !el.textContent.trim()) return;
 
-      // 1. Restaurar al tamaño original del CSS
+      // 1. Asegurar que el elemento tenga display correcto para medir
+      el.style.display = 'flex';
+
+      // 2. Restaurar al tamaño original del CSS
       el.style.fontSize = ''; 
 
-      // 2. Verificar si se desborda (alto o ancho) con una pequeña tolerancia
-      if (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) {
-          // Obtener el tamaño actual en píxeles
-          let currentSizePx = parseFloat(window.getComputedStyle(el).fontSize);
+      // 3. Función auxiliar para chequear desbordamiento
+      const isOverflowing = () => {
+          // Usamos una tolerancia de 1px para errores de redondeo
+          return el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1;
+      };
 
-          // 3. Bucle de reducción: Achicar 5% mientras siga desbordado
+      // 4. Verificar si se desborda
+      if (isOverflowing()) {
+          // Obtener el tamaño actual en píxeles. Si falla, usar un valor por defecto alto.
+          let computedSize = window.getComputedStyle(el).fontSize;
+          let currentSizePx = computedSize ? parseFloat(computedSize) : 24; // Valor fallback
+
+          // 5. Bucle de reducción: Achicar 5% mientras siga desbordado
           let safety = 0;
-          while ((el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && currentSizePx > 8 && safety < 50) {
+          // Límite de seguridad: 50 iteraciones o tamaño mínimo de 6px
+          while (isOverflowing() && currentSizePx > 6 && safety < 50) {
               currentSizePx *= 0.95; // Reducir un 5%
               el.style.fontSize = `${currentSizePx}px`;
               safety++;
+          }
+          // Si después de todo sigue desbordado (por el límite de seguridad), forzar un tamaño pequeño
+          if (isOverflowing()) {
+              el.style.fontSize = '8px'; // Último recurso
           }
       }
   }
@@ -377,16 +392,25 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
 
     // --- APLICAR AJUSTE "SHRINK TO FIT" ---
-    // Esperamos a que el navegador renderice
-    setTimeout(() => {
-        fitTextToContainer('cred-sangre');
-        fitTextToContainer('cred-antecedentes');
-        fitTextToContainer('cred-medicamentos');
-        fitTextToContainer('cred-alergias');
-        fitTextToContainer('cred-operaciones');
-        fitTextToContainer('cred-domicilio');
-        fitTextToContainer('cred-contactos');
-    }, 50);
+    // Usamos document.fonts.ready para asegurar que las fuentes estén cargadas
+    // y luego requestAnimationFrame para esperar al layout del navegador.
+    document.fonts.ready.then(() => {
+        requestAnimationFrame(() => {
+            // Un segundo rAF para asegurar que el primer layout se ha completado
+            requestAnimationFrame(() => {
+                const idsToFit = [
+                    'cred-sangre',
+                    'cred-antecedentes',
+                    'cred-medicamentos',
+                    'cred-alergias',
+                    'cred-operaciones',
+                    'cred-domicilio',
+                    'cred-contactos'
+                ];
+                idsToFit.forEach(id => fitTextToContainer(id));
+            });
+        });
+    });
   }
 
   // Ejecutar al cargar

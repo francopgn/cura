@@ -8,8 +8,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -35,77 +34,44 @@
 
 <style>
   /* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
-  .modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-  .modal-backdrop.show {
-    opacity: 1;
-  }
-  .modal-card {
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .modal-card.show {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
+  .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+  .modal-backdrop.show { opacity: 1; }
+  .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+  .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
 
-  .perspective-container {
-    perspective: 1500px; 
-  }
+  .perspective-container { perspective: 1500px; }
   
   .card-container {
     position: relative;
     width: 100%;
-    max-width: 420px; /* Tamaño grande */
+    max-width: 450px; /* Un poco más grande para ver mejor los detalles */
     aspect-ratio: 1.58 / 1; 
     margin: 0 auto;
     z-index: 20;
-    /* Habilitar container queries para texto responsivo */
+    /* IMPORTANTE: Habilitar container queries para texto responsivo */
     container-type: inline-size;
   }
 
   .card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform-style: preserve-3d;
-    cursor: pointer;
-    will-change: transform;
+    position: relative; width: 100%; height: 100%;
+    text-align: center; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-style: preserve-3d; cursor: pointer; will-change: transform;
   }
-
-  .card-inner.is-flipped {
-    transform: rotateY(180deg);
-  }
+  .card-inner.is-flipped { transform: rotateY(180deg); }
 
   .card-face {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    border-radius: 20px;
-    background-color: transparent !important; 
-    overflow: hidden;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    -webkit-backface-visibility: hidden; backface-visibility: hidden;
+    border-radius: 18px; overflow: hidden;
     transform: translateZ(0); 
     box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); 
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    /* Fix para Safari */ -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
 
-  /* La imagen de fondo de la tarjeta */
+  /* Imagen de fondo */
   .card-bg-img {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
-    z-index: 1;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 1;
   }
 
   .card-front { z-index: 2; transform: rotateY(0deg); }
@@ -115,104 +81,97 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-15px); }
   }
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-  .card-container:hover .animate-float {
-    animation-play-state: paused;
-  }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .card-container:hover .animate-float { animation-play-state: paused; }
 
-  /* --- NUEVOS ESTILOS PARA LOS DATOS DE LA TARJETA (CORREGIDOS) --- */
+  /* --- NUEVOS ESTILOS PARA LOS DATOS (RE-CALIBRADOS V2) --- */
   
-  /* Capa contenedora de textos sobre la imagen */
   .card-data-layer {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 10; /* Por encima de la imagen */
-    pointer-events: none; /* Click pasa a través */
-    color: white;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 10; pointer-events: none; color: white;
   }
 
-  /* Clase utilitaria para centrar contenido en los bloques */
+  /* Clase utilitaria para centrar el texto dentro de los recuadros */
   .centered-data {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center; /* Centrado vertical */
+    align-items: center;     /* Centrado horizontal */
     text-align: center;
     height: 100%;
     line-height: 1.1;
   }
+  /* Para bloques que necesitan alineación izquierda (ej. domicilio largo) */
+  .left-aligned-data {
+      align-items: flex-start; text-align: left; padding-left: 5%;
+  }
 
-  /* --- POSICIONES Y FUENTES FRENTE (RECALCULADAS) --- */
-  /* Usamos 'cqw' (container query width) para que el texto escale con la tarjeta */
+
+  /* --- POSICIONES FRENTE (RE-CALIBRADAS) --- */
+  /* Usamos 'cqw' para que el tamaño de fuente dependa del ancho de la tarjeta */
 
   .pos-nombre-front {
     position: absolute;
-    top: 24%; left: 5.5%;
-    font-family: 'Vazirmatn', sans-serif;
-    font-weight: 700;
+    top: 19%; left: 6%; /* Bajado */
+    font-family: 'Vazirmatn', sans-serif; font-weight: 700;
     font-size: 4.5cqw;
-    text-align: left;
+    text-align: left; line-height: 1;
   }
   .pos-dni-front {
       position: absolute;
-      top: 35%; left: 5.5%;
-      font-family: 'Vazirmatn', sans-serif;
-      font-weight: 400;
+      top: 30%; left: 6%; /* Bajado */
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400;
       font-size: 3cqw;
       text-align: left;
   }
-  /* Tipo de sangre: Solo texto azul, centrado en el círculo blanco de la imagen */
   .pos-sangre {
       position: absolute;
-      top: 8.5%; right: 5.5%;
-      width: 12%; height: 19%;
+      top: 6.5%; right: 6.5%; /* Ajustado al círculo */
+      width: 11%; height: 18%;
       display: flex; justify-content: center; align-items: center;
       font-family: 'Roboto', sans-serif; font-weight: 600;
-      color: #0c4e82;
-      font-size: 4cqw;
+      color: #0c4e82; font-size: 4cqw;
   }
 
-  /* Bloques de datos (Alergias, etc.) - Posiciones ajustadas a la plantilla */
+  /* Bloques de datos - Intentando encajar en los recuadros blancos */
   .data-block {
       position: absolute;
       font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2.1cqw; /* ~7.1pt */
+      font-size: 2.2cqw;
       text-transform: uppercase;
+      height: 14%; /* Altura aprox de los recuadros */
+      /* border: 1px dotted red; /* DEBUG: Descomentar para ver las cajas */
   }
-  .block-alergias { top: 43%; left: 3.5%; width: 29%; height: 14%; }
-  .block-operaciones { top: 43%; left: 34.5%; width: 29%; height: 14%; font-size: 2cqw; }
-  .block-fecha-nac { top: 43%; left: 65.5%; width: 31%; height: 14%; font-weight: 700; font-size: 2.3cqw; }
-  
-  .block-medicamentos { top: 63%; left: 3.5%; width: 29%; height: 14%; }
-  .block-domicilio { top: 63%; left: 65.5%; width: 31%; height: 14%; text-transform: none; font-size: 2cqw;}
-  
-  .block-antecedentes { top: 83%; left: 3.5%; width: 29%; height: 14%; }
-  .block-contactos { top: 83%; left: 65.5%; width: 31%; height: 14%; }
+  /* Fila 1 */
+  .block-alergias { top: 40%; left: 4%; width: 29%; }
+  .block-operaciones { top: 40%; left: 35%; width: 29%; font-size: 2cqw; }
+  .block-fecha-nac { top: 40%; left: 66%; width: 30%; font-weight: 700; font-size: 2.4cqw; }
+  /* Fila 2 */
+  .block-medicamentos { top: 61%; left: 4%; width: 29%; }
+  .block-domicilio { top: 61%; left: 66%; width: 30%; text-transform: none; font-size: 2cqw; font-weight: 600;}
+  /* Fila 3 */
+  .block-antecedentes { top: 82%; left: 4%; width: 29%; }
+  .block-contactos { top: 82%; left: 66%; width: 30%; }
 
-  /* --- POSICIONES Y FUENTES DORSO (CORREGIDAS) --- */
+  /* --- POSICIONES DORSO (RE-CALIBRADAS - MÁS ABAJO) --- */
   .pos-nombre-back {
       position: absolute;
-      top: 7%; left: 5.5%;
+      top: 18%; left: 6%; /* Bajado significativamente */
       font-family: 'Vazirmatn', sans-serif; font-weight: 400;
-      font-size: 3.5cqw;
-      text-align: left;
+      font-size: 3.5cqw; text-align: left;
   }
   .pos-dni-back {
       position: absolute;
-      top: 14%; left: 5.5%;
+      top: 26%; left: 6%; /* Bajado significativamente */
       font-family: 'Open Sans', sans-serif; font-weight: 400;
-      font-size: 2.5cqw;
-      text-align: left;
+      font-size: 2.5cqw; text-align: left;
   }
-  /* ID Number: Posición y tamaño corregidos */
   .pos-id-number {
       position: absolute;
-      bottom: 25%; left: 0; right: 0;
+      bottom: 18%; left: 0; right: 0; /* Bajado para que no toque el QR */
       text-align: center;
       font-family: 'Open Sans', sans-serif; font-weight: 400;
-      font-size: 3cqw;
-      letter-spacing: 0.05em;
+      font-size: 3cqw; letter-spacing: 0.05em;
   }
 
 </style>
@@ -300,7 +259,7 @@
                  <div class="data-block block-fecha-nac centered-data" id="cred-fecha-nac"></div>
                  
                  <div class="data-block block-medicamentos centered-data" id="cred-medicamentos"></div>
-                 <div class="data-block block-domicilio centered-data" id="cred-domicilio"></div>
+                 <div class="data-block block-domicilio centered-data left-aligned-data" id="cred-domicilio"></div>
                  
                  <div class="data-block block-antecedentes centered-data" id="cred-antecedentes"></div>
                  <div class="data-block block-contactos centered-data" id="cred-contactos"></div>
@@ -310,7 +269,7 @@
             <div class="card-face card-back">
               <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
               
-               <div class="card-data-layer">
+              <div class="card-data-layer">
                   <div class="pos-nombre-back" id="cred-nombre-back"></div>
                   <div class="pos-dni-back" id="cred-dni-back"></div>
                   <div class="pos-id-number" id="cred-id-number"></div>

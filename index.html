@@ -38,14 +38,19 @@
   .modal-backdrop.show { opacity: 1; }
   
   /* MODIFICADO PARA QUE SE ADAPTE AL CONTENIDO */
+ /* MODIFICADO CON PRIORIDAD ALTA PARA ADAPTAR ALTURA */
   .modal-card {
       transform: scale(0.9) translateY(10px);
       opacity: 0;
       transition: transform 0.25s ease, opacity 0.25s ease;
-      /* Estas propiedades hacen la magia: */
-      height: fit-content; /* Se adapta a la altura del texto */
-      max-height: 90vh;    /* Por seguridad, no deja que sea más alto que el 90% de la pantalla */
-      overflow-y: auto;    /* Si el texto fuera larguísimo, añade barra de scroll */
+
+      /* Estas reglas con !important fuerzan el ajuste de altura */
+      height: auto !important;       /* Fuerza la altura automática */
+      min-height: 0 !important;      /* Elimina cualquier altura mínima forzada */
+      max-height: 90vh !important;   /* Límite de seguridad */
+      overflow-y: auto !important;   /* Scroll si es necesario */
+      display: flex !important;      /* Asegura comportamiento flexible */
+      flex-direction: column !important; /* Apila el contenido */
   }
   
   .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }

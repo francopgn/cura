@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,80 +16,88 @@
       theme: {
         extend: {
           colors: {
-            cura: { primary: '#004E85', primaryDark: '#00345C', card: '#065D9B', accent: '#00C2FF', accentLight: '#59D2FF' }
+            cura: {
+              primary: '#004E85',      
+              primaryDark: '#00345C',  
+              card: '#065D9B',        
+              accent: '#00C2FF',      
+              accentLight: '#59D2FF'  
+            }
           },
-          fontFamily: { sans: ['Inter', 'sans-serif'] }
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
         }
       }
     }
   </script>
 
 <style>
-  /* --- ESTILOS BASE Y MODALES (Restaurados) --- */
+  /* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
   .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
   .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
 
-  /* --- ESTILOS DE LA CREDENCIAL 3D --- */
   .perspective-container { perspective: 1500px; }
+  
   .card-container {
     position: relative; width: 100%; max-width: 450px;
     aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20;
     container-type: inline-size;
   }
+
   .card-inner {
     position: relative; width: 100%; height: 100%; text-align: center;
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform-style: preserve-3d; cursor: pointer;
+    transform-style: preserve-3d; cursor: pointer; will-change: transform;
   }
   .card-inner.is-flipped { transform: rotateY(180deg); }
+
   .card-face {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     backface-visibility: hidden; border-radius: 18px; overflow: hidden;
     transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
     -webkit-mask-image: -webkit-radial-gradient(white, black);
   }
+
   .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-  .card-front { z-index: 2; }
+  .card-front { z-index: 2; transform: rotateY(0deg); }
   .card-back { z-index: 1; transform: rotateY(180deg); }
+
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
   .animate-float { animation: float 6s ease-in-out infinite; }
   .card-container:hover .animate-float { animation-play-state: paused; }
 
-  /* --- CAPA DE DATOS Y POSICIONES --- */
+  /* --- CAPA DE DATOS --- */
   .card-data-layer {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10; pointer-events: none; color: white;
   }
 
-  /* FRENTE - Posiciones calibradas y tamaños fijos */
+  /* ====== POSICIONES CALIBRADAS ====== */
+  /* FRENTE */
   .pos-nombre-front {
-    position: absolute; left: 26.09%; top: 18.11%;
-    width: 55%;
+    position: absolute; left: 26.09%; top: 18.11%; width: 55%;
     font-family: 'Vazirmatn', sans-serif; font-weight: 700;
-    font-size: 4.5cqw; /* Tamaño fijo ideal */
-    text-align: left; line-height: 1.1;
+    font-size: 4.5cqw; text-align: left; line-height: 1.1;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .pos-dni-front {
       position: absolute; left: 14.79%; top: 24.06%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 400;
-      font-size: 3cqw; text-align: left;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left;
   }
   .pos-sangre {
       position: absolute; left: 94.88%; top: 9.19%; transform: translate(-50%, -50%);
       width: 12%; height: 18%;
-      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; 
-      font-size: 4.2cqw; /* Tamaño fijo, ahora seguro sin AB */
+      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4.2cqw;
       display: flex; justify-content: center; align-items: center;
   }
   
-  /* Estilos para los bloques de datos, ahora centrados y seguros de 1 línea */
+  /* Bloques de datos */
   .data-block {
       position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2.1cqw;
-      text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
+      font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
       display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
   }
   .block-alergias { left: 3.8%; top: 34%; }
@@ -139,18 +148,30 @@
   </div>
 </header>
 
+
   <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
 
     <section class="grid md:grid-cols-2 gap-10 items-center">
+      
       <div>
-        <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">LEY C.U.R.A.</p>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow">Diseñando el futuro de la Salud Pública Argentina</h1>
-        <p class="text-sm md:text-base text-cura-accentLight mb-6">Vos podés ser parte de la mayor transformación de la historia del sistema de Salud Digital Argentino.</p>
+        <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">
+          LEY C.U.R.A.
+        </p>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow">
+          Diseñando el futuro de la Salud Pública Argentina
+        </h1>
+        <p class="text-sm md:text-base text-cura-accentLight mb-6">
+          Vos podés ser parte de la mayor transformación de la historia del sistema de Salud Digital Argentino.
+        </p>
+
         <div class="flex flex-wrap gap-3">
-          <button id="btn-sumate" type="button" class="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer transform hover:scale-105 active:scale-95 duration-200">QUIERO SUMARME</button>
-          <button id="btn-info" type="button" class="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition cursor-pointer transform hover:scale-105 active:scale-95 duration-200">Obtén más información</button>
+          <button id="btn-sumate" type="button" class="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">QUIERO SUMARME</button>
+          <button id="btn-info" type="button" class="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">Obtén más información</button>
         </div>
-        <p class="mt-6 text-[11px] text-cura-accentLight">Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.</p>
+
+        <p class="mt-6 text-[11px] text-cura-accentLight">
+          Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
+        </p>
       </div>
 
       <div class="relative w-full flex justify-center items-center perspective-container">
@@ -189,149 +210,621 @@
 
           </div>
         </div>
-        <p class="absolute -bottom-10 text-center text-[11px] text-cura-accentLight animate-pulse opacity-80">(Hacé click en la credencial para girarla)</p>
+
+        <p class="absolute -bottom-10 text-center text-[11px] text-cura-accentLight animate-pulse opacity-80">
+          (Hacé click en la credencial para girarla)
+        </p>
       </div>
     </section>
+
 
     <section class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-8">
       <div class="absolute -top-6 -right-4 w-28 h-28 rounded-full bg-cura-accent/25 blur-2xl"></div>
+      
       <div class="relative z-10 grid md:grid-cols-3 gap-6 items-start">
         <div class="md:col-span-1 space-y-3">
-          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide">SISTEMA C.U.R.A.</p>
-          <h2 class="text-xl font-bold text-white">Tu salud, simplificada y segura.</h2>
-          <p class="text-sm text-white/90 leading-relaxed">La Ley C.U.R.A. crea la Credencial Única para que tu historia clínica viaje con vos. Un solo sistema que garantiza atención rápida, justa y sin papeles.</p>
+          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide">
+            SISTEMA C.U.R.A.
+          </p>
+          <h2 class="text-xl font-bold text-white">
+            Tu salud, simplificada y segura.
+          </h2>
+          <p class="text-sm text-white/90 leading-relaxed">
+           La Ley C.U.R.A. crea la Credencial Única para que tu historia clínica viaje con vos. Un solo sistema que garantiza atención rápida, justa y sin papeles.
+          </p>
         </div>
+
         <div class="md:col-span-2 grid sm:grid-cols-2 gap-3 text-xs text-cura-accentLight">
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Acceso Inmediato</strong>Accedé a tu información médica desde cualquier lugar.</div>
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Chau Papel</strong>Órdenes, recetas y estudios 100% digitales.</div>
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Recetas Automáticas</strong>Firmas digitales al instante sin ir al consultorio.</div>
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Emergencias QR</strong>Datos críticos escaneando tu credencial.</div>
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Seguridad de Datos</strong>Privacidad garantizada y auditada.</div>
-          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2"><strong class="text-white block mb-1">Reducción de Costos</strong>Menos burocracia, más inversión en salud.</div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
+            <strong class="text-white block mb-1">Acceso Inmediato</strong>
+            Accedé a tu información médica desde cualquier lugar.
+          </div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
+            <strong class="text-white block mb-1">Chau Papel</strong>
+            Órdenes, recetas y estudios 100% digitales.
+          </div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
+            <strong class="text-white block mb-1">Recetas Automáticas</strong>
+            Firmas digitales al instante sin ir al consultorio.
+          </div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
+            <strong class="text-white block mb-1">Emergencias QR</strong>
+            Datos críticos escaneando tu credencial.
+          </div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
+            <strong class="text-white block mb-1">Seguridad de Datos</strong>
+            Privacidad garantizada y auditada.
+          </div>
+          <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
+            <strong class="text-white block mb-1">Reducción de Costos</strong>
+            Menos burocracia, más inversión en salud.
+          </div>
         </div>
       </div>
     </section>
 
+
     <section id="informacion" class="space-y-6">
-      <div class="max-w-2xl"><h2 class="text-xl md:text-2xl font-bold text-white mb-2">Creada para mejorar la salud de todos</h2><p class="text-sm md:text-base text-cura-accentLight">La Ley C.U.R.A. impulsa un acceso más ágil, seguro y equitativo a la información clínica en todo el país.</p></div>
+      <div class="max-w-2xl">
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">
+          Creada para mejorar la salud de todos
+        </h2>
+        <p class="text-sm md:text-base text-cura-accentLight">
+          La Ley C.U.R.A. impulsa un acceso más ágil, seguro y equitativo a la información clínica en todo el país.
+        </p>
+      </div>
+
      <div class="grid md:grid-cols-3 gap-4">
       <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Unificación</h3><p class="text-xs text-cura-accentLight">Un solo identificador de salud por persona, integrando datos de hospitales públicos, privados y de la seguridad social.</p></div>
       <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Seguridad y privacidad</h3><p class="text-xs text-cura-accentLight">Accesos por niveles, auditorías y confidencialidad estricta de los datos de cada paciente.</p></div>
       <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Interoperabilidad</h3><p class="text-xs text-cura-accentLight">LLeva tu historia clinica a donde sea que vayas, podrás acceder a tu historia clinica desde cualquier ciudad o provincia.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Fin del papeleo</h3><p class="text-xs text-cura-accentLight">Órdenes, estudios y certificados pasan a digital, evitando pérdidas, sellos y trámites repetidos.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Recetas automáticas</h3><p class="text-xs text-cura-accentLight">Firmas digitales automáticas: no hace falta volver al consultorio para renovar o validar recetas.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">PAMI sin burocracia</h3><p class="text-xs text-cura-accentLight">Turnos ágiles, menos trámites presenciales y traslados automatizados para movilidad reducida.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Mejor atención en emergencias</h3><p class="text-xs text-cura-accentLight">El QR permite identificar a la persona y ver alergias y medicación en segundos.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Evita estudios repetidos</h3><p class="text-xs text-cura-accentLight">Los médicos ven estudios previos al instante, evitando repetir análisis innecesarios.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Más tiempo para el paciente</h3><p class="text-xs text-cura-accentLight">Menos carga administrativa, más tiempo real de atención y acompañamiento.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Turnos sin vueltas</h3><p class="text-xs text-cura-accentLight">Agenda integrada para reducir esperas entre hospitales, clínicas y obras sociales.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Ahorro para todo el sistema</h3><p class="text-xs text-cura-accentLight">Menos errores, menos pérdidas y menos costos administrativos que se reinvierten en salud.</p></div>
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md"><h3 class="text-sm font-semibold text-white mb-1">Información en el país y exterior</h3><p class="text-xs text-cura-accentLight">Disponible en todo el país y en instituciones del exterior que usen estándares compatibles.</p></div>
      </div>
     </section>
 
     <section id="sumate" class="space-y-6">
-      <div class="max-w-2xl"><h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2><p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p></div>
-      <form id="sumate-form" action="https://formsubmit.co/ajax/contacto@leycura.org" method="POST" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
-        <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA"><input type="hidden" name="_template" value="box"><input type="hidden" name="_captcha" value="false">
+      <div class="max-w-2xl">
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
+        <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
+      </div>
+
+      <form id="sumate-form"
+            action="https://formsubmit.co/ajax/contacto@leycura.org"
+            method="POST"
+            class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+
+        <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
+        <input type="hidden" name="_template" value="box">
+        <input type="hidden" name="_captcha" value="false">
+
         <div class="grid md:grid-cols-2 gap-3">
-          <div><label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label><input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-          <div><label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label><input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
+            <input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
+            <input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+          </div>
         </div>
+
         <div class="grid md:grid-cols-2 gap-3">
-          <div><label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label><select name="provincia" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary"><option value="">Seleccioná una provincia</option><option value="Buenos Aires">Buenos Aires</option><option value="Ciudad Autónoma de Buenos Aires">CABA</option></select></div>
-          <div><label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label><select name="ciudad" id="ciudad-select" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary"><option value="">Seleccioná una ciudad</option></select></div>
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
+            <select name="provincia" required
+                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+              <option value="">Seleccioná una provincia</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
+            <select name="ciudad" id="ciudad-select" required
+                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+              <option value="">Seleccioná una ciudad</option>
+            </select>
+          </div>
         </div>
+
         <div><label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label><input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-        <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">Enviar</button>
+        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label><input name="dni" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label><input name="telefono" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+
+        <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">Enviar</button>
+        <p class="text-[10px] text-cura-accentLight mt-1">Los campos marcados con * son obligatorios.</p>
       </form>
     </section>
 
     <section id="contacto" class="space-y-6">
-      <div class="max-w-2xl"><h2 class="text-xl md:text-2xl font-bold text-white mb-2">Comunícate con nosotros</h2><p class="text-sm text-cura-accentLight">Toda pregunta es válida.</p></div>
+      <div class="max-w-2xl">
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Comunícate con nosotros</h2>
+        <p class="text-sm text-cura-accentLight">Toda pregunta es válida. Nos interesa escuchar tus dudas, aportes y propuestas para que puedas formar parte de esta gran revolución sanitaria.</p>
+      </div>
+
       <div class="grid md:grid-cols-2 gap-8 items-start">
-        <div class="space-y-4"><div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Tu apoyo se basa en informarte y difundir.</div></div>
+        <div class="space-y-4">
+          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se basa en informarte, difundir y acompañar el proceso.</div>
+          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Este proyecto solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">sumarte</a> y ser parte de la historia.</div>
+        </div>
+
         <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="https://formsubmit.co/contacto@leycura.org" method="POST">
-          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"></textarea></div>
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label><input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
+          <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"></textarea></div>
           <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">Enviar</button>
+          <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.</p>
         </form>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
+          <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
+          <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
+        </div>
       </div>
     </section>
+
+    <section class="space-y-4">
+      <div class="max-w-2xl">
+        <h2 class="text-lg md:text-xl font-bold text-white mb-1">MANTENTE CONECTADO</h2>
+        <p class="text-sm text-cura-accentLight">Obtené información sobre los avances de la ley y sobre cómo podés formar parte de esta historia.</p>
+      </div>
+      <form id="newsletter-form" class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
+        <input name="email" type="email" required placeholder="Correo electrónico" class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
+        <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">OBTENER INFORMACIÓN</button>
+      </form>
+    </section>
+
+    <section class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md">
+      <h3 class="text-sm font-semibold text-white mb-1">Tenemos novedades</h3>
+      <p class="text-xs text-cura-accentLight leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</p>
+    </section>
+
   </main>
 
   <footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
     <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A.</p>
+      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+      <div class="flex flex-wrap gap-3">
+        <a href="#informacion" class="hover:text-white">Información</a>
+        <a href="/demonivel2.html" target="_blank" class="hover:text-white">Demo QR Nivel 2</a>
+        <a href="#contacto" class="hover:text-white">Contacto</a>
+      </div>
     </div>
   </footer>
 
-  <div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden"><div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center"><h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2><button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button></div></div>
-  
-<script>
-// --- SCRIPTS ORIGINALES RESTAURADOS (Scroll, GeoRef, Formularios) ---
-document.addEventListener('DOMContentLoaded', function () {
-  // GeoRef
-  const provinciaSelect = document.querySelector('select[name="provincia"]'); const ciudadSelect = document.getElementById('ciudad-select'); async function cargarCiudades() { if (!provinciaSelect || !ciudadSelect) return; const prov = provinciaSelect.value; ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>'; if (!prov) { ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>'; return; } try { const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov); const res = await fetch(url); if (!res.ok) throw new Error(); const data = await res.json(); const localidades = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es')); ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>'; localidades.forEach(nombre => { const opt = document.createElement('option'); opt.value = nombre; opt.textContent = nombre; ciudadSelect.appendChild(opt); }); } catch (e) { ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>'; } } if (provinciaSelect) { provinciaSelect.addEventListener('change', cargarCiudades); }
-  
-  // Scroll suave
-  const btnSumate=document.getElementById('btn-sumate'),targetSumate=document.getElementById('sumate'),btnInfo=document.getElementById('btn-info'),targetInfo=document.getElementById('informacion');function smoothScrollTo(e,t=1700,n=200){if(e){const o=e.getBoundingClientRect().top+window.pageYOffset-n,c=window.pageYOffset,r=o-c;let i=null;requestAnimationFrame(function e(n){i||(i=n);const o=n-i,a=Math.min(o/t,1),l=1-Math.pow(1-a,3);window.scrollTo(0,c+r*l),o<t&&requestAnimationFrame(e)})}}btnSumate&&targetSumate&&btnSumate.addEventListener('click',e=>{e.preventDefault(),smoothScrollTo(targetSumate)}),btnInfo&&targetInfo&&btnInfo.addEventListener('click',e=>{e.preventDefault(),smoothScrollTo(targetInfo)});
+  <div id="novedades-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
+    <div class="modal-card bg-cura-card border border-cura-accent/60 rounded-2xl px-4 py-4 sm:px-6 sm:py-5 w-[92%] max-w-4xl shadow-lg">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex-1">
+          <h2 class="text-sm sm:text-base font-semibold text-white mb-1">Bienvenido, tenemos novedades</h2>
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 text-[11px] sm:text-[13px] text-cura-accentLight">
+            <p class="sm:max-w-[65%] leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</p>
+            <p class="sm:max-w-[30%] leading-snug">Próximamente más información sobre la presentación.</p>
+          </div>
+        </div>
+        <button type="button" class="ml-2 text-cura-accentLight/80 hover:text-white text-xs sm:text-sm font-semibold" id="novedades-close-btn">✕</button>
+      </div>
+    </div>
+  </div>
 
-  // Manejo de Formularios (Contacto / Sumate)
-  function setupForm(formId, modalId) { const form = document.getElementById(formId); const modal = document.getElementById(modalId); if(!form || !modal) return; const card = modal.querySelector('.modal-card'); const okBtn = modal.querySelector('button'); function open() { modal.classList.remove('hidden'); requestAnimationFrame(()=>{ modal.classList.add('show'); card.classList.add('show'); }); } function close() { modal.classList.remove('show'); card.classList.remove('show'); setTimeout(()=>{ modal.classList.add('hidden'); }, 250); } form.addEventListener('submit', async (e)=>{ e.preventDefault(); const btn = form.querySelector('button[type="submit"]'); const txt = btn.textContent; btn.disabled=true; btn.textContent='Enviando...'; try { const res = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{'Accept':'application/json'} }); if(!res.ok) throw new Error(); form.reset(); open(); } catch(err){ alert('Error. Intente nuevamente.'); } finally { btn.disabled=false; btn.textContent=txt; } }); okBtn.addEventListener('click', close); modal.addEventListener('click', (e)=>{ if(e.target===modal) close(); }); }
-  setupForm('contact-form', 'success-modal');
-  // Nota: Si tuvieras el modal de sumate en el HTML, lo activarías aquí: setupForm('sumate-form', 'sumate-modal');
+  <div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+      </div>
+      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2>
+      <p class="text-sm text-gray-600 mb-4">Tu mensaje se ha enviado correctamente. Pronto nos pondremos en contacto.</p>
+      <button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">OK</button>
+    </div>
+  </div>
+
+  <div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+      </div>
+      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por sumarte!</h2>
+      <p class="text-sm text-gray-600 mb-4">En breve nos contactaremos para enviarte el formulario de junta de firmas.</p>
+      <button id="sumate-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button>
+    </div>
+  </div>
+
+  <div id="newsletter-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+      </div>
+      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
+      <p class="text-sm text-gray-600 mb-4">Vas a recibir cualquier novedad sobre el proyecto.</p>
+      <button id="newsletter-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold mt-4">OK</button>
+    </div>
+  </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // --- CIUDADES Y GEOREF (ORIGINAL) ---
+  const provinciaSelect = document.querySelector('select[name="provincia"]');
+  const ciudadSelect = document.getElementById('ciudad-select');
+
+  async function cargarCiudades() {
+    if (!provinciaSelect || !ciudadSelect) return;
+    const prov = provinciaSelect.value;
+    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
+    if (!prov) {
+      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      return;
+    }
+    try {
+      const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov);
+      const res = await fetch(url);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const localidades = (data.localidades || [])
+        .map(l => l.nombre)
+        .sort((a, b) => a.localeCompare(b, 'es'));
+
+      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
+      localidades.forEach(nombre => {
+        const opt = document.createElement('option');
+        opt.value = nombre;
+        opt.textContent = nombre;
+        ciudadSelect.appendChild(opt);
+      });
+    } catch (e) {
+      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+    }
+  }
+
+  if (provinciaSelect) {
+    provinciaSelect.addEventListener('change', cargarCiudades);
+  }
+
+  // --- SCROLL SUAVE Y BOTONES HERO (ORIGINAL) ---
+  const btnSumate      = document.getElementById('btn-sumate');
+  const targetSumate   = document.getElementById('sumate');
+  const btnInfo        = document.getElementById('btn-info');
+  const targetInfo     = document.getElementById('informacion');
+  const targetContacto = document.getElementById('contacto');
+  const targetInicio   = document.getElementById('inicio');
+
+  const navInicioLinks    = document.querySelectorAll('a[href="#inicio"]');
+  const navInfoLinks      = document.querySelectorAll('a[href="#informacion"]');
+  const navContactoLinks  = document.querySelectorAll('a[href="#contacto"]');
+
+  function smoothScrollTo(element, duration = 1700, offset = 200) {
+    if (!element) return;
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      window.scrollTo(0, startY + distance * ease);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+    requestAnimationFrame(animation);
+  }
+
+  // Event Listeners Scroll
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
+  }
+  if (btnInfo && targetInfo) {
+    btnInfo.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
+  }
+  navInicioLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInicio, 1700, 0); });
+  });
+  navInfoLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
+  });
+  navContactoLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto); });
+  });
+
+
+  // --- FORMULARIO CONTACTO (ORIGINAL) ---
+  const formContact = document.getElementById('contact-form');
+  const modalContact = document.getElementById('success-modal');
+  const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
+  const okBtnContact = document.getElementById('success-modal-ok');
+
+  function abrirModalContact() {
+    if(!modalContact) return;
+    modalContact.classList.remove('hidden');
+    requestAnimationFrame(() => { modalContact.classList.add('show'); cardContact.classList.add('show'); });
+  }
+  function cerrarModalContact() {
+    if(!modalContact) return;
+    modalContact.classList.remove('show'); cardContact.classList.remove('show');
+    setTimeout(() => { modalContact.classList.add('hidden'); }, 250);
+  }
+
+  if (formContact && modalContact && okBtnContact) {
+    formContact.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = formContact.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      try {
+        const response = await fetch(formContact.action, {
+          method: 'POST',
+          body: new FormData(formContact),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error();
+        formContact.reset();
+        abrirModalContact();
+      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); } 
+      finally { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+    });
+    okBtnContact.addEventListener('click', cerrarModalContact);
+    modalContact.addEventListener('click', function (e) { if (e.target === modalContact) cerrarModalContact(); });
+  }
+
+  // --- FORMULARIO SUMATE (ORIGINAL) ---
+  const sumateForm    = document.getElementById('sumate-form');
+  const sumateModal   = document.getElementById('sumate-modal');
+  const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+  const sumateOkBtn   = document.getElementById('sumate-modal-ok');
+
+  function abrirSumateModal() {
+    if (!sumateModal) return;
+    sumateModal.classList.remove('hidden');
+    requestAnimationFrame(function () { sumateModal.classList.add('show'); sumateCard.classList.add('show'); });
+  }
+  function cerrarSumateModal() {
+    if (!sumateModal) return;
+    sumateModal.classList.remove('show'); sumateCard.classList.remove('show');
+    setTimeout(function () { sumateModal.classList.add('hidden'); }, 250);
+  }
+
+  if (sumateForm && sumateModal && sumateOkBtn) {
+    sumateForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = sumateForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
+
+      try {
+        const formData = new FormData(sumateForm);
+        // FormSubmit AJAX
+        const formSubmitPromise = fetch(sumateForm.action, {
+          method: 'POST', headers: { 'Accept': 'application/json' }, body: formData
+        });
+        
+        const [formRes] = await Promise.all([formSubmitPromise]);
+        if (!formRes.ok) throw new Error('Error al enviar el formulario');
+        sumateForm.reset();
+        abrirSumateModal();
+      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); }
+      finally { if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; } }
+    });
+    sumateOkBtn.addEventListener('click', cerrarSumateModal);
+    sumateModal.addEventListener('click', function (e) { if (e.target === sumateModal) cerrarSumateModal(); });
+  }
+
+  // --- NEWSLETTER (ORIGINAL) ---
+  const newsletterForm = document.getElementById('newsletter-form');
+  const newsletterModal = document.getElementById('newsletter-modal');
+  const newsletterCard  = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
+  const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
+
+  function abrirNewsletterModal() {
+    if (!newsletterModal) return;
+    newsletterModal.classList.remove('hidden');
+    requestAnimationFrame(function () { newsletterModal.classList.add('show'); newsletterCard.classList.add('show'); });
+  }
+  function cerrarNewsletterModal() {
+    if (!newsletterModal) return;
+    newsletterModal.classList.remove('show'); newsletterCard.classList.remove('show');
+    setTimeout(function () { newsletterModal.classList.add('hidden'); }, 250);
+  }
+
+  if (newsletterForm && newsletterModal && newsletterOkBtn) {
+    newsletterForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
+
+      try {
+        const emailInput = newsletterForm.querySelector('input[name="email"]');
+        const email = emailInput ? emailInput.value.trim() : '';
+        if (!email) { alert('Ingresá un correo electrónico válido.'); return; }
+        
+        // Simulación de éxito para newsletter (ya que no hay backend configurado en el ejemplo)
+        setTimeout(() => {
+             newsletterForm.reset();
+             abrirNewsletterModal();
+             if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+        }, 1000);
+
+      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }}
+    });
+    newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
+    newsletterModal.addEventListener('click', function (e) { if (e.target === newsletterModal) cerrarNewsletterModal(); });
+  }
+
+  // --- MODAL NOVEDADES (ORIGINAL) ---
+  const novModal = document.getElementById('novedades-modal');
+  if (novModal) {
+    const novCard = novModal.querySelector('.modal-card');
+    const novCloseBtn = document.getElementById('novedades-close-btn');
+
+    function abrirNovedades() {
+      novModal.classList.remove('hidden');
+      requestAnimationFrame(function () { novModal.classList.add('show'); if (novCard) novCard.classList.add('show'); });
+    }
+    function cerrarNovedades() {
+      novModal.classList.remove('show');
+      if (novCard) novCard.classList.remove('show');
+      setTimeout(function () { novModal.classList.add('hidden'); }, 250);
+    }
+
+    abrirNovedades();
+    setTimeout(cerrarNovedades, 10000); // 10s auto-cierre
+
+    if (novCloseBtn) novCloseBtn.addEventListener('click', cerrarNovedades);
+    novModal.addEventListener('click', function (e) { if (e.target === novModal) cerrarNovedades(); });
+  }
+
 });
 </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+  // Funcionalidad de giro
   const card = document.getElementById('credencial-giratoria');
   if (card) { card.addEventListener('click', function() { this.classList.toggle('is-flipped'); }); }
 
-  // Datos básicos
-  const nombres = ["Juan", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena"];
-  const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero"];
-  const ciudades = ["CABA", "Córdoba", "Rosario", "Mendoza", "La Plata", "San Miguel de Tucumán"];
+  // --- DATOS BÁSICOS ---
+  const nombres = ["Juan", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena", "Martín", "Julia"];
+  const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero", "Sosa", "Torres"];
+  const ciudades = ["CABA", "Córdoba", "Rosario", "Mendoza", "La Plata", "San Miguel de Tucumán", "Mar del Plata"];
   const provincias = ["Buenos Aires", "Córdoba", "Santa Fe", "Mendoza", "Tucumán"];
-  // TIPOS DE SANGRE SIMPLIFICADOS (Solo 2 caracteres)
+  
+  // TIPO DE SANGRE: Lista simplificada (sin AB) para asegurar que entre en el círculo
   const tiposSangre = ["A+", "A-", "B+", "B-", "O+", "O-"];
-  const alergiasBase = ["PENICILINA", "NÍQUEL", "POLEN", "ÁCAROS", "SULFAS", "LATEX"];
-  const operacionesBase = ["APENDICECTOMÍA", "CESÁREA", "VESÍCULA", "PRÓTESIS RODILLA"];
 
-  // Perfiles médicos
+  const alergiasBase = ["PENICILINA", "NÍQUEL", "POLEN", "ÁCAROS", "SULFAS", "LATEX", "FRUTILLAS"];
+  const operacionesBase = ["APENDICECTOMÍA", "CESÁREA", "VESÍCULA", "PRÓTESIS RODILLA", "BYPASS GÁSTRICO", "AMÍGDALAS"];
+  const medsComunes = ["IBUPROFENO 600", "PARACETAMOL 1G", "ASPIRINA"];
+
+  // --- PERFILES MÉDICOS COHERENTES ---
   const perfilesMedicos = [
-    { nombre: "Sano", antecedentes: [], medicamentos: [] },
-    { nombre: "Hipertenso", antecedentes: ["HIPERTENSIÓN"], medicamentos: ["ENALAPRIL", "LOSARTÁN"] },
-    { nombre: "Diabético", antecedentes: ["DIABETES T2"], medicamentos: ["METFORMINA", "INSULINA"] },
-    { nombre: "Asmático", antecedentes: ["ASMA"], medicamentos: ["SALBUTAMOL"] },
-    { nombre: "Cardiópata", antecedentes: ["ARRITMIA"], medicamentos: ["CARVEDILOL", "DIGOXINA"] },
-    { nombre: "Hipotiroideo", antecedentes: ["HIPOTIROIDISMO"], medicamentos: ["LEVOTIROXINA"] }
+    { 
+      nombre: "Sano", 
+      antecedentes: [], 
+      medicamentos: [] 
+    },
+    { 
+      nombre: "Hipertenso", 
+      antecedentes: ["HIPERTENSIÓN"], // Antecedente corto
+      medicamentos: ["ENALAPRIL", "LOSARTÁN", "AMLODIPINA", "HIDROCLOROTIAZIDA"] 
+    },
+    { 
+      nombre: "Diabético Tipo 2", 
+      antecedentes: ["DIABETES T2"], // Antecedente corto
+      medicamentos: ["METFORMINA", "GLIBENCLAMIDA", "INSULINA NPH"] 
+    },
+    { 
+      nombre: "Asmático", 
+      antecedentes: ["ASMA"], // Antecedente corto
+      medicamentos: ["SALBUTAMOL", "BUDESONIDA INHALADOR"] 
+    },
+    { 
+      nombre: "Cardiópata", 
+      antecedentes: ["ARRITMIA"], // Antecedente corto y único
+      medicamentos: ["CARVEDILOL", "DIGOXINA", "ESPIRONOLACTONA"] 
+    },
+    { 
+      nombre: "Hipotiroideo", 
+      antecedentes: ["HIPOTIROIDISMO"], 
+      medicamentos: ["LEVOTIROXINA"] 
+    },
+    { 
+      nombre: "Colesterol Alto", 
+      antecedentes: ["DISLIPEMIA"], 
+      medicamentos: ["ATORVASTATINA", "SIMVASTATINA"] 
+    }
   ];
 
-  // Funciones auxiliares
+  // --- FUNCIONES AUXILIARES ---
   function randItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function randNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
   function genDNI() { const num = randNum(10000000, 59999999).toString(); return `${num.slice(0, 2)}.${num.slice(2, 5)}.${num.slice(5)}`; }
   function genFechaNac() { const dia = String(randNum(1, 28)); const mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][randNum(0, 11)]; const anio = randNum(1950, 2005); return `${dia} ${mes} ${anio}`; }
+  // Teléfonos: Sigue generando 2 líneas
   function genTel() { return `011 ${randNum(1000,9999)} ${randNum(1000,9999)}<br>011 ${randNum(1000,9999)} ${randNum(1000,9999)}`; }
   
-  // Helper para elegir SOLO UNO o NINGUNO
-  function pickOneOrNone(arr, emptyMsg) {
-    if (!arr || arr.length === 0 || Math.random() > 0.7) return emptyMsg;
-    return randItem(arr);
+  // Función para elegir un subconjunto (hasta maxItems)
+  function pickSubset(sourceArray, maxItems, emptyResult = []) {
+    if (!sourceArray || sourceArray.length === 0) return emptyResult;
+    let result = [];
+    let tempArray = [...sourceArray];
+    // Decide al azar entre 1 y maxItems
+    const count = randNum(1, Math.min(maxItems, tempArray.length));
+    for (let i = 0; i < count; i++) {
+        const randomIndex = Math.floor(Math.random() * tempArray.length);
+        result.push(tempArray.splice(randomIndex, 1)[0]);
+    }
+    return result;
   }
 
+  // --- LÓGICA PRINCIPAL ---
   function poblarCredencial() {
+    // 1. Datos Personales
     const fullName = `${randItem(nombres)} ${randItem(apellidos)}`;
     const dni = genDNI();
+    const sangreTxt = randItem(tiposSangre); // Siempre 2 caracteres (ej. O+)
+
+    // 2. Selección de Perfil y Lógica Médica
     const perfil = randItem(perfilesMedicos);
 
-    // Lógica simplificada: SIEMPRE elige solo 1 ítem como máximo
-    const antecedentesTxt = (perfil.antecedentes.length > 0) ? randItem(perfil.antecedentes) : "SIN PATOLOGÍAS";
-    
-    let medTxt = "SIN MEDICACIÓN";
-    if (Math.random() > 0.8) { medTxt = randItem(["IBUPROFENO", "PARACETAMOL", "ASPIRINA"]); } 
-    else if (perfil.medicamentos.length > 0) { medTxt = randItem(perfil.medicamentos); }
+    // LÓGICA CORREGIDA PARA ANTECEDENTES:
+    // Si el perfil tiene antecedentes, elige SOLO UNO al azar. Si no, muestra el texto por defecto.
+    // Esto asegura que nunca haya más de una línea.
+    const antecedentesTxt = (perfil.antecedentes.length > 0) ? randItem(perfil.antecedentes) : "SIN PATOLOGÍAS REGISTRADAS";
 
-    const alergiasTxt = pickOneOrNone(alergiasBase, "NO REFIERE");
-    const operacionesTxt = pickOneOrNone(operacionesBase, "NINGUNA");
-    
-    // Sangre siempre será de 2 caracteres
-    const sangreTxt = randItem(tiposSangre);
+    // LÓGICA PARA MEDICAMENTOS (Hasta 2, coherentes):
+    let medsFinales = [];
+    if (perfil.medicamentos.length > 0) {
+        // Elige 1 o 2 medicamentos del perfil
+        medsFinales = pickSubset(perfil.medicamentos, 2);
+    }
+    // 20% de probabilidad de agregar un medicamento común extra (si hay espacio)
+    if (Math.random() > 0.8 && medsFinales.length < 2) {
+        medsFinales.push(randItem(medsComunes));
+    }
+    // Formatear texto final
+    const medicamentosTxt = (medsFinales.length > 0) ? [...new Set(medsFinales)].join('<br>') : "SIN MEDICACIÓN VITAL EN USO";
 
-    // Llenar el DOM
+    // LÓGICA PARA OTROS (Hasta 2 es aceptable):
+    const alergiasTxt = (Math.random() > 0.7) ? "NO REFIERE" : pickSubset(alergiasBase, 1).join('<br>');
+    // Operaciones puede tener hasta 2
+    const operacionesTxt = (Math.random() > 0.6) ? "NINGUNA" : pickSubset(operacionesBase, 2).join('<br>');
+
+    // 3. Llenar el DOM (Frente)
     document.getElementById('cred-nombre-front').textContent = fullName;
     document.getElementById('cred-dni-front').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-sangre').textContent = sangreTxt;
@@ -340,15 +833,17 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-contactos').innerHTML = genTel();
 
     document.getElementById('cred-antecedentes').innerHTML = antecedentesTxt;
-    document.getElementById('cred-medicamentos').innerHTML = medTxt;
+    document.getElementById('cred-medicamentos').innerHTML = medicamentosTxt;
     document.getElementById('cred-alergias').innerHTML = alergiasTxt;
     document.getElementById('cred-operaciones').innerHTML = operacionesTxt;
 
+    // 4. Llenar el DOM (Dorso)
     document.getElementById('cred-nombre-back').textContent = fullName;
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
   }
 
+  // Ejecutar al cargar
   poblarCredencial();
 });
 </script>

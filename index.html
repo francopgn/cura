@@ -33,10 +33,21 @@
   </script>
 
 <style>
-  /* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
+/* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
-  .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+  
+  /* MODIFICADO PARA QUE SE ADAPTE AL CONTENIDO */
+  .modal-card {
+      transform: scale(0.9) translateY(10px);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+      /* Estas propiedades hacen la magia: */
+      height: fit-content; /* Se adapta a la altura del texto */
+      max-height: 90vh;    /* Por seguridad, no deja que sea más alto que el 90% de la pantalla */
+      overflow-y: auto;    /* Si el texto fuera larguísimo, añade barra de scroll */
+  }
+  
   .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
 
   .perspective-container { perspective: 1500px; }
@@ -112,11 +123,11 @@
   /* DORSO */
   .pos-nombre-back {
       position: absolute; top: 5%; left: 3.50%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3.5cqw; text-align: left;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left;
   }
   .pos-dni-back {
-      position: absolute; top: 10%; left: 3.50%;
-      font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.5cqw; text-align: left;
+      position: absolute; top: 11%; left: 3.50%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left;
   }
   .pos-id-number {
       position: absolute; bottom: 23%; left: 0; right: 0; text-align: center;

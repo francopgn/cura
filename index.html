@@ -853,7 +853,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // LÓGICA PARA OTROS (Hasta 2 es aceptable):
     const alergiasTxt = (Math.random() > 0.7) ? "NO REFIERE" : pickSubset(alergiasBase, 1).join('<br>');
     // Operaciones puede tener hasta 2
-    const operacionesTxt = (Math.random() > 0.6) ? "NINGUNA" : pickSubset(operacionesBase, 2).join('<br>');
+    const operacionesTxt = (Math.random() > 0.6) ? "NO REFIERE" : pickSubset(operacionesBase, 2).join('<br>');
 
     // 3. Llenar el DOM (Frente)
     document.getElementById('cred-nombre-front').textContent = fullName;

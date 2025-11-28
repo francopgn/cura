@@ -69,12 +69,12 @@
   /* ====== POSICIONES CALIBRADAS (Ref: 1411x913px) ====== */
   /* FRENTE */
   .pos-nombre-front {
-    position: absolute; left: 10.00%; top: 18%;
+    position: absolute; left: 5.00%; top: 17%;
     font-family: 'Vazirmatn', sans-serif; font-weight: 700;
     font-size: 4.5cqw; text-align: left; line-height: 1;
   }
   .pos-dni-front {
-      position: absolute; left: 14.79%; top: 24.06%;
+      position: absolute; left: 5.00%; top: 23.06%;
       font-family: 'Vazirmatn', sans-serif; font-weight: 400;
       font-size: 3cqw; text-align: left;
   }
@@ -280,41 +280,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // --- PERFILES MÉDICOS COHERENTES ---
   const perfilesMedicos = [
-    {
-      nombre: "Sano",
-      antecedentes: [],
-      medicamentos: []
-    },
-    {
-      nombre: "Hipertenso",
-      antecedentes: ["HIPERTENSIÓN ARTERIAL"],
-      medicamentos: ["ENALAPRIL", "LOSARTÁN", "AMLODIPINA", "HIDROCLOROTIAZIDA"]
-    },
-    {
-      nombre: "Diabético Tipo 2",
-      antecedentes: ["DIABETES TIPO 2"],
-      medicamentos: ["METFORMINA", "GLIBENCLAMIDA", "INSULINA NPH"]
-    },
-    {
-      nombre: "Asmático",
-      antecedentes: ["ASMA BRONQUIAL"],
-      medicamentos: ["SALBUTAMOL (SOS)", "BUDESONIDA INHALADOR"]
-    },
-    {
-      nombre: "Cardiópata",
-      antecedentes: ["INSUFICIENCIA CARDÍACA", "ARRITMIA"],
-      medicamentos: ["CARVEDILOL", "FUROSEMIDA", "DIGOXINA", "ESPIRONOLACTONA"]
-    },
-    {
-      nombre: "Hipotiroideo",
-      antecedentes: ["HIPOTIROIDISMO"],
-      medicamentos: ["LEVOTIROXINA SÓDICA"]
-    },
-    {
-      nombre: "Perfil Complejo",
-      antecedentes: ["HIPERTENSIÓN", "DIABETES TIPO 2", "DISLIPEMIA"],
-      medicamentos: ["LOSARTÁN", "METFORMINA", "ATORVASTATINA", "ASPIRINA PREVENTIVA"]
-    }
+    { nombre: "Sano", antecedentes: [], medicamentos: [] },
+    { nombre: "Hipertenso", antecedentes: ["HIPERTENSIÓN ARTERIAL"], medicamentos: ["ENALAPRIL", "LOSARTÁN", "AMLODIPINA", "HIDROCLOROTIAZIDA"] },
+    { nombre: "Diabético Tipo 2", antecedentes: ["DIABETES TIPO 2"], medicamentos: ["METFORMINA", "GLIBENCLAMIDA", "INSULINA NPH"] },
+    { nombre: "Asmático", antecedentes: ["ASMA BRONQUIAL"], medicamentos: ["SALBUTAMOL (SOS)", "BUDESONIDA INHALADOR"] },
+    { nombre: "Cardiópata", antecedentes: ["INSUFICIENCIA CARDÍACA", "ARRITMIA"], medicamentos: ["CARVEDILOL", "FUROSEMIDA", "DIGOXINA", "ESPIRONOLACTONA"] },
+    { nombre: "Hipotiroideo", antecedentes: ["HIPOTIROIDISMO"], medicamentos: ["LEVOTIROXINA SÓDICA"] },
+    { nombre: "Perfil Complejo", antecedentes: ["HIPERTENSIÓN", "DIABETES TIPO 2", "DISLIPEMIA"], medicamentos: ["LOSARTÁN", "METFORMINA", "ATORVASTATINA", "ASPIRINA PREVENTIVA"] }
   ];
 
   // Funciones auxiliares
@@ -324,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function genFechaNac() { const dia = String(randNum(1, 28)); const mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][randNum(0, 11)]; const anio = randNum(1950, 2005); return `${dia} ${mes} ${anio}`; }
   function genTel() { return `011 ${randNum(1000,9999)} ${randNum(1000,9999)}<br>011 ${randNum(1000,9999)} ${randNum(1000,9999)}`; }
   
-  // Función para elegir un subconjunto de una lista
   function pickSubset(sourceArray, maxItems) {
     if (!sourceArray || sourceArray.length === 0) return [];
     let result = [];
@@ -335,6 +306,26 @@ document.addEventListener('DOMContentLoaded', function () {
         result.push(tempArray.splice(randomIndex, 1)[0]);
     }
     return result;
+  }
+
+  // --- NUEVA FUNCIÓN PARA AJUSTAR TAMAÑO DE TEXTO ---
+  function ajustarTexto(elementoId, tamanoInicialCQW) {
+      const el = document.getElementById(elementoId);
+      if (!el) return;
+
+      // Convertimos el tamaño inicial de cqw a píxeles para poder reducirlo
+      // Un valor aproximado, ya que no podemos obtener el valor computado exacto fácilmente
+      let currentSize = tamanoInicialCQW; 
+      el.style.fontSize = currentSize + "cqw";
+
+      // Bucle para reducir el tamaño si se desborda
+      // scrollHeight es la altura total del contenido, clientHeight es la altura visible del contenedor
+      let safetyCounter = 0; // Para evitar bucles infinitos
+      while (el.scrollHeight > el.clientHeight && safetyCounter < 20) {
+          currentSize -= 0.1; // Reducimos en pasos pequeños
+          el.style.fontSize = currentSize + "cqw";
+          safetyCounter++;
+      }
   }
 
   // --- LÓGICA PRINCIPAL DE POBLADO ---
@@ -348,30 +339,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // 2. Selección de Perfil Médico Coherente
     const perfil = randItem(perfilesMedicos);
 
-    // 3. Generar Antecedentes (basado en el perfil)
+    // 3. Generar Antecedentes
     let antecedentesTxt = "SIN PATOLOGÍAS REGISTRADAS";
     if (perfil.antecedentes.length > 0) {
         antecedentesTxt = perfil.antecedentes.join('<br>');
     }
 
-    // 4. Generar Medicamentos (basado en el perfil + azar de venta libre)
+    // 4. Generar Medicamentos
     let medsDelPerfil = [];
     if (perfil.medicamentos.length > 0) {
-        // Elegir 1 o 2 medicamentos de la lista del perfil
         medsDelPerfil = pickSubset(perfil.medicamentos, 2);
     }
-    // 20% de chance de agregar un medicamento común (ej. analgésico) a cualquiera
     if (Math.random() > 0.8) {
         medsDelPerfil.push(randItem(["IBUPROFENO 600MG", "PARACETAMOL 1G"]));
     }
-    
     let medicamentosTxt = "SIN MEDICACIÓN VITAL EN USO";
     if (medsDelPerfil.length > 0) {
-        // Eliminar duplicados y unir
         medicamentosTxt = [...new Set(medsDelPerfil)].join('<br>');
     }
 
-    // 5. Generar otros datos independientes
+    // 5. Generar otros datos
     const alergiasTxt = (Math.random() > 0.7) ? "NO REFIERE" : pickSubset(alergiasBase, 1).join('<br>');
     const operacionesTxt = (Math.random() > 0.6) ? "NINGUNA" : pickSubset(operacionesBase, 2).join('<br>');
 
@@ -383,9 +370,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-domicilio').innerHTML = `${randItem(ciudades)}<br>${randItem(provincias)}`;
     document.getElementById('cred-contactos').innerHTML = genTel();
 
-    // Llenar datos médicos coherentes
-    document.getElementById('cred-antecedentes').innerHTML = antecedentesTxt;
-    document.getElementById('cred-medicamentos').innerHTML = medicamentosTxt;
+    // Llenar datos médicos
+    const elAntecedentes = document.getElementById('cred-antecedentes');
+    elAntecedentes.innerHTML = antecedentesTxt;
+
+    const elMedicamentos = document.getElementById('cred-medicamentos');
+    elMedicamentos.innerHTML = medicamentosTxt;
+
     document.getElementById('cred-alergias').innerHTML = alergiasTxt;
     document.getElementById('cred-operaciones').innerHTML = operacionesTxt;
 
@@ -393,6 +384,16 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cred-nombre-back').textContent = fullName;
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
+
+    // --- APLICAR AJUSTE DE TEXTO DESPUÉS DE LLENAR ---
+    // Usamos setTimeout para dar tiempo a que el navegador renderice el texto y calcule las alturas
+    setTimeout(() => {
+        // Ajustamos Antecedentes y Medicamentos, que son los que pueden tener varias líneas
+        ajustarTexto('cred-antecedentes', 2.1); // 2.1 es el tamaño base en cqw definido en el CSS
+        ajustarTexto('cred-medicamentos', 2.1);
+        // También podemos ajustar operaciones por si acaso
+        ajustarTexto('cred-operaciones', 2.0);
+    }, 50); // 50ms es suficiente espera
   }
 
   // Ejecutar al cargar

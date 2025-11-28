@@ -122,7 +122,7 @@
     animation-play-state: paused;
   }
 
-  /* --- NUEVOS ESTILOS PARA LOS DATOS DE LA TARJETA --- */
+  /* --- NUEVOS ESTILOS PARA LOS DATOS DE LA TARJETA (CORREGIDOS) --- */
   
   /* Capa contenedora de textos sobre la imagen */
   .card-data-layer {
@@ -143,74 +143,75 @@
     line-height: 1.1;
   }
 
-  /* --- POSICIONES Y FUENTES FRENTE --- */
+  /* --- POSICIONES Y FUENTES FRENTE (RECALCULADAS) --- */
   /* Usamos 'cqw' (container query width) para que el texto escale con la tarjeta */
 
   .pos-nombre-front {
     position: absolute;
-    top: 19%; left: 4%;
+    top: 24%; left: 5.5%;
     font-family: 'Vazirmatn', sans-serif;
     font-weight: 700;
-    font-size: 4.8cqw; /* ~ Tamaño grande */
+    font-size: 4.5cqw;
     text-align: left;
   }
   .pos-dni-front {
       position: absolute;
-      top: 30%; left: 4%;
+      top: 35%; left: 5.5%;
       font-family: 'Vazirmatn', sans-serif;
       font-weight: 400;
-      font-size: 3.2cqw;
+      font-size: 3cqw;
       text-align: left;
   }
+  /* Tipo de sangre: Solo texto azul, centrado en el círculo blanco de la imagen */
   .pos-sangre {
       position: absolute;
-      top: 6%; right: 6%;
-      width: 7%; height: 11%;
+      top: 8.5%; right: 5.5%;
+      width: 12%; height: 19%;
       display: flex; justify-content: center; align-items: center;
-      background: white; border-radius: 50%;
       font-family: 'Roboto', sans-serif; font-weight: 600;
       color: #0c4e82;
-      font-size: 3.5cqw;
+      font-size: 4cqw;
   }
 
-  /* Bloques de datos (Alergias, etc.) */
-  /* Usamos Open Sans Semibold como reemplazo de Myriad Pro Semibold */
+  /* Bloques de datos (Alergias, etc.) - Posiciones ajustadas a la plantilla */
   .data-block {
       position: absolute;
-      width: 29%; height: 15%;
       font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2cqw; /* ~7.1pt */
+      font-size: 2.1cqw; /* ~7.1pt */
       text-transform: uppercase;
   }
-  .block-alergias { top: 37%; left: 3.5%; }
-  .block-operaciones { top: 37%; left: 35.5%; font-size: 1.9cqw; }
-  .block-fecha-nac { top: 37%; left: 67.5%; font-weight: 700; font-size: 2.2cqw; }
-  .block-medicamentos { top: 58%; left: 3.5%; }
-  .block-domicilio { top: 58%; left: 67.5%; text-transform: none; font-size: 1.9cqw;}
-  .block-antecedentes { top: 79%; left: 3.5%; }
-  .block-contactos { top: 79%; left: 67.5%; }
+  .block-alergias { top: 43%; left: 3.5%; width: 29%; height: 14%; }
+  .block-operaciones { top: 43%; left: 34.5%; width: 29%; height: 14%; font-size: 2cqw; }
+  .block-fecha-nac { top: 43%; left: 65.5%; width: 31%; height: 14%; font-weight: 700; font-size: 2.3cqw; }
+  
+  .block-medicamentos { top: 63%; left: 3.5%; width: 29%; height: 14%; }
+  .block-domicilio { top: 63%; left: 65.5%; width: 31%; height: 14%; text-transform: none; font-size: 2cqw;}
+  
+  .block-antecedentes { top: 83%; left: 3.5%; width: 29%; height: 14%; }
+  .block-contactos { top: 83%; left: 65.5%; width: 31%; height: 14%; }
 
-  /* --- POSICIONES Y FUENTES DORSO --- */
+  /* --- POSICIONES Y FUENTES DORSO (CORREGIDAS) --- */
   .pos-nombre-back {
       position: absolute;
-      top: 6%; left: 4%;
+      top: 7%; left: 5.5%;
       font-family: 'Vazirmatn', sans-serif; font-weight: 400;
-      font-size: 3.5cqw; /* ~10.68pt */
+      font-size: 3.5cqw;
       text-align: left;
   }
   .pos-dni-back {
       position: absolute;
-      top: 13%; left: 4%;
+      top: 14%; left: 5.5%;
       font-family: 'Open Sans', sans-serif; font-weight: 400;
-      font-size: 2.3cqw; /* ~8.39pt */
+      font-size: 2.5cqw;
       text-align: left;
   }
+  /* ID Number: Posición y tamaño corregidos */
   .pos-id-number {
       position: absolute;
-      bottom: 22%; left: 0; right: 0;
+      bottom: 25%; left: 0; right: 0;
       text-align: center;
       font-family: 'Open Sans', sans-serif; font-weight: 400;
-      font-size: 2.6cqw; /* ~9.4pt */
+      font-size: 3cqw;
       letter-spacing: 0.05em;
   }
 

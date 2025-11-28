@@ -61,38 +61,55 @@
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10; pointer-events: none; color: white;
   }
-  .centered-data {
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-    text-align: center; height: 100%; line-height: 1.2;
+  /* Clase base para contenedores que necesitan ajuste de texto */
+  .adjustable-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrado vertical por defecto */
+    align-items: center;     /* Centrado horizontal por defecto */
+    text-align: center;
+    overflow: hidden;        /* Importante para que el script detecte el desbordamiento */
+    white-space: normal;     /* Permite múltiples líneas */
   }
 
   /* ====== POSICIONES CALIBRADAS (Ref: 1411x913px) ====== */
   /* FRENTE */
   .pos-nombre-front {
-    position: absolute; left: 3.50%; top: 15%;
+    position: absolute; left: 26.09%; top: 18.11%;
+    width: 50%; height: 6%; /* Definimos un área para el nombre */
     font-family: 'Vazirmatn', sans-serif; font-weight: 700;
-    font-size: 4.5cqw; text-align: left; line-height: 1;
+    /* font-size inicial grande, el script lo reducirá */
+    font-size: 5cqw; 
+    text-align: left; line-height: 1.1;
+    align-items: flex-start; /* Alineación izquierda */
+    justify-content: flex-start;
   }
   .pos-dni-front {
-      position: absolute; left: 3.50%; top: 21.06%;
+      position: absolute; left: 14.79%; top: 24.06%;
       font-family: 'Vazirmatn', sans-serif; font-weight: 400;
       font-size: 3cqw; text-align: left;
   }
   .pos-sangre {
-      position: absolute; left: 94.88%; top: 9%; transform: translate(-50%, -50%);
-      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw;
+      position: absolute; left: 94.88%; top: 9.19%; transform: translate(-50%, -50%);
+      width: 10%; height: 16%; /* Definimos el área del círculo */
+      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; 
+      /* font-size inicial grande, el script lo reducirá */
+      font-size: 5cqw;
+      display: flex; justify-content: center; align-items: center; /* Centrado total */
   }
   .data-block {
       position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%;
+      /* font-size inicial grande, el script lo reducirá */
+      font-size: 3cqw; 
+      text-transform: uppercase; width: 27%; height: 11%; line-height: 1.1;
   }
   .block-alergias { left: 3.8%; top: 34%; }
   .block-medicamentos { left: 3.6%; top: 53.7%; }
   .block-antecedentes { left: 3.9%; top: 70%; }
-  .block-operaciones { left: 36.6%; top: 34%; height: 22%; font-size: 2cqw; }
+  .block-operaciones { left: 36.6%; top: 34%; height: 22%; }
   .block-fecha-nac { left: 69%; top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
-  .block-domicilio { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2.3cqw; font-weight: 600; }
-  .block-contactos { left: 69.8%; top: 72.4%; }
+  .block-domicilio { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2cqw; font-weight: 600; }
+  .block-contactos { left: 69.8%; top: 72.4%; font-size: 1.8cqw; }
 
   /* DORSO */
   .pos-nombre-back {
@@ -157,19 +174,19 @@
             <div class="card-face card-front">
               <img src="credencial-frente-base.png" alt="Credencial Frente" class="card-bg-img">
               <div class="card-data-layer">
-                 <div class="pos-nombre-front" id="cred-nombre-front"></div>
+                 <div class="pos-nombre-front adjustable-text-container" id="cred-nombre-front"></div>
                  <div class="pos-dni-front" id="cred-dni-front"></div>
-                 <div class="pos-sangre" id="cred-sangre"></div>
+                 <div class="pos-sangre adjustable-text-container" id="cred-sangre"></div>
                  
-                 <div class="data-block block-alergias centered-data" id="cred-alergias"></div>
-                 <div class="data-block block-operaciones centered-data" id="cred-operaciones"></div>
-                 <div class="data-block block-fecha-nac centered-data" id="cred-fecha-nac"></div>
+                 <div class="data-block block-alergias adjustable-text-container" id="cred-alergias"></div>
+                 <div class="data-block block-operaciones adjustable-text-container" id="cred-operaciones"></div>
+                 <div class="data-block block-fecha-nac adjustable-text-container" id="cred-fecha-nac"></div>
                  
-                 <div class="data-block block-medicamentos centered-data" id="cred-medicamentos"></div>
-                 <div class="data-block block-domicilio centered-data" id="cred-domicilio"></div>
+                 <div class="data-block block-medicamentos adjustable-text-container" id="cred-medicamentos"></div>
+                 <div class="data-block block-domicilio adjustable-text-container" id="cred-domicilio"></div>
                  
-                 <div class="data-block block-antecedentes centered-data" id="cred-antecedentes"></div>
-                 <div class="data-block block-contactos centered-data" id="cred-contactos"></div>
+                 <div class="data-block block-antecedentes adjustable-text-container" id="cred-antecedentes"></div>
+                 <div class="data-block block-contactos adjustable-text-container" id="cred-contactos"></div>
               </div>
             </div>
 
@@ -308,92 +325,69 @@ document.addEventListener('DOMContentLoaded', function () {
     return result;
   }
 
-  // --- NUEVA FUNCIÓN PARA AJUSTAR TAMAÑO DE TEXTO ---
-  function ajustarTexto(elementoId, tamanoInicialCQW) {
+  // --- FUNCIÓN ROBUSTA PARA AJUSTAR TAMAÑO DE TEXTO ---
+  function ajustarTexto(elementoId) {
       const el = document.getElementById(elementoId);
-      if (!el) return;
+      if (!el || el.textContent.trim() === "") return;
 
-      // Convertimos el tamaño inicial de cqw a píxeles para poder reducirlo
-      // Un valor aproximado, ya que no podemos obtener el valor computado exacto fácilmente
-      let currentSize = tamanoInicialCQW; 
-      el.style.fontSize = currentSize + "cqw";
+      // Empezamos con un tamaño grande
+      let size = 5; // en cqw
+      el.style.fontSize = size + "cqw";
 
-      // Bucle para reducir el tamaño si se desborda
-      // scrollHeight es la altura total del contenido, clientHeight es la altura visible del contenedor
-      let safetyCounter = 0; // Para evitar bucles infinitos
-      while (el.scrollHeight > el.clientHeight && safetyCounter < 20) {
-          currentSize -= 0.1; // Reducimos en pasos pequeños
-          el.style.fontSize = currentSize + "cqw";
+      // Reducimos hasta que no haya desbordamiento ni vertical ni horizontal
+      let safetyCounter = 0;
+      while ( (el.scrollHeight > el.clientHeight || el.scrollWidth > el.clientWidth) && safetyCounter < 50 && size > 0.5 ) {
+          size -= 0.1;
+          el.style.fontSize = size + "cqw";
           safetyCounter++;
       }
   }
 
   // --- LÓGICA PRINCIPAL DE POBLADO ---
   function poblarCredencial() {
-    // 1. Datos personales básicos
     const nombre = randItem(nombres);
     const apellido = randItem(apellidos);
     const fullName = `${nombre} ${apellido}`;
     const dni = genDNI();
-
-    // 2. Selección de Perfil Médico Coherente
     const perfil = randItem(perfilesMedicos);
 
-    // 3. Generar Antecedentes
-    let antecedentesTxt = "SIN PATOLOGÍAS REGISTRADAS";
-    if (perfil.antecedentes.length > 0) {
-        antecedentesTxt = perfil.antecedentes.join('<br>');
-    }
-
-    // 4. Generar Medicamentos
-    let medsDelPerfil = [];
-    if (perfil.medicamentos.length > 0) {
-        medsDelPerfil = pickSubset(perfil.medicamentos, 2);
-    }
-    if (Math.random() > 0.8) {
-        medsDelPerfil.push(randItem(["IBUPROFENO 600MG", "PARACETAMOL 1G"]));
-    }
-    let medicamentosTxt = "SIN MEDICACIÓN VITAL EN USO";
-    if (medsDelPerfil.length > 0) {
-        medicamentosTxt = [...new Set(medsDelPerfil)].join('<br>');
-    }
-
-    // 5. Generar otros datos
+    let antecedentesTxt = perfil.antecedentes.length > 0 ? perfil.antecedentes.join('<br>') : "SIN PATOLOGÍAS REGISTRADAS";
+    let medsDelPerfil = perfil.medicamentos.length > 0 ? pickSubset(perfil.medicamentos, 2) : [];
+    if (Math.random() > 0.8) medsDelPerfil.push(randItem(["IBUPROFENO 600MG", "PARACETAMOL 1G"]));
+    let medicamentosTxt = medsDelPerfil.length > 0 ? [...new Set(medsDelPerfil)].join('<br>') : "SIN MEDICACIÓN VITAL EN USO";
     const alergiasTxt = (Math.random() > 0.7) ? "NO REFIERE" : pickSubset(alergiasBase, 1).join('<br>');
     const operacionesTxt = (Math.random() > 0.6) ? "NINGUNA" : pickSubset(operacionesBase, 2).join('<br>');
+    const sangreTxt = randItem(tiposSangre);
 
-    // 6. Llenar el DOM (Frente)
+    // Llenar el DOM (Frente)
     document.getElementById('cred-nombre-front').textContent = fullName;
     document.getElementById('cred-dni-front').textContent = `D.N.I: ${dni}`;
-    document.getElementById('cred-sangre').textContent = randItem(tiposSangre);
+    document.getElementById('cred-sangre').textContent = sangreTxt;
     document.getElementById('cred-fecha-nac').textContent = genFechaNac();
     document.getElementById('cred-domicilio').innerHTML = `${randItem(ciudades)}<br>${randItem(provincias)}`;
     document.getElementById('cred-contactos').innerHTML = genTel();
 
-    // Llenar datos médicos
-    const elAntecedentes = document.getElementById('cred-antecedentes');
-    elAntecedentes.innerHTML = antecedentesTxt;
-
-    const elMedicamentos = document.getElementById('cred-medicamentos');
-    elMedicamentos.innerHTML = medicamentosTxt;
-
+    document.getElementById('cred-antecedentes').innerHTML = antecedentesTxt;
+    document.getElementById('cred-medicamentos').innerHTML = medicamentosTxt;
     document.getElementById('cred-alergias').innerHTML = alergiasTxt;
     document.getElementById('cred-operaciones').innerHTML = operacionesTxt;
 
-    // 7. Llenar el DOM (Dorso)
+    // Llenar el DOM (Dorso)
     document.getElementById('cred-nombre-back').textContent = fullName;
     document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
     document.getElementById('cred-id-number').textContent = `ID03-${dni.replace(/\./g, '')}`;
 
     // --- APLICAR AJUSTE DE TEXTO DESPUÉS DE LLENAR ---
-    // Usamos setTimeout para dar tiempo a que el navegador renderice el texto y calcule las alturas
+    // Esperamos a que el navegador renderice para calcular dimensiones
     setTimeout(() => {
-        // Ajustamos Antecedentes y Medicamentos, que son los que pueden tener varias líneas
-        ajustarTexto('cred-antecedentes', 2.1); // 2.1 es el tamaño base en cqw definido en el CSS
-        ajustarTexto('cred-medicamentos', 2.1);
-        // También podemos ajustar operaciones por si acaso
-        ajustarTexto('cred-operaciones', 2.0);
-    }, 50); // 50ms es suficiente espera
+        ajustarTexto('cred-nombre-front');
+        ajustarTexto('cred-sangre');
+        ajustarTexto('cred-antecedentes');
+        ajustarTexto('cred-medicamentos');
+        ajustarTexto('cred-alergias');
+        ajustarTexto('cred-operaciones');
+        // Domicilio y Contactos suelen estar bien, pero se pueden añadir si es necesario
+    }, 50);
   }
 
   // Ejecutar al cargar

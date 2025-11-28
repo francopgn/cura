@@ -726,7 +726,7 @@ navInicioLinks.forEach(link => {
     }
 
     abrirNovedades();
-    setTimeout(cerrarNovedades, 5000); // 5s auto-cierre
+    setTimeout(cerrarNovedades, 3500); // 5s auto-cierre
 
     if (novCloseBtn) novCloseBtn.addEventListener('click', cerrarNovedades);
     novModal.addEventListener('click', function (e) { if (e.target === novModal) cerrarNovedades(); });

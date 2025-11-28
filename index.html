@@ -544,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const navInfoLinks      = document.querySelectorAll('a[href="#informacion"]');
   const navContactoLinks  = document.querySelectorAll('a[href="#contacto"]');
 
-  function smoothScrollTo(element, duration = 1700, offset = 200) {
+  function smoothScrollTo(element, duration = 2000, offset = 200) {
     if (!element) return;
     const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
     const startY = window.pageYOffset;

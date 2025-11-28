@@ -37,21 +37,24 @@
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
   
-  /* MODIFICADO PARA QUE SE ADAPTE AL CONTENIDO */
- /* MODIFICADO CON PRIORIDAD ALTA PARA ADAPTAR ALTURA */
-/* BUSCA ESTE BLOQUE Y REEMPLÁZALO TODO POR EL SIGUIENTE */
-  .modal-card {
+/* ----POPUP----  */ 
+  
+.modal-card {
       /* Mantener las animaciones originales */
       transform: scale(0.9) translateY(10px);
       opacity: 0;
       transition: transform 0.25s ease, opacity 0.25s ease;
 
-      /* --- INTENTO DE SOLUCIÓN DEFINITIVO --- */
-      display: block !important;  /* Fuerza a que sea un bloque normal, no flex */
-      height: auto !important;    /* La altura la define el contenido */
-      min-height: 0 !important;   /* Se asegura de no tener altura mínima */
-      max-height: 90vh;           /* Límite de seguridad para que no se salga de pantalla */
-      overflow-y: auto;           /* Scroll si fuera necesario */
+      /* --- SOLUCIÓN NUCLEAR PARA ALTURA --- */
+      display: flex !important;          /* Volvemos a flex para controlar el flujo */
+      flex-direction: column !important; /* Apila el contenido verticalmente */
+      justify-content: flex-start !important; /* Pega todo el contenido arriba, eliminando espacio abajo */
+      flex-grow: 0 !important;           /* CRÍTICO: Prohíbe a la tarjeta estirarse más de lo necesario */
+      
+      height: auto !important;           /* La altura es exactamente la del contenido + padding */
+      min-height: 0 !important;          /* Asegura que no haya altura mínima fantasma */
+      max-height: 90vh !important;       /* Límite de seguridad */
+      overflow-y: auto !important;       /* Scroll si hace falta */
   }
   
   .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
@@ -136,7 +139,7 @@
       font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left;
   }
   .pos-id-number {
-      position: absolute; bottom: 23%; left: 0; right: -5%; text-align: center;
+      position: absolute; bottom: 23%; left: 0; right: -4%; text-align: center;
       font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.8cqw; letter-spacing: 0.05em;
   }
 </style>

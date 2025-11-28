@@ -48,17 +48,26 @@
     transform: scale(1) translateY(0);
     opacity: 1;
   }
+  
+  /* Cursor parpadeante para el efecto máquina de escribir */
+  .cursor-blink::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    color: #59D2FF;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
 </style>
 
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
-  <!-- Header -->
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
 
       <div class="flex items-center gap-2">
-        <!-- Asumiendo ruta absoluta para el logo -->
         <img src="/Informacion/logo.png"
              alt="Logo C.U.R.A."
              class="h-16 w-auto object-contain shrink-0" />
@@ -69,7 +78,6 @@
       </div>
 
       <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-        <!-- BOTÓN VOLVER CON ANIMACIÓN -->
         <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
             <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> 
             Volver
@@ -85,19 +93,16 @@
     </div>
   </header>
 
-  <!-- Contenido Principal -->
-  <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
+  <main class="flex-grow w-full px-4 py-10 space-y-12 flex flex-col items-center">
     
-    <section>
-        <h1 class="text-3xl font-bold text-white mb-8 text-center md:text-left">Fundamentos de la ley</h1>
+    <section class="w-full max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-white mb-8 text-center">Fundamentos de la ley</h1>
         
-            <div class="md:col-span-7 lg:col-span-8 order-1 md:order-2">
-                <div class="grid sm:grid-cols-2 gap-4">
-                    
-                    <!-- Recuadro 1 -->
-                    <a href="/Informacion/fundamentos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <p class="text-xs md:text-sm text-cura-accentLight">
-                           La Ley C.U.R.A. nace para reconstruir por completo el sistema de salud argentino, reemplazando un modelo fragmentado, analógico y desigual por una red sanitaria única, interoperable, federal y completamente digital. Su finalidad es garantizar que cada persona tenga una historia clínica integrada, accesible desde cualquier punto del país, con estándares estrictos de seguridad, privacidad y trazabilidad.
+        <div class="w-full flex justify-center">
+            <a href="/Informacion/fundamentos.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
+                
+                <p id="typewriter-text" class="text-xs md:text-sm text-cura-accentLight leading-relaxed cursor-blink">
+                   La Ley C.U.R.A. nace para reconstruir por completo el sistema de salud argentino, reemplazando un modelo fragmentado, analógico y desigual por una red sanitaria única, interoperable, federal y completamente digital. Su finalidad es garantizar que cada persona tenga una historia clínica integrada, accesible desde cualquier punto del país, con estándares estrictos de seguridad, privacidad y trazabilidad.
 
 La ley establece un sistema nacional unificado, capaz de conectar de forma segura a hospitales, clínicas, laboratorios, farmacias, obras sociales, PAMI y ART. Este modelo permite continuidad asistencial, reduce errores médicos, elimina la duplicación de estudios y fortalece la equidad territorial al garantizar el mismo acceso a la información sanitaria sin importar la provincia o el prestador.
 
@@ -106,16 +111,12 @@ C.U.R.A. incorpora principios rectores modernos: soberanía sanitaria digital, i
 El proyecto también transforma el gasto sanitario improductivo en inversión inteligente. Al digitalizar procesos, eliminar fraudes, unificar sistemas dispersos y mejorar la gestión, la ley reduce costos estructurales y redirige recursos hacia una mejor atención, insumos y equipamiento.
 
 C.U.R.A. es una reforma estructural pensada para el siglo XXI: moderniza la salud pública, ordena la gobernanza federal, fortalece la protección de datos personales y devuelve a cada ciudadano el control sobre su información clínica, integrando tecnología, seguridad, eficiencia y derechos.
-                        </p>
-                    </a>
-
-                </div>
-            </div>
+                </p>
+            </a>
         </div>
     </section>
 
-    <!-- SECCIÓN SUMATE (Replicada del Index) -->
-    <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20">
+    <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
       <div class="max-w-2xl">
         <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
         <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
@@ -124,7 +125,7 @@ C.U.R.A. es una reforma estructural pensada para el siglo XXI: moderniza la salu
       <form id="sumate-form"
             action="https://formsubmit.co/ajax/contacto@leycura.org"
             method="POST"
-            class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+            class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3 max-w-4xl">
 
         <input type="hidden" name="_subject" value="Nuevo ciudadano sumado (Desde Info) - LeyCURA">
         <input type="hidden" name="_template" value="box">
@@ -193,7 +194,6 @@ C.U.R.A. es una reforma estructural pensada para el siglo XXI: moderniza la salu
 
   </main>
 
-  <!-- Footer Simplificado -->
   <footer class="border-t border-cura-accent/30 bg-cura-primaryDark mt-auto">
     <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
       <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
@@ -204,7 +204,6 @@ C.U.R.A. es una reforma estructural pensada para el siglo XXI: moderniza la salu
     </div>
   </footer>
 
-  <!-- MODAL DE ÉXITO (SUMATE) -->
   <div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
     <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
       <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
@@ -219,7 +218,35 @@ C.U.R.A. es una reforma estructural pensada para el siglo XXI: moderniza la salu
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
-  // --- SCROLL SUAVE (SMOOTH SCROLL) ---
+  // --- 1. ANIMACIÓN TYPEWRITER RÁPIDA ---
+  const textElement = document.getElementById('typewriter-text');
+  
+  if (textElement) {
+    const fullText = textElement.innerText;
+    textElement.innerText = ''; // Limpiamos texto inicial
+    
+    let i = 0;
+    // Ajusta velocidad: menor número = más rápido.
+    // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
+    const speed = 5; 
+
+    function typeWriter() {
+      if (i < fullText.length) {
+        // Escribimos varios caracteres a la vez para acelerar bloques grandes de texto
+        textElement.textContent += fullText.substring(i, i + 3);
+        i += 3;
+        setTimeout(typeWriter, speed);
+      } else {
+        // Al finalizar, quitamos el cursor parpadeante (opcional)
+        textElement.classList.remove('cursor-blink');
+      }
+    }
+    
+    // Iniciar con un pequeño delay para asegurar renderizado
+    setTimeout(typeWriter, 300);
+  }
+
+  // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
   function smoothScrollTo(element, duration = 1700, offset = 100) {
     if (!element) return;
     const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
@@ -231,14 +258,13 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!startTime) startTime = currentTime;
       const timeElapsed = currentTime - startTime;
       const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      const ease = 1 - Math.pow(1 - progress, 3);
       window.scrollTo(0, startY + distance * ease);
       if (timeElapsed < duration) requestAnimationFrame(animation);
     }
     requestAnimationFrame(animation);
   }
 
-  // Activar smooth scroll para los links con clase 'nav-scroll-link' o href="#sumate"
   const scrollLinks = document.querySelectorAll('a[href^="#"]');
   scrollLinks.forEach(link => {
       link.addEventListener('click', function(e) {
@@ -253,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   });
 
-  // --- CIUDADES Y GEOREF ---
+  // --- 3. CIUDADES Y GEOREF ---
   const provinciaSelect = document.querySelector('select[name="provincia"]');
   const ciudadSelect = document.getElementById('ciudad-select');
 
@@ -290,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
     provinciaSelect.addEventListener('change', cargarCiudades);
   }
 
-  // --- FORMULARIO SUMATE ---
+  // --- 4. FORMULARIO SUMATE ---
   const sumateForm    = document.getElementById('sumate-form');
   const sumateModal   = document.getElementById('sumate-modal');
   const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
@@ -316,21 +342,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
       try {
         const formData = new FormData(sumateForm);
-        const email = (formData.get('email') || '').toString().trim();
-        
         // Envío
         const formSubmitPromise = fetch(sumateForm.action, {
           method: 'POST', headers: { 'Accept': 'application/json' }, body: formData
         });
         
-        // Opcional: Brevo / API extra si existiera (Mantenido del original)
-        let brevoPromise = Promise.resolve();
-        if (email) {
-          const payload = { email: email, tipo: 'SUMARME' };
-          // brevoPromise = fetch('/api/sumate', { method: 'POST', ... }); // Comentado para evitar error 404 si no existe
-        }
-
-        const [formRes] = await Promise.all([formSubmitPromise, brevoPromise]);
+        const [formRes] = await Promise.all([formSubmitPromise]);
         if (!formRes.ok) throw new Error('Error al enviar el formulario');
         
         sumateForm.reset();

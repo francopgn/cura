@@ -95,85 +95,100 @@
 
   <main class="flex-grow w-full px-4 py-10 space-y-12 flex flex-col items-center">
     
-    <section class="w-full max-w-4xl mx-auto">
+   <section class="w-full max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-white mb-8 text-center">Beneficios para Pacientes y Profesionales</h1>
         
         <div class="w-full flex justify-center">
-            <a href="/Informacion/faq.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
+            <div id="faq-container" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 md:p-8 shadow-md transition-all duration-1000 opacity-0">
                 
-             <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink">
-¿Qué es el Sistema C.U.R.A.?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Qué es el Sistema C.U.R.A.?</h3>
+                    <p class="text-white/90 leading-relaxed">Es la plataforma nacional que unifica la historia clínica digital, las recetas electrónicas, la trazabilidad sanitaria y los sistemas de cada provincia, obra social, PAMI y ART en un único ecosistema seguro, federal y completamente interoperable.</p>
+                </div>
 
-Es la plataforma nacional que unifica la historia clínica digital, las recetas electrónicas, la trazabilidad sanitaria y los sistemas de cada provincia, obra social, PAMI y ART en un único ecosistema seguro, federal y completamente interoperable.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿La ley obliga a todos los efectores a usar este sistema?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. C.U.R.A. es obligatorio para hospitales públicos, clínicas privadas, obras sociales, PAMI, ART, farmacias, laboratorios y cualquier establecimiento que preste servicios de salud en el país.</p>
+                </div>
 
-¿La ley obliga a todos los efectores a usar este sistema?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Qué pasa con los sistemas que ya existen?</h3>
+                    <p class="text-white/90 leading-relaxed">Pueden seguir usándose siempre que se integren a C.U.R.A. mediante interoperabilidad HL7 FHIR, APIs seguras o el módulo web oficial. No se exige cambiar software interno ni hardware.</p>
+                </div>
 
-Sí. C.U.R.A. es obligatorio para hospitales públicos, clínicas privadas, obras sociales, PAMI, ART, farmacias, laboratorios y cualquier establecimiento que preste servicios de salud en el país.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Mis datos estarán seguros?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. La ley exige cifrado, trazabilidad total, firma digital, sellos de tiempo, autenticación federal y almacenamiento solo en Argentina, bajo infraestructura crítica de ARSAT.</p>
+                </div>
 
-¿Qué pasa con los sistemas que ya existen?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Quién puede ver mi historia clínica?</h3>
+                    <p class="text-white/90 leading-relaxed">Solo profesionales autorizados vinculados a tu atención. Cada acceso queda registrado en el Panel de Privacidad, que podés consultar en cualquier momento.</p>
+                </div>
 
-Pueden seguir usándose siempre que se integren a C.U.R.A. mediante interoperabilidad HL7 FHIR, APIs seguras o el módulo web oficial. No se exige cambiar software interno ni hardware.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Puedo saber quién accedió a mis datos?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. El sistema muestra fecha, hora, ubicación y motivo de cada acceso. Es uno de los pilares de la ley.</p>
+                </div>
 
-¿Mis datos estarán seguros?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Qué pasa si hay un corte de internet?</h3>
+                    <p class="text-white/90 leading-relaxed">Los establecimientos pueden operar en Modo de Contingencia: cargan datos localmente en forma encriptada y luego se sincronizan automáticamente cuando se restablece el servicio.</p>
+                </div>
 
-Sí. La ley exige cifrado, trazabilidad total, firma digital, sellos de tiempo, autenticación federal y almacenamiento solo en Argentina, bajo infraestructura crítica de ARSAT.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Puedo atenderme en cualquier provincia?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. La historia clínica viaja con la persona. C.U.R.A. asegura interoperabilidad y continuidad asistencial en todo el país.</p>
+                </div>
 
-¿Quién puede ver mi historia clínica?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Cómo se financia el sistema?</h3>
+                    <p class="text-white/90 leading-relaxed">Mediante eficiencia presupuestaria, reorganización de partidas, aportes del sistema sanitario, ahorro por digitalización y participación pública/privada bajo soberanía tecnológica. La Nación cubre los costos centrales.</p>
+                </div>
 
-Solo profesionales autorizados vinculados a tu atención. Cada acceso queda registrado en el Panel de Privacidad, que podés consultar en cualquier momento.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Qué beneficios trae para el paciente?</h3>
+                    <p class="text-white/90 leading-relaxed">Atención más rápida, menos errores, menos repetición de estudios, recetas electrónicas, historial unificado, trazabilidad y control sobre quién accede a su información.</p>
+                </div>
 
-¿Puedo saber quién accedió a mis datos?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Qué beneficios trae para el profesional?</h3>
+                    <p class="text-white/90 leading-relaxed">Menos burocracia, interoperabilidad automática, prescripciones digitales, acceso a estudios en segundos y respaldo legal con registros inalterables.</p>
+                </div>
 
-Sí. El sistema muestra fecha, hora, ubicación y motivo de cada acceso. Es uno de los pilares de la ley.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Se usa inteligencia artificial?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí, pero de manera regulada, auditada y sin acceso directo a datos sensibles. Todos los algoritmos deben ser validados y recertificados periódicamente.</p>
+                </div>
 
-¿Qué pasa si hay un corte de internet?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Qué pasa si un establecimiento no usa el sistema?</h3>
+                    <p class="text-white/90 leading-relaxed">Es una falta gravísima. La Autoridad de Aplicación puede aplicar sanciones, auditorías y medidas correctivas.</p>
+                </div>
 
-Los establecimientos pueden operar en Modo de Contingencia: cargan datos localmente en forma encriptada y luego se sincronizan automáticamente cuando se restablece el servicio.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿C.U.R.A. reemplaza a la historia clínica en papel?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. La historia clínica digital unificada es el formato oficial y obligatorio. El papel se limita a contingencias.</p>
+                </div>
 
-¿Puedo atenderme en cualquier provincia?
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Puede una empresa privada acceder a los datos?</h3>
+                    <p class="text-white/90 leading-relaxed">No. Solo pueden participar como aportantes tecnológicos o donantes, sin acceso a datos clínicos. La soberanía digital es absoluta.</p>
+                </div>
 
-Sí. La historia clínica viaja con la persona. C.U.R.A. asegura interoperabilidad y continuidad asistencial en todo el país.
+                <div class="mb-6">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿El sistema es gratuito para las provincias?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. Usan la plataforma como software público sin pagar licencias ni desarrollos.</p>
+                </div>
 
-¿Cómo se financia el sistema?
+                <div class="mb-0">
+                    <h3 class="text-lg font-bold text-cura-accentLight mb-1">¿Puedo ver mis estudios y recetas desde el celular?</h3>
+                    <p class="text-white/90 leading-relaxed">Sí. El sistema es compatible con dispositivos móviles mediante identidad digital del Estado.</p>
+                </div>
 
-Mediante eficiencia presupuestaria, reorganización de partidas, aportes del sistema sanitario, ahorro por digitalización y participación pública/privada bajo soberanía tecnológica. La Nación cubre los costos centrales.
-
-¿Qué beneficios trae para el paciente?
-
-Atención más rápida, menos errores, menos repetición de estudios, recetas electrónicas, historial unificado, trazabilidad y control sobre quién accede a su información.
-
-¿Qué beneficios trae para el profesional?
-
-Menos burocracia, interoperabilidad automática, prescripciones digitales, acceso a estudios en segundos y respaldo legal con registros inalterables.
-
-¿Se usa inteligencia artificial?
-
-Sí, pero de manera regulada, auditada y sin acceso directo a datos sensibles. Todos los algoritmos deben ser validados y recertificados periódicamente.
-
-¿Qué pasa si un establecimiento no usa el sistema?
-
-Es una falta gravísima. La Autoridad de Aplicación puede aplicar sanciones, auditorías y medidas correctivas.
-
-¿C.U.R.A. reemplaza a la historia clínica en papel?
-
-Sí. La historia clínica digital unificada es el formato oficial y obligatorio. El papel se limita a contingencias.
-
-¿Puede una empresa privada acceder a los datos?
-
-No. Solo pueden participar como aportantes tecnológicos o donantes, sin acceso a datos clínicos. La soberanía digital es absoluta.
-
-¿El sistema es gratuito para las provincias?
-
-Sí. Usan la plataforma como software público sin pagar licencias ni desarrollos.
-
-¿Puedo ver mis estudios y recetas desde el celular?
-
-Sí. El sistema es compatible con dispositivos móviles mediante identidad digital del Estado.
-             </p>
-            </a>
+            </div>
         </div>
     </section>
-
     <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
       <div class="max-w-2xl">
         <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
@@ -277,66 +292,17 @@ Sí. El sistema es compatible con dispositivos móviles mediante identidad digit
 document.addEventListener('DOMContentLoaded', function () {
 
   // --- 1. ANIMACIÓN TYPEWRITER RÁPIDA ---
-  const textElement = document.getElementById('typewriter-text');
+ // --- 1. ANIMACIÓN DE APARICIÓN SUAVE (FADE IN) ---
+  const faqContainer = document.getElementById('faq-container');
   
-  if (textElement) {
-    const fullText = textElement.innerText;
-    textElement.innerText = ''; // Limpiamos texto inicial
-    
-    let i = 0;
-    // Ajusta velocidad: menor número = más rápido.
-    // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
-    const speed = 5; 
-
-    function typeWriter() {
-      if (i < fullText.length) {
-        // Escribimos varios caracteres a la vez para acelerar bloques grandes de texto
-        textElement.textContent += fullText.substring(i, i + 3);
-        i += 3;
-        setTimeout(typeWriter, speed);
-      } else {
-        // Al finalizar, quitamos el cursor parpadeante (opcional)
-        textElement.classList.remove('cursor-blink');
-      }
-    }
-    
-    // Iniciar con un pequeño delay para asegurar renderizado
-    setTimeout(typeWriter, 300);
+  if (faqContainer) {
+    // Esperamos un momento (300ms) y luego hacemos visible el texto
+    setTimeout(() => {
+        faqContainer.classList.remove('opacity-0');
+    }, 300);
   }
 
-  // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
-  function smoothScrollTo(element, duration = 1700, offset = 100) {
-    if (!element) return;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      window.scrollTo(0, startY + distance * ease);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-    requestAnimationFrame(animation);
-  }
-
-  const scrollLinks = document.querySelectorAll('a[href^="#"]');
-  scrollLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId !== '#') {
-              const targetElement = document.querySelector(targetId);
-              if (targetElement) {
-                  e.preventDefault();
-                  smoothScrollTo(targetElement);
-              }
-          }
-      });
-  });
-
+  
   // --- 3. CIUDADES Y GEOREF ---
   const provinciaSelect = document.querySelector('select[name="provincia"]');
   const ciudadSelect = document.getElementById('ciudad-select');

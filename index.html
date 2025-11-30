@@ -452,6 +452,7 @@
      <form id="newsletter-form" 
             action="https://12c1bd63.sibforms.com/serve/MUIFAE6zANXdTrrUnJf-u0ew5TqzKi1OBTZfjT5wMY1lVhamCG5SOKcz-qzoejAld7Ngnht5CCbBk1zorD0EkQC4f7BSq1LTKPEC3lcRwDedKPJ6GM1gWM8aLkmReEnitWXuD53e1zIRjtTJjvobRZpQmbUeH4psjgg34Yy9y7NfrqOUgLCr7KUMKHM4riBjVKtgj5C4UgEKhnJJUw=="
             method="POST"
+            target="hidden_iframe"
             class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
         
         <input name="EMAIL" type="email" required placeholder="Correo electrónico" class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
@@ -593,73 +594,66 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('a[href="#contacto"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto, 1500, 100); }));
 
 
-  // --- 3. MODALES Y ENVÍOS ---
+  // --- 3. LÓGICA DE MODALES ---
   function abrirModal(id) {
     const modal = document.getElementById(id);
-    if (modal) {
-      modal.classList.remove('hidden');
-      requestAnimationFrame(() => {
-        modal.classList.add('show');
-        const card = modal.querySelector('.modal-card');
-        if(card) card.classList.add('show');
-      });
-    }
+    if (!modal) return;
+    const card = modal.querySelector('.modal-card');
+    modal.classList.remove('hidden');
+    requestAnimationFrame(() => { 
+        modal.classList.add('show'); 
+        if(card) card.classList.add('show'); 
+    });
   }
   function cerrarModal(id) {
     const modal = document.getElementById(id);
-    if (modal) {
-      modal.classList.remove('show');
-      const card = modal.querySelector('.modal-card');
-      if(card) card.classList.remove('show');
-      setTimeout(() => modal.classList.add('hidden'), 300);
-    }
+    if (!modal) return;
+    const card = modal.querySelector('.modal-card');
+    modal.classList.remove('show');
+    if(card) card.classList.remove('show');
+    setTimeout(() => modal.classList.add('hidden'), 300);
   }
   document.querySelectorAll('.modal-backdrop').forEach(m => m.addEventListener('click', e => { if (e.target === m) cerrarModal(m.id); }));
 
 
-  // --- FUNCIÓN UNIVERSAL DE ENVÍO A BREVO (SIN REDIRECCIÓN) ---
-  function enviarBrevo(formId, modalId) {
-    const form = document.getElementById(formId);
-    if (!form) return;
-    
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const btn = form.querySelector('button');
-        const originalText = btn.textContent;
-        btn.disabled = true; btn.textContent = 'Enviando...';
-        
-        const formData = new FormData(form);
+  // --- 4. MANEJO VISUAL DE FORMULARIOS (BREVO) ---
+  // IMPORTANTE: Aquí NO usamos fetch ni preventDefault. Dejamos que el form envíe 
+  // los datos al iframe oculto, y nosotros solo mostramos el cartelito.
+  
+  function manejarFormularioBrevo(formId, modalId) {
+      const form = document.getElementById(formId);
+      if (!form) return;
 
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors' 
-        })
-        .then(() => {
-            // Asumimos éxito
-            form.reset();
-            abrirModal(modalId);
-        })
-        .catch(err => alert('Hubo un error de conexión.'))
-        .finally(() => {
-            btn.disabled = false;
-            btn.textContent = originalText;
-        });
-    });
+      form.addEventListener('submit', function() {
+          const btn = form.querySelector('button');
+          const originalText = btn.textContent;
+          btn.textContent = 'Enviando...';
+          btn.disabled = true;
+
+          // Simulamos un tiempo de espera para mostrar el éxito
+          // (Como va a un iframe oculto, no podemos saber 100% cuándo termina, 
+          // pero 1.5 seg es suficiente para que Brevo reciba los datos)
+          setTimeout(() => {
+              form.reset();
+              abrirModal(modalId);
+              btn.textContent = originalText;
+              btn.disabled = false;
+          }, 1500);
+      });
   }
 
-  // Activamos los formularios Brevo
-  enviarBrevo('sumate-form', 'sumate-modal');
-  enviarBrevo('newsletter-form', 'newsletter-modal');
-  
-  // Botones OK de los modales
+  manejarFormularioBrevo('sumate-form', 'sumate-modal');
+  manejarFormularioBrevo('newsletter-form', 'newsletter-modal');
+
+  // Botones OK
   const okSumate = document.getElementById('sumate-modal-ok');
   if(okSumate) okSumate.addEventListener('click', () => cerrarModal('sumate-modal'));
   const okNews = document.getElementById('newsletter-modal-ok');
   if(okNews) okNews.addEventListener('click', () => cerrarModal('newsletter-modal'));
 
 
-  // --- FORMULARIO CONTACTO (Tu email personal) ---
+  // --- 5. FORMULARIO CONTACTO (FormSubmit) ---
+  // Este SÍ usa AJAX porque FormSubmit lo permite
   const contactForm = document.getElementById('contact-form');
   const contactOk = document.getElementById('success-modal-ok');
 
@@ -849,5 +843,74 @@ document.addEventListener('DOMContentLoaded', function () {
   poblarCredencial();
 });
 </script>
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
+</body> ```
+
+      <form id="sumate-form"
+            action="https://12c1bd63.sibforms.com/serve/MUIFAO0IYKaRHuQkJ6g93ZHcx46oG07UoaLjnjKOcEbqyOIwSJMDS6diKcIdQjZb-frFYsRr6atGYtsHWMA7GD-CZVvJ2L-2JryLIIKTL6Aaf8VaBtLaG74QtfrroG_JJ9kdaKNFpC_m7RraB3YtXtSi-9kLbggwfflq6XWpBOh1kcnV9nFzX68SQA6LBmtC88CtvjFqmDPSeUdYEw=="
+            method="POST"
+            target="hidden_iframe"
+            class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
+            <input name="NOMBRE" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" placeholder="Tu nombre" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
+            <input name="APELLIDOS" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" placeholder="Tu apellido" />
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
+            <select name="PROVINCIA" required
+                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+              <option value="">Seleccioná una provincia</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+              <option value="Catamarca">Catamarca</option>
+              <option value="Chaco">Chaco</option>
+              <option value="Chubut">Chubut</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Corrientes">Corrientes</option>
+              <option value="Entre Ríos">Entre Ríos</option>
+              <option value="Formosa">Formosa</option>
+              <option value="Jujuy">Jujuy</option>
+              <option value="La Pampa">La Pampa</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Mendoza">Mendoza</option>
+              <option value="Misiones">Misiones</option>
+              <option value="Neuquén">Neuquén</option>
+              <option value="Río Negro">Río Negro</option>
+              <option value="Salta">Salta</option>
+              <option value="San Juan">San Juan</option>
+              <option value="San Luis">San Luis</option>
+              <option value="Santa Cruz">Santa Cruz</option>
+              <option value="Santa Fe">Santa Fe</option>
+              <option value="Santiago del Estero">Santiago del Estero</option>
+              <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
+              <option value="Tucumán">Tucumán</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
+            <select name="CIUDAD" id="ciudad-select" required
+                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+              <option value="">Seleccioná una ciudad</option>
+            </select>
+          </div>
+        </div>
+
+        <div><label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label><input type="email" name="EMAIL" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+        
+        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label><input name="DNI" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label><input name="TELEFONO" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+
+        <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">Enviar</button>
+        <p class="text-[10px] text-cura-accentLight mt-1">Los campos marcados con * son obligatorios.</p>
+      </form>
 </body>
 </html>

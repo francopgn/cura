@@ -619,7 +619,7 @@ if (btnInfo && targetInfo) {
     e.preventDefault(); 
     // El 300 es el espacio que deja arriba. 
     // Cuanto mayor sea el número, más abajo aparecerá el título.
-    smoothScrollTo(targetInfo, 2000, 600); 
+    smoothScrollTo(targetInfo, 2000, 100); 
   });
 }
 
@@ -640,7 +640,7 @@ navInicioLinks.forEach(link => {
 navInfoLinks.forEach(link => {
   link.addEventListener('click', e => { 
       e.preventDefault(); 
-      smoothScrollTo(targetInfo, 2000, 600); // Mismo número 300 aquí
+      smoothScrollTo(targetInfo, 2000, 100); // Mismo número 300 aquí
   });
 });
 

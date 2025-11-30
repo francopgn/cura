@@ -579,9 +579,57 @@ document.addEventListener('DOMContentLoaded', function () {
   if (btnSumate && targetSumate) {
     btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
   }
+// --- SCROLL SUAVE Y BOTONES HERO (ORIGINAL) ---
+  const btnSumate      = document.getElementById('btn-sumate');
+  const targetSumate   = document.getElementById('sumate');
+  const btnInfo        = document.getElementById('btn-info');
+  const targetInfo     = document.getElementById('informacion');
+  const targetContacto = document.getElementById('contacto');
+  const targetInicio   = document.getElementById('inicio');
+
+  const navInicioLinks    = document.querySelectorAll('a[href="#inicio"]');
+  const navInfoLinks      = document.querySelectorAll('a[href="#informacion"]');
+  const navContactoLinks  = document.querySelectorAll('a[href="#contacto"]');
+
+  function smoothScrollTo(element, duration = 2000, offset = 200) {
+    if (!element) return;
+    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
+    const startY = window.pageYOffset;
+    const distance = targetY - startY;
+    let startTime = null;
+
+    function animation(currentTime) {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+      window.scrollTo(0, startY + distance * ease);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    }
+    requestAnimationFrame(animation);
+  }
+
+  // Event Listeners Scroll
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
+  }
   if (btnInfo && targetInfo) {
     btnInfo.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
   }
+navInicioLinks.forEach(link => {
+    link.addEventListener('click', e => { 
+        e.preventDefault(); 
+        // Al poner 'document.body', le decimos que vaya al techo total de la web
+        smoothScrollTo(document.body, 1700, 0); 
+    });
+  });
+  navInfoLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo); });
+  });
+  navContactoLinks.forEach(link => {
+    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto); });
+  });
+
 navInicioLinks.forEach(link => {
     link.addEventListener('click', e => { 
         e.preventDefault(); 

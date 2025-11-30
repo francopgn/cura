@@ -107,6 +107,23 @@
       font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw;
       display: flex; justify-content: center; align-items: center;
   }
+
+  /* DATOS FICTICIOS */
+/* Texto de aviso abajo */
+.pos-ficticios {
+    position: absolute;
+    bottom: 3%; /* Lo ubica bien abajo */
+    left: 0;
+    width: 100%; /* Ocupa todo el ancho para poder centrarse */
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.8cqw; /* Tamaño relativo al ancho de la tarjeta */
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5); /* Blanco con 50% de transparencia */
+    letter-spacing: 0.1em;
+    pointer-events: none; /* Importante: para que no bloquee el click de girar */
+}
+  
   
   /* Bloques de datos */
   .data-block {
@@ -210,6 +227,7 @@
                  
                  <div class="data-block block-antecedentes" id="cred-antecedentes"></div>
                  <div class="data-block block-contactos" id="cred-contactos"></div>
+                <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
               </div>
             </div>
 
@@ -219,6 +237,7 @@
                   <div class="pos-nombre-back" id="cred-nombre-back"></div>
                   <div class="pos-dni-back" id="cred-dni-back"></div>
                   <div class="pos-id-number" id="cred-id-number"></div>
+                <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
               </div>
             </div>
 

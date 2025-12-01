@@ -752,6 +752,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
     try {
       const formData = new FormData(sumateForm);
 
+      // Datos completos para Brevo
       const bodyBrevo = {
         email:    formData.get('email') || '',
         nombre:   formData.get('nombre') || '',
@@ -762,24 +763,42 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         telefono: formData.get('telefono') || '',
       };
 
-      const brevoPromise = fetch('/api/sumate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bodyBrevo)
-      });
+      // 🔹 Enviar a tu API (/api/sumate) – si falla, NO rompemos el formulario
+      try {
+        const brevoRes = await fetch('/api/sumate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bodyBrevo)
+        });
 
-      // sigue mandando a FormSubmit como antes
-      const formSubmitPromise = fetch(sumateForm.action, {
+        if (!brevoRes.ok) {
+          const txt = await brevoRes.text();
+          console.error('Error /api/sumate:', brevoRes.status, txt);
+          // No tiramos alert: el usuario igual ve "enviado"
+        }
+      } catch (err) {
+        console.error('Error de red llamando a /api/sumate:', err);
+      }
+
+      // 🔹 Enviar a FormSubmit (esto sí tiene que funcionar para que no veas el error)
+      const formSubmitRes = await fetch(sumateForm.action, {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: formData
       });
 
-      await Promise.all([brevoPromise, formSubmitPromise]);
+      if (!formSubmitRes.ok) {
+        const txt = await formSubmitRes.text();
+        console.error('Error FormSubmit:', formSubmitRes.status, txt);
+        throw new Error('FormSubmit falló');
+      }
 
+      // Si llegamos acá, consideramos todo OK para el usuario
       sumateForm.reset();
       abrirSumateModal();
+
     } catch (err) {
+      console.error('Error en envío Sumate:', err);
       alert('Ocurrió un error. Intentá nuevamente.');
     } finally {
       if (submitBtn) {
@@ -794,6 +813,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
     if (e.target === sumateModal) cerrarSumateModal();
   });
 }
+
 
 
 

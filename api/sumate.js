@@ -13,7 +13,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    // En Next/Vercel, si mandás JSON, req.body ya viene parseado
     const body = typeof req.body === 'string'
       ? JSON.parse(req.body || '{}')
       : (req.body || {});
@@ -29,11 +28,13 @@ export default async function handler(req, res) {
       email,
       updateEnabled: true,
       attributes: {
-        ORIGEN: 'SUMARME',
-        NOMBRE: body.nombre || '',
+        ORIGEN:    'SUMARME',
+        NOMBRE:    body.nombre   || '',
         APELLIDO: body.apellido || '',
         PROVINCIA: body.provincia || '',
-        CIUDAD: body.ciudad || ''
+        CIUDAD:    body.ciudad    || '',
+        DNI:       body.dni       || '',
+        TELEFONO:  body.telefono  || ''
       }
     };
 

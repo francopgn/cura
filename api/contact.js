@@ -5,10 +5,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.BREVO_API_KEY;
-
-  // Podés:
-  // a) configurar BREVO_CONTACT_LIST_ID en Vercel, o
-  // b) dejar el "7" hardcodeado como default.
+  // Configurá BREVO_CONTACT_LIST_ID=7 en Vercel, o dejá el '7' hardcodeado
   const listIdStr = process.env.BREVO_CONTACT_LIST_ID || '7';
 
   if (!apiKey) {
@@ -30,7 +27,8 @@ export default async function handler(req, res) {
 
     const email   = (body.email   || '').trim();
     const nombre  = (body.nombre  || '').trim();
-    const mensaje = (body.mensaje || '').trim();
+    // El mensaje NO lo mandamos a Brevo para evitar errores de atributo
+    // const mensaje = (body.mensaje || '').trim();
 
     if (!email) {
       res.status(400).json({ error: 'Email inválido' });
@@ -42,12 +40,12 @@ export default async function handler(req, res) {
       updateEnabled: true,
       attributes: {
         ORIGEN:  'CONTACTO',
-        NOMBRE:  nombre,
-        MENSAJE: mensaje
+        NOMBRE:  nombre
+        // Si después creás el atributo MENSAJE en Brevo, podés agregarlo acá
+        // MENSAJE: mensaje
       }
     };
 
-    // Si tenés ID de lista, lo agregamos
     if (listIdStr) {
       const listIdNum = Number(listIdStr);
       if (!Number.isNaN(listIdNum)) {

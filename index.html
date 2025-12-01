@@ -695,15 +695,16 @@ const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : 
 const okBtnContact = document.getElementById('success-modal-ok');
 
 function abrirModalContact() {
-  if(!modalContact) return;
+  if (!modalContact) return;
   modalContact.classList.remove('hidden');
   requestAnimationFrame(() => {
     modalContact.classList.add('show');
     if (cardContact) cardContact.classList.add('show');
   });
 }
+
 function cerrarModalContact() {
-  if(!modalContact) return;
+  if (!modalContact) return;
   modalContact.classList.remove('show');
   if (cardContact) cardContact.classList.remove('show');
   setTimeout(() => { modalContact.classList.add('hidden'); }, 250);
@@ -717,33 +718,43 @@ if (formContact && modalContact && okBtnContact) {
     const originalText = submitBtn ? submitBtn.textContent : '';
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
+      submitBtn.textContent = 'Enviando…';
     }
 
     try {
       const formData = new FormData(formContact);
 
-      const body = {
-        nombre:  formData.get('nombre')  || '',
+      // Para Brevo (API interna)
+      const bodyBrevo = {
         email:   formData.get('email')   || '',
+        nombre:  formData.get('nombre')  || '',
         mensaje: formData.get('mensaje') || ''
       };
 
-      const response = await fetch(formContact.action, {
+      const brevoPromise = fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(bodyBrevo)
       });
 
-      if (!response.ok) {
-        throw new Error('Error en /api/contact');
+      // Para que te llegue el correo por FormSubmit
+      const formSubmitPromise = fetch(formContact.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+
+      const [brevoRes, fsRes] = await Promise.all([brevoPromise, formSubmitPromise]);
+
+      if (!brevoRes.ok || !fsRes.ok) {
+        throw new Error('Error en alguno de los envíos');
       }
 
       formContact.reset();
       abrirModalContact();
     } catch (err) {
+      console.error('Error en envío contacto:', err);
       alert('Ocurrió un error. Intentá nuevamente.');
-      console.error(err);
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;

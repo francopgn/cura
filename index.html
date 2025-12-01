@@ -434,7 +434,10 @@
         </div>
 
      <div>
-  <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="https://formsubmit.co/contacto@leycura.org" method="POST">
+  <form id="contact-form"
+      class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3"
+      action="/api/contact"
+      method="POST">
     <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label><input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
     <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
     <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"></textarea></div>

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.BREVO_API_KEY;
-  const listIdStr = process.env.BREVO_CONTACT_LIST_ID; // ej: "7"
+  const listIdStr = process.env.7; // ej: "7"
 
   if (!apiKey) {
     res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });

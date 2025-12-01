@@ -678,46 +678,75 @@ navInfoLinks.forEach(link => {
 
   });
 
-  // --- FORMULARIO CONTACTO (ORIGINAL) ---
-  const formContact = document.getElementById('contact-form');
-  const modalContact = document.getElementById('success-modal');
-  const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
-  const okBtnContact = document.getElementById('success-modal-ok');
+ // --- FORMULARIO CONTACTO (USANDO /api/contact) ---
+const formContact = document.getElementById('contact-form');
+const modalContact = document.getElementById('success-modal');
+const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
+const okBtnContact = document.getElementById('success-modal-ok');
 
-  function abrirModalContact() {
-    if(!modalContact) return;
-    modalContact.classList.remove('hidden');
-    requestAnimationFrame(() => { modalContact.classList.add('show'); cardContact.classList.add('show'); });
-  }
-  function cerrarModalContact() {
-    if(!modalContact) return;
-    modalContact.classList.remove('show'); cardContact.classList.remove('show');
-    setTimeout(() => { modalContact.classList.add('hidden'); }, 250);
-  }
+function abrirModalContact() {
+  if(!modalContact) return;
+  modalContact.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    modalContact.classList.add('show');
+    if (cardContact) cardContact.classList.add('show');
+  });
+}
+function cerrarModalContact() {
+  if(!modalContact) return;
+  modalContact.classList.remove('show');
+  if (cardContact) cardContact.classList.remove('show');
+  setTimeout(() => { modalContact.classList.add('hidden'); }, 250);
+}
 
-  if (formContact && modalContact && okBtnContact) {
-    formContact.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const submitBtn = formContact.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
+if (formContact && modalContact && okBtnContact) {
+  formContact.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const submitBtn = formContact.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando...';
+    }
 
-      try {
-        const response = await fetch(formContact.action, {
-          method: 'POST',
-          body: new FormData(formContact),
-          headers: { 'Accept': 'application/json' }
-        });
-        if (!response.ok) throw new Error();
-        formContact.reset();
-        abrirModalContact();
-      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); } 
-      finally { submitBtn.disabled = false; submitBtn.textContent = originalText; }
-    });
-    okBtnContact.addEventListener('click', cerrarModalContact);
-    modalContact.addEventListener('click', function (e) { if (e.target === modalContact) cerrarModalContact(); });
-  }
+    try {
+      const formData = new FormData(formContact);
+
+      const body = {
+        nombre:  formData.get('nombre')  || '',
+        email:   formData.get('email')   || '',
+        mensaje: formData.get('mensaje') || ''
+      };
+
+      const response = await fetch(formContact.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en /api/contact');
+      }
+
+      formContact.reset();
+      abrirModalContact();
+    } catch (err) {
+      alert('Ocurrió un error. Intentá nuevamente.');
+      console.error(err);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+  });
+
+  okBtnContact.addEventListener('click', cerrarModalContact);
+  modalContact.addEventListener('click', function (e) {
+    if (e.target === modalContact) cerrarModalContact();
+  });
+}
 
   // --- FORMULARIO SUMATE (ORIGINAL) ---
   // --- FORMULARIO SUMATE (SOLO SUMATE MODIFICADO) ---

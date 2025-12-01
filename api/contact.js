@@ -4,9 +4,8 @@ export default async function handler(req, res) {
     return;
   }
 
-  const apiKey = process.env.BREVO_API_KEY;
-  // Configurá BREVO_CONTACT_LIST_ID=7 en Vercel, o dejá el '7' hardcodeado
-  const listIdStr = process.env.BREVO_CONTACT_LIST_ID || '7';
+  const apiKey   = process.env.BREVO_API_KEY;
+  const listIdStr = process.env.BREVO_CONTACT_LIST_ID; // en Vercel: BREVO_CONTACT_LIST_ID=7
 
   if (!apiKey) {
     res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });
@@ -16,7 +15,6 @@ export default async function handler(req, res) {
   try {
     let body = req.body;
 
-    // A veces llega como string
     if (!body || typeof body === 'string') {
       try {
         body = JSON.parse(body || '{}');
@@ -27,8 +25,7 @@ export default async function handler(req, res) {
 
     const email   = (body.email   || '').trim();
     const nombre  = (body.nombre  || '').trim();
-    // El mensaje NO lo mandamos a Brevo para evitar errores de atributo
-    // const mensaje = (body.mensaje || '').trim();
+    const mensaje = (body.mensaje || '').trim();
 
     if (!email) {
       res.status(400).json({ error: 'Email inválido' });
@@ -40,9 +37,8 @@ export default async function handler(req, res) {
       updateEnabled: true,
       attributes: {
         ORIGEN:  'CONTACTO',
-        NOMBRE:  nombre
-        // Si después creás el atributo MENSAJE en Brevo, podés agregarlo acá
-        // MENSAJE: mensaje
+        NOMBRE:  nombre,
+        MENSAJE: mensaje
       }
     };
 
@@ -56,7 +52,7 @@ export default async function handler(req, res) {
     const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        accept: 'application/json',
+        'accept': 'application/json',
         'api-key': apiKey,
         'content-type': 'application/json'
       },

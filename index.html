@@ -739,42 +739,43 @@ function cerrarSumateModal() {
 }
 
 if (sumateForm && sumateModal && sumateOkBtn) {
-  sumateForm.addEventListener('submit', async (e) => {
+  sumateForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const submitBtn   = sumateForm.querySelector('button[type="submit"]');
-    const originalTxt = submitBtn ? submitBtn.textContent : '';
-
-    const body = {
-      nombre:   sumateForm.nombre.value.trim(),
-      apellido: sumateForm.apellido.value.trim(),
-      provincia: sumateForm.provincia.value.trim(),
-      ciudad:    sumateForm.ciudad.value.trim(),
-      email:    sumateForm.email.value.trim()
-    };
-
-    if (!body.email) {
-      alert('Ingresá un email válido.');
-      return;
-    }
-
+    const submitBtn = sumateForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : '';
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando…';
     }
 
     try {
-      const res = await fetch('/api/sumate', {
+      const formData = new FormData(sumateForm);
+
+      const bodyBrevo = {
+        email:    formData.get('email') || '',
+        nombre:   formData.get('nombre') || '',
+        apellido: formData.get('apellido') || '',
+        provincia:formData.get('provincia') || '',
+        ciudad:   formData.get('ciudad') || '',
+        dni:      formData.get('dni') || '',
+        telefono: formData.get('telefono') || '',
+      };
+
+      const brevoPromise = fetch('/api/sumate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
+        body: JSON.stringify(bodyBrevo)
       });
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        console.error('Error respuesta /api/sumate:', errData);
-        throw new Error('Error al enviar');
-      }
+      // sigue mandando a FormSubmit como antes
+      const formSubmitPromise = fetch(sumateForm.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+
+      await Promise.all([brevoPromise, formSubmitPromise]);
 
       sumateForm.reset();
       abrirSumateModal();
@@ -783,16 +784,17 @@ if (sumateForm && sumateModal && sumateOkBtn) {
     } finally {
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = originalTxt;
+        submitBtn.textContent = originalText;
       }
     }
   });
 
   sumateOkBtn.addEventListener('click', cerrarSumateModal);
-  sumateModal.addEventListener('click', (e) => {
+  sumateModal.addEventListener('click', function (e) {
     if (e.target === sumateModal) cerrarSumateModal();
   });
 }
+
 
 
   // --- NEWSLETTER (ORIGINAL) ---

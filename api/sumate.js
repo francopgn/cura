@@ -1,3 +1,5 @@
+// /pages/api/sumate.js  (o /src/pages/api/sumate.js según tu proyecto)
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Método no permitido' });
@@ -5,7 +7,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.BREVO_API_KEY;
-  const listIdStr = process.env.BREVO_SUMATE_LIST_ID; // ej. "6"
+  const listIdStr = process.env.BREVO_SUMATE_LIST_ID; // debería ser "6"
 
   if (!apiKey) {
     res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });
@@ -13,11 +15,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    const body = typeof req.body === 'string'
-      ? JSON.parse(req.body || '{}')
-      : (req.body || {});
+    let body = req.body;
 
-    const email = (body.email || '').trim();
+    // Si viene como string, intento parsear
+    if (!body || typeof body === 'string') {
+      try {
+        body = JSON.parse(body || '{}');
+      } catch (e) {
+        body = {};
+      }
+    }
+
+    const email     = (body.email || '').trim();
+    const nombre    = (body.nombre || '').trim();
+    const apellido  = (body.apellido || '').trim();
+    const provincia = (body.provincia || '').trim();
+    const ciudad    = (body.ciudad || '').trim();
+    const dni       = (body.dni || '').trim();
+    const telefono  = (body.telefono || '').trim();
 
     if (!email) {
       res.status(400).json({ error: 'Email inválido' });
@@ -28,13 +43,15 @@ export default async function handler(req, res) {
       email,
       updateEnabled: true,
       attributes: {
-        ORIGEN:    'SUMARME',
-        NOMBRE:    body.nombre   || '',
-        APELLIDO: body.apellido || '',
-        PROVINCIA: body.provincia || '',
-        CIUDAD:    body.ciudad    || '',
-        DNI:       body.dni       || '',
-        TELEFONO:  body.telefono  || ''
+        // ⚠️ Estos nombres deben coincidir 1:1 con los "Identificadores"
+        // que ves en Brevo en Ajustes → Atributos de contacto.
+        NOMBRE:   nombre || undefined,
+        APELLIDO: apellido || undefined,
+        PROVINCIA: provincia || undefined,
+        CIUDAD: ciudad || undefined,
+        DNI: dni || undefined,
+        TELEFONO: telefono || undefined,
+        ORIGEN: 'SUMARME'
       }
     };
 

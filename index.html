@@ -438,12 +438,22 @@
       class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3"
       action="/api/contact"
       method="POST">
-    <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label><input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
-    <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label><input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" /></div>
-    <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label><textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"></textarea></div>
-    <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">Enviar</button>
-    <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.</p>
-  </form>
+  <div>
+    <label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label>
+    <input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+  </div>
+  <div>
+    <label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label>
+    <input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
+  </div>
+  <div>
+    <label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label>
+    <textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"></textarea>
+  </div>
+  <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">Enviar</button>
+  <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.</p>
+</form>
+
 
   <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
     <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
@@ -678,7 +688,7 @@ navInfoLinks.forEach(link => {
 
   });
 
- // --- FORMULARIO CONTACTO (USANDO /api/contact) ---
+// --- FORMULARIO CONTACTO (USANDO /api/contact) ---
 const formContact = document.getElementById('contact-form');
 const modalContact = document.getElementById('success-modal');
 const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
@@ -747,6 +757,7 @@ if (formContact && modalContact && okBtnContact) {
     if (e.target === modalContact) cerrarModalContact();
   });
 }
+
 
   // --- FORMULARIO SUMATE (ORIGINAL) ---
   // --- FORMULARIO SUMATE (SOLO SUMATE MODIFICADO) ---

@@ -814,46 +814,80 @@ navInfoLinks.forEach(link => {
 
   
   // --- NEWSLETTER (ORIGINAL) ---
-  const newsletterForm = document.getElementById('newsletter-form');
-  const newsletterModal = document.getElementById('newsletter-modal');
-  const newsletterCard  = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
-  const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
+// --- NEWSLETTER (NUEVO CON BREVO) ---
+const newsletterForm = document.getElementById('newsletter-form');
+const newsletterModal = document.getElementById('newsletter-modal');
+const newsletterCard = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
+const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
 
-  function abrirNewsletterModal() {
-    if (!newsletterModal) return;
-    newsletterModal.classList.remove('hidden');
-    requestAnimationFrame(function () { newsletterModal.classList.add('show'); newsletterCard.classList.add('show'); });
-  }
-  function cerrarNewsletterModal() {
-    if (!newsletterModal) return;
-    newsletterModal.classList.remove('show'); newsletterCard.classList.remove('show');
-    setTimeout(function () { newsletterModal.classList.add('hidden'); }, 250);
-  }
+function abrirNewsletterModal() {
+  if (!newsletterModal) return;
+  newsletterModal.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    newsletterModal.classList.add('show');
+    if (newsletterCard) newsletterCard.classList.add('show');
+  });
+}
 
-  if (newsletterForm && newsletterModal && newsletterOkBtn) {
-    newsletterForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn ? submitBtn.textContent : '';
-      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Enviando…'; }
+function cerrarNewsletterModal() {
+  if (!newsletterModal) return;
+  newsletterModal.classList.remove('show');
+  if (newsletterCard) newsletterCard.classList.remove('show');
+  setTimeout(() => newsletterModal.classList.add('hidden'), 250);
+}
 
-      try {
-        const emailInput = newsletterForm.querySelector('input[name="email"]');
-        const email = emailInput ? emailInput.value.trim() : '';
-        if (!email) { alert('Ingresá un correo electrónico válido.'); return; }
-        
-        // Simulación de éxito para newsletter (ya que no hay backend configurado en el ejemplo)
-        setTimeout(() => {
-             newsletterForm.reset();
-             abrirNewsletterModal();
-             if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
-        }, 1000);
+if (newsletterForm && newsletterModal && newsletterOkBtn) {
+  newsletterForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-      } catch (err) { alert('Ocurrió un error. Intentá nuevamente.'); if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }}
-    });
-    newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
-    newsletterModal.addEventListener('click', function (e) { if (e.target === newsletterModal) cerrarNewsletterModal(); });
-  }
+    const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    try {
+      const formData = new FormData(newsletterForm);
+
+      // Datos para Brevo
+      const bodyBrevo = {
+        email: formData.get('email') || '',
+        nombre: formData.get('nombre') || ''
+      };
+
+      // Llamada API interna
+      const brevoPromise = fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyBrevo)
+      });
+
+      // Enviar también al FormSubmit (si querés conservarlo)
+      const formSubmitPromise = fetch(newsletterForm.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+
+      await Promise.all([brevoPromise, formSubmitPromise]);
+
+      newsletterForm.reset();
+      abrirNewsletterModal();
+
+    } catch (err) {
+      alert('Ocurrió un error. Intentá nuevamente.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+
+  newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
+  newsletterModal.addEventListener('click', e => {
+    if (e.target === newsletterModal) cerrarNewsletterModal();
+  });
+}
+
 
   // --- MODAL NOVEDADES (ORIGINAL) ---
   const novModal = document.getElementById('novedades-modal');

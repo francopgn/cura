@@ -6,6 +6,8 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.BREVO_API_KEY;
+  const listIdStr = process.env.BREVO_CONTACT_LIST_ID; // ej: "7"
+
   if (!apiKey) {
     res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });
     return;
@@ -14,7 +16,7 @@ export default async function handler(req, res) {
   try {
     let body = req.body;
 
-    // Por si Vercel envía el body como string
+    // En Vercel a veces llega como string
     if (!body || typeof body === 'string') {
       try {
         body = JSON.parse(body || '{}');
@@ -23,8 +25,8 @@ export default async function handler(req, res) {
       }
     }
 
-    const nombre  = (body.nombre || '').trim();
-    const email   = (body.email || '').trim();
+    const nombre  = (body.nombre  || '').trim();
+    const email   = (body.email   || '').trim();
     const mensaje = (body.mensaje || '').trim();
 
     if (!email) {
@@ -32,32 +34,24 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Armamos el HTML del mail
-    const htmlContent = `
-      <h2>Nuevo mensaje desde el formulario de contacto</h2>
-      <p><strong>Nombre:</strong> ${nombre || '(no informado)'}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Mensaje:</strong></p>
-      <p>${mensaje.replace(/\n/g, '<br>')}</p>
-    `;
-
     const payload = {
-      to: [
-        {
-          email: 'contacto@leycura.org',
-          name: 'Ley C.U.R.A.'
-        }
-      ],
-      // importante para que puedas responder directamente desde tu mail
-      replyTo: {
-        email,
-        name: nombre || email
-      },
-      subject: 'Nuevo mensaje desde leycura.org',
-      htmlContent
+      email,
+      updateEnabled: true,
+      attributes: {
+        ORIGEN:   'CONTACTO_WEB',
+        NOMBRE:   nombre,
+        MENSAJE:  mensaje
+      }
     };
 
-    const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+    if (listIdStr) {
+      const listIdNum = Number(listIdStr);
+      if (!Number.isNaN(listIdNum)) {
+        payload.listIds = [listIdNum];
+      }
+    }
+
+    const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
         'accept': 'application/json',
@@ -70,7 +64,7 @@ export default async function handler(req, res) {
     if (!brevoRes.ok) {
       const text = await brevoRes.text();
       console.error('Error Brevo contact:', text);
-      res.status(502).json({ error: 'Error al enviar el correo vía Brevo' });
+      res.status(502).json({ error: 'Error al registrar el contacto en Brevo' });
       return;
     }
 

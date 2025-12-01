@@ -717,106 +717,102 @@ navInfoLinks.forEach(link => {
   }
 
   // --- FORMULARIO SUMATE (ORIGINAL) ---
-const sumateForm  = document.getElementById('sumate-form');
-const sumateModal = document.getElementById('sumate-modal');
-const sumateCard  = sumateModal ? sumateModal.querySelector('.modal-card') : null;
-const sumateOkBtn = document.getElementById('sumate-modal-ok');
+  // --- FORMULARIO SUMATE (SOLO SUMATE MODIFICADO) ---
+  const sumateForm    = document.getElementById('sumate-form');
+  const sumateModal   = document.getElementById('sumate-modal');
+  const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+  const sumateOkBtn   = document.getElementById('sumate-modal-ok');
 
-function abrirSumateModal() {
-  if (!sumateModal) return;
-  sumateModal.classList.remove('hidden');
-  requestAnimationFrame(() => {
-    sumateModal.classList.add('show');
-    if (sumateCard) sumateCard.classList.add('show');
-  });
-}
+  function abrirSumateModal() {
+    if (!sumateModal) return;
+    sumateModal.classList.remove('hidden');
+    requestAnimationFrame(function () {
+      sumateModal.classList.add('show');
+      if (sumateCard) sumateCard.classList.add('show');
+    });
+  }
 
-function cerrarSumateModal() {
-  if (!sumateModal) return;
-  sumateModal.classList.remove('show');
-  if (sumateCard) sumateCard.classList.remove('show');
-  setTimeout(() => { sumateModal.classList.add('hidden'); }, 250);
-}
+  function cerrarSumateModal() {
+    if (!sumateModal) return;
+    sumateModal.classList.remove('show');
+    if (sumateCard) sumateCard.classList.remove('show');
+    setTimeout(function () {
+      sumateModal.classList.add('hidden');
+    }, 250);
+  }
 
-if (sumateForm && sumateModal && sumateOkBtn) {
-  sumateForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
+  if (sumateForm && sumateModal && sumateOkBtn) {
+    sumateForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-    const submitBtn = sumateForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn ? submitBtn.textContent : '';
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
-    }
+      const submitBtn = sumateForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
 
-    try {
-      const formData = new FormData(sumateForm);
-
-      // Datos completos para Brevo
-      const bodyBrevo = {
-        email:    formData.get('email') || '',
-        nombre:   formData.get('nombre') || '',
-        apellido: formData.get('apellido') || '',
-        provincia:formData.get('provincia') || '',
-        ciudad:   formData.get('ciudad') || '',
-        dni:      formData.get('dni') || '',
-        telefono: formData.get('telefono') || '',
-      };
-
-      // 🔹 Enviar a tu API (/api/sumate) – si falla, NO rompemos el formulario
-      try {
-        const brevoRes = await fetch('/api/sumate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bodyBrevo)
-        });
-
-        if (!brevoRes.ok) {
-          const txt = await brevoRes.text();
-          console.error('Error /api/sumate:', brevoRes.status, txt);
-          // No tiramos alert: el usuario igual ve "enviado"
-        }
-      } catch (err) {
-        console.error('Error de red llamando a /api/sumate:', err);
-      }
-
-      // 🔹 Enviar a FormSubmit (esto sí tiene que funcionar para que no veas el error)
-      const formSubmitRes = await fetch(sumateForm.action, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: formData
-      });
-
-      if (!formSubmitRes.ok) {
-        const txt = await formSubmitRes.text();
-        console.error('Error FormSubmit:', formSubmitRes.status, txt);
-        throw new Error('FormSubmit falló');
-      }
-
-      // Si llegamos acá, consideramos todo OK para el usuario
-      sumateForm.reset();
-      abrirSumateModal();
-
-    } catch (err) {
-      console.error('Error en envío Sumate:', err);
-      alert('Ocurrió un error. Intentá nuevamente.');
-    } finally {
       if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando…';
       }
-    }
-  });
 
-  sumateOkBtn.addEventListener('click', cerrarSumateModal);
-  sumateModal.addEventListener('click', function (e) {
-    if (e.target === sumateModal) cerrarSumateModal();
-  });
-}
+      try {
+        const formData = new FormData(sumateForm);
 
+        // 🚀 Datos completos para tu API / Brevo
+        const bodyBrevo = {
+          email:    (formData.get('email')     || '').toString(),
+          nombre:   (formData.get('nombre')    || '').toString(),
+          apellido: (formData.get('apellido')  || '').toString(),
+          provincia:(formData.get('provincia') || '').toString(),
+          ciudad:   (formData.get('ciudad')    || '').toString(),
+          dni:      (formData.get('dni')       || '').toString(),
+          telefono: (formData.get('telefono')  || '').toString()
+        };
 
+        // 1) Enviar a tu API interna (/api/sumate) → Brevo
+        try {
+          await fetch('/api/sumate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bodyBrevo)
+          });
+        } catch (err) {
+          console.error('Error enviando a Brevo (SUMARME):', err);
+          // No bloqueamos el flujo ni mostramos alert, solo log
+        }
 
+        // 2) Enviar a FormSubmit (para que te llegue el mail)
+        try {
+          const formRes = await fetch(sumateForm.action, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: formData
+          });
 
+          if (!formRes.ok) {
+            console.error('Error FormSubmit (SUMARME):', await formRes.text());
+            // Tampoco tiramos alert, solo log
+          }
+        } catch (err) {
+          console.error('Error fetch FormSubmit (SUMARTE):', err);
+        }
+
+        // Si llegamos hasta acá, mostramos el modal de éxito
+        sumateForm.reset();
+        abrirSumateModal();
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    });
+
+    sumateOkBtn.addEventListener('click', cerrarSumateModal);
+    sumateModal.addEventListener('click', function (e) {
+      if (e.target === sumateModal) cerrarSumateModal();
+    });
+  }
+
+  
   // --- NEWSLETTER (ORIGINAL) ---
   const newsletterForm = document.getElementById('newsletter-form');
   const newsletterModal = document.getElementById('newsletter-modal');

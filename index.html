@@ -717,73 +717,82 @@ navInfoLinks.forEach(link => {
   }
 
   // --- FORMULARIO SUMATE (ORIGINAL) ---
-  // --- FORMULARIO SUMATE (ARREGLADO) ---
-  const sumateForm    = document.getElementById('sumate-form');
-  const sumateModal   = document.getElementById('sumate-modal');
-  const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
-  const sumateOkBtn   = document.getElementById('sumate-modal-ok');
+const sumateForm  = document.getElementById('sumate-form');
+const sumateModal = document.getElementById('sumate-modal');
+const sumateCard  = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+const sumateOkBtn = document.getElementById('sumate-modal-ok');
 
-  function abrirSumateModal() {
-    if (!sumateModal) return;
-    sumateModal.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      sumateModal.classList.add('show');
-      if (sumateCard) sumateCard.classList.add('show');
-    });
-  }
+function abrirSumateModal() {
+  if (!sumateModal) return;
+  sumateModal.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    sumateModal.classList.add('show');
+    if (sumateCard) sumateCard.classList.add('show');
+  });
+}
 
-  function cerrarSumateModal() {
-    if (!sumateModal) return;
-    sumateModal.classList.remove('show');
-    if (sumateCard) sumateCard.classList.remove('show');
-    setTimeout(() => { sumateModal.classList.add('hidden'); }, 250);
-  }
+function cerrarSumateModal() {
+  if (!sumateModal) return;
+  sumateModal.classList.remove('show');
+  if (sumateCard) sumateCard.classList.remove('show');
+  setTimeout(() => { sumateModal.classList.add('hidden'); }, 250);
+}
 
-  if (sumateForm && sumateModal && sumateOkBtn) {
-    sumateForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
+if (sumateForm && sumateModal && sumateOkBtn) {
+  sumateForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-      const submitBtn   = sumateForm.querySelector('button[type="submit"]');
-      const originalTxt = submitBtn ? submitBtn.textContent : '';
+    const submitBtn   = sumateForm.querySelector('button[type="submit"]');
+    const originalTxt = submitBtn ? submitBtn.textContent : '';
 
+    const body = {
+      nombre:   sumateForm.nombre.value.trim(),
+      apellido: sumateForm.apellido.value.trim(),
+      provincia: sumateForm.provincia.value.trim(),
+      ciudad:    sumateForm.ciudad.value.trim(),
+      email:    sumateForm.email.value.trim()
+    };
+
+    if (!body.email) {
+      alert('Ingresá un email válido.');
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+    }
+
+    try {
+      const res = await fetch('/api/sumate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        console.error('Error respuesta /api/sumate:', errData);
+        throw new Error('Error al enviar');
+      }
+
+      sumateForm.reset();
+      abrirSumateModal();
+    } catch (err) {
+      alert('Ocurrió un error. Intentá nuevamente.');
+    } finally {
       if (submitBtn) {
-        submitBtn.disabled  = true;
-        submitBtn.textContent = 'Enviando…';
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalTxt;
       }
+    }
+  });
 
-      try {
-        const formData = new FormData(sumateForm);
-
-        // Usamos SIEMPRE el endpoint AJAX explícito
-        const response = await fetch('https://formsubmit.co/ajax/contacto@leycura.org', {
-          method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: formData
-        });
-
-        if (!response.ok) {
-          console.error('Error FormSubmit status:', response.status);
-          throw new Error('Error al enviar el formulario');
-        }
-
-        sumateForm.reset();
-        abrirSumateModal();
-      } catch (err) {
-        console.error('Error al enviar SUMATE:', err);
-        alert('Ocurrió un error al enviar el formulario. Intentá nuevamente.');
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled  = false;
-          submitBtn.textContent = originalTxt;
-        }
-      }
-    });
-
-    sumateOkBtn.addEventListener('click', cerrarSumateModal);
-    sumateModal.addEventListener('click', function (e) {
-      if (e.target === sumateModal) cerrarSumateModal();
-    });
-  }
+  sumateOkBtn.addEventListener('click', cerrarSumateModal);
+  sumateModal.addEventListener('click', (e) => {
+    if (e.target === sumateModal) cerrarSumateModal();
+  });
+}
 
 
   // --- NEWSLETTER (ORIGINAL) ---

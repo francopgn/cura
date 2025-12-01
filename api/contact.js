@@ -1,4 +1,3 @@
-// /api/contact.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Método no permitido' });
@@ -16,7 +15,7 @@ export default async function handler(req, res) {
   try {
     let body = req.body;
 
-    // En Vercel a veces llega como string
+    // A veces llega como string
     if (!body || typeof body === 'string') {
       try {
         body = JSON.parse(body || '{}');
@@ -25,12 +24,12 @@ export default async function handler(req, res) {
       }
     }
 
-    const nombre  = (body.nombre  || '').trim();
-    const email   = (body.email   || '').trim();
-    const mensaje = (body.mensaje || '').trim();
+    const email    = (body.email    || '').trim();
+    const nombre   = (body.nombre   || '').trim();
+    const mensaje  = (body.mensaje  || '').trim();
 
     if (!email) {
-      res.status(400).json({ error: 'Email requerido' });
+      res.status(400).json({ error: 'Email inválido' });
       return;
     }
 
@@ -38,9 +37,9 @@ export default async function handler(req, res) {
       email,
       updateEnabled: true,
       attributes: {
-        ORIGEN:   'CONTACTO_WEB',
-        NOMBRE:   nombre,
-        MENSAJE:  mensaje
+        ORIGEN:  'CONTACTO',
+        NOMBRE:  nombre,
+        MENSAJE: mensaje
       }
     };
 
@@ -63,14 +62,15 @@ export default async function handler(req, res) {
 
     if (!brevoRes.ok) {
       const text = await brevoRes.text();
-      console.error('Error Brevo contact:', text);
+      console.error('Error Brevo contacto:', text);
       res.status(502).json({ error: 'Error al registrar el contacto en Brevo' });
       return;
     }
 
-    res.status(200).json({ success: true });
+    const brevoData = await brevoRes.json();
+    res.status(200).json({ success: true, brevo: brevoData });
   } catch (err) {
-    console.error('Error en API contact:', err);
+    console.error('Error en API contacto:', err);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 }

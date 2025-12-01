@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.BREVO_API_KEY;
-  const listIdStr = process.env.BREVO_SUMATE_LIST_ID; // debería ser "6"
+  const listIdStr = process.env.BREVO_SUMATE_LIST_ID; // ej. "6"
 
   if (!apiKey) {
     res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });
@@ -13,15 +13,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    let body = req.body;
-
-    if (!body || typeof body === 'string') {
-      try {
-        body = JSON.parse(body || '{}');
-      } catch (e) {
-        body = {};
-      }
-    }
+    // En Next/Vercel, si mandás JSON, req.body ya viene parseado
+    const body = typeof req.body === 'string'
+      ? JSON.parse(req.body || '{}')
+      : (req.body || {});
 
     const email = (body.email || '').trim();
 
@@ -34,7 +29,11 @@ export default async function handler(req, res) {
       email,
       updateEnabled: true,
       attributes: {
-        ORIGEN: 'SUMARME'
+        ORIGEN: 'SUMARME',
+        NOMBRE: body.nombre || '',
+        APELLIDO: body.apellido || '',
+        PROVINCIA: body.provincia || '',
+        CIUDAD: body.ciudad || ''
       }
     };
 
@@ -48,7 +47,7 @@ export default async function handler(req, res) {
     const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
       headers: {
-        'accept': 'application/json',
+        accept: 'application/json',
         'api-key': apiKey,
         'content-type': 'application/json'
       },

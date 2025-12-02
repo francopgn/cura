@@ -430,23 +430,30 @@
              autocomplete="email" />
     </div>
 
-    <div>
-      <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
-      <input name="dni"
-             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-digits"
-             inputmode="numeric"
-             pattern="\d*"
-             autocomplete="off" />
-    </div>
+<div>
+  <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
+  <input
+    name="dni"
+    id="dni-input"
+    maxlength="8"
+    inputmode="numeric"
+    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);"
+  />
+</div>
 
-    <div>
-      <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
-      <input name="telefono"
-             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-digits"
-             inputmode="numeric"
-             pattern="\d*"
-             autocomplete="tel" />
-    </div>
+<div>
+  <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
+  <input
+    name="telefono"
+    id="telefono-input"
+    maxlength="13"
+    inputmode="numeric"
+    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13);"
+  />
+</div>
+
 
     <button type="submit"
             class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">
@@ -867,7 +874,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
   sumateForm.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const submitBtn = sumateForm.querySelector('button[type="submit"]');
+    const submitBtn   = sumateForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
 
     submitBtn.disabled = true;
@@ -904,7 +911,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
       return;
     }
 
-    // --- DNI opcional, pero si lo pone debe ser 7 u 8 dígitos ---
+    // DNI opcional, pero si lo pone debe ser 7–8 dígitos
     if (dni) {
       if (!regexDigitos.test(dni)) {
         alert('El DNI solo puede contener números.');
@@ -920,7 +927,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
       }
     }
 
-    // --- Teléfono opcional, pero si lo pone debe tener mínimo 10 dígitos ---
+    // Teléfono opcional, pero si lo pone debe tener entre 10 y 13 dígitos
     if (telefono) {
       if (!regexDigitos.test(telefono)) {
         alert('El teléfono solo puede contener números.');
@@ -928,8 +935,8 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         submitBtn.disabled = false; submitBtn.textContent = originalText;
         return;
       }
-      if (telefono.length < 10) {
-        alert('El teléfono debe tener al menos 10 números.');
+      if (telefono.length < 10 || telefono.length > 13) {
+        alert('El teléfono debe tener entre 10 y 13 números.');
         sumateForm.querySelector('input[name="telefono"]').focus();
         submitBtn.disabled = false; submitBtn.textContent = originalText;
         return;
@@ -948,7 +955,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         telefono
       };
 
-      // API interna → Brevo
+      // 1) API interna → Brevo
       try {
         await fetch('/api/sumate', {
           method: 'POST',
@@ -959,7 +966,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         console.error('Error enviando a Brevo (SUMARME):', err);
       }
 
-      // FormSubmit (email)
+      // 2) FormSubmit (correo)
       try {
         const formRes = await fetch(sumateForm.action, {
           method: 'POST',
@@ -988,6 +995,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
     if (e.target === sumateModal) cerrarSumateModal();
   });
 }
+
 //fin sumate
 
   

@@ -709,66 +709,50 @@ const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : 
 const okBtnContact = document.getElementById('success-modal-ok');
 
 function abrirModalContact() {
-  if (!modalContact) return;
   modalContact.classList.remove('hidden');
   requestAnimationFrame(() => {
     modalContact.classList.add('show');
-    if (cardContact) cardContact.classList.add('show');
+    cardContact.classList.add('show');
   });
 }
 
 function cerrarModalContact() {
-  if (!modalContact) return;
   modalContact.classList.remove('show');
-  if (cardContact) cardContact.classList.remove('show');
-  setTimeout(() => { modalContact.classList.add('hidden'); }, 250);
+  cardContact.classList.remove('show');
+  setTimeout(() => modalContact.classList.add('hidden'), 250);
 }
 
-if (formContact && modalContact && okBtnContact) {
+if (formContact) {
   formContact.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // ← ESTO ES LO QUE EVITA LA RECARGA
 
-    const submitBtn = formContact.querySelector('button[type="submit"]');
-    const originalText = submitBtn ? submitBtn.textContent : '';
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
-    }
+    const formData = new FormData(formContact);
+
+    const body = {
+      nombre:  formData.get('nombre')  || '',
+      email:   formData.get('email')   || '',
+      mensaje: formData.get('mensaje') || ''
+    };
 
     try {
-      const formData = new FormData(formContact);
-
-      const body = {
-        nombre:  formData.get('nombre')  || '',
-        email:   formData.get('email')   || '',
-        mensaje: formData.get('mensaje') || ''
-      };
-
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
 
-      if (!response.ok) {
-        throw new Error('Error en /api/contact');
-      }
+      if (!response.ok) throw new Error();
 
-      formContact.reset();
       abrirModalContact();
+      formContact.reset();
+
     } catch (err) {
-      console.error('Error en envío contacto:', err);
       alert('Ocurrió un error. Intentá nuevamente.');
-    } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
     }
   });
 
   okBtnContact.addEventListener('click', cerrarModalContact);
-  modalContact.addEventListener('click', (e) => {
+  modalContact.addEventListener('click', e => {
     if (e.target === modalContact) cerrarModalContact();
   });
 }
@@ -1122,5 +1106,8 @@ document.addEventListener('DOMContentLoaded', function () {
   poblarCredencial();
 });
 </script>
+  <!-- al final del body -->
+<script src="/js/contact.js"></script>
+</body>
 </body>
 </html>

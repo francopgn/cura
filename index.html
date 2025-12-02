@@ -41,6 +41,17 @@
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
   
+  /* Banner rotativo (fade + slide) */
+#top-banner-text {
+  display: inline-block;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.banner-hidden {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
 /* ----POPUP----  */ 
   
 .modal-card {
@@ -157,9 +168,12 @@
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden">
 
-  <div class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
+<div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
+  <span id="top-banner-text">
     La ley se encuentra en revisión técnica y estará disponible próximamente en la web.
-  </div>
+  </span>
+</div>
+
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -508,20 +522,6 @@
     </div>
   </footer>
 
-<div id="novedades-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
-    <div class="modal-card bg-cura-card border border-cura-accent/60 rounded-2xl px-4 py-4 sm:px-6 sm:py-5 w-auto max-w-lg shadow-lg mx-4">
-      <div class="flex items-start justify-between gap-3">
-        <div class="flex-1">
-          <h2 class="text-sm sm:text-base font-semibold text-white mb-1">Bienvenido, tenemos novedades</h2>
-          <div class="text-[11px] sm:text-[13px] text-cura-accentLight">
-            <p class="leading-snug">La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.</p>
-          </div>
-        </div>
-        <button type="button" class="ml-2 text-cura-accentLight/80 hover:text-white text-xs sm:text-sm font-semibold" id="novedades-close-btn">✕</button>
-      </div>
-    </div>
-  </div>
-
   <div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
     <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
       <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
@@ -558,6 +558,32 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+
+  // --- BANNER SUPERIOR ROTATIVO (CADA 5s CON FADE + SLIDE) ---
+  const bannerTextEl = document.getElementById('top-banner-text');
+  if (bannerTextEl) {
+    const bannerMessages = [
+      'La ley se encuentra en revisión técnica y estará disponible próximamente en la web.',
+      'La ley será presentada por primera vez del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.'
+    ];
+
+    let bannerIndex = 0;
+
+    setInterval(() => {
+      // 1) Fade/slide out
+      bannerTextEl.classList.add('banner-hidden');
+
+      // 2) Cambio de texto cuando termina el fade out
+      setTimeout(() => {
+        bannerIndex = (bannerIndex + 1) % bannerMessages.length;
+        bannerTextEl.textContent = bannerMessages[bannerIndex];
+
+        // 3) Fade/slide in
+        bannerTextEl.classList.remove('banner-hidden');
+      }, 350); // mismo tiempo que la transición del CSS
+    }, 5000); // cada 5 segundos
+  }
+
 
   // --- CIUDADES Y GEOREF (ORIGINAL) ---
   const provinciaSelect = document.querySelector('select[name="provincia"]');
@@ -929,30 +955,6 @@ if (newsletterForm && newsletterModal && newsletterOkBtn) {
     if (e.target === newsletterModal) cerrarNewsletterModal();
   });
 }
-
-
-  // --- MODAL NOVEDADES (ORIGINAL) ---
-  const novModal = document.getElementById('novedades-modal');
-  if (novModal) {
-    const novCard = novModal.querySelector('.modal-card');
-    const novCloseBtn = document.getElementById('novedades-close-btn');
-
-    function abrirNovedades() {
-      novModal.classList.remove('hidden');
-      requestAnimationFrame(function () { novModal.classList.add('show'); if (novCard) novCard.classList.add('show'); });
-    }
-    function cerrarNovedades() {
-      novModal.classList.remove('show');
-      if (novCard) novCard.classList.remove('show');
-      setTimeout(function () { novModal.classList.add('hidden'); }, 250);
-    }
-
-    abrirNovedades();
-    setTimeout(cerrarNovedades, 3000); // 5s auto-cierre
-
-    if (novCloseBtn) novCloseBtn.addEventListener('click', cerrarNovedades);
-    novModal.addEventListener('click', function (e) { if (e.target === novModal) cerrarNovedades(); });
-  }
 
 });
 </script>

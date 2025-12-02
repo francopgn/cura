@@ -836,21 +836,21 @@ if (formContact) {
     });
   });
 
-  // --- FORMULARIO SUMATE (SOLO SUMATE MODIFICADO) ---
+// --- FORMULARIO SUMATE (SOLO SUMATE MODIFICADO) ---
 const sumateForm  = document.getElementById('sumate-form');
 const sumateModal = document.getElementById('sumate-modal');
 const sumateCard  = sumateModal ? sumateModal.querySelector('.modal-card') : null;
 const sumateOkBtn = document.getElementById('sumate-modal-ok');
 
 // Reglas de validación
-const regexLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
-const regexEmail  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const regexLetras  = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+const regexEmail   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const regexDigitos = /^\d+$/;
 
 function abrirSumateModal() {
   if (!sumateModal) return;
   sumateModal.classList.remove('hidden');
-  requestAnimationFrame(function () {
+  requestAnimationFrame(() => {
     sumateModal.classList.add('show');
     if (sumateCard) sumateCard.classList.add('show');
   });
@@ -860,9 +860,7 @@ function cerrarSumateModal() {
   if (!sumateModal) return;
   sumateModal.classList.remove('show');
   if (sumateCard) sumateCard.classList.remove('show');
-  setTimeout(function () {
-    sumateModal.classList.add('hidden');
-  }, 250);
+  setTimeout(() => sumateModal.classList.add('hidden'), 250);
 }
 
 if (sumateForm && sumateModal && sumateOkBtn) {
@@ -870,59 +868,76 @@ if (sumateForm && sumateModal && sumateOkBtn) {
     e.preventDefault();
 
     const submitBtn = sumateForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn ? submitBtn.textContent : '';
+    const originalText = submitBtn.textContent;
 
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
-    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
 
     const formData = new FormData(sumateForm);
 
-    const nombre   = (formData.get('nombre')   || '').toString().trim();
-    const apellido = (formData.get('apellido') || '').toString().trim();
-    const email    = (formData.get('email')    || '').toString().trim();
-    const dni      = (formData.get('dni')      || '').toString().trim();
-    const telefono = (formData.get('telefono') || '').toString().trim();
+    const nombre   = (formData.get('nombre')   || '').trim();
+    const apellido = (formData.get('apellido') || '').trim();
+    const email    = (formData.get('email')    || '').trim();
+    const dni      = (formData.get('dni')      || '').trim();
+    const telefono = (formData.get('telefono') || '').trim();
 
-    // Validaciones
+    // --- VALIDACIONES ---
+
     if (!regexLetras.test(nombre)) {
       alert('El nombre solo puede contener letras y espacios.');
       sumateForm.querySelector('input[name="nombre"]').focus();
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      submitBtn.disabled = false; submitBtn.textContent = originalText;
       return;
     }
 
     if (!regexLetras.test(apellido)) {
       alert('El apellido solo puede contener letras y espacios.');
       sumateForm.querySelector('input[name="apellido"]').focus();
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      submitBtn.disabled = false; submitBtn.textContent = originalText;
       return;
     }
 
     if (!regexEmail.test(email)) {
-      alert('Ingresá un correo válido (formato algo@algo.algo).');
+      alert('Ingresá un email válido (formato algo@algo.algo).');
       sumateForm.querySelector('input[name="email"]').focus();
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      submitBtn.disabled = false; submitBtn.textContent = originalText;
       return;
     }
 
-    if (dni && !regexDigitos.test(dni)) {
-      alert('El DNI solo puede contener números.');
-      sumateForm.querySelector('input[name="dni"]').focus();
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
-      return;
+    // --- DNI opcional, pero si lo pone debe ser 7 u 8 dígitos ---
+    if (dni) {
+      if (!regexDigitos.test(dni)) {
+        alert('El DNI solo puede contener números.');
+        sumateForm.querySelector('input[name="dni"]').focus();
+        submitBtn.disabled = false; submitBtn.textContent = originalText;
+        return;
+      }
+      if (dni.length < 7 || dni.length > 8) {
+        alert('El DNI debe tener entre 7 y 8 números.');
+        sumateForm.querySelector('input[name="dni"]').focus();
+        submitBtn.disabled = false; submitBtn.textContent = originalText;
+        return;
+      }
     }
 
-    if (telefono && !regexDigitos.test(telefono)) {
-      alert('El número de teléfono solo puede contener números.');
-      sumateForm.querySelector('input[name="telefono"]').focus();
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
-      return;
+    // --- Teléfono opcional, pero si lo pone debe tener mínimo 10 dígitos ---
+    if (telefono) {
+      if (!regexDigitos.test(telefono)) {
+        alert('El teléfono solo puede contener números.');
+        sumateForm.querySelector('input[name="telefono"]').focus();
+        submitBtn.disabled = false; submitBtn.textContent = originalText;
+        return;
+      }
+      if (telefono.length < 10) {
+        alert('El teléfono debe tener al menos 10 números.');
+        sumateForm.querySelector('input[name="telefono"]').focus();
+        submitBtn.disabled = false; submitBtn.textContent = originalText;
+        return;
+      }
     }
 
+    // --- SI TODO ESTÁ OK → ENVÍO ---
     try {
-      // 🚀 Datos completos para tu API / Brevo
       const bodyBrevo = {
         email,
         nombre,
@@ -933,7 +948,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         telefono
       };
 
-      // 1) Enviar a tu API interna (/api/sumate) → Brevo
+      // API interna → Brevo
       try {
         await fetch('/api/sumate', {
           method: 'POST',
@@ -944,7 +959,7 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         console.error('Error enviando a Brevo (SUMARME):', err);
       }
 
-      // 2) Enviar a FormSubmit (para que te llegue el mail)
+      // FormSubmit (email)
       try {
         const formRes = await fetch(sumateForm.action, {
           method: 'POST',
@@ -953,24 +968,23 @@ if (sumateForm && sumateModal && sumateOkBtn) {
         });
 
         if (!formRes.ok) {
-          console.error('Error FormSubmit (SUMARME):', await formRes.text());
+          console.error('Error FormSubmit (SUMARTE):', await formRes.text());
         }
       } catch (err) {
-        console.error('Error fetch FormSubmit (SUMARTE):', err);
+        console.error('Error fetch FormSubmit:', err);
       }
 
       sumateForm.reset();
       abrirSumateModal();
+
     } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
     }
   });
 
   sumateOkBtn.addEventListener('click', cerrarSumateModal);
-  sumateModal.addEventListener('click', function (e) {
+  sumateModal.addEventListener('click', e => {
     if (e.target === sumateModal) cerrarSumateModal();
   });
 }

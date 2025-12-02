@@ -344,88 +344,120 @@
         </div>
 
 </section>
-<section>
-    <section id="sumate" class="space-y-6">
-      <div class="max-w-2xl">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-        <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
-      </div>
+<section id="sumate" class="space-y-6">
+  <div class="max-w-2xl">
+    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
+    <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
+  </div>
 
   <form id="sumate-form"
-      action="https://formsubmit.co/contacto@leycura.org"
-      method="POST"
-      class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+        action="https://formsubmit.co/contacto@leycura.org"
+        method="POST"
+        class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
 
-  <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
-  <input type="hidden" name="_template" value="box">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_next" value="https://www.leycura.org/gracias-sumate.html">
+    <!-- Configuración FormSubmit -->
+    <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
+    <input type="hidden" name="_template" value="box">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://www.leycura.org/gracias-sumate.html">
 
+    <div class="grid md:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
+        <input name="nombre"
+               required
+               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters"
+               inputmode="text"
+               autocomplete="given-name" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
+        <input name="apellido"
+               required
+               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters"
+               inputmode="text"
+               autocomplete="family-name" />
+      </div>
+    </div>
 
-        <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
-        <input type="hidden" name="_template" value="box">
-        <input type="hidden" name="_captcha" value="false">
+    <div class="grid md:grid-cols-2 gap-3">
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
+        <select name="provincia" required
+                class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+          <option value="">Seleccioná una provincia</option>
+          <option value="Buenos Aires">Buenos Aires</option>
+          <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+          <option value="Catamarca">Catamarca</option>
+          <option value="Chaco">Chaco</option>
+          <option value="Chubut">Chubut</option>
+          <option value="Córdoba">Córdoba</option>
+          <option value="Corrientes">Corrientes</option>
+          <option value="Entre Ríos">Entre Ríos</option>
+          <option value="Formosa">Formosa</option>
+          <option value="Jujuy">Jujuy</option>
+          <option value="La Pampa">La Pampa</option>
+          <option value="La Rioja">La Rioja</option>
+          <option value="Mendoza">Mendoza</option>
+          <option value="Misiones">Misiones</option>
+          <option value="Neuquén">Neuquén</option>
+          <option value="Río Negro">Río Negro</option>
+          <option value="Salta">Salta</option>
+          <option value="San Juan">San Juan</option>
+          <option value="San Luis">San Luis</option>
+          <option value="Santa Cruz">Santa Cruz</option>
+          <option value="Santa Fe">Santa Fe</option>
+          <option value="Santiago del Estero">Santiago del Estero</option>
+          <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
+          <option value="Tucumán">Tucumán</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
+        <select name="ciudad" id="ciudad-select" required
+                class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
+          <option value="">Seleccioná una ciudad</option>
+        </select>
+      </div>
+    </div>
 
-        <div class="grid md:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
-            <input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
-            <input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-          </div>
-        </div>
+    <div>
+      <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
+      <input type="email"
+             name="email"
+             required
+             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"
+             autocomplete="email" />
+    </div>
 
-        <div class="grid md:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
-            <select name="provincia" required
-                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-              <option value="">Seleccioná una provincia</option>
-              <option value="Buenos Aires">Buenos Aires</option>
-              <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
-              <option value="Catamarca">Catamarca</option>
-              <option value="Chaco">Chaco</option>
-              <option value="Chubut">Chubut</option>
-              <option value="Córdoba">Córdoba</option>
-              <option value="Corrientes">Corrientes</option>
-              <option value="Entre Ríos">Entre Ríos</option>
-              <option value="Formosa">Formosa</option>
-              <option value="Jujuy">Jujuy</option>
-              <option value="La Pampa">La Pampa</option>
-              <option value="La Rioja">La Rioja</option>
-              <option value="Mendoza">Mendoza</option>
-              <option value="Misiones">Misiones</option>
-              <option value="Neuquén">Neuquén</option>
-              <option value="Río Negro">Río Negro</option>
-              <option value="Salta">Salta</option>
-              <option value="San Juan">San Juan</option>
-              <option value="San Luis">San Luis</option>
-              <option value="Santa Cruz">Santa Cruz</option>
-              <option value="Santa Fe">Santa Fe</option>
-              <option value="Santiago del Estero">Santiago del Estero</option>
-              <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
-              <option value="Tucumán">Tucumán</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
-            <select name="ciudad" id="ciudad-select" required
-                    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-              <option value="">Seleccioná una ciudad</option>
-            </select>
-          </div>
-        </div>
+    <div>
+      <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
+      <input name="dni"
+             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-digits"
+             inputmode="numeric"
+             pattern="\d*"
+             autocomplete="off" />
+    </div>
 
-        <div><label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label><input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label><input name="dni" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
-        <div><label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label><input name="telefono" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" /></div>
+    <div>
+      <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
+      <input name="telefono"
+             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-digits"
+             inputmode="numeric"
+             pattern="\d*"
+             autocomplete="tel" />
+    </div>
 
-        <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">Enviar</button>
-        <p class="text-[10px] text-cura-accentLight mt-1">Los campos marcados con * son obligatorios.</p>
-      </form>
-    </section>
+    <button type="submit"
+            class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">
+      Enviar
+    </button>
+    <p class="text-[10px] text-cura-accentLight mt-1">
+      Los campos marcados con * son obligatorios.
+    </p>
+  </form>
+</section>
+
 
     <section id="contacto" class="space-y-6 mt-16">
       <div class="max-w-2xl">
@@ -787,102 +819,161 @@ if (formContact) {
   });
 }
 
+  // --- RESTRICCIONES DE INPUT (SOLO LETRAS / SOLO NÚMEROS) ---
+  const onlyLettersInputs = document.querySelectorAll('input.only-letters');
+  onlyLettersInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      // solo letras, espacios y tildes
+      input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');
+    });
+  });
 
-  // --- FORMULARIO SUMATE (ORIGINAL) ---
+  const onlyDigitsInputs = document.querySelectorAll('input.only-digits');
+  onlyDigitsInputs.forEach(input => {
+    input.addEventListener('input', () => {
+      // borra todo lo que no sea número
+      input.value = input.value.replace(/\D/g, '');
+    });
+  });
+
   // --- FORMULARIO SUMATE (SOLO SUMATE MODIFICADO) ---
-  const sumateForm    = document.getElementById('sumate-form');
-  const sumateModal   = document.getElementById('sumate-modal');
-  const sumateCard    = sumateModal ? sumateModal.querySelector('.modal-card') : null;
-  const sumateOkBtn   = document.getElementById('sumate-modal-ok');
+const sumateForm  = document.getElementById('sumate-form');
+const sumateModal = document.getElementById('sumate-modal');
+const sumateCard  = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+const sumateOkBtn = document.getElementById('sumate-modal-ok');
 
-  function abrirSumateModal() {
-    if (!sumateModal) return;
-    sumateModal.classList.remove('hidden');
-    requestAnimationFrame(function () {
-      sumateModal.classList.add('show');
-      if (sumateCard) sumateCard.classList.add('show');
-    });
-  }
+// Reglas de validación
+const regexLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+const regexEmail  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const regexDigitos = /^\d+$/;
 
-  function cerrarSumateModal() {
-    if (!sumateModal) return;
-    sumateModal.classList.remove('show');
-    if (sumateCard) sumateCard.classList.remove('show');
-    setTimeout(function () {
-      sumateModal.classList.add('hidden');
-    }, 250);
-  }
+function abrirSumateModal() {
+  if (!sumateModal) return;
+  sumateModal.classList.remove('hidden');
+  requestAnimationFrame(function () {
+    sumateModal.classList.add('show');
+    if (sumateCard) sumateCard.classList.add('show');
+  });
+}
 
-  if (sumateForm && sumateModal && sumateOkBtn) {
-    sumateForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
+function cerrarSumateModal() {
+  if (!sumateModal) return;
+  sumateModal.classList.remove('show');
+  if (sumateCard) sumateCard.classList.remove('show');
+  setTimeout(function () {
+    sumateModal.classList.add('hidden');
+  }, 250);
+}
 
-      const submitBtn = sumateForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn ? submitBtn.textContent : '';
+if (sumateForm && sumateModal && sumateOkBtn) {
+  sumateForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Enviando…';
-      }
+    const submitBtn = sumateForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : '';
 
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+    }
+
+    const formData = new FormData(sumateForm);
+
+    const nombre   = (formData.get('nombre')   || '').toString().trim();
+    const apellido = (formData.get('apellido') || '').toString().trim();
+    const email    = (formData.get('email')    || '').toString().trim();
+    const dni      = (formData.get('dni')      || '').toString().trim();
+    const telefono = (formData.get('telefono') || '').toString().trim();
+
+    // Validaciones
+    if (!regexLetras.test(nombre)) {
+      alert('El nombre solo puede contener letras y espacios.');
+      sumateForm.querySelector('input[name="nombre"]').focus();
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      return;
+    }
+
+    if (!regexLetras.test(apellido)) {
+      alert('El apellido solo puede contener letras y espacios.');
+      sumateForm.querySelector('input[name="apellido"]').focus();
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      return;
+    }
+
+    if (!regexEmail.test(email)) {
+      alert('Ingresá un correo válido (formato algo@algo.algo).');
+      sumateForm.querySelector('input[name="email"]').focus();
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      return;
+    }
+
+    if (dni && !regexDigitos.test(dni)) {
+      alert('El DNI solo puede contener números.');
+      sumateForm.querySelector('input[name="dni"]').focus();
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      return;
+    }
+
+    if (telefono && !regexDigitos.test(telefono)) {
+      alert('El número de teléfono solo puede contener números.');
+      sumateForm.querySelector('input[name="telefono"]').focus();
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText; }
+      return;
+    }
+
+    try {
+      // 🚀 Datos completos para tu API / Brevo
+      const bodyBrevo = {
+        email,
+        nombre,
+        apellido,
+        provincia: (formData.get('provincia') || '').toString(),
+        ciudad:    (formData.get('ciudad')    || '').toString(),
+        dni,
+        telefono
+      };
+
+      // 1) Enviar a tu API interna (/api/sumate) → Brevo
       try {
-        const formData = new FormData(sumateForm);
-
-        // 🚀 Datos completos para tu API / Brevo
-        const bodyBrevo = {
-          email:    (formData.get('email')     || '').toString(),
-          nombre:   (formData.get('nombre')    || '').toString(),
-          apellido: (formData.get('apellido')  || '').toString(),
-          provincia:(formData.get('provincia') || '').toString(),
-          ciudad:   (formData.get('ciudad')    || '').toString(),
-          dni:      (formData.get('dni')       || '').toString(),
-          telefono: (formData.get('telefono')  || '').toString()
-        };
-
-        // 1) Enviar a tu API interna (/api/sumate) → Brevo
-        try {
-          await fetch('/api/sumate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bodyBrevo)
-          });
-        } catch (err) {
-          console.error('Error enviando a Brevo (SUMARME):', err);
-          // No bloqueamos el flujo ni mostramos alert, solo log
-        }
-
-        // 2) Enviar a FormSubmit (para que te llegue el mail)
-        try {
-          const formRes = await fetch(sumateForm.action, {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' },
-            body: formData
-          });
-
-          if (!formRes.ok) {
-            console.error('Error FormSubmit (SUMARME):', await formRes.text());
-            // Tampoco tiramos alert, solo log
-          }
-        } catch (err) {
-          console.error('Error fetch FormSubmit (SUMARTE):', err);
-        }
-
-        // Si llegamos hasta acá, mostramos el modal de éxito
-        sumateForm.reset();
-        abrirSumateModal();
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
-        }
+        await fetch('/api/sumate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bodyBrevo)
+        });
+      } catch (err) {
+        console.error('Error enviando a Brevo (SUMARME):', err);
       }
-    });
 
-    sumateOkBtn.addEventListener('click', cerrarSumateModal);
-    sumateModal.addEventListener('click', function (e) {
-      if (e.target === sumateModal) cerrarSumateModal();
-    });
-  }
+      // 2) Enviar a FormSubmit (para que te llegue el mail)
+      try {
+        const formRes = await fetch(sumateForm.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+        });
+
+        if (!formRes.ok) {
+          console.error('Error FormSubmit (SUMARME):', await formRes.text());
+        }
+      } catch (err) {
+        console.error('Error fetch FormSubmit (SUMARTE):', err);
+      }
+
+      sumateForm.reset();
+      abrirSumateModal();
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+  });
+
+  sumateOkBtn.addEventListener('click', cerrarSumateModal);
+  sumateModal.addEventListener('click', function (e) {
+    if (e.target === sumateModal) cerrarSumateModal();
+  });
+}
 
   
   // --- NEWSLETTER (ORIGINAL) ---

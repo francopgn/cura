@@ -300,8 +300,18 @@ document.addEventListener('DOMContentLoaded', function () {
           }
       });
   });
+
+  // --- 3. FADE IN DEL FAQ ---
+  const faqContainer = document.getElementById('faq-container');
+  if (faqContainer) {
+    setTimeout(() => {
+      faqContainer.classList.remove('opacity-0');
+      faqContainer.classList.add('opacity-100');
+    }, 200);
+  }
 }); // <-- cierre de DOMContentLoaded
 </script>
+
 
 
 </body>

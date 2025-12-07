@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Explicación: Si la dirección es una carpeta que empieza con "ID"...
+# Redirige a /EsaCarpeta/EsaCarpeta.html
+RewriteRule ^(ID[^/]+)/?$ /$1/$1.html [R=301,L]

@@ -3,7 +3,7 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/:id(ID[^/]+)",
+      "source": "/:id(ID.*)",
       "destination": "/:id/:id.html"
     }
   ]

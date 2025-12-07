@@ -3,8 +3,8 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/:id(ID.*)",
-      "destination": "/:id/:id.html"
+      "source": "/ID:prefix-:id",
+      "destination": "/ID:prefix-:id/ID:id.html"
     }
   ]
 }

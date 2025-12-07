@@ -3,8 +3,8 @@
   "trailingSlash": false,
   "rewrites": [
     {
-      "source": "/ID:prefix-:id",
-      "destination": "/ID:prefix-:id/ID:id.html"
+      "source": "/:carpeta(ID.*)",
+      "destination": "/:carpeta/:carpeta.html"
     }
   ]
 }

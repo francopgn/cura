@@ -93,15 +93,18 @@
 
     /* CARD PRINCIPAL */
 
-    .card {
-      margin-top: -18px;
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 16px 16px 20px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
-      max-height: calc(100vh - 90px);
-      overflow-y: auto;
-    }
+.card {
+  margin-top: -10px; /* ahora lo ajustamos, ver punto 2 */
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  padding: 16px 16px 20px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+  /* ELIMINÁ estas dos líneas:
+     max-height: calc(100vh - 90px);
+     overflow-y: auto;
+  */
+}
+
 
     .section {
       margin-bottom: 16px;

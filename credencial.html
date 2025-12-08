@@ -35,51 +35,56 @@
       padding: 14px;
     }
 
-    /* HEADER ultra compacto como el resto */
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 22px;
-      padding: 6px 14px 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
-    }
+  
+ /* HEADER estilo iOS compacto */
 .header {
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 28px;
-      padding: 14px 16px 18px; /* corregido */
-      position: relative;
-      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+  color: #fff;
+  border-radius: 28px;
+  padding: 12px 16px 18px;       /* <-- Ajuste correcto */
+  position: relative;
+  box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+  z-index: 20;                   /* <-- Evita que la card lo tape */
 }
 
-    .header-row {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      z-index: 2;
-    }
-    .back-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(255,255,255,0.5);
-      backdrop-filter: blur(8px);
-      cursor: pointer;
-      font-size: 18px;
-    }
-    .header-title {
-      font-size: 19px;
-      font-weight: 600;
-    }
+.header::before {
+  content: "";
+  position: absolute;
+  width: 190%;
+  height: 180%;
+  top: -70%;
+  left: -40%;
+  border-radius: 50%;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 60%);
+}
+
+.header-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+.back-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.5);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
 
     /* Animación suave */
     .fade-in {

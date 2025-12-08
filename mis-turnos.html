@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mis turnos - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f3f6fb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 50%, #f4f6fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+    }
+
+    /* HEADER compacto */
+
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 22px;
+      padding: 6px 14px 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 180%;
+      height: 180%;
+      border-radius: 50%;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 60%);
+      top: -70%;
+      left: -40%;
+      opacity: 0.9;
+    }
+
+    .header-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      z-index: 1;
+    }
+
+    .back-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-title {
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    /* CARD PRINCIPAL */
+
+    .card {
+      margin-top: 8px;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 18px 18px 20px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    /* TABS / FILTROS */
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 4px;
+      background: #f3f4f6;
+      border-radius: var(--radius-pill);
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 7px 10px;
+      font-size: 13px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      color: var(--text-soft);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .tab.active {
+      background: #ffffff;
+      color: var(--blue-dark);
+      font-weight: 600;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12);
+    }
+
+    /* LISTA DE TURNOS */
+
+    .turno-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .turno-card {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: #f9fafb;
+      padding: 10px 12px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .turno-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .turno-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .turno-fecha {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .turno-sub {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .turno-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .pill-blue {
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+    }
+
+    .pill-green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .pill-yellow {
+      background: #fef9c3;
+      color: #854d0e;
+    }
+
+    .pill-red {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .turno-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .mini-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      padding: 4px 9px;
+      font-size: 11px;
+      background: #ffffff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mini-btn.primary {
+      border-color: #2563eb;
+      color: #1d4ed8;
+    }
+
+    .view-panel {
+      display: none;
+    }
+
+    .view-panel.active {
+      display: block;
+    }
+
+    .muted {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header">
+      <div class="header-row">
+        <div class="back-btn" onclick="history.back()">‹</div>
+        <div class="header-title">Mis turnos</div>
+      </div>
+    </header>
+
+    <main class="card">
+      <!-- Tabs filtros -->
+      <div class="tabs">
+        <div class="tab active" data-view="proximos">Próximos</div>
+        <div class="tab" data-view="pasados">Pasados</div>
+        <div class="tab" data-view="todos">Todos</div>
+      </div>
+
+      <!-- Próximos -->
+      <section id="view-proximos" class="view-panel active">
+        <div class="section">
+          <div class="section-label">Próximos turnos</div>
+          <div class="hint">
+            Turnos futuros registrados a través de C.U.R.A. o sincronizados desde prestadores adheridos.
+          </div>
+        </div>
+
+        <div class="turno-list">
+          <!-- Turno 1 -->
+          <article class="turno-card">
+            <div class="turno-top">
+              <div class="turno-main">
+                <div class="turno-fecha">15/04/2024 · 09:30 hs</div>
+                <div class="turno-sub">
+                  Hospital General de Buenos Aires · Cardiología
+                </div>
+                <div class="turno-meta">
+                  Profesional: Dr. Juan González · Modalidad: Presencial
+                </div>
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill pill-green">Confirmado</span>
+              <span class="pill pill-blue">Turno programado</span>
+              <span class="pill">Obra social sindical</span>
+            </div>
+
+            <div class="turno-actions">
+              <button class="mini-btn primary" type="button"
+                      onclick="window.location.href='turno-confirmado.html'">
+                Ver detalle
+              </button>
+              <button class="mini-btn" type="button">Reprogramar</button>
+              <button class="mini-btn" type="button">Cancelar</button>
+              <button class="mini-btn" type="button">Agregar al calendario</button>
+            </div>
+          </article>
+
+          <!-- Turno 2 -->
+          <article class="turno-card">
+            <div class="turno-top">
+              <div class="turno-main">
+                <div class="turno-fecha">28/04/2024 · 14:00 hs</div>
+                <div class="turno-sub">
+                  Centro de Salud Norte · Laboratorio / análisis
+                </div>
+                <div class="turno-meta">
+                  Modalidad: Presencial · Cobertura: Sistema público
+                </div>
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill pill-yellow">Pendiente de confirmación</span>
+              <span class="pill pill-blue">Laboratorio</span>
+            </div>
+
+            <div class="turno-actions">
+              <button class="mini-btn primary" type="button">Ver detalle</button>
+              <button class="mini-btn" type="button">Confirmar asistencia</button>
+              <button class="mini-btn" type="button">Cancelar</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Pasados -->
+      <section id="view-pasados" class="view-panel">
+        <div class="section">
+          <div class="section-label">Turnos pasados</div>
+          <div class="hint">
+            Turnos ya realizados que generan registros en tu Historia Clínica Completa.
+          </div>
+        </div>
+
+        <div class="turno-list">
+          <article class="turno-card">
+            <div class="turno-main">
+              <div class="turno-fecha">12/03/2024 · 10:00 hs</div>
+              <div class="turno-sub">
+                Laboratorio Central · Estudios de sangre
+              </div>
+              <div class="turno-meta">
+                Resultado vinculado a: Historia Clínica Completa · Documentos y Estudios
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill pill-green">Realizado</span>
+              <span class="pill pill-blue">Laboratorio</span>
+            </div>
+
+            <div class="turno-actions">
+              <button class="mini-btn primary" type="button"
+                      onclick="window.location.href='historia-clinica-completa.html'">
+                Ver registro clínico
+              </button>
+              <button class="mini-btn" type="button"
+                      onclick="window.location.href='documentos-estudios.html'">
+                Ver estudios
+              </button>
+            </div>
+          </article>
+
+          <article class="turno-card">
+            <div class="turno-main">
+              <div class="turno-fecha">18/02/2024 · 22:30 hs</div>
+              <div class="turno-sub">
+                Hospital General · Guardia · Salud mental
+              </div>
+              <div class="turno-meta">
+                Acceso de emergencia (break-glass) registrado en tu módulo de Accesos.
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill pill-green">Atendido</span>
+              <span class="pill pill-red">Dato sensible</span>
+            </div>
+
+            <div class="turno-actions">
+              <button class="mini-btn primary" type="button"
+                      onclick="window.location.href='historia-salud.html'">
+                Ver en Historia de Salud
+              </button>
+              <button class="mini-btn" type="button">
+                Ver registro de accesos
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Todos (reusa los mismos, combinados) -->
+      <section id="view-todos" class="view-panel">
+        <div class="section">
+          <div class="section-label">Todos los turnos</div>
+          <div class="hint">
+            Vista integrada de turnos futuros y pasados en un mismo listado.
+          </div>
+        </div>
+
+        <div class="turno-list">
+          <!-- Podés combinar o duplicar los anteriores según el backend -->
+          <article class="turno-card">
+            <div class="turno-main">
+              <div class="turno-fecha">15/04/2024 · 09:30 hs</div>
+              <div class="turno-sub">
+                Hospital General de Buenos Aires · Cardiología
+              </div>
+              <div class="turno-meta">
+                Estado: Confirmado · Presencial
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill pill-green">Confirmado</span>
+              <span class="pill pill-blue">Próximo</span>
+            </div>
+
+            <div class="turno-actions">
+              <button class="mini-btn primary" type="button"
+                      onclick="window.location.href='turno-confirmado.html'">
+                Ver detalle
+              </button>
+              <button class="mini-btn" type="button">Reprogramar</button>
+            </div>
+          </article>
+
+          <article class="turno-card">
+            <div class="turno-main">
+              <div class="turno-fecha">05/01/2024 · 11:00 hs</div>
+              <div class="turno-sub">
+                Centro de Salud Sur · Clínica médica
+              </div>
+              <div class="turno-meta">
+                Turno cancelado por el paciente.
+              </div>
+            </div>
+
+            <div class="pill-row">
+              <span class="pill pill-red">Cancelado</span>
+              <span class="pill">Clínica médica</span>
+            </div>
+
+            <div class="turno-actions">
+              <button class="mini-btn" type="button">
+                Solicitar nuevo turno
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <div class="muted">
+        Cada turno se vincula a tu Historia de Salud y al registro de accesos según la Ley C.U.R.A.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const views = {
+      proximos: document.getElementById("view-proximos"),
+      pasados: document.getElementById("view-pasados"),
+      todos: document.getElementById("view-todos"),
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        const view = tab.dataset.view;
+        Object.keys(views).forEach((k) => {
+          views[k].classList.toggle("active", k === view);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

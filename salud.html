@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C.U.R.A – Credencial</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #dce9f9;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Arial;
+        display: flex;
+        justify-content: center;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 430px;
+        padding: 20px 18px 40px;
+        background: #dce9f9;
+    }
+
+    /* ---------- HEADER ---------- */
+    .header-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+    .back-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    .title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #1d3557;
+    }
+
+    /* ---------- CARD PRINCIPAL ---------- */
+    .card {
+        background: #ffffff;
+        padding: 22px 18px 26px;
+        border-radius: 22px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        text-align: center;
+    }
+
+    #qr {
+        width: 220px;
+        height: 220px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .token-label {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #1d3557;
+        letter-spacing: 0.5px;
+    }
+
+    .token-value {
+        font-size: 42px;
+        font-weight: 700;
+        margin: 4px 0 12px;
+        color: #1d3557;
+    }
+
+    /* ---------- PROGRESS BAR ---------- */
+    .progress-container {
+        width: 100%;
+        background: #d0d8e2;
+        height: 8px;
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 0 auto 10px;
+    }
+
+    #progress-bar {
+        width: 100%;
+        height: 100%;
+        background: #4f7fe8;
+        transition: width 1s linear;
+    }
+
+    .timer-text {
+        font-size: 14px;
+        color: #1d3557;
+        margin-top: 6px;
+    }
+
+    /* ---------- INFO BOX ---------- */
+    .info-box {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 14px 14px;
+        margin-top: 18px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        display: flex;
+        gap: 10px;
+        font-size: 14px;
+        color: #1d3557;
+        line-height: 1.35;
+    }
+
+    .info-icon {
+        font-size: 20px;
+        color: #4f7fe8;
+    }
+
+    /* ---------- BUTTONS ---------- */
+    .button-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 14px;
+        border: none;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .btn-back {
+        background: #e2e8f0;
+        color: #1d3557;
+    }
+
+    .btn-download {
+        background: #4f7fe8;
+        color: #ffffff;
+    }
+</style>
+</head>
+
+<body>
+<div class="app">
+
+    <!-- HEADER -->
+    <div class="header-row">
+        <div class="back-btn" onclick="history.back()">‹</div>
+        <div class="title">Credencial Única de Salud</div>
+    </div>
+
+    <!-- CARD PRINCIPAL -->
+    <div class="card">
+        <img id="qr" src="" alt="QR">
+
+        <div class="token-label">TOKEN DE SEGURIDAD</div>
+        <div id="token" class="token-value">0000</div>
+
+        <!-- Barra de progreso -->
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div id="timer" class="timer-text">Expira en 04:59 minutos</div>
+    </div>
+
+    <!-- INFO BOX -->
+    <div class="info-box">
+        <div class="info-icon">ℹ️</div>
+        <div>Comparta el token de seguridad solo cuando sea solicitado por personal de farmacias, centros de salud o su médico.</div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="button-row">
+        <button class="btn btn-back" onclick="history.back()">Volver</button>
+        <button class="btn btn-download">Descargar credencial</button>
+    </div>
+
+</div>
+
+<script>
+/* -------- TOKEN GENERATOR -------- */
+function generarToken() {
+    return Math.floor(1000 + Math.random() * 9000);
+}
+
+/* -------- QR GENERATOR (usando API pública) -------- */
+function generarQR(texto) {
+    document.getElementById("qr").src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(texto);
+}
+
+/* -------- TIMER + REFRESH -------- */
+let tiempoRestante = 300; // 5 minutos = 300s
+let tokenActual = generarToken();
+
+function actualizarToken() {
+    tokenActual = generarToken();
+    document.getElementById("token").innerText = tokenActual;
+    generarQR("CURA-TOKEN:" + tokenActual);
+}
+
+function actualizarUI() {
+    // Barra de progreso
+    let porcentaje = (tiempoRestante / 300) * 100;
+    document.getElementById("progress-bar").style.width = porcentaje + "%";
+
+    // Minutos y segundos
+    let min = Math.floor(tiempoRestante / 60);
+    let sec = tiempoRestante % 60;
+    document.getElementById("timer").innerText =
+        `Expira en ${String(min).padStart(2, "0")}:${String(sec).padStart(2, "0")} minutos`;
+}
+
+function tick() {
+    if (tiempoRestante <= 0) {
+        tiempoRestante = 300;   // Reiniciar
+        actualizarToken();       // Nuevo token
+    } else {
+        tiempoRestante--;
+    }
+    actualizarUI();
+}
+
+actualizarToken();
+actualizarUI();
+setInterval(tick, 1000);
+</script>
+
+</body>
+</html>

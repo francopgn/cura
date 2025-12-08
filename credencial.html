@@ -45,16 +45,15 @@
       overflow: hidden;
       box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
     }
-    .header::before {
-      content: "";
-      position: absolute;
-      width: 190%;
-      height: 180%;
-      top: -70%;
-      left: -40%;
-      border-radius: 50%;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 60%);
-    }
+.header {
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 28px;
+      padding: 14px 16px 18px; /* corregido */
+      position: relative;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+}
+
     .header-row {
       position: relative;
       display: flex;
@@ -98,14 +97,15 @@
     }
 
     /* TARJETA */
-    .card {
+.card {
       background: #fff;
-      margin-top: -10px; /* ya no tapa el header */
+      margin-top: -10px; /* corregido */
       border-radius: var(--radius);
       padding: 22px 18px 26px;
       text-align: center;
       box-shadow: 0 12px 30px rgba(15,23,42,0.12);
-    }
+}
+
 
     /* QR */
     .qr-box {

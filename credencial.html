@@ -103,16 +103,15 @@
 
     /* TARJETA */
 .card {
+  /* antes estaba algo así: margin-top: -18px; o -12px; */
+  margin-top: 12px;      /* <- ponelo POSITIVO */
   background: #fff;
-  margin-top: -12px;      /* levanta un poco la card */
   border-radius: var(--radius);
   padding: 22px 18px 26px;
   text-align: center;
   box-shadow: 0 12px 30px rgba(15,23,42,0.12);
-
-  position: relative;     /* SOLUCIÓN */
-  z-index: 10;            /* SOLUCIÓN */
 }
+
 
 
     /* QR */

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Turno confirmado - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f3f6fb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 50%, #f4f6fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+    }
+
+    /* HEADER compacto */
+
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 22px;
+      padding: 6px 14px 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 180%;
+      height: 180%;
+      border-radius: 50%;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 60%);
+      top: -70%;
+      left: -40%;
+      opacity: 0.9;
+    }
+
+    .header-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      z-index: 1;
+    }
+
+    .back-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-title {
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    /* CARD PRINCIPAL */
+
+    .card {
+      margin-top: 8px;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 18px 18px 20px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .success-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .success-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: #dcfce7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: #15803d;
+      flex-shrink: 0;
+    }
+
+    .success-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      background: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .pill-blue {
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+    }
+
+    .pill-green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .pill-muted {
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .summary-box {
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: #f9fafb;
+      padding: 12px 12px;
+      font-size: 13px;
+      color: var(--text-main);
+      margin-top: 8px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .summary-label {
+      color: var(--text-soft);
+    }
+
+    .summary-value {
+      font-weight: 500;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e5e7eb;
+      margin: 10px 0;
+    }
+
+    .code-box {
+      border-radius: 14px;
+      border: 1px dashed #cbd5f5;
+      background: #eef2ff;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--blue-dark);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .code-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .code-value {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-size: 13px;
+    }
+
+    .mini-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      padding: 4px 10px;
+      font-size: 11px;
+      background: #ffffff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-outline {
+      padding: 8px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-main);
+    }
+
+    .btn-outline span.icon {
+      font-size: 14px;
+    }
+
+    .button-primary {
+      margin-top: 14px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.4);
+    }
+
+    .button-secondary {
+      margin-top: 8px;
+      width: 100%;
+      padding: 11px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      background: #ffffff;
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .muted {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header">
+      <div class="header-row">
+        <div class="back-btn" onclick="history.back()">‹</div>
+        <div class="header-title">Turno confirmado</div>
+      </div>
+    </header>
+
+    <main class="card">
+      <!-- Estado -->
+      <section class="section">
+        <div class="success-row">
+          <div class="success-icon">✓</div>
+          <div>
+            <div class="success-title">Tu turno fue registrado</div>
+            <div class="hint">
+              El turno queda vinculado a tu Historia de Salud interoperable C.U.R.A.
+            </div>
+          </div>
+        </div>
+
+        <div class="pill-row">
+          <span class="pill pill-green">Estado: Confirmado</span>
+          <span class="pill pill-blue">Turno programado</span>
+          <span class="pill pill-muted">Se registrará en el log de accesos</span>
+        </div>
+      </section>
+
+      <!-- Resumen del turno -->
+      <section class="section">
+        <div class="section-label">Resumen del turno</div>
+        <div class="summary-box">
+          <div class="summary-row">
+            <span class="summary-label">Establecimiento</span>
+            <span class="summary-value">Hospital General de Buenos Aires</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Especialidad</span>
+            <span class="summary-value">Cardiología</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Profesional</span>
+            <span class="summary-value">Dr. Juan González</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Fecha</span>
+            <span class="summary-value">15/04/2024</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Horario</span>
+            <span class="summary-value">Franja: Mañana (09:00–11:30)</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Modalidad</span>
+            <span class="summary-value">Presencial</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Cobertura</span>
+            <span class="summary-value">Obra social sindical</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Código y documentación -->
+      <section class="section">
+        <div class="section-label">Código y documentación</div>
+        <div class="code-box">
+          <div class="code-row">
+            <span>Código del turno</span>
+            <span class="code-value">CURA-24AB7Q</span>
+          </div>
+          <div class="code-row">
+            <span class="hint">
+              Podés mostrar este código o tu credencial C.U.R.A. el día del turno.
+            </span>
+            <button class="mini-btn" type="button" onclick="copiarCodigo()">
+              Copiar código
+            </button>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="hint">
+          Si cargaste laboratorio o estudios recientes, el prestador podrá verlos
+          antes del turno según tu configuración de privacidad.
+        </div>
+      </section>
+
+      <!-- Acciones -->
+      <section class="section">
+        <div class="section-label">Acciones</div>
+        <div class="actions-row">
+          <button class="btn-outline" type="button">
+            <span class="icon">📅</span>
+            <span>Agregar al calendario</span>
+          </button>
+          <button class="btn-outline" type="button">
+            <span class="icon">🗺</span>
+            <span>Ver cómo llegar</span>
+          </button>
+          <button class="btn-outline" type="button">
+            <span class="icon">✏</span>
+            <span>Reprogramar turno</span>
+          </button>
+          <button class="btn-outline" type="button">
+            <span class="icon">🗑</span>
+            <span>Cancelar turno</span>
+          </button>
+        </div>
+      </section>
+
+      <button class="button-primary" type="button"
+              onclick="window.location.href='historia-salud.html'">
+        Volver a Historia de Salud
+      </button>
+
+      <button class="button-secondary" type="button"
+              onclick="window.location.href='mis-turnos.html'">
+        Ver todos mis turnos
+      </button>
+
+      <div class="muted">
+        Cada cambio sobre este turno (reprogramación, cancelación, acceso de un
+        prestador) quedará registrado en el módulo de Accesos de C.U.R.A.
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function copiarCodigo() {
+      const codigo = "CURA-24AB7Q";
+      navigator.clipboard?.writeText(codigo).catch(() => {});
+    }
+  </script>
+</body>
+</html>

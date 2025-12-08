@@ -35,14 +35,15 @@
       padding: 14px;
     }
 
-    /* HEADER estilo iOS */
+    /* HEADER ultra compacto como el resto */
     .header {
+      position: relative;
       background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
       color: #fff;
-      border-radius: 28px;
-      padding: 14px 16px 26px;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+      border-radius: 22px;
+      padding: 6px 14px 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
     }
     .header::before {
       content: "";
@@ -58,12 +59,14 @@
       position: relative;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      padding-top: 2px;
+      padding-bottom: 2px;
       z-index: 2;
     }
     .back-btn {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       background: rgba(255,255,255,0.2);
       display: flex;
@@ -75,7 +78,7 @@
       font-size: 18px;
     }
     .header-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 600;
     }
 
@@ -97,7 +100,7 @@
     /* TARJETA */
     .card {
       background: #fff;
-      margin-top: -18px;
+      margin-top: -10px; /* ya no tapa el header */
       border-radius: var(--radius);
       padding: 22px 18px 26px;
       text-align: center;
@@ -160,18 +163,14 @@
     }
 
     .info-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #eef4ff;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
     .info-icon img {
-      width: 22px;
-      height: 22px;
+      height: 32px;   /* tamaño real tipo captura */
+      width: auto;
       display: block;
     }
 

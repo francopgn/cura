@@ -40,16 +40,16 @@
       padding: 14px 14px 24px;
     }
 
-    /* HEADER */
+    /* HEADER (compacto unificado) */
 
     .header {
       position: relative;
       background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
       color: #fff;
-      border-radius: 28px;
-      padding: 16px 18px 32px;
+      border-radius: 22px;
+      padding: 6px 14px 12px;
       overflow: hidden;
-      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.45);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
     }
 
     .header::before {
@@ -65,11 +65,12 @@
     }
 
     .header-row {
-      position: relative;
       display: flex;
       align-items: center;
-      gap: 10px;
-      z-index: 1;
+      gap: 8px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      z-index: 2;
     }
 
     .back-btn {
@@ -87,14 +88,14 @@
     }
 
     .header-title {
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 600;
     }
 
-    /* CARD PRINCIPAL */
+    /* CARD PRINCIPAL (unificada) */
 
     .card {
-      margin-top: -18px;
+      margin-top: 8px;
       background: #ffffff;
       border-radius: var(--radius-lg);
       padding: 18px 18px 20px;
@@ -439,15 +440,13 @@
           </div>
         </div>
 
-    <button class="button-primary" type="button"
-        onclick="window.location.href='historia-clinica-completa.html'">
-  Ver Historia Clínica Completa
-</button>
+        <button class="button-primary" type="button"
+          onclick="window.location.href='historia-clinica-completa.html'">
+          Ver Historia Clínica Completa
+        </button>
         <button class="button-primary" onclick="window.location.href='documentos-estudios.html'">
-  Ver documentos y estudios
-</button>
-
-
+          Ver documentos y estudios
+        </button>
       </section>
 
       <!-- CRONOLOGÍA -->

@@ -42,15 +42,16 @@
 
     /* HEADER */
 
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 28px;
-      padding: 10px 18px 18px;
-      overflow: hidden;
-      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.45);
-    }
+.header {
+  position: relative;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+  color: #fff;
+  border-radius: 22px;
+  padding: 6px 14px 12px; /* ← Ultra compacto */
+  overflow: hidden;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
+}
+
 
     .header::before {
       content: "";
@@ -64,13 +65,15 @@
       opacity: 0.9;
     }
 
-    .header-row {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 1;
-    }
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 2px;  /* ↓ Ajuste fino */
+  padding-bottom: 2px;
+  z-index: 2;
+}
+
 
     .back-btn {
       width: 30px;

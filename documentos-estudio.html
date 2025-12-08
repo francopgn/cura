@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Documentos y Estudios - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f3f6fb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 50%, #f4f6fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+    }
+
+    /* HEADER */
+
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 28px;
+      padding: 16px 18px 32px;
+      overflow: hidden;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.45);
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 180%;
+      height: 180%;
+      border-radius: 50%;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 60%);
+      top: -70%;
+      left: -40%;
+      opacity: 0.9;
+    }
+
+    .header-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1;
+    }
+
+    .back-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-title {
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    /* CARD PRINCIPAL */
+
+    .card {
+      margin-top: -18px;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 16px 16px 20px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+      max-height: calc(100vh - 90px);
+      overflow-y: auto;
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    /* FILTROS */
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+    }
+
+    .input-text,
+    .select-field {
+      padding: 9px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      font-size: 13px;
+      outline: none;
+      background: #f9fafb;
+      color: var(--text-main);
+      min-width: 0;
+    }
+
+    .input-text:focus,
+    .select-field:focus {
+      border-color: var(--blue-main);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.28);
+      background: #fff;
+    }
+
+    .filters .input-text {
+      flex: 1 1 100%;
+    }
+
+    .filters .select-field {
+      flex: 1 1 calc(50% - 4px);
+    }
+
+    /* TOGGLE SENSIBLES */
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #d1d5db;
+      border-radius: 999px;
+      transition: 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      top: 3px;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .toggle input:checked + .slider {
+      background-color: var(--blue-main);
+    }
+
+    .toggle input:checked + .slider::before {
+      transform: translateX(16px);
+    }
+
+    .toggle-text {
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    /* GRUPOS POR FECHA / TIPO */
+
+    .group-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .doc-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .doc-card {
+      display: flex;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: #f9fafb;
+      font-size: 12px;
+      align-items: center;
+    }
+
+    .thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue-soft), #e5e7eb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #1f2933;
+      flex-shrink: 0;
+    }
+
+    .doc-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .doc-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+    }
+
+    .doc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .tag-blue {
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+    }
+
+    .tag-red {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .doc-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .mini-btn {
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      padding: 4px 8px;
+      font-size: 11px;
+      background: #ffffff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mini-btn.primary {
+      border-color: #2563eb;
+      color: #1d4ed8;
+    }
+
+    .muted {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header">
+      <div class="header-row">
+        <div class="back-btn" onclick="history.back()">‹</div>
+        <div class="header-title">Documentos y Estudios</div>
+      </div>
+    </header>
+
+    <main class="card">
+      <!-- FILTROS -->
+      <section class="section">
+        <div class="section-label">Buscar</div>
+        <div class="filters">
+          <input
+            type="text"
+            class="input-text"
+            id="buscadorDocs"
+            placeholder="Ej: laboratorio, ECG, tórax, informe de alta..."
+            oninput="filtrarDocs()"
+          />
+          <select class="select-field" id="filtroTipoDoc" onchange="filtrarDocs()">
+            <option value="todos">Tipo: Todos</option>
+            <option value="laboratorio">Laboratorio</option>
+            <option value="imagen">Imágenes</option>
+            <option value="informe">Informes</option>
+            <option value="receta">Recetas</option>
+            <option value="certificado">Certificados</option>
+          </select>
+          <select class="select-field" id="filtroPeriodoDoc" onchange="filtrarDocs()">
+            <option value="todos">Período: Todos</option>
+            <option value="12m">Últimos 12 meses</option>
+            <option value="6m">Últimos 6 meses</option>
+            <option value="3m">Últimos 3 meses</option>
+          </select>
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="toggleDocsSensibles" checked onchange="filtrarDocs()" />
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-text">
+            Incluir documentos sensibles que tengas habilitados (salud mental, VIH, etc.)
+          </span>
+        </div>
+      </section>
+
+      <!-- LISTA DE DOCUMENTOS -->
+      <section class="section">
+        <div class="section-label">Estudios y documentos</div>
+        <div class="hint">
+          Resultados, informes e imágenes vinculados a tu historia de salud interoperable C.U.R.A.
+        </div>
+
+        <!-- Grupo reciente -->
+        <div class="group-label">Abril 2024</div>
+        <div class="doc-list" id="docList">
+          <!-- ECG -->
+          <div class="doc-card"
+               data-tipo="imagen"
+               data-sensible="no"
+               data-texto="ecg electrocardiograma cardiologia abril 2024 hospital general">
+            <div class="thumb">🫀</div>
+            <div class="doc-main">
+              <div class="doc-name">ECG · 12 derivaciones</div>
+              <div class="doc-meta">12/04/2024 · Hospital General · Cardiología</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Imagen / señal</span>
+                <span class="tag">Cardiología</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Descargar PDF</button>
+              <button class="mini-btn">Compartir enlace</button>
+            </div>
+          </div>
+
+          <!-- Laboratorio completo -->
+          <div class="doc-card"
+               data-tipo="laboratorio"
+               data-sensible="no"
+               data-texto="laboratorio glucemia hba1c perfil lipidico analisis sangre">
+            <div class="thumb">🧪</div>
+            <div class="doc-main">
+              <div class="doc-name">Informe de laboratorio completo</div>
+              <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Laboratorio</span>
+                <span class="tag">Diabetes</span>
+                <span class="tag">Perfil lipídico</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Descargar PDF</button>
+            </div>
+          </div>
+
+          <!-- Informe de salud mental (sensible) -->
+          <div class="doc-card"
+               data-tipo="informe"
+               data-sensible="si"
+               data-texto="informe salud mental crisis angustia guardia psicologia psiquiatria">
+            <div class="thumb">🧠</div>
+            <div class="doc-main">
+              <div class="doc-name">Informe de guardia · Salud mental</div>
+              <div class="doc-meta">18/02/2024 · Hospital General · Guardia</div>
+              <div class="doc-tags">
+                <span class="tag tag-red">Dato sensible · Salud mental</span>
+                <span class="tag">Guardia</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver (según privacidad)</button>
+              <button class="mini-btn">Descargar</button>
+            </div>
+          </div>
+
+          <!-- Rx tórax -->
+          <div class="doc-card"
+               data-tipo="imagen"
+               data-sensible="no"
+               data-texto="radiografia torax rx imagen pulmones centro diagnostico">
+            <div class="thumb">🩻</div>
+            <div class="doc-main">
+              <div class="doc-name">Rx de tórax PA y lateral</div>
+              <div class="doc-meta">10/01/2024 · Centro de Diagnóstico Norte</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Imágenes</span>
+                <span class="tag">Seguimiento</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Descargar DICOM</button>
+            </div>
+          </div>
+
+          <!-- Receta electrónica -->
+          <div class="doc-card"
+               data-tipo="receta"
+               data-sensible="no"
+               data-texto="receta electronica metformina losartan tratamiento cronico">
+            <div class="thumb">💊</div>
+            <div class="doc-main">
+              <div class="doc-name">Receta electrónica crónica</div>
+              <div class="doc-meta">05/12/2023 · Consultorio externo</div>
+              <div class="doc-tags">
+                <span class="tag">Receta electrónica</span>
+                <span class="tag">Tratamiento crónico</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Descargar PDF</button>
+              <button class="mini-btn">Enviar a farmacia</button>
+            </div>
+          </div>
+
+          <!-- Certificado médico -->
+          <div class="doc-card"
+               data-tipo="certificado"
+               data-sensible="no"
+               data-texto="certificado medico reposo laboral">
+            <div class="thumb">📄</div>
+            <div class="doc-main">
+              <div class="doc-name">Certificado médico</div>
+              <div class="doc-meta">20/11/2023 · Hospital General</div>
+              <div class="doc-tags">
+                <span class="tag">Certificado</span>
+                <span class="tag">Reposo laboral</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Descargar PDF</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="muted">
+          Todos los documentos fueron generados por prestadores adheridos a la Ley C.U.R.A. y
+          pueden compartirse de forma segura mediante enlaces temporales.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function filtrarDocs() {
+      const texto = document.getElementById("buscadorDocs").value.toLowerCase();
+      const tipo = document.getElementById("filtroTipoDoc").value;
+      const mostrarSensibles = document.getElementById("toggleDocsSensibles").checked;
+
+      const items = document.querySelectorAll("#docList .doc-card");
+
+      items.forEach((item) => {
+        const t = item.dataset.tipo;
+        const s = item.dataset.sensible === "si";
+        const fullText = (item.dataset.texto || "").toLowerCase();
+
+        let visible = true;
+
+        if (tipo !== "todos" && t !== tipo) visible = false;
+        if (!mostrarSensibles && s) visible = false;
+        if (texto && !fullText.includes(texto)) visible = false;
+
+        item.style.display = visible ? "flex" : "none";
+      });
+    }
+  </script>
+</body>
+</html>

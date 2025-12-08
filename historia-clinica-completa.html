@@ -317,6 +317,16 @@
       font-size: 12px;
       color: #9ca3af;
     }
+
+    .clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.clickable:hover {
+  background: #eef2ff;
+}
+
   </style>
 </head>
 <body>
@@ -377,7 +387,11 @@
 
         <div class="timeline" id="timeline">
           <!-- Ejemplos de registros -->
-          <div class="timeline-item" data-tipo="consulta" data-sensible="no" data-texto="dolor pecho consulta cardiologia clinica">
+          <div class="timeline-item clickable"
+     onclick="window.location.href='detalle-registro.html'"
+     data-tipo="consulta"
+     data-sensible="no"
+     data-texto="dolor pecho consulta cardiologia clinica">
             <div class="timeline-dot"></div>
             <div class="timeline-header">
               <div class="timeline-date">12/04/2024</div>

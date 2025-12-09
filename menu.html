@@ -140,21 +140,17 @@
       gap: 12px;
     }
 
-/* Tarjetas del menú */
 .menu-card {
   background: var(--card-bg);
   border-radius: 24px;
-  padding: 18px 10px;
+  padding: 18px 10px 14px;
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
   text-align: center;
   text-decoration: none;
   color: var(--text-main);
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;   /* ← centra icono + texto verticalmente */
-  gap: 8px;                  /* separación pareja entre icono y texto */
   transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
 }
 
@@ -162,26 +158,31 @@
   transform: translateY(1px);
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
 }
+    
+  #card-credencial .menu-card-icon {
+  margin-bottom: 6px;   /* ajuste puntual */
+}
 
-/* ICONO */
-.menu-icon {
+
+/* ICONOS SIN CÍRCULO */
+.menu-card-icon {
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 48px;
-  margin-bottom: 0;          /* ya usamos gap en la card */
+  margin-bottom: 10px;
 }
 
-.menu-icon img {
-  width: 38px;
-  height: 38px;
+.menu-card-icon img {
+  max-width: 100%;
+  max-height: 100%;
   display: block;
 }
 
-/* Texto debajo del icono */
 .menu-label {
-  margin: 0;                 /* sin margen extra raro */
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 

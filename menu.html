@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Salud - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f9f5eb;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue",
+        Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg-light);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* HEADER SALUD */
+
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 28px;
+      padding: 16px 18px 22px;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.35);
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      border-radius: 50%;
+      top: -75%;
+      left: -40%;
+      background: radial-gradient(
+        circle at top,
+        rgba(255, 255, 255, 0.18),
+        transparent 60%
+      );
+    }
+
+    .header-top {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .notif-bell {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      cursor: pointer;
+    }
+
+    .notif-bell span {
+      font-size: 17px;
+    }
+
+    .notif-dot {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: #fff;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--blue-main);
+    }
+
+    /* CONTENIDO PRINCIPAL */
+
+    .content {
+      flex: 1;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+    }
+
+    /* GRID MENÚ */
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .menu-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 16px 12px 14px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+      text-align: center;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    }
+
+    .menu-card:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+    }
+
+    .menu-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: #f3f7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .menu-icon img {
+      width: 30px;
+      height: 30px;
+      display: block;
+    }
+
+    .menu-label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* BARRA INFERIOR */
+
+    .bottom-shell {
+      margin-top: 24px;
+      position: relative;
+    }
+
+    .bottom-nav {
+      background: #ffffff;
+      border-radius: 26px;
+      padding: 10px 26px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.25);
+    }
+
+    .nav-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--blue-dark);
+    }
+
+    .nav-btn.inactive {
+      opacity: 0.5;
+    }
+
+    .nav-plus {
+      position: absolute;
+      left: 50%;
+      top: -18px;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: var(--blue-main);
+      color: #fff;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.55);
+      cursor: pointer;
+    }
+
+    .nav-plus:active {
+      transform: translateX(-50%) translateY(1px);
+      box-shadow: 0 8px 16px rgba(37, 99, 235, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-top">
+        <div class="header-title">Salud</div>
+        <div class="notif-bell">
+          <span>🔔</span>
+          <div class="notif-dot">1</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENIDO -->
+    <main class="content">
+      <div class="section-title">Menú</div>
+      <div class="section-subtitle">Bienvenido al cuidado de tu salud.</div>
+
+      <div class="menu-grid">
+        <!-- Credencial -->
+        <a href="credencial.html" class="menu-card">
+          <div class="menu-icon">
+            <img src="icon-credencial.png" alt="Credencial" />
+          </div>
+          <div class="menu-label">Credencial</div>
+        </a>
+
+        <!-- Prescripciones -->
+        <a href="prescripciones.html" class="menu-card">
+          <div class="menu-icon">
+            <img src="icon-prescripciones.png" alt="Prescripciones" />
+          </div>
+          <div class="menu-label">Prescripciones</div>
+        </a>
+
+        <!-- Retiro de Medicamentos -->
+        <a href="retiro-medicamentos.html" class="menu-card">
+          <div class="menu-icon">
+            <img src="icon-retiro-medicamentos.png" alt="Retiro de medicamentos" />
+          </div>
+          <div class="menu-label">Retiro de Medicamentos</div>
+        </a>
+
+        <!-- Turnos -->
+        <a href="solicitar-turno.html" class="menu-card">
+          <div class="menu-icon">
+            <img src="icon-turnos.png" alt="Turnos" />
+          </div>
+          <div class="menu-label">Turnos</div>
+        </a>
+
+        <!-- Historia Clínica -->
+        <a href="historia-salud.html" class="menu-card">
+          <div class="menu-icon">
+            <img src="icon-historia-clinica.png" alt="Historia clínica" />
+          </div>
+          <div class="menu-label">Historia Clínica</div>
+        </a>
+
+        <!-- Mensajes -->
+        <a href="mensajes.html" class="menu-card">
+          <div class="menu-icon">
+            <img src="icon-mensajes.png" alt="Mensajes" />
+          </div>
+          <div class="menu-label">Mensajes</div>
+        </a>
+      </div>
+
+      <!-- BARRA INFERIOR -->
+      <div class="bottom-shell">
+        <div class="bottom-nav">
+          <button class="nav-btn inactive" type="button">⌂</button>
+          <button class="nav-btn inactive" type="button">⚙</button>
+        </div>
+        <button class="nav-plus" type="button">+</button>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -112,6 +112,28 @@
       color:var(--text-soft);
     }
 
+    /* --- 🔵 BOTÓN NUEVO: VER FARMACIAS CERCANAS --- */
+    .btn-farmacias {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: linear-gradient(135deg, var(--blue-main), #2563eb);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
+      transition: 0.15s ease-out;
+    }
+
+    .btn-farmacias:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 12px rgba(37, 99, 235, 0.35);
+    }
+    /* ---------------------------------------------- */
+
     /* TARJETAS DE RETIRO */
     .rx-card {
       border-radius:18px;
@@ -213,6 +235,11 @@
 
   <main class="card">
 
+    <!-- 🔵 BOTÓN NUEVO -->
+    <button class="btn-farmacias" onclick="window.location.href='farmacias.html'">
+      Ver farmacias cercanas
+    </button>
+
     <section class="section">
       <div class="section-label">Disponibles para retirar</div>
       <div class="hint">
@@ -240,7 +267,7 @@
         </div>
 
         <div class="mini-actions">
-          <button class="mini-btn primary">Generar código de retiro</button>
+          <button class="mini-btn primary" onclick="window.location.href='credencial.html'">Generar código de retiro</button>
           <button class="mini-btn">Ver receta</button>
         </div>
       </article>
@@ -263,7 +290,7 @@
         </div>
 
         <div class="mini-actions">
-          <button class="mini-btn primary">Retirar restantes</button>
+          <button class="mini-btn primary" onclick="window.location.href='credencial.html'">Retirar restantes</button>
           <button class="mini-btn">Ver receta</button>
         </div>
       </article>
@@ -286,12 +313,12 @@
         </div>
 
         <div class="mini-actions">
-          <button class="mini-btn primary">Generar código de retiro</button>
+          <button class="mini-btn primary" onclick="window.location.href='credencial.html'">Generar código de retiro</button>
           <button class="mini-btn">Configurar privacidad</button>
         </div>
       </article>
 
-      <!-- AMOXI YA RETIRADA -->
+      <!-- AMOXICILINA - YA RETIRADA -->
       <article class="rx-card">
         <div class="rx-header">
           <div class="rx-name">Amoxicilina / Clavulánico</div>

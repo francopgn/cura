@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Farmacias cercanas - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f4f6fb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 45%, #f4f6fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+    }
+
+    /* HEADER estilo iOS */
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 28px;
+      padding: 12px 16px 18px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .header::before {
+      content:"";
+      position:absolute;
+      width:190%;
+      height:180%;
+      top:-70%;
+      left:-40%;
+      border-radius:50%;
+      background:radial-gradient(circle at top,rgba(255,255,255,0.18),transparent 60%);
+    }
+
+    .header-row {
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      z-index:2;
+    }
+
+    .back-btn {
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.5);
+      backdrop-filter:blur(8px);
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .header-title {
+      font-size:19px;
+      font-weight:600;
+    }
+
+    /* CARD PRINCIPAL */
+    .card {
+      margin-top: 12px;
+      background:#fff;
+      border-radius:var(--radius-lg);
+      padding:16px 16px 20px;
+      box-shadow:0 12px 30px rgba(15,23,42,0.12);
+    }
+
+    .section {
+      margin-bottom:16px;
+    }
+
+    .section-label {
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+      color:var(--text-main);
+    }
+
+    .hint {
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    /* UBICACIÓN / BUSCADOR */
+    .location-bar {
+      margin-top:8px;
+      padding:10px 12px;
+      border-radius:16px;
+      background:#f3f4ff;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:#1f2937;
+    }
+
+    .loc-dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#16a34a;
+      box-shadow:0 0 0 4px rgba(22,163,74,0.18);
+      flex-shrink:0;
+    }
+
+    .filters {
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .input-text {
+      width:100%;
+      padding:9px 11px;
+      border-radius:12px;
+      border:1px solid var(--border-soft);
+      font-size:13px;
+      background:#f9fafb;
+      color:var(--text-main);
+      outline:none;
+    }
+
+    .input-text:focus {
+      border-color:var(--blue-main);
+      box-shadow:0 0 0 1px rgba(37,99,235,0.28);
+      background:#fff;
+    }
+
+    .pill-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .pill {
+      padding:5px 9px;
+      border-radius:var(--radius-pill);
+      border:1px solid var(--border-soft);
+      background:#f9fafb;
+      font-size:11px;
+      color:var(--text-soft);
+      white-space:nowrap;
+    }
+
+    .pill.active {
+      background:var(--blue-soft);
+      border-color:var(--blue-main);
+      color:var(--blue-dark);
+      font-weight:500;
+    }
+
+    /* LISTA DE FARMACIAS */
+    .pharmacy-list {
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .pharmacy-card {
+      border-radius:18px;
+      border:1px solid var(--border-soft);
+      background:#f9fafb;
+      padding:12px 12px 10px;
+      font-size:12px;
+      color:var(--text-main);
+    }
+
+    .ph-header {
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:4px;
+    }
+
+    .ph-name {
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .ph-status {
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:var(--radius-pill);
+      background:#dcfce7;
+      color:#166534;
+      white-space:nowrap;
+    }
+
+    .ph-status-guardia {
+      background:#fee2e2;
+      color:#b91c1c;
+    }
+
+    .ph-meta {
+      font-size:11px;
+      color:var(--text-soft);
+      margin-bottom:4px;
+    }
+
+    .tag-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin-top:4px;
+    }
+
+    .tag {
+      font-size:10px;
+      padding:2px 6px;
+      border-radius:var(--radius-pill);
+      background:#e5e7eb;
+      color:#111827;
+    }
+
+    .tag-blue {
+      background:var(--blue-soft);
+      color:var(--blue-dark);
+    }
+
+    .tag-green {
+      background:#dcfce7;
+      color:#15803d;
+    }
+
+    .ph-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
+    }
+
+    .btn-mini {
+      padding:5px 10px;
+      border-radius:var(--radius-pill);
+      border:1px solid var(--border-soft);
+      background:#fff;
+      font-size:11px;
+      cursor:pointer;
+      text-decoration:none;
+      color:var(--text-main);
+    }
+
+    .btn-mini.primary {
+      border-color:#2563eb;
+      color:#1d4ed8;
+    }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-row">
+      <div class="back-btn" onclick="history.back()">‹</div>
+      <div class="header-title">Farmacias cercanas</div>
+    </div>
+  </header>
+
+  <main class="card">
+
+    <!-- Filtros y ubicación -->
+    <section class="section">
+      <div class="section-label">Búsqueda</div>
+      <div class="hint">
+        Farmacias adheridas a C.U.R.A. que pueden leer tu credencial y recetas electrónicas.
+      </div>
+
+      <div class="location-bar">
+        <div class="loc-dot"></div>
+        <div style="flex:1;">
+          Usando tu ubicación actual  
+          <div style="font-size:11px; color:var(--text-soft);">
+            General Rodríguez, Buenos Aires (ejemplo)
+          </div>
+        </div>
+        <button
+          type="button"
+          style="
+            border-radius:999px;
+            border:1px solid rgba(148,163,184,0.7);
+            background:#ffffff;
+            font-size:11px;
+            padding:4px 8px;
+            cursor:pointer;
+          ">
+          Cambiar
+        </button>
+      </div>
+
+      <div class="filters">
+        <input
+          type="text"
+          class="input-text"
+          placeholder="Buscar por zona, barrio o dirección..."
+        />
+
+        <div class="pill-row">
+          <span class="pill active">Abiertas ahora</span>
+          <span class="pill">Guardia 24 hs</span>
+          <span class="pill">Con tu cobertura</span>
+          <span class="pill">Descuento PAMI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de farmacias -->
+    <section class="section">
+      <div class="section-label">Resultados cercanos</div>
+      <div class="pharmacy-list">
+
+        <!-- Farmacia 1 -->
+        <article class="pharmacy-card">
+          <div class="ph-header">
+            <div class="ph-name">Farmacia Central C.U.R.A.</div>
+            <div class="ph-status">Abierto · cierra 20:00</div>
+          </div>
+          <div class="ph-meta">
+            Av. Mitre 1234 · a 450 m · General Rodríguez  
+            Convenio: Obras sociales + prepagas
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-blue">Adherida a C.U.R.A.</span>
+            <span class="tag tag-green">Lee recetas electrónicas</span>
+            <span class="tag">OSDE</span>
+            <span class="tag">PAMI</span>
+          </div>
+          <div class="ph-actions">
+            <a
+              class="btn-mini primary"
+              href="https://www.google.com/maps/search/?api=1&query=Farmacia+Central+General+Rodr%C3%ADguez"
+              target="_blank"
+              rel="noopener"
+            >
+              Ver cómo llegar
+            </a>
+            <button class="btn-mini" type="button">
+              Ver detalles
+            </button>
+          </div>
+        </article>
+
+        <!-- Farmacia 2 -->
+        <article class="pharmacy-card">
+          <div class="ph-header">
+            <div class="ph-name">Farmacia de Guardia Rodríguez</div>
+            <div class="ph-status ph-status-guardia">Guardia 24 hs</div>
+          </div>
+          <div class="ph-meta">
+            Rivadavia 890 · a 1,1 km · Guardia nocturna  
+            Atención prioritaria urgencias
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-blue">Adherida a C.U.R.A.</span>
+            <span class="tag">Recetas de guardia</span>
+          </div>
+          <div class="ph-actions">
+            <a
+              class="btn-mini primary"
+              href="https://www.google.com/maps/search/?api=1&query=Farmacia+de+Guardia+General+Rodr%C3%ADguez"
+              target="_blank"
+              rel="noopener"
+            >
+              Ver cómo llegar
+            </a>
+            <button class="btn-mini" type="button">
+              Ver detalles
+            </button>
+          </div>
+        </article>
+
+        <!-- Farmacia 3 -->
+        <article class="pharmacy-card">
+          <div class="ph-header">
+            <div class="ph-name">Farmacia Mitre y Ruta</div>
+            <div class="ph-status">Abierto · cierra 22:00</div>
+          </div>
+          <div class="ph-meta">
+            Colectora Acceso Oeste km 50 · a 2,3 km  
+            Especializada en crónicos y alto costo
+          </div>
+          <div class="tag-row">
+            <span class="tag tag-blue">Adherida a C.U.R.A.</span>
+            <span class="tag">Swiss Medical</span>
+            <span class="tag">Galeno</span>
+            <span class="tag">Obras sociales</span>
+          </div>
+          <div class="ph-actions">
+            <a
+              class="btn-mini primary"
+              href="https://www.google.com/maps/search/?api=1&query=Farmacia+Mitre+y+Ruta+General+Rodr%C3%ADguez"
+              target="_blank"
+              rel="noopener"
+            >
+              Ver cómo llegar
+            </a>
+            <button class="btn-mini" type="button">
+              Ver detalles
+            </button>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

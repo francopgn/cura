@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Retiro de Medicamentos - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f4f6fb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 45%, #f4f6fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+    }
+
+    /* HEADER iOS */
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 28px;
+      padding: 12px 16px 18px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .header::before {
+      content:"";
+      position:absolute;
+      width:190%;
+      height:180%;
+      top:-70%;
+      left:-40%;
+      border-radius:50%;
+      background:radial-gradient(circle at top,rgba(255,255,255,0.18),transparent 60%);
+    }
+
+    .header-row {
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      z-index:2;
+    }
+
+    .back-btn {
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.5);
+      backdrop-filter:blur(8px);
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .header-title {
+      font-size:19px;
+      font-weight:600;
+    }
+
+    /* CARD */
+    .card {
+      margin-top: 12px;
+      background:#fff;
+      border-radius:var(--radius-lg);
+      padding:16px 16px 20px;
+      box-shadow:0 12px 30px rgba(15,23,42,0.12);
+    }
+
+    .section { margin-bottom:16px; }
+
+    .section-label {
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+      color:var(--text-main);
+    }
+
+    .hint {
+      font-size:12px;
+      color:var(--text-soft);
+    }
+
+    /* TARJETAS DE RETIRO */
+    .rx-card {
+      border-radius:18px;
+      border:1px solid var(--border-soft);
+      background:#f9fafb;
+      padding:12px 14px;
+      margin-bottom:12px;
+    }
+
+    .rx-header {
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:4px;
+    }
+
+    .rx-name {
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .rx-dose {
+      font-size:12px;
+      padding:3px 8px;
+      border-radius:var(--radius-pill);
+      background:var(--blue-soft);
+      color:var(--blue-dark);
+      white-space:nowrap;
+    }
+
+    .rx-meta {
+      font-size:12px;
+      color:var(--text-soft);
+      margin-bottom:6px;
+    }
+
+    .chip-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+
+    .chip {
+      font-size:11px;
+      padding:3px 7px;
+      border-radius:var(--radius-pill);
+      background:#e5e7eb;
+    }
+
+    .chip-blue {
+      background:var(--blue-soft);
+      color:var(--blue-dark);
+    }
+
+    .chip-red {
+      background:#fee2e2;
+      color:#b91c1c;
+    }
+
+    .chip-green {
+      background:#dcfce7;
+      color:#15803d;
+    }
+
+    .mini-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
+    }
+
+    .mini-btn {
+      border-radius:var(--radius-pill);
+      border:1px solid var(--border-soft);
+      padding:5px 10px;
+      font-size:12px;
+      background:#fff;
+      cursor:pointer;
+    }
+
+    .mini-btn.primary {
+      color:#1d4ed8;
+      border-color:#2563eb;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-row">
+      <div class="back-btn" onclick="history.back()">‹</div>
+      <div class="header-title">Retiro de Medicamentos</div>
+    </div>
+  </header>
+
+  <main class="card">
+
+    <section class="section">
+      <div class="section-label">Disponibles para retirar</div>
+      <div class="hint">
+        Medicación electrónica aprobada y habilitada para retiro en farmacias adheridas.
+      </div>
+    </section>
+
+    <section>
+
+      <!-- METFORMINA -->
+      <article class="rx-card">
+        <div class="rx-header">
+          <div class="rx-name">Metformina</div>
+          <div class="rx-dose">850 mg</div>
+        </div>
+
+        <div class="rx-meta">
+          Receta crónica · Aprobada por obra social · Disponible: 30 comprimidos  
+          Retirado: 0 · Vence: 12/04/2025
+        </div>
+
+        <div class="chip-row">
+          <span class="chip chip-blue">Diabetes tipo 2</span>
+          <span class="chip chip-green">Habilitado</span>
+        </div>
+
+        <div class="mini-actions">
+          <button class="mini-btn primary">Generar código de retiro</button>
+          <button class="mini-btn">Ver receta</button>
+        </div>
+      </article>
+
+      <!-- LOSARTAN -->
+      <article class="rx-card">
+        <div class="rx-header">
+          <div class="rx-name">Losartán</div>
+          <div class="rx-dose">50 mg</div>
+        </div>
+
+        <div class="rx-meta">
+          Receta crónica · Aprobada automáticamente  
+          Disponible: 30 comprimidos · Retirado: 15 · Vence: 10/05/2025
+        </div>
+
+        <div class="chip-row">
+          <span class="chip chip-blue">Hipertensión arterial</span>
+          <span class="chip chip-green">Parcialmente retirado</span>
+        </div>
+
+        <div class="mini-actions">
+          <button class="mini-btn primary">Retirar restantes</button>
+          <button class="mini-btn">Ver receta</button>
+        </div>
+      </article>
+
+      <!-- SERTRALINA (DATO SENSIBLE) -->
+      <article class="rx-card">
+        <div class="rx-header">
+          <div class="rx-name">Sertralina</div>
+          <div class="rx-dose">50 mg</div>
+        </div>
+
+        <div class="rx-meta">
+          Tratamiento psiquiátrico · Requiere presentación de DNI  
+          Disponible: 30 comprimidos · Vence: 18/04/2025
+        </div>
+
+        <div class="chip-row">
+          <span class="chip chip-red">Dato sensible</span>
+          <span class="chip">Salud mental</span>
+        </div>
+
+        <div class="mini-actions">
+          <button class="mini-btn primary">Generar código sensible</button>
+          <button class="mini-btn">Configurar privacidad</button>
+        </div>
+      </article>
+
+      <!-- AMOXI YA RETIRADA -->
+      <article class="rx-card">
+        <div class="rx-header">
+          <div class="rx-name">Amoxicilina / Clavulánico</div>
+          <div class="rx-dose">875/125 mg</div>
+        </div>
+
+        <div class="rx-meta">
+          Tratamiento corto · Ya retirado completamente  
+          Retiro finalizado el: 10/01/2024
+        </div>
+
+        <div class="chip-row">
+          <span class="chip">Historial</span>
+        </div>
+
+        <div class="mini-actions">
+          <button class="mini-btn">Ver receta</button>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+</div>
+</body>
+</html>

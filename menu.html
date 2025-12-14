@@ -228,15 +228,24 @@
     }
 
 
-.nav-plus {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  line-height: 1;          /* ← CLAVE */
-  font-size: 26px;         /* ajustá a gusto */
-  font-weight: 600;        /* opcional */
-}
+    .nav-plus {
+      position: absolute;
+      left: 50%;
+      top: -18px;
+      transform: translateX(-50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      background: var(--blue-main);
+      color: #fff;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.55);
+      cursor: pointer;
+    }
   </style>
 </head>
 

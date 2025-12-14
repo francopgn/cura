@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recordatorios - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <style>
+    :root {
+      --blue-dark: #0d3662;
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --bg-light: #f4f6fb;
+      --text-main: #0f172a;
+      --text-soft: #6b7280;
+      --border-soft: #e5e7eb;
+      --radius-lg: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 45%, #f4f6fb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      padding: 14px 14px 24px;
+    }
+
+    /* HEADER iOS */
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
+      color: #fff;
+      border-radius: 28px;
+      padding: 12px 16px 18px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .header::before {
+      content:"";
+      position:absolute;
+      width:190%;
+      height:180%;
+      top:-70%;
+      left:-40%;
+      border-radius:50%;
+      background:radial-gradient(circle at top,rgba(255,255,255,0.18),transparent 60%);
+      opacity: 0.95;
+    }
+
+    .header-row {
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      z-index:2;
+    }
+
+    .back-btn {
+      width:32px;
+      height:32px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,0.5);
+      backdrop-filter:blur(8px);
+      cursor:pointer;
+      font-size:18px;
+      user-select: none;
+    }
+
+    .header-title {
+      font-size:19px;
+      font-weight:600;
+    }
+
+    /* CARD */
+    .card {
+      margin-top: 12px;
+      background:#fff;
+      border-radius:var(--radius-lg);
+      padding:16px 16px 20px;
+      box-shadow:0 12px 30px rgba(15,23,42,0.12);
+    }
+
+    .section { margin-bottom:16px; }
+
+    .section-label {
+      font-size:14px;
+      font-weight:600;
+      margin-bottom:6px;
+      color:var(--text-main);
+    }
+
+    .hint {
+      font-size:12px;
+      color:var(--text-soft);
+      line-height: 1.35;
+    }
+
+    /* Toggle */
+    .toggle-row {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top: 8px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #d1d5db;
+      border-radius: 999px;
+      transition: 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      top: 3px;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+
+    .toggle-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .muted {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+
+    /* Cards de recordatorio */
+    .rem-card {
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      background: #f9fafb;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out, opacity 0.2s;
+    }
+
+    .rem-head {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .rem-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .dose-pill {
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: var(--blue-soft);
+      color: var(--blue-dark);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .rem-meta {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .chip-row {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 3px 7px;
+      border-radius: var(--radius-pill);
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .chip-blue { background: var(--blue-soft); color: var(--blue-dark); }
+    .chip-green { background: #dcfce7; color: #15803d; }
+    .chip-amber { background: #ffedd5; color: #9a3412; }
+
+    .mini-actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mini-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-soft);
+      padding: 7px 12px;
+      font-size: 12px;
+      background: #fff;
+      cursor: pointer;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    }
+
+    .mini-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+    }
+
+    .mini-btn.primary {
+      color: #1d4ed8;
+      border-color: #2563eb;
+      background: #ffffff;
+    }
+
+    .mini-btn.success {
+      border-color: #16a34a;
+      color: #15803d;
+      background: #ffffff;
+    }
+
+    /* Estado OFF */
+    .disabled-ui {
+      opacity: 0.55;
+      filter: grayscale(0.15);
+      pointer-events: none;
+    }
+
+    /* Aviso info */
+    .info-box {
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      background: #eef4ff;
+      padding: 12px 14px;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      margin-top: 10px;
+    }
+
+    .info-ic {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #b9cdf7;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink: 0;
+      color: var(--blue-dark);
+      font-weight: 700;
+      background: #f7fbff;
+    }
+
+    /* Botón principal */
+    .button-primary {
+      margin-top: 10px;
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.4);
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    }
+
+    .button-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 12px rgba(37,99,235,0.35);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="header">
+      <div class="header-row">
+        <div class="back-btn" onclick="history.back()">‹</div>
+        <div class="header-title">Recordatorios</div>
+      </div>
+    </header>
+
+    <main class="card">
+      <section class="section">
+        <div class="section-label">Configuración</div>
+        <div class="hint">
+          Los recordatorios se generan automáticamente cuando tu médico prescribe un medicamento (desde <strong>Prescripciones</strong>),
+          usando el horario y la frecuencia indicados.
+        </div>
+
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="toggleRem" checked />
+            <span class="slider"></span>
+          </label>
+          <div>
+            <div class="toggle-title">Activar recordatorios</div>
+            <div class="muted">Podés desactivarlos en cualquier momento. No afecta tus prescripciones.</div>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-ic">i</div>
+          <div class="hint" style="margin:0;">
+            Si desactivás recordatorios, no vas a recibir avisos en el celular. Los horarios quedan guardados para cuando vuelvas a activarlos.
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Próximos recordatorios</div>
+        <div class="hint">Basados en tus prescripciones vigentes.</div>
+      </section>
+
+      <section id="remList">
+        <!-- Se renderiza por JS -->
+      </section>
+
+      <button class="button-primary" type="button" onclick="window.location.href='prescripciones.html'">
+        Ver prescripciones
+      </button>
+    </main>
+  </div>
+
+  <script>
+    // DEMO: esto simula "prescripciones" (después lo conectás a tu fuente real)
+    // horario puede ser "08:00" o múltiples ["08:00","20:00"], frecuencia "cada 12 hs", etc.
+    const prescripciones = [
+      {
+        nombre: "Metformina",
+        dosis: "850 mg",
+        indicacion: "1 comprimido con el desayuno y 1 comprimido con la cena.",
+        horarios: ["08:00", "20:00"],
+        frecuencia: "2 veces por día",
+        origen: "Receta crónica",
+        estado: "Activo"
+      },
+      {
+        nombre: "Losartán",
+        dosis: "50 mg",
+        indicacion: "1 comprimido por la mañana.",
+        horarios: ["09:00"],
+        frecuencia: "1 vez por día",
+        origen: "Receta crónica",
+        estado: "Activo"
+      },
+      {
+        nombre: "Ibuprofeno",
+        dosis: "400 mg",
+        indicacion: "1 comprimido cada 8 hs por 5 días (si no hay intolerancia).",
+        horarios: ["10:00", "18:00", "02:00"],
+        frecuencia: "Cada 8 hs",
+        origen: "Tratamiento corto",
+        estado: "Activo"
+      }
+    ];
+
+    function proximoAviso(horarios) {
+      // Devuelve texto "Hoy 20:00" / "Mañana 08:00" (simple, sin librerías)
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const candidates = horarios.map(h => {
+        const [hh, mm] = h.split(":").map(Number);
+        return new Date(today.getFullYear(), today.getMonth(), today.getDate(), hh, mm, 0, 0);
+      }).sort((a,b)=>a-b);
+
+      let next = candidates.find(d => d > now);
+      let labelDay = "Hoy";
+
+      if (!next) {
+        // mañana
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const [hh, mm] = horarios[0].split(":").map(Number);
+        next = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), hh, mm, 0, 0);
+        labelDay = "Mañana";
+      }
+
+      const hh = String(next.getHours()).padStart(2,"0");
+      const mm = String(next.getMinutes()).padStart(2,"0");
+      return `${labelDay} ${hh}:${mm}`;
+    }
+
+    function render() {
+      const container = document.getElementById("remList");
+      container.innerHTML = "";
+
+      prescripciones.forEach((p, idx) => {
+        const card = document.createElement("article");
+        card.className = "rem-card";
+        card.innerHTML = `
+          <div class="rem-head">
+            <div>
+              <div class="rem-name">${p.nombre}</div>
+            </div>
+            <div class="dose-pill">${p.dosis}</div>
+          </div>
+
+          <div class="rem-meta">
+            ${p.indicacion}<br/>
+            <strong>Horarios:</strong> ${p.horarios.join(" · ")} · <strong>${p.frecuencia}</strong>
+          </div>
+
+          <div class="chip-row">
+            <span class="chip chip-blue">${p.origen}</span>
+            <span class="chip chip-green">${p.estado}</span>
+            <span class="chip chip-amber">Próximo: ${proximoAviso(p.horarios)}</span>
+          </div>
+
+          <div class="mini-actions">
+            <button class="mini-btn primary" type="button" data-action="snooze" data-idx="${idx}">Posponer 10 min</button>
+            <button class="mini-btn success" type="button" data-action="taken" data-idx="${idx}">Marcar como tomado</button>
+            <button class="mini-btn" type="button" data-action="edit" data-idx="${idx}">Editar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Toggle general
+    const toggle = document.getElementById("toggleRem");
+    toggle.addEventListener("change", () => {
+      const list = document.getElementById("remList");
+      if (toggle.checked) list.classList.remove("disabled-ui");
+      else list.classList.add("disabled-ui");
+    });
+
+    // Acciones demo
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-action]");
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+      const idx = Number(btn.dataset.idx);
+      const med = prescripciones[idx]?.nombre || "Medicamento";
+
+      if (action === "snooze") alert(`⏳ ${med}: recordatorio pospuesto 10 minutos (demo).`);
+      if (action === "taken") alert(`✅ ${med}: marcado como tomado (demo).`);
+      if (action === "edit") alert(`✏️ ${med}: editar horario/frecuencia (demo).`);
+    });
+
+    render();
+  </script>
+</body>
+</html>

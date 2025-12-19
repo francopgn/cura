@@ -102,9 +102,11 @@
         <h1 class="text-3xl font-bold text-white mb-8 text-center">Beneficios para Pacientes y Profesionales</h1>
         
         <div class="w-full flex justify-center">
-            <a href="/Informacion/recursos.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
+            <div class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-8 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg min-h-[450px] flex flex-col justify-between relative overflow-hidden">
                 
-             <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-cura-accent/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink mb-8">
 El Sistema C.U.R.A. pone a disposición una biblioteca completa de documentos oficiales, materiales técnicos y recursos abiertos para que profesionales, instituciones, desarrolladores, periodistas, estudiantes y ciudadanos puedan comprender, auditar y utilizar correctamente la plataforma.
 
 En esta sección se pueden descargar la Ley C.U.R.A. completa, sus versiones consolidadas, los documentos técnicos de interoperabilidad, los estándares vigentes, protocolos de seguridad, manuales para profesionales de la salud, guías de uso de la credencial digital, informes de auditoría, capacitaciones, presentaciones oficiales y materiales de difusión.
@@ -116,11 +118,28 @@ Los ciudadanos pueden acceder a guías simples sobre sus derechos, privacidad, p
 También se incluyen recursos institucionales como logos oficiales, plantillas, infografías, kits de prensa, presentaciones, esquemas explicativos, versiones imprimibles de documentos, módulos de capacitación, simuladores, instructivos de recetas electrónicas y manuales de carga para laboratorios, farmacias, hospitales y consultorios.
 
 Todos estos materiales están en constante actualización y se publican con transparencia en formatos abiertos, garantizando acceso público, auditoría ciudadana e integración técnica de todo el ecosistema sanitario.
-            </p>
-            </a>
+                </p>
+
+                <div class="mt-4 flex justify-center animate-fade-in-up">
+                    <a href="documentos/Resumen_Ejecutivo.pdf" 
+                       download="Resumen_Ejecutivo_Ley_CURA.pdf"
+                       class="group relative inline-flex items-center gap-3 px-8 py-4 bg-white hover:bg-gray-100 text-cura-primary font-bold text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/50 hover:-translate-y-1 ring-2 ring-transparent hover:ring-cura-accent/50">
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        
+                        <span>Descargar Resumen Ejecutivo (PDF)</span>
+                        
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cura-primary opacity-50 group-hover:opacity-100 group-hover:translate-y-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </a>
+                </div>
+
+            </div>
         </div>
     </section>
-
 <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
   <div class="max-w-2xl">
     <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>

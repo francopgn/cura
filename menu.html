@@ -6,33 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      /* Colores exactos de la imagen target */
-      --bg-gradient-top: #dbeafe; /* Azul muy claro superior */
-      --bg-gradient-bottom: #f3f4f6; /* Gris claro inferior */
-      
-      --blue-header: #3b6eb3; /* Color de la barra flotante superior */
-      --blue-card-dark: #004e92; /* Azul oscuro de la credencial */
-      --blue-card-mid: #00579f; /* Azul medio para barras internas de la credencial */
-      
-      --text-dark: #111827; /* Texto casi negro */
-      --text-gray: #6b7280; /* Texto gris para subtítulos */
+      /* PALETA DE COLORES (Estética Nueva) */
+      --bg-gradient-top: #dbeafe; 
+      --bg-gradient-bottom: #f3f4f6; 
+      --blue-header: #3b6eb3; 
+      --blue-card-dark: #004e92; 
+      --blue-card-mid: #00579f; 
+      --text-dark: #111827; 
+      --text-gray: #6b7280; 
       --text-white: #ffffff;
-      
       --card-white-bg: #ffffff;
-      --icon-dark-blue: #1e3a8a; /* Color de los iconos de la grilla */
       
-      --nav-pill-bg: #f3f4f6; /* Fondo de la barra de navegación inferior */
-      --nav-plus-blue: #3b82f6; /* Azul brillante del botón + */
-      --nav-icon-gray: #9ca3af; /* Iconos inactivos del nav */
+      --nav-pill-bg: #f3f4f6; 
+      --nav-plus-blue: #3b82f6; 
+      --nav-icon-gray: #9ca3af; 
 
-      --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      /* SOMBRAS (Estética Nueva) */
       --shadow-floating: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-plus-btn: 0 10px 20px rgba(59, 130, 246, 0.5);
+      --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
       margin: 0;
       padding: 0;
@@ -48,21 +44,21 @@
 
     .app-container {
       width: 100%;
-      max-width: 400px; /* Ancho un poco más estrecho para coincidir con la imagen */
-      padding: 0 20px;
+      max-width: 400px;
+      padding: 0 20px 100px; /* Padding inferior extra para el nav flotante */
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
     }
 
-    /* --- 1. TOP FLOATING BAR --- */
+    /* --- 1. HEADER FLOTANTE (Estética Nueva) --- */
     .top-floating-bar {
         width: 100%;
         background-color: var(--blue-header);
         color: var(--text-white);
         padding: 12px 20px;
-        border-radius: 999px; /* Forma de pastilla completa */
+        border-radius: 999px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -76,13 +72,14 @@
         font-weight: 600;
     }
 
-    .notif-bell-container {
+    .notif-bell {
         position: relative;
         width: 24px;
         height: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     .notif-dot {
@@ -91,29 +88,29 @@
         right: -2px;
         width: 10px;
         height: 10px;
-        background-color: #ef4444; /* Rojo alerta */
+        background-color: #ef4444;
         border-radius: 50%;
         border: 2px solid var(--blue-header);
     }
 
-
-    /* --- 2. COMPLEX CREDENCIAL CARD --- */
+    /* --- 2. TARJETA CREDENCIAL (La nueva tarjeta grande) --- */
+    /* Ahora es un <a> para mantener el enlace a credencial.html */
     .credencial-card-container {
+        display: block; /* Para que funcione como bloque siendo <a> */
+        text-decoration: none; /* Quitar subrayado */
         width: 100%;
-        /* Fondo azul oscuro sólido */
         background-color: var(--blue-card-dark);
-        /* IMPORTANTE: Aquí debes poner la ruta real a tu imagen del escudo */
-        /* background-image: url('fondo-escudo-argentino.png'); */
-        background-size: cover;
-        background-position: center;
-        background-blend-mode: soft-light; /* Mezcla el escudo con el fondo azul */
-        
         border-radius: 24px;
-        overflow: hidden; /* Para que las barras internas respeten el borde redondeado */
+        overflow: hidden;
         box-shadow: var(--shadow-floating);
         color: var(--text-white);
         margin-bottom: 30px;
         position: relative;
+        transition: transform 0.12s ease-out; /* Tu animación original */
+    }
+
+    .credencial-card-container:active {
+        transform: scale(0.98); /* Efecto de toque sutil */
     }
 
     .cred-header-strip {
@@ -126,7 +123,6 @@
         font-weight: 600;
         letter-spacing: 0.5px;
     }
-    .cred-header-left { display: flex; align-items: center; gap: 8px; }
 
     .cred-body {
         padding: 20px 16px 24px;
@@ -135,19 +131,50 @@
         align-items: flex-start;
     }
 
-    .cred-user-info {
-        flex: 1;
-    }
+    .cred-user-info { flex: 1; }
+    
     .cred-name {
         font-size: 22px;
         font-weight: 700;
         margin-bottom: 4px;
+        color: white;
     }
+    
     .cred-id {
         font-size: 14px;
         opacity: 0.9;
         margin-bottom: 20px;
         letter-spacing: 0.5px;
+        color: rgba(255,255,255,0.8);
+    }
+
+    .cred-qr-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .qr-placeholder {
+        background: white;
+        padding: 4px;
+        border-radius: 8px;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .qr-placeholder img { width: 100%; height: 100%; }
+
+    .btn-fake-ver {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 500;
     }
 
     .cred-footer-strip {
@@ -159,40 +186,10 @@
         gap: 8px;
         font-size: 10px;
         opacity: 0.8;
-    }
-    .cred-footer-strip img { width: 24px; height: auto; }
-
-    .cred-qr-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-    .qr-code-container {
-        background: white;
-        padding: 4px;
-        border-radius: 8px;
-    }
-    .qr-code-container img {
-        display: block;
-        width: 70px; /* Tamaño fijo para el QR */
-        height: 70px;
-    }
-
-    .btn-ver-credencial {
-        background-color: rgba(255, 255, 255, 0.2); /* Blanco translúcido */
-        border: 1px solid rgba(255, 255, 255, 0.4);
         color: white;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 500;
-        cursor: pointer;
-        text-decoration: none;
     }
 
-
-    /* --- 3. GREETING SECTION --- */
+    /* --- 3. SALUDO --- */
     .greeting-section {
         width: 100%;
         text-align: left;
@@ -203,68 +200,67 @@
         font-size: 24px;
         font-weight: 800;
         color: var(--text-dark);
-        display: flex;
-        align-items: center;
-        gap: 8px;
     }
-    .greeting-subtitle {
+    .section-subtitle {
         font-size: 16px;
         color: var(--text-gray);
         margin-top: 4px;
     }
 
-
-    /* --- 4. 2x2 GRID MENU --- */
+    /* --- 4. GRID DE MENÚ (Restaurando tus animaciones) --- */
     .menu-grid {
       width: 100%;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
-      margin-bottom: 100px; /* Espacio inferior grande para que no tape el nav */
     }
 
     .menu-card {
       background: var(--card-white-bg);
       border-radius: 20px;
-      padding: 25px 15px;
+      padding: 20px 10px;
       box-shadow: var(--shadow-soft);
       text-decoration: none;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: transform 0.1s;
+      
+      /* TUS ANIMACIONES ORIGINALES RESTAURADAS */
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
     }
-    .menu-card:active { transform: scale(0.98); }
 
-    /* Estilo de icono de contorno grueso */
-    .menu-icon-container {
-      margin-bottom: 15px;
-      /* Aquí usarías tus SVGs. Estoy usando un estilo genérico para simularlo */
+    /* TU EFECTO CLICK ORIGINAL RESTAURADO */
+    .menu-card:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+    }
+
+    .menu-icon {
       width: 50px; 
       height: 50px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    
-    .menu-icon-svg {
-        stroke: var(--icon-dark-blue); /* Color del borde del icono */
-        stroke-width: 2.5px;
-        fill: none;
-        width: 100%;
-        height: 100%;
+
+    .menu-icon img {
+        max-width: 100%;
+        max-height: 100%;
+        /* Filtro opcional para que tus iconos negros se vean azules como el diseño nuevo.
+           Si prefieres tus colores originales, borra la linea de "filter". */
+        filter: invert(19%) sepia(40%) saturate(3475%) hue-rotate(208deg) brightness(93%) contrast(98%);
     }
 
     .menu-label {
       font-size: 14px;
       font-weight: 700;
-      color: var(--icon-dark-blue); /* Texto del mismo color que el icono */
+      color: #1e3a8a; /* Azul oscuro */
       text-align: center;
     }
 
-
-    /* --- 5. BOTTOM FLOATING NAV PILL --- */
+    /* --- 5. NAV INFERIOR FLOTANTE --- */
     .bottom-nav-container {
         position: fixed;
         bottom: 30px;
@@ -283,7 +279,7 @@
         justify-content: space-between;
         align-items: center;
         box-shadow: var(--shadow-floating);
-        position: relative; /* Necesario para posicionar el botón + */
+        position: relative;
     }
 
     .nav-btn {
@@ -291,18 +287,12 @@
         border: none;
         padding: 10px;
         cursor: pointer;
+        opacity: 0.5; /* Inactivo */
     }
     
-    .nav-icon-svg {
-        width: 28px;
-        height: 28px;
-        fill: var(--nav-icon-gray); /* Color gris para inactivos */
-    }
-
-    /* Botón + Flotante Central */
     .nav-plus-btn {
         position: absolute;
-        top: -25px; /* Flota por encima de la pastilla */
+        top: -25px;
         left: 50%;
         transform: translateX(-50%);
         width: 60px;
@@ -313,15 +303,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: var(--shadow-plus-btn);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.5);
         color: white;
+        font-size: 30px;
         cursor: pointer;
+        transition: transform 0.12s ease-out;
     }
     
-    .plus-icon-svg {
-        width: 32px;
-        height: 32px;
-        fill: white;
+    .nav-plus-btn:active {
+        transform: translateX(-50%) scale(0.9);
     }
 
   </style>
@@ -331,127 +321,99 @@
   <div class="app-container">
 
     <div class="top-floating-bar">
-      <div class="top-bar-title">Credencial Digital</div>
-      <div class="notif-bell-container">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-        <div class="notif-dot"></div>
+      <div class="top-bar-title">Salud</div>
+      <div class="notif-bell">
+        <span>🔔</span> <div class="notif-dot"></div>
       </div>
     </div>
 
-    <div class="credencial-card-container">
+    <a href="credencial.html" class="credencial-card-container">
         <div class="cred-header-strip">
-            <div class="cred-header-left">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2L15 8L21 9L16.5 13.5L18 19.5L12 16.5L6 19.5L7.5 13.5L3 9L9 8L12 2Z" stroke="white" stroke-width="2"/></svg>
-                <span>INFORMACIÓN MÉDICA</span>
-            </div>
-            <div>0+</div> </div>
+            <span>INFORMACIÓN MÉDICA</span>
+            <span>0+</span>
+        </div>
 
         <div class="cred-body">
             <div class="cred-user-info">
                 <div class="cred-name">Hola, Franco</div>
-                <div class="cred-id">CURA-ID-02-45678901-09</div>
+                <div class="cred-id">CURA-ID-01-41316202-01</div>
             </div>
             
             <div class="cred-qr-section">
-                <div class="qr-code-container">
-                    <img src="qr-code.png" alt="QR Code" /> 
+                <div class="qr-placeholder">
+                    <img src="qr-code.png" alt="QR" onerror="this.style.display='none'" />
                 </div>
-                 <a href="#" class="btn-ver-credencial">Ver credencial</a>
+                <div class="btn-fake-ver">Ver credencial</div>
             </div>
         </div>
         
         <div class="cred-footer-strip">
-             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><circle cx="12" cy="12" r="10"/></svg>
-            <span>Ministerio de Salud<br>República Argentina</span>
+            <span>Ministerio de Salud - República Argentina</span>
         </div>
-    </div>
-
+    </a>
 
     <div class="greeting-section">
-      <div class="greeting-title">
-        Hola, Franco 
-        <span>👋</span>
-      </div>
+      <div class="greeting-title">Hola, Franco 👋</div>
       <div class="section-subtitle">¿Qué necesitas hoy?</div>
     </div>
 
-
     <div class="menu-grid">
 
-      <a href="#" class="menu-card">
-        <div class="menu-icon-container">
-          <svg class="menu-icon-svg" viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="16" rx="2" />
-            <circle cx="9" cy="10" r="2" />
-            <line x1="15" y1="8" x2="17" y2="8" />
-            <line x1="15" y1="12" x2="17" y2="12" />
-            <line x1="7" y1="16" x2="17" y2="16" />
-          </svg>
-        </div>
-        <div class="menu-label">Credencial</div>
-      </a>
-
-      <a href="#" class="menu-card">
-        <div class="menu-icon-container">
-           <svg class="menu-icon-svg" viewBox="0 0 24 24" style="transform: rotate(45deg)">
-            <rect x="6" y="4" width="12" height="16" rx="6" />
-            <line x1="6" y1="12" x2="18" y2="12" />
-          </svg>
+      <a href="prescripciones.html" class="menu-card">
+        <div class="menu-icon">
+          <img src="icon-prescripciones.png" alt="Prescripciones" />
         </div>
         <div class="menu-label">Prescripciones</div>
       </a>
 
-      <a href="#" class="menu-card">
-        <div class="menu-icon-container">
-          <svg class="menu-icon-svg" viewBox="0 0 24 24">
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-            <path d="M12 11h.01"></path>
-            <path d="M12 17h.01"></path>
-            <path d="M9 14h6"></path>
-          </svg>
+      <a href="retiro-medicamentos.html" class="menu-card">
+        <div class="menu-icon">
+          <img src="icon-retiro-medicamentos.png" alt="Retiro" />
+        </div>
+        <div class="menu-label">Retiro de Medicamentos</div>
+      </a>
+
+      <a href="solicitar-turno.html" class="menu-card">
+        <div class="menu-icon">
+          <img src="icon-turnos.png" alt="Turnos" />
+        </div>
+        <div class="menu-label">Turnos</div>
+      </a>
+
+      <a href="historia-salud.html" class="menu-card">
+        <div class="menu-icon">
+          <img src="icon-historia-clinica.png" alt="Historia" />
         </div>
         <div class="menu-label">Historia Clínica</div>
       </a>
 
-      <a href="#" class="menu-card">
-        <div class="menu-icon-container">
-           <svg class="menu-icon-svg" viewBox="0 0 24 24">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            <rect x="14" y="13" width="8" height="8" rx="1" style="fill:var(--card-white-bg); stroke-width:2px;"/>
-             <circle cx="18" cy="17" r="2" style="fill:none; stroke-width:1.5px;"/>
-          </svg>
+      <a href="recordatorios.html" class="menu-card">
+        <div class="menu-icon">
+          <img src="icon-recordatorios.png" alt="Recordatorios" />
         </div>
         <div class="menu-label">Recordatorios</div>
+      </a>
+      
+      <a href="cartilla.html" class="menu-card">
+        <div class="menu-icon">
+          <img src="icon-cartilla.png" alt="Cartilla" onerror="this.src='https://via.placeholder.com/50'"/>
+        </div>
+        <div class="menu-label">Cartilla Médica</div>
       </a>
 
     </div>
 
     <div class="bottom-nav-container">
       <div class="bottom-nav-pill">
+        <button class="nav-btn">
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        </button>
+        
+        <button class="nav-plus-btn">+</button>
         
         <button class="nav-btn">
-          <svg class="nav-icon-svg" viewBox="0 0 24 24">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.7l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.7-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.7.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.7 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.7.3 1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.7-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.7 1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"></path></svg>
         </button>
-
-        <button class="nav-plus-btn">
-           <svg class="plus-icon-svg" viewBox="0 0 24 24">
-            <line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="3" stroke-linecap="round"/>
-            <line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="3" stroke-linecap="round"/>
-          </svg>
-        </button>
-
-        <button class="nav-btn">
-           <svg class="nav-icon-svg" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.6 1.6 0 0 0 .3 1.7l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.7-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.7.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.7 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.7.3 1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.7-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.7 1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"></path>
-          </svg>
-        </button>
-
       </div>
     </div>
 

@@ -2,50 +2,27 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Salud</title>
+  <title>Salud - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      /* --- COLORES --- */
       --main-bg: #f0f4f8; 
       --blue-header: #005fa3; 
-      
-      /* Credencial Celeste */
       --cred-bg-start: #a6ccee;
       --cred-bg-end: #cce5ff;
-      --btn-ver-bg: #e3f0ff;
-      --btn-ver-text: #005fa3;
-      
-      /* Textos Generales */
       --text-dark: #0d2b52;
       --text-gray: #64748b;
-      
-      /* --- NUEVOS ESTILOS PARA EL MENÚ DE LA FOTO --- */
       --card-white: #ffffff;
-      /* Nuevos colores para el degradado del círculo */
       --icon-circle-start: #dbeafe;
       --icon-circle-end: #bfdbfe;
-      /* Nuevo color de texto del menú (azul oscuro sólido) */
-      --menu-text-dark-blue: #0d2b52; 
-      
-      /* Nav Inferior */
-      --nav-bg: #ffffff;
-      --center-btn-bg: #0066cc;
-
-      /* Sombras */
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --shadow-float: 0 8px 20px rgba(0, 95, 163, 0.2);
-      --shadow-nav: 0 -4px 20px rgba(0, 0, 0, 0.05);
-      /* Sombra más suave para las tarjetas nuevas */
-      --shadow-card-new: 0 6px 15px rgba(0, 0, 0, 0.06);
+      --menu-text-blue: #0d2b52; 
     }
 
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin: 0;
       padding: 0;
-      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -58,15 +35,13 @@
     .app-shell {
       width: 100%;
       max-width: 414px;
-      position: relative;
       background-color: var(--main-bg);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 100px; 
+      padding-bottom: 110px; 
     }
 
-    /* HEADER */
+    /* Header Estilo Pastilla */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -77,349 +52,184 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      box-shadow: var(--shadow-float);
-      position: relative;
-      z-index: 10;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
-    .header-title {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+
+    /* Saludo */
+    .main-content { padding: 10px 20px; flex: 1; }
+    .greeting-text { font-size: 28px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+    .greeting-sub { font-size: 16px; color: var(--text-gray); margin-bottom: 24px; }
+
+    /* Credencial Digital */
+    .credencial-card {
+      background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 30px;
+      text-decoration: none;
+      display: block;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    .header-bell {
-      position: relative;
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .cred-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
+    .cred-layout { display: flex; justify-content: space-between; align-items: center; }
+    .cred-user { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 50px; height: 50px; background: #d1e3f3; border-radius: 50%; }
+    .user-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+    .user-id { font-size: 12px; color: var(--text-gray); }
     
-    .header-bell svg {
-      fill: #ffffff;
-      width: 22px;
-      height: 22px;
-    }
+    .qr-side { text-align: center; }
+    .qr-box { background: white; padding: 4px; border-radius: 8px; width: 60px; height: 60px; margin-bottom: 8px; }
+    .qr-box img { width: 100%; height: 100%; }
+    .btn-ver { background: #e3f0ff; color: #005fa3; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; border: none; }
 
-    .notif-dot {
-      position: absolute;
-      top: 2px;
-      right: 3px;
-      width: 8px;
-      height: 8px;
-      background-color: #ff3b30;
-      border-radius: 50%;
-    }
-
-    /* CONTENIDO MAIN */
-    .main-content {
-      padding: 10px 20px 24px;
-      flex: 1;
-    }
-
-    .greeting-container {
-      margin-bottom: 24px;
-      padding-left: 5px;
-    }
-    .greeting-text {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .greeting-sub {
-      font-size: 16px;
-      color: var(--text-gray);
-      margin-top: 4px;
-    }
-
-    /* CREDENCIAL */
-    .credencial-card-light {
-        display: block;
-        text-decoration: none;
-        width: 100%;
-        background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
-        border-radius: 24px;
-        padding: 24px 20px;
-        box-shadow: var(--shadow-soft);
-        margin-bottom: 30px;
-        position: relative;
-        transition: transform 0.1s ease-out;
-    }
-
-    .credencial-card-light:active {
-        transform: scale(0.98);
-    }
-
-    .cred-title-light {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: 20px;
-    }
-
-    .cred-layout {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-    .cred-left-info {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .avatar-placeholder {
-        width: 60px;
-        height: 60px;
-        background-color: #d1e3f3;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-    .avatar-placeholder svg { width: 40px; height: 40px; fill: #a0b4c8; }
-
-    .user-data-light h3 {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: 4px;
-        margin-top: 0;
-    }
-    .user-data-light p {
-        font-size: 14px;
-        color: var(--text-gray);
-        margin: 0;
-    }
-
-    .cred-right-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .qr-box-light {
-        background: rgba(255,255,255,0.6);
-        padding: 6px;
-        border-radius: 12px;
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .qr-box-light img { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: contain; 
-        display: block;
-    }
-
-    .btn-ver-light {
-        background-color: var(--btn-ver-bg);
-        color: var(--btn-ver-text);
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        border: none;
-    }
-
-
-    /* --- GRID MENÚ (ACTUALIZADO PARA IGUALAR LA FOTO) --- */
+    /* --- GRID CORREGIDO --- */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px; /* Espacio entre tarjetas */
+      grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+      gap: 12px; /* Espacio reducido para evitar el desfase */
     }
 
     .menu-item {
       background: var(--card-white);
-      /* Bordes más redondeados como en la foto */
-      border-radius: 32px; 
-      padding: 24px 10px;
+      border-radius: 24px;
+      padding: 15px 5px; /* Ajustado para que quepa el contenido */
       display: flex;
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      box-shadow: var(--shadow-card-new);
-      transition: transform 0.1s;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
     }
-    .menu-item:active { transform: scale(0.96); }
 
-    /* Círculo mucho más grande y con degradado */
+    /* Círculo ajustado a 80px para que quepan 3 por fila en móviles estándar */
     .icon-circle {
-      width: 110px; 
-      height: 110px;
-      /* Degradado suave celeste */
+      width: 80px; 
+      height: 80px;
       background: linear-gradient(135deg, var(--icon-circle-start), var(--icon-circle-end));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
     
-    /* Icono interno más grande y SIN FILTRO */
     .icon-circle img {
-      width: 50px; 
-      height: 50px;
+      width: 40px; 
+      height: 40px;
       object-fit: contain;
-      /* IMPORTANTE: Se eliminó el filtro. 
-         Debes usar imágenes que ya sean azul oscuro sólido. */
-      filter: none; 
     }
 
-    /* Texto más grande y oscuro */
     .menu-text {
-      font-size: 15px;
-      font-weight: 800; /* Más grueso */
-      color: var(--menu-text-dark-blue);
+      font-size: 11px; /* Tamaño optimizado para 3 columnas */
+      font-weight: 800;
+      color: var(--menu-text-blue);
       text-align: center;
       line-height: 1.2;
-    }
-
-
-    /* NAV INFERIOR */
-    .bottom-bar {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 360px;
-      background: var(--nav-bg);
-      border-radius: 35px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: var(--shadow-nav);
-      z-index: 50;
-    }
-
-    .nav-icon-btn {
-      background: none;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-    }
-    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
-
-    .center-question-btn {
-      width: 64px;
-      height: 64px;
-      background: var(--center-btn-bg);
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
+      height: 2.4em; /* Mantiene la alineación si el texto tiene 2 líneas */
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 600;
-      margin-top: -35px;
-      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
-      cursor: pointer;
     }
 
+    /* Nav Inferior */
+    .bottom-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 370px;
+      background: #ffffff;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .center-btn {
+      width: 60px;
+      height: 60px;
+      background: #0066cc;
+      border-radius: 50%;
+      border: 5px solid var(--main-bg);
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -45px;
+      box-shadow: 0 8px 15px rgba(0, 102, 204, 0.3);
+    }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
-    
     <header class="header-bar">
       <div class="header-title">Salud</div>
-      <div class="header-bell">
-        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-        <div class="notif-dot"></div>
-      </div>
+      <div style="color:white">🔔</div>
     </header>
 
-    <div class="main-content">
-      
-      <div class="greeting-container">
-        <div class="greeting-text">Hola, Franco <span>👋</span></div>
-        <div class="greeting-sub">¿Qué necesitas hoy?</div>
-      </div>
+    <main class="main-content">
+      <h1 class="greeting-text">Hola, Franco 👋</h1>
+      <p class="greeting-sub">¿Qué necesitas hoy?</p>
 
-      <a href="credencial.html" class="credencial-card-light">
-        <div class="cred-title-light">Credencial Digital</div>
-        
+      <a href="#" class="credencial-card">
+        <p class="cred-title">Credencial Digital</p>
         <div class="cred-layout">
-            <div class="cred-left-info">
-                <div class="avatar-placeholder">
-                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </div>
-                <div class="user-data-light">
-                    <h3>Franco Paganini</h3>
-                    <p>CURAID-01-41316202</p>
-                </div>
+          <div class="cred-user">
+            <div class="avatar"></div>
+            <div>
+              <p class="user-name">Franco Paganini</p>
+              <p class="user-id">CURAID-01-41316202</p>
             </div>
-            
-            <div class="cred-right-actions">
-                <div class="qr-box-light">
-                    <img src="qr_menu.png" alt="QR Code">
-                </div>
-                <button class="btn-ver-light">Ver credencial</button>
-            </div>
+          </div>
+          <div class="qr-side">
+            <div class="qr-box"><img src="qr_menu.png" alt="QR"></div>
+            <button class="btn-ver">Ver credencial</button>
+          </div>
         </div>
       </a>
 
       <div class="menu-grid">
-        <a href="prescripciones.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-prescripciones-solido.png" alt="Icon"></div>
+        <a href="#" class="menu-item">
+          <div class="icon-circle"><img src="prescripciones.png" alt="Icon"></div>
           <span class="menu-text">Prescripciones</span>
         </a>
-        <a href="retiro.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-retiro-solido.png" alt="Icon"></div>
-          <span class="menu-text">Retiro de<br>Medicamentos</span>
+        <a href="#" class="menu-item">
+          <div class="icon-circle"><img src="retiro.png" alt="Icon"></div>
+          <span class="menu-text">Retiro de Medicamentos</span>
         </a>
-        <a href="turnos.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-turnos-solido.png" alt="Icon"></div>
+        <a href="#" class="menu-item">
+          <div class="icon-circle"><img src="turnos.png" alt="Icon"></div>
           <span class="menu-text">Turnos</span>
         </a>
-        <a href="historia.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-historia-solido.png" alt="Icon"></div>
-          <span class="menu-text">Historia<br>Clínica</span>
+        <a href="#" class="menu-item">
+          <div class="icon-circle"><img src="historia.png" alt="Icon"></div>
+          <span class="menu-text">Historia Clínica</span>
         </a>
-        <a href="recordatorios.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-recordatorios-solido.png" alt="Icon"></div>
+        <a href="#" class="menu-item">
+          <div class="icon-circle"><img src="recordatorios.png" alt="Icon"></div>
           <span class="menu-text">Recordatorios</span>
         </a>
-        <a href="cartilla.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-cartilla-solido.png" alt="Icon"></div>
+        <a href="#" class="menu-item">
+          <div class="icon-circle"><img src="cartilla.png" alt="Icon"></div>
           <span class="menu-text">Cartilla</span>
         </a>
       </div>
+    </main>
 
-    </div>
-
-    <div class="bottom-bar">
-      <button class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </button>
-      
-      <div class="center-question-btn">?</div>
-      
-      <button class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-      </button>
-    </div>
-
+    <nav class="bottom-bar">
+      <div style="font-size:24px">🏠</div>
+      <div class="center-btn">?</div>
+      <div style="font-size:24px">⚙️</div>
+    </nav>
   </div>
 
 </body>

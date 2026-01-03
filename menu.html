@@ -6,25 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      /* --- COLORES EXACTOS DE LA IMAGEN --- */
-      --main-bg: #f0f4f8; /* Fondo gris azulado muy claro */
-      --blue-header: #005fa3; /* Azul oscuro del header */
+      /* --- COLORES --- */
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       
-      /* Colores de la Credencial Celeste */
+      /* Credencial Celeste */
       --cred-bg-start: #a6ccee;
       --cred-bg-end: #cce5ff;
       --btn-ver-bg: #e3f0ff;
       --btn-ver-text: #005fa3;
       
-      /* Textos */
+      /* Textos Generales */
       --text-dark: #0d2b52;
       --text-gray: #64748b;
-      --text-white: #ffffff;
       
-      /* Tarjetas Menú */
+      /* --- NUEVOS ESTILOS PARA EL MENÚ DE LA FOTO --- */
       --card-white: #ffffff;
-      --icon-bg-blue: #dbeafe; /* Círculo celeste claro detrás de iconos */
-      --menu-text-blue: #004e92;
+      /* Nuevos colores para el degradado del círculo */
+      --icon-circle-start: #dbeafe;
+      --icon-circle-end: #bfdbfe;
+      /* Nuevo color de texto del menú (azul oscuro sólido) */
+      --menu-text-dark-blue: #0d2b52; 
       
       /* Nav Inferior */
       --nav-bg: #ffffff;
@@ -34,6 +36,8 @@
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
       --shadow-float: 0 8px 20px rgba(0, 95, 163, 0.2);
       --shadow-nav: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      /* Sombra más suave para las tarjetas nuevas */
+      --shadow-card-new: 0 6px 15px rgba(0, 0, 0, 0.06);
     }
 
     * {
@@ -59,22 +63,20 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 100px; /* Espacio para el nav inferior */
+      padding-bottom: 100px; 
     }
 
-    /* --- 1. HEADER TIPO PASTILLA FLOTANTE --- */
+    /* HEADER */
     .header-bar {
       background-color: var(--blue-header);
-      width: calc(100% - 40px); /* Margen a los lados */
-      margin: 20px auto 10px;   /* Flotando arriba */
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
       height: 60px;
-      border-radius: 999px;     /* Redondeado completo */
-      
+      border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      
       box-shadow: var(--shadow-float);
       position: relative;
       z-index: 10;
@@ -113,13 +115,12 @@
       border-radius: 50%;
     }
 
-    /* --- CONTENIDO --- */
+    /* CONTENIDO MAIN */
     .main-content {
       padding: 10px 20px 24px;
       flex: 1;
     }
 
-    /* Saludo */
     .greeting-container {
       margin-bottom: 24px;
       padding-left: 5px;
@@ -138,12 +139,11 @@
       margin-top: 4px;
     }
 
-    /* --- 2. CREDENCIAL CELESTE (Estilo Imagen 10) --- */
+    /* CREDENCIAL */
     .credencial-card-light {
         display: block;
         text-decoration: none;
         width: 100%;
-        /* Gradiente celeste claro */
         background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
         border-radius: 24px;
         padding: 24px 20px;
@@ -208,10 +208,9 @@
         gap: 12px;
     }
 
-/* Busca la clase .qr-box-light y agrega el estilo para la imagen img */
     .qr-box-light {
         background: rgba(255,255,255,0.6);
-        padding: 5px; /* Un poco menos de padding para que el QR sea más grande */
+        padding: 6px;
         border-radius: 12px;
         width: 70px;
         height: 70px;
@@ -219,16 +218,13 @@
         align-items: center;
         justify-content: center;
     }
-
-    /* ESTO ES LO NUEVO: Para que tu imagen PNG se vea bien */
-    .qr-box-light img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Esto evita que el QR se corte o estire */
+    
+    .qr-box-light img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: contain; 
         display: block;
     }
-    /* Placeholder visual para el QR */
-    .qr-svg-placeholder { width: 100%; height: 100%; fill: #4a5568; opacity: 0.7; }
 
     .btn-ver-light {
         background-color: var(--btn-ver-bg);
@@ -241,54 +237,61 @@
     }
 
 
-    /* --- 3. GRID MENÚ --- */
+    /* --- GRID MENÚ (ACTUALIZADO PARA IGUALAR LA FOTO) --- */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
+      gap: 15px; /* Espacio entre tarjetas */
     }
 
     .menu-item {
       background: var(--card-white);
-      border-radius: 24px;
-      padding: 20px 10px;
+      /* Bordes más redondeados como en la foto */
+      border-radius: 32px; 
+      padding: 24px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow-card-new);
       transition: transform 0.1s;
     }
     .menu-item:active { transform: scale(0.96); }
 
+    /* Círculo mucho más grande y con degradado */
     .icon-circle {
-      width: 60px;
-      height: 60px;
-      background-color: var(--icon-bg-blue);
+      width: 110px; 
+      height: 110px;
+      /* Degradado suave celeste */
+      background: linear-gradient(135deg, var(--icon-circle-start), var(--icon-circle-end));
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
     
-    /* Filtro para que los iconos se vean del azul oscuro correcto */
+    /* Icono interno más grande y SIN FILTRO */
     .icon-circle img {
-      width: 30px;
-      height: 30px;
-      filter: invert(13%) sepia(66%) saturate(3992%) hue-rotate(203deg) brightness(93%) contrast(103%);
+      width: 50px; 
+      height: 50px;
+      object-fit: contain;
+      /* IMPORTANTE: Se eliminó el filtro. 
+         Debes usar imágenes que ya sean azul oscuro sólido. */
+      filter: none; 
     }
 
+    /* Texto más grande y oscuro */
     .menu-text {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--menu-text-blue);
+      font-size: 15px;
+      font-weight: 800; /* Más grueso */
+      color: var(--menu-text-dark-blue);
       text-align: center;
-      line-height: 1.3;
+      line-height: 1.2;
     }
 
 
-    /* --- 4. NAV INFERIOR FLOTANTE CON SIGNO DE PREGUNTA --- */
+    /* NAV INFERIOR */
     .bottom-bar {
       position: fixed;
       bottom: 24px;
@@ -315,20 +318,19 @@
     }
     .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
 
-    /* Botón central con signo de pregunta */
     .center-question-btn {
       width: 64px;
       height: 64px;
       background: var(--center-btn-bg);
       border-radius: 50%;
-      border: 5px solid var(--main-bg); /* Borde del color del fondo para "cortar" la barra */
+      border: 5px solid var(--main-bg); 
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-size: 32px;
       font-weight: 600;
-      margin-top: -35px; /* Sobresale hacia arriba */
+      margin-top: -35px;
       box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
       cursor: pointer;
     }
@@ -367,10 +369,10 @@
                     <p>CURAID-01-41316202</p>
                 </div>
             </div>
-          
-    <div class="cred-right-actions">
+            
+            <div class="cred-right-actions">
                 <div class="qr-box-light">
-                    <img src="qr_menu.png" alt="QR Código" />
+                    <img src="qr_menu.png" alt="QR Code">
                 </div>
                 <button class="btn-ver-light">Ver credencial</button>
             </div>
@@ -379,27 +381,27 @@
 
       <div class="menu-grid">
         <a href="prescripciones.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-prescripciones.png" alt="Icon"></div>
+          <div class="icon-circle"><img src="icon-prescripciones-solido.png" alt="Icon"></div>
           <span class="menu-text">Prescripciones</span>
         </a>
         <a href="retiro.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-retiro-medicamentos.png" alt="Icon"></div>
+          <div class="icon-circle"><img src="icon-retiro-solido.png" alt="Icon"></div>
           <span class="menu-text">Retiro de<br>Medicamentos</span>
         </a>
         <a href="turnos.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-turnos.png" alt="Icon"></div>
+          <div class="icon-circle"><img src="icon-turnos-solido.png" alt="Icon"></div>
           <span class="menu-text">Turnos</span>
         </a>
         <a href="historia.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-historia-clinica.png" alt="Icon"></div>
+          <div class="icon-circle"><img src="icon-historia-solido.png" alt="Icon"></div>
           <span class="menu-text">Historia<br>Clínica</span>
         </a>
         <a href="recordatorios.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-recordatorios.png" alt="Icon"></div>
+          <div class="icon-circle"><img src="icon-recordatorios-solido.png" alt="Icon"></div>
           <span class="menu-text">Recordatorios</span>
         </a>
         <a href="cartilla.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-cartilla.png" alt="Icon"></div>
+          <div class="icon-circle"><img src="icon-cartilla-solido.png" alt="Icon"></div>
           <span class="menu-text">Cartilla</span>
         </a>
       </div>

@@ -6,69 +6,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      /* PALETA DE COLORES (Estética Nueva) */
-      --bg-gradient-top: #dbeafe; 
-      --bg-gradient-bottom: #f3f4f6; 
-      --blue-header: #3b6eb3; 
-      --blue-card-dark: #004e92; 
-      --blue-card-mid: #00579f; 
-      --text-dark: #111827; 
-      --text-gray: #6b7280; 
-      --text-white: #ffffff;
-      --card-white-bg: #ffffff;
-      
-      --nav-pill-bg: #f3f4f6; 
-      --nav-plus-blue: #3b82f6; 
-      --nav-icon-gray: #9ca3af; 
+      /* --- PALETA DE COLORES EXACTA --- */
+      --main-bg: #f5f7fa;
+      --blue-header: #005fa3;
+      --text-dark-blue: #003366;
+      --text-gray: #667788;
+      --cred-card-bg-start: #a6ccee;
+      --cred-card-bg-end: #cce5ff;
+      --card-white: #ffffff;
+      --icon-circle-bg: #dbeafe;
+      --bottom-nav-bg: #ffffff;
+      --question-btn-bg: #0066cc;
+      --notification-red: #ff3b30;
 
-      /* SOMBRAS (Estética Nueva) */
-      --shadow-floating: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      /* --- SOMBRAS --- */
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --shadow-nav: 0 -4px 20px rgba(0, 0, 0, 0.05);
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background: linear-gradient(180deg, var(--bg-gradient-top) 0%, var(--bg-gradient-bottom) 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      padding: 20px 0;
     }
 
     .app-container {
       width: 100%;
-      max-width: 400px;
-      padding: 0 20px 100px; /* Padding inferior extra para el nav flotante */
+      max-width: 414px; /* Ancho típico de iPhone */
+      padding: 0 20px;
       display: flex;
       flex-direction: column;
-      align-items: center;
       position: relative;
+      padding-top: 60px; /* Espacio para el header fijo */
+      padding-bottom: 90px; /* Espacio para el nav inferior */
     }
 
-    /* --- 1. HEADER FLOTANTE (Estética Nueva) --- */
-    .top-floating-bar {
+    /* --- HEADER FIJO --- */
+    .header-fixed {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
+        max-width: 414px;
         background-color: var(--blue-header);
-        color: var(--text-white);
-        padding: 12px 20px;
-        border-radius: 999px;
+        color: white;
+        padding: 15px 20px;
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: var(--shadow-floating);
-        margin-bottom: 25px;
-        z-index: 10;
+        z-index: 100;
     }
 
-    .top-bar-title {
-        font-size: 18px;
+    .header-title {
+        font-size: 20px;
         font-weight: 600;
     }
 
@@ -76,76 +78,103 @@
         position: relative;
         width: 24px;
         height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
     }
 
     .notif-dot {
         position: absolute;
-        top: -2px;
-        right: -2px;
-        width: 10px;
-        height: 10px;
-        background-color: #ef4444;
+        top: 0;
+        right: 0;
+        width: 8px;
+        height: 8px;
+        background-color: var(--notification-red);
         border-radius: 50%;
-        border: 2px solid var(--blue-header);
     }
 
-    /* --- 2. TARJETA CREDENCIAL (La nueva tarjeta grande) --- */
-    /* Ahora es un <a> para mantener el enlace a credencial.html */
-    .credencial-card-container {
-        display: block; /* Para que funcione como bloque siendo <a> */
-        text-decoration: none; /* Quitar subrayado */
-        width: 100%;
-        background-color: var(--blue-card-dark);
+    /* --- SALUDO --- */
+    .greeting-section {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .greeting-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--text-dark-blue);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .section-subtitle {
+        font-size: 16px;
+        color: var(--text-gray);
+        margin-top: 5px;
+    }
+
+    /* --- TARJETA CREDENCIAL DIGITAL --- */
+    .credencial-card {
+        background: linear-gradient(135deg, var(--cred-card-bg-start), var(--cred-card-bg-end));
         border-radius: 24px;
-        overflow: hidden;
-        box-shadow: var(--shadow-floating);
-        color: var(--text-white);
-        margin-bottom: 30px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 25px;
+        text-decoration: none;
         position: relative;
-        transition: transform 0.12s ease-out; /* Tu animación original */
+        overflow: hidden;
+    }
+    
+    /* Efecto sutil de nube/cielo en el fondo */
+    .credencial-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(circle at top right, rgba(255,255,255,0.4), transparent 70%);
+        pointer-events: none;
     }
 
-    .credencial-card-container:active {
-        transform: scale(0.98); /* Efecto de toque sutil */
+    .cred-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text-dark-blue);
+        margin-bottom: 15px;
     }
 
-    .cred-header-strip {
-        background-color: var(--blue-card-mid);
-        padding: 8px 16px;
+    .cred-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
     }
 
-    .cred-body {
-        padding: 20px 16px 24px;
+    .cred-user-info {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
     }
 
-    .cred-user-info { flex: 1; }
-    
-    .cred-name {
-        font-size: 22px;
-        font-weight: 700;
-        margin-bottom: 4px;
-        color: white;
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 15px;
+        background-color: #ddd; /* Placeholder */
     }
-    
-    .cred-id {
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+    .user-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-dark-blue);
+    }
+
+    .user-id {
         font-size: 14px;
-        opacity: 0.9;
-        margin-bottom: 20px;
-        letter-spacing: 0.5px;
-        color: rgba(255,255,255,0.8);
+        color: var(--text-dark-blue);
+        opacity: 0.8;
     }
 
     .cred-qr-section {
@@ -155,268 +184,199 @@
         gap: 10px;
     }
 
-    .qr-placeholder {
-        background: white;
-        padding: 4px;
-        border-radius: 8px;
+    .qr-code {
         width: 70px;
         height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        background-color: white;
+        padding: 5px;
+        border-radius: 12px;
     }
-    .qr-placeholder img { width: 100%; height: 100%; }
+    .qr-code img { width: 100%; height: 100%; }
 
-    .btn-fake-ver {
-        background-color: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        color: white;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 11px;
-        font-weight: 500;
-    }
-
-    .cred-footer-strip {
-        position: absolute;
-        bottom: 12px;
-        left: 16px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 10px;
-        opacity: 0.8;
-        color: white;
+    .btn-ver-credencial {
+        background-color: rgba(255, 255, 255, 0.5);
+        color: var(--text-dark-blue);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
     }
 
-    /* --- 3. SALUDO --- */
-    .greeting-section {
-        width: 100%;
-        text-align: left;
-        margin-bottom: 20px;
-        padding-left: 5px;
-    }
-    .greeting-title {
-        font-size: 24px;
-        font-weight: 800;
-        color: var(--text-dark);
-    }
-    .section-subtitle {
-        font-size: 16px;
-        color: var(--text-gray);
-        margin-top: 4px;
-    }
-
-    /* --- 4. GRID DE MENÚ (Restaurando tus animaciones) --- */
+    /* --- GRID MENÚ --- */
     .menu-grid {
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
     }
 
     .menu-card {
-      background: var(--card-white-bg);
-      border-radius: 20px;
-      padding: 20px 10px;
-      box-shadow: var(--shadow-soft);
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      
-      /* TUS ANIMACIONES ORIGINALES RESTAURADAS */
-      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+        background-color: var(--card-white);
+        border-radius: 20px;
+        padding: 15px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        box-shadow: var(--shadow-soft);
     }
 
-    /* TU EFECTO CLICK ORIGINAL RESTAURADO */
-    .menu-card:active {
-      transform: translateY(1px);
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
+    .menu-icon-circle {
+        width: 60px;
+        height: 60px;
+        background-color: var(--icon-circle-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
     }
-
-    .menu-icon {
-      width: 50px; 
-      height: 50px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .menu-icon img {
-        max-width: 100%;
-        max-height: 100%;
-        /* Filtro opcional para que tus iconos negros se vean azules como el diseño nuevo.
-           Si prefieres tus colores originales, borra la linea de "filter". */
-        filter: invert(19%) sepia(40%) saturate(3475%) hue-rotate(208deg) brightness(93%) contrast(98%);
-    }
+    .menu-icon-circle img { width: 32px; height: 32px; }
 
     .menu-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #1e3a8a; /* Azul oscuro */
-      text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-dark-blue);
+        text-align: center;
+        line-height: 1.2;
     }
 
-    /* --- 5. NAV INFERIOR FLOTANTE --- */
-    .bottom-nav-container {
+    /* --- BOTTOM NAV FLOTANTE --- */
+    .bottom-nav {
         position: fixed;
-        bottom: 30px;
+        bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        width: 90%;
-        max-width: 380px;
-        z-index: 20;
-    }
-
-    .bottom-nav-pill {
-        background-color: var(--nav-pill-bg);
-        border-radius: 999px;
-        padding: 10px 30px;
+        width: calc(100% - 40px);
+        max-width: 374px;
+        background-color: var(--bottom-nav-bg);
+        border-radius: 30px;
+        padding: 10px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: var(--shadow-floating);
-        position: relative;
+        box-shadow: var(--shadow-nav);
+        z-index: 100;
     }
 
     .nav-btn {
         background: none;
         border: none;
         padding: 10px;
-        cursor: pointer;
-        opacity: 0.5; /* Inactivo */
     }
-    
-    .nav-plus-btn {
-        position: absolute;
-        top: -25px;
-        left: 50%;
-        transform: translateX(-50%);
+    .nav-icon { width: 28px; height: 28px; fill: var(--text-dark-blue); }
+
+    .nav-question-btn {
         width: 60px;
         height: 60px;
-        background-color: var(--nav-plus-blue);
+        background-color: var(--question-btn-bg);
         border-radius: 50%;
-        border: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.5);
         color: white;
-        font-size: 30px;
-        cursor: pointer;
-        transition: transform 0.12s ease-out;
-    }
-    
-    .nav-plus-btn:active {
-        transform: translateX(-50%) scale(0.9);
+        font-size: 32px;
+        font-weight: 600;
+        border: 4px solid var(--bottom-nav-bg);
+        transform: translateY(-20px);
+        box-shadow: 0 4px 10px rgba(0, 102, 204, 0.3);
     }
 
   </style>
 </head>
 
 <body>
+
+  <header class="header-fixed">
+    <div class="header-title">Salud</div>
+    <div class="notif-bell">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M12 2C10.3431 2 9 3.34315 9 5V6.09524C6.75772 6.79701 5 8.88694 5 11.5V16L3 18V19H21V18L19 16V11.5C19 8.88694 17.2423 6.79701 15 6.09524V5C15 3.34315 13.6569 2 12 2ZM7 11.5C7 9.5 8.5 7.5 12 7.5C15.5 7.5 17 9.5 17 11.5V17H7V11.5ZM12 22C13.1046 22 14 21.1046 14 20H10C10 21.1046 10.8954 22 12 22Z"/></svg>
+      <div class="notif-dot"></div>
+    </div>
+  </header>
+
   <div class="app-container">
 
-    <div class="top-floating-bar">
-      <div class="top-bar-title">Salud</div>
-      <div class="notif-bell">
-        <span>🔔</span> <div class="notif-dot"></div>
-      </div>
-    </div>
-
-    <a href="credencial.html" class="credencial-card-container">
-        <div class="cred-header-strip">
-            <span>INFORMACIÓN MÉDICA</span>
-            <span>0+</span>
-        </div>
-
-        <div class="cred-body">
-            <div class="cred-user-info">
-                <div class="cred-name">Hola, Franco</div>
-                <div class="cred-id">CURA-ID-01-41316202-01</div>
-            </div>
-            
-            <div class="cred-qr-section">
-                <div class="qr-placeholder">
-                    <img src="qr-code.png" alt="QR" onerror="this.style.display='none'" />
-                </div>
-                <div class="btn-fake-ver">Ver credencial</div>
-            </div>
-        </div>
-        
-        <div class="cred-footer-strip">
-            <span>Ministerio de Salud - República Argentina</span>
-        </div>
-    </a>
-
     <div class="greeting-section">
-      <div class="greeting-title">Hola, Franco 👋</div>
+      <div class="greeting-title">Hola, Franco <span>👋</span></div>
       <div class="section-subtitle">¿Qué necesitas hoy?</div>
     </div>
 
-    <div class="menu-grid">
+    <a href="credencial.html" class="credencial-card">
+        <div class="cred-title">Credencial Digital</div>
+        <div class="cred-content">
+            <div class="cred-user-info">
+                <div class="user-avatar">
+                    <img src="avatar.png" alt="Avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23ccc\'><path d=\'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z\'/></svg>'"/>
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Franco Paganini</div>
+                    <div class="user-id">CURAID-01-41316202</div>
+                </div>
+            </div>
+            <div class="cred-qr-section">
+                <div class="qr-code">
+                    <img src="qr-code.png" alt="QR" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\'><rect width=\'24\' height=\'24\' fill=\'%23eee\'/><rect x=\'4\' y=\'4\' width=\'6\' height=\'6\' fill=\'%23333\'/><rect x=\'14\' y=\'4\' width=\'6\' height=\'6\' fill=\'%23333\'/><rect x=\'4\' y=\'14\' width=\'6\' height=\'6\' fill=\'%23333\'/><rect x=\'16\' y=\'16\' width=\'2\' height=\'2\' fill=\'%23333\'/><rect x=\'12\' y=\'14\' width=\'2\' height=\'2\' fill=\'%23333\'/></svg>'"/>
+                </div>
+                <button class="btn-ver-credencial">Ver credencial</button>
+            </div>
+        </div>
+    </a>
 
+    <div class="menu-grid">
       <a href="prescripciones.html" class="menu-card">
-        <div class="menu-icon">
-          <img src="icon-prescripciones.png" alt="Prescripciones" />
+        <div class="menu-icon-circle">
+          <img src="icon-prescripciones.png" alt="Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23003366\'><path d=\'M6 4C6 2.89543 6.89543 2 8 2H16C17.1046 2 18 2.89543 18 4V20C18 21.1046 17.1046 22 16 22H8C6.89543 22 6 21.1046 6 20V4ZM8 4V20H16V4H8Z\'/></svg>'"/>
         </div>
         <div class="menu-label">Prescripciones</div>
       </a>
-
       <a href="retiro-medicamentos.html" class="menu-card">
-        <div class="menu-icon">
-          <img src="icon-retiro-medicamentos.png" alt="Retiro" />
+        <div class="menu-icon-circle">
+          <img src="icon-retiro-medicamentos.png" alt="Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23003366\'><path d=\'M12 2L2 7L12 12L22 7L12 2Z\'/><path d=\'M2 17L12 22L22 17\'/><path d=\'M2 12L12 17L22 12\'/></svg>'"/>
         </div>
         <div class="menu-label">Retiro de Medicamentos</div>
       </a>
-
       <a href="solicitar-turno.html" class="menu-card">
-        <div class="menu-icon">
-          <img src="icon-turnos.png" alt="Turnos" />
+        <div class="menu-icon-circle">
+          <img src="icon-turnos.png" alt="Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23003366\'><path d=\'M19 4H18V2H16V4H8V2H6V4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4ZM19 20H5V10H19V20ZM19 8H5V6H19V8Z\'/></svg>'"/>
         </div>
         <div class="menu-label">Turnos</div>
       </a>
 
       <a href="historia-salud.html" class="menu-card">
-        <div class="menu-icon">
-          <img src="icon-historia-clinica.png" alt="Historia" />
+        <div class="menu-icon-circle">
+          <img src="icon-historia-clinica.png" alt="Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23003366\'><path d=\'M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z\'/></svg>'"/>
         </div>
         <div class="menu-label">Historia Clínica</div>
       </a>
-
       <a href="recordatorios.html" class="menu-card">
-        <div class="menu-icon">
-          <img src="icon-recordatorios.png" alt="Recordatorios" />
+        <div class="menu-icon-circle">
+          <img src="icon-recordatorios.png" alt="Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23003366\'><path d=\'M12 22C13.1046 22 14 21.1046 14 20H10C10 21.1046 10.8954 22 12 22ZM18 16V11C18 7.68629 15.3137 5 12 5C8.68629 5 6 7.68629 6 11V16L4 18V19H20V18L18 16ZM12 2C10.3431 2 9 3.34315 9 5H15C15 3.34315 13.6569 2 12 2Z\'/></svg>'"/>
         </div>
         <div class="menu-label">Recordatorios</div>
       </a>
-      
       <a href="cartilla.html" class="menu-card">
-        <div class="menu-icon">
-          <img src="icon-cartilla.png" alt="Cartilla" onerror="this.src='https://via.placeholder.com/50'"/>
+        <div class="menu-icon-circle">
+          <img src="icon-cartilla.png" alt="Icon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'%23003366\'><path d=\'M12 2C8.13401 2 5 5.13401 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13401 15.866 2 12 2ZM12 11.5C10.6193 11.5 9.5 10.3807 9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9C14.5 10.3807 13.3807 11.5 12 11.5Z\'/></svg>'"/>
         </div>
-        <div class="menu-label">Cartilla Médica</div>
+        <div class="menu-label">Cartilla</div>
       </a>
-
-    </div>
-
-    <div class="bottom-nav-container">
-      <div class="bottom-nav-pill">
-        <button class="nav-btn">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-        </button>
-        
-        <button class="nav-plus-btn">+</button>
-        
-        <button class="nav-btn">
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.7l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.7-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.7.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.7 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.7.3 1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.7-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.7 1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"></path></svg>
-        </button>
-      </div>
     </div>
 
   </div>
+
+  <div class="bottom-nav">
+    <button class="nav-btn">
+      <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z"/></svg>
+    </button>
+    
+    <div class="nav-question-btn">?</div>
+    
+    <button class="nav-btn">
+      <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.5C13.933 15.5 15.5 13.933 15.5 12C15.5 10.067 13.933 8.5 12 8.5C10.067 8.5 8.5 10.067 8.5 12C8.5 13.933 10.067 15.5 12 15.5ZM19.433 12.994L21.347 14.48C21.522 14.612 21.567 14.858 21.447 15.06L19.633 18.206C19.517 18.402 19.278 18.478 19.077 18.406L16.83 17.526C16.362 17.886 15.858 18.198 15.323 18.438L14.988 20.81C14.955 21.034 14.766 21.2 14.54 21.2H10.92C10.694 21.2 10.505 21.034 10.472 20.81L10.137 18.438C9.602 18.198 9.098 17.886 8.63 17.526L6.383 18.406C6.182 18.478 5.943 18.402 5.827 18.206L4.013 15.06C3.893 14.858 3.938 14.612 4.113 14.48L6.027 12.994C6.007 12.83 6 12.666 6 12C6 11.334 6.007 11.17 6.027 11.006L4.113 9.52C3.938 9.388 3.893 9.142 4.013 8.94L5.827 5.794C5.943 5.598 6.182 5.522 6.383 5.594L8.63 6.474C9.098 6.114 9.602 5.802 10.137 5.562L10.472 3.19C10.505 2.966 10.694 2.8 10.92 2.8H14.54C14.766 2.8 14.955 2.966 14.988 3.19L15.323 5.562C15.858 5.802 16.362 6.114 16.83 6.474L19.077 5.594C19.278 5.522 19.517 5.598 19.633 5.794L21.447 8.94C21.567 9.142 21.522 9.388 21.347 9.52L19.433 11.006C19.453 11.17 19.46 11.334 19.46 12C19.46 12.666 19.453 12.83 19.433 12.994Z"/></svg>
+    </button>
+  </div>
+
 </body>
 </html>

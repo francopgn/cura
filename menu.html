@@ -2,24 +2,38 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Salud - C.U.R.A.</title>
+  <title>Salud</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      /* Colores */
-      --main-bg: #f2f6fc;
-      --blue-header: #005fa3;
+      /* --- COLORES EXACTOS DE LA IMAGEN --- */
+      --main-bg: #f0f4f8; /* Fondo gris azulado muy claro */
+      --blue-header: #005fa3; /* Azul oscuro del header */
+      
+      /* Colores de la Credencial Celeste */
+      --cred-bg-start: #a6ccee;
+      --cred-bg-end: #cce5ff;
+      --btn-ver-bg: #e3f0ff;
+      --btn-ver-text: #005fa3;
+      
+      /* Textos */
       --text-dark: #0d2b52;
       --text-gray: #64748b;
+      --text-white: #ffffff;
       
-      /* Tarjetas y botones */
+      /* Tarjetas Menú */
       --card-white: #ffffff;
-      --icon-bg-blue: #e3f0ff;
-      --text-blue-icon: #1f6fe5;
+      --icon-bg-blue: #dbeafe; /* Círculo celeste claro detrás de iconos */
+      --menu-text-blue: #004e92;
       
+      /* Nav Inferior */
+      --nav-bg: #ffffff;
+      --center-btn-bg: #0066cc;
+
       /* Sombras */
-      --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
-      --shadow-float: 0 10px 25px rgba(0, 95, 163, 0.25);
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --shadow-float: 0 8px 20px rgba(0, 95, 163, 0.2);
+      --shadow-nav: 0 -4px 20px rgba(0, 0, 0, 0.05);
     }
 
     * {
@@ -45,28 +59,22 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 100px;
+      padding-bottom: 100px; /* Espacio para el nav inferior */
     }
 
-    /* --- HEADER TIPO PASTILLA FLOTANTE (Corrección) --- */
+    /* --- 1. HEADER TIPO PASTILLA FLOTANTE --- */
     .header-bar {
       background-color: var(--blue-header);
+      width: calc(100% - 40px); /* Margen a los lados */
+      margin: 20px auto 10px;   /* Flotando arriba */
+      height: 60px;
+      border-radius: 999px;     /* Redondeado completo */
       
-      /* Dimensiones de pastilla */
-      width: calc(100% - 40px); /* Dejamos espacio a los lados */
-      margin: 20px auto 10px;   /* 20px de espacio ARRIBA */
-      height: 65px;
-      
-      /* Forma completamente redondeada */
-      border-radius: 999px; 
-      
-      /* Flex para contenido */
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
       
-      /* Sombra más fuerte para efecto flotante */
       box-shadow: var(--shadow-float);
       position: relative;
       z-index: 10;
@@ -97,18 +105,17 @@
 
     .notif-dot {
       position: absolute;
-      top: 0;
-      right: 2px;
+      top: 2px;
+      right: 3px;
       width: 8px;
       height: 8px;
       background-color: #ff3b30;
       border-radius: 50%;
-      border: 1px solid var(--blue-header);
     }
 
     /* --- CONTENIDO --- */
     .main-content {
-      padding: 10px 20px 24px; /* Ajustado el padding superior */
+      padding: 10px 20px 24px;
       flex: 1;
     }
 
@@ -131,85 +138,111 @@
       margin-top: 4px;
     }
 
-    /* Tarjeta Credencial */
-    .credencial-banner {
-      display: block;
-      text-decoration: none;
-      background: linear-gradient(135deg, #bedcfe 0%, #dbeafe 100%);
-      border-radius: 24px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 30px;
-      box-shadow: var(--shadow-soft);
+    /* --- 2. CREDENCIAL CELESTE (Estilo Imagen 10) --- */
+    .credencial-card-light {
+        display: block;
+        text-decoration: none;
+        width: 100%;
+        /* Gradiente celeste claro */
+        background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
+        border-radius: 24px;
+        padding: 24px 20px;
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 30px;
+        position: relative;
+        transition: transform 0.1s ease-out;
     }
 
-    .cred-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    .credencial-card-light:active {
+        transform: scale(0.98);
     }
 
-    .avatar-circle {
-      width: 50px;
-      height: 50px;
-      background-color: #cbd5e1;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
-
-    .user-data h3 {
-      font-size: 17px;
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 2px;
-      margin-top: 0;
-    }
-    .user-data p {
-      font-size: 13px;
-      color: #334155;
-      margin: 0;
+    .cred-title-light {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 20px;
     }
 
-    .cred-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .qr-box {
-      background: white;
-      padding: 4px;
-      border-radius: 8px;
-      width: 50px;
-      height: 50px;
-    }
-    .qr-box img { width: 100%; height: 100%; }
-
-    .btn-ver {
-      background: rgba(255,255,255,0.6);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #0f172a;
+    .cred-layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
     }
 
-    /* Grilla de Botones */
+    .cred-left-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        background-color: #d1e3f3;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .avatar-placeholder svg { width: 40px; height: 40px; fill: #a0b4c8; }
+
+    .user-data-light h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 4px;
+        margin-top: 0;
+    }
+    .user-data-light p {
+        font-size: 14px;
+        color: var(--text-gray);
+        margin: 0;
+    }
+
+    .cred-right-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .qr-box-light {
+        background: rgba(255,255,255,0.6);
+        padding: 8px;
+        border-radius: 12px;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* Placeholder visual para el QR */
+    .qr-svg-placeholder { width: 100%; height: 100%; fill: #4a5568; opacity: 0.7; }
+
+    .btn-ver-light {
+        background-color: var(--btn-ver-bg);
+        color: var(--btn-ver-text);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+    }
+
+
+    /* --- 3. GRID MENÚ --- */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      gap: 15px;
     }
 
     .menu-item {
       background: var(--card-white);
-      border-radius: 20px;
-      padding: 16px 8px;
+      border-radius: 24px;
+      padding: 20px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -220,8 +253,8 @@
     .menu-item:active { transform: scale(0.96); }
 
     .icon-circle {
-      width: 54px;
-      height: 54px;
+      width: 60px;
+      height: 60px;
       background-color: var(--icon-bg-blue);
       border-radius: 50%;
       display: flex;
@@ -229,22 +262,24 @@
       justify-content: center;
       margin-bottom: 12px;
     }
-    /* Filtro para iconos azules */
+    
+    /* Filtro para que los iconos se vean del azul oscuro correcto */
     .icon-circle img {
-      width: 28px;
-      height: 28px;
-      filter: invert(30%) sepia(96%) saturate(1684%) hue-rotate(204deg) brightness(91%) contrast(96%);
+      width: 30px;
+      height: 30px;
+      filter: invert(13%) sepia(66%) saturate(3992%) hue-rotate(203deg) brightness(93%) contrast(103%);
     }
 
     .menu-text {
       font-size: 12px;
-      font-weight: 600;
-      color: var(--text-dark);
+      font-weight: 700;
+      color: var(--menu-text-blue);
       text-align: center;
       line-height: 1.3;
     }
 
-    /* Navegación Inferior */
+
+    /* --- 4. NAV INFERIOR FLOTANTE CON SIGNO DE PREGUNTA --- */
     .bottom-bar {
       position: fixed;
       bottom: 24px;
@@ -252,14 +287,14 @@
       transform: translateX(-50%);
       width: 90%;
       max-width: 360px;
-      background: #ffffff;
-      border-radius: 30px;
-      height: 64px;
+      background: var(--nav-bg);
+      border-radius: 35px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 0 25px;
+      box-shadow: var(--shadow-nav);
       z-index: 50;
     }
 
@@ -269,22 +304,23 @@
       padding: 10px;
       cursor: pointer;
     }
-    .nav-icon-btn svg { width: 24px; height: 24px; fill: #64748b; }
+    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
 
-    .float-center-btn {
-      width: 60px;
-      height: 60px;
-      background: #1f6fe5;
+    /* Botón central con signo de pregunta */
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: var(--center-btn-bg);
       border-radius: 50%;
-      border: 4px solid #f2f6fc;
+      border: 5px solid var(--main-bg); /* Borde del color del fondo para "cortar" la barra */
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 600;
-      margin-top: -30px;
-      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.4);
+      margin-top: -35px; /* Sobresale hacia arriba */
+      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
       cursor: pointer;
     }
 
@@ -309,21 +345,26 @@
         <div class="greeting-sub">¿Qué necesitas hoy?</div>
       </div>
 
-      <a href="credencial.html" class="credencial-banner">
-        <div class="cred-info">
-          <div class="avatar-circle">
-            <img src="https://via.placeholder.com/50" alt="Avatar">
-          </div>
-          <div class="user-data">
-            <h3>Franco Paganini</h3>
-            <p>CURAID-01-41316202</p>
-          </div>
-        </div>
-        <div class="cred-actions">
-           <div class="qr-box">
-             <img src="qr-code.png" alt="QR" onerror="this.style.display='none'">
-           </div>
-           <span class="btn-ver">Ver credencial</span>
+      <a href="credencial.html" class="credencial-card-light">
+        <div class="cred-title-light">Credencial Digital</div>
+        
+        <div class="cred-layout">
+            <div class="cred-left-info">
+                <div class="avatar-placeholder">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="user-data-light">
+                    <h3>Franco Paganini</h3>
+                    <p>CURAID-01-41316202</p>
+                </div>
+            </div>
+            
+            <div class="cred-right-actions">
+                <div class="qr-box-light">
+                    <svg class="qr-svg-placeholder" viewBox="0 0 24 24"><path d="M3 3h6v6H3V3zm2 2v2h2V5H5zm8-2h6v6h-6V3zm2 2v2h2V5h-2zM3 13h6v6H3v-6zm2 2v2h2v-2H5zm13-2h3v2h-3v-2zm-3 2h2v2h-2v-2zm3 3h3v2h-3v-2zm-6 0h2v2h-2v-2zm3 3h3v2h-3v-2zm-3-3h2v3h-2v-3zm-3 0h3v3h-3v-3z"/></svg>
+                </div>
+                <button class="btn-ver-light">Ver credencial</button>
+            </div>
         </div>
       </a>
 
@@ -361,7 +402,7 @@
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
       
-      <div class="float-center-btn">?</div>
+      <div class="center-question-btn">?</div>
       
       <button class="nav-icon-btn">
         <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>

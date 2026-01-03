@@ -62,28 +62,108 @@
     .greeting-text { font-size: 28px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
     .greeting-sub { font-size: 16px; color: var(--text-gray); margin-bottom: 24px; }
 
-    /* Credencial Digital */
-    .credencial-card {
-      background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
-      border-radius: 24px;
-      padding: 20px;
-      margin-bottom: 30px;
-      text-decoration: none;
-      display: block;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      /* --- 2. CREDENCIAL CELESTE (Estilo Imagen 10) --- */
+    .credencial-card-light {
+        display: block;
+        text-decoration: none;
+        width: 100%;
+        /* Gradiente celeste claro */
+        background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
+        border-radius: 24px;
+        padding: 24px 20px;
+        box-shadow: var(--shadow-soft);
+        margin-bottom: 30px;
+        position: relative;
+        transition: transform 0.1s ease-out;
     }
 
-    .cred-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; }
-    .cred-layout { display: flex; justify-content: space-between; align-items: center; }
-    .cred-user { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 50px; height: 50px; background: #d1e3f3; border-radius: 50%; }
-    .user-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
-    .user-id { font-size: 12px; color: var(--text-gray); }
-    
-    .qr-side { text-align: center; }
-    .qr-box { background: white; padding: 4px; border-radius: 8px; width: 60px; height: 60px; margin-bottom: 8px; }
-    .qr-box img { width: 100%; height: 100%; }
-    .btn-ver { background: #e3f0ff; color: #005fa3; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; border: none; }
+    .credencial-card-light:active {
+        transform: scale(0.98);
+    }
+
+    .cred-title-light {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 20px;
+    }
+
+    .cred-layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .cred-left-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .avatar-placeholder {
+        width: 60px;
+        height: 60px;
+        background-color: #d1e3f3;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    .avatar-placeholder svg { width: 40px; height: 40px; fill: #a0b4c8; }
+
+    .user-data-light h3 {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 4px;
+        margin-top: 0;
+    }
+    .user-data-light p {
+        font-size: 14px;
+        color: var(--text-gray);
+        margin: 0;
+    }
+
+    .cred-right-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+/* Busca la clase .qr-box-light y agrega el estilo para la imagen img */
+    .qr-box-light {
+        background: rgba(255,255,255,0.6);
+        padding: 5px; /* Un poco menos de padding para que el QR sea más grande */
+        border-radius: 12px;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* ESTO ES LO NUEVO: Para que tu imagen PNG se vea bien */
+    .qr-box-light img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Esto evita que el QR se corte o estire */
+        display: block;
+    }
+    /* Placeholder visual para el QR */
+    .qr-svg-placeholder { width: 100%; height: 100%; fill: #4a5568; opacity: 0.7; }
+
+    .btn-ver-light {
+        background-color: var(--btn-ver-bg);
+        color: var(--btn-ver-text);
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        border: none;
+    }
+
 
     /* --- GRID CORREGIDO --- */
     .menu-grid {

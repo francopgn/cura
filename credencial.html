@@ -253,7 +253,7 @@
 
     <div class="qr-box">
       <!-- QR dinámico desde token -->
-      <img id="qrImg" src="" width="220" height="220" style="border-radius:12px" alt="QR C.U.R.A.">
+<img id="qrImg" src="qr_menu.png" width="220" height="220" style="border-radius:12px" alt="QR C.U.R.A.">
       <div style="margin-top:6px; font-size:14px;">CURAID01-41316202</div>
 
       <div style="margin-top:16px; font-size:15px; font-weight:600;">TOKEN DE SEGURIDAD</div>
@@ -298,9 +298,9 @@
     tokenEl.textContent = t;
 
     // QR basado en el token
-    const qrURL =
-      "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(t);
-    document.getElementById("qrImg").src = qrURL;
+  //  const qrURL =
+    //  "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(t);
+   // document.getElementById("qrImg").src = qrURL;
   }
 
   function actualizarTimer() {

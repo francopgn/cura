@@ -2,12 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="manifest" href="site.webmanifest">
-
-  <title>Información | Ley C.U.R.A.</title>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest">
+  <title>Beneficios | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -34,204 +34,101 @@
     }
   </script>
 
-<style>
-  /* --- ANIMACIONES DE MODALES --- */
-  .modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-  .modal-backdrop.show {
-    opacity: 1;
-  }
-  .modal-card {
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .modal-card.show {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-  
-  /* Cursor parpadeante para el efecto máquina de escribir */
-  .cursor-blink::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: #59D2FF;
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-</style>
-
+  <style>
+    body { background-color: #004E85; }
+    .cursor-blink::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
 </head>
-<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
+<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
 
-  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
-
-      <div class="flex items-center gap-2">
-        <img src="/Informacion/logo.png"
-             alt="Logo C.U.R.A."
-             class="h-16 w-auto object-contain shrink-0" />
+  <header class="sticky top-0 z-30 bg-cura-primaryDark/80 backdrop-blur-md text-white border-b border-white/10 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/index.html" class="flex items-center gap-2 group">
+        <img src="/logo.png" alt="Logo" class="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
         <div class="leading-tight">
-          <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
-          <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+          <p class="text-[9px] uppercase tracking-[0.2em] text-cura-accentLight">LEY NACIONAL</p>
+          <p class="text-xs font-bold">C.U.R.A.</p>
         </div>
-      </div>
-
-      <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-            <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> 
-            Volver
-        </a>
-        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">
-            Sumate
-        </a>
-        <a href="/random/demo-random.html"
-           class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
-          Demo Enfermero
-        </a>
+      </a>
+      <nav class="flex items-center gap-6 text-sm font-medium">
+        <a href="/index.html" class="text-cura-accentLight hover:text-white transition">Inicio</a>
+        <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="flex-grow w-full px-4 py-10 space-y-12 flex flex-col items-center">
-    
-    <section class="w-full max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-white mb-8 text-center">Beneficios para Pacientes y Profesionales</h1>
-        
-        <div class="w-full flex justify-center">
-            <a href="/Informacion/beneficios.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
-                
-             <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink">
-El Sistema C.U.R.A. transforma la manera en que pacientes y profesionales acceden, gestionan y utilizan la información sanitaria en todo el país. Su diseño federal y totalmente digital mejora la calidad de la atención, reduce tiempos de espera, optimiza procesos y garantiza una experiencia más segura, eficiente y humana.
+  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <span>/</span>
+      <span class="text-white">Beneficios del Sistema</span>
+    </nav>
 
-Para los pacientes, C.U.R.A. asegura que toda la información clínica esté unificada y siempre disponible, sin importar el lugar de atención, el prestador o la cobertura. Esto permite continuidad asistencial, evita repetir estudios innecesarios, reduce riesgos por pérdida de información y agiliza el acceso a diagnósticos y tratamientos. Cada persona puede revisar desde el Panel de Privacidad quién accedió a su historia clínica, fortaleciendo la transparencia y el control sobre sus datos personales. Además, la Credencial Única con QR brinda seguridad en emergencias, garantizando acceso inmediato a información crítica cuando más se necesita.
+    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+        Beneficios e Impacto
+      </h1>
 
-Para los profesionales de la salud, el sistema elimina tareas administrativas repetitivas y reduce significativamente el tiempo de carga de datos, permitiendo dedicar más tiempo al paciente. La interoperabilidad entre prestadores facilita la consulta de antecedentes, estudios e indicaciones previas, mejorando la precisión diagnóstica y reduciendo errores clínicos. Las recetas electrónicas, la trazabilidad obligatoria y las auditorías automáticas simplifican procesos y aseguran un trabajo más ordenado, seguro y libre de fraudes.
+      <div class="prose prose-invert max-w-none">
+        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+      </div>
 
-Los establecimientos de salud obtienen mayor eficiencia operativa, reducción de costos y herramientas potentes para planificación, auditoría, gestión de turnos y administración clínica. El sistema incorpora módulos de inteligencia artificial auditada, telemedicina estructural y vigilancia epidemiológica unificada, lo que permite anticipar riesgos, mejorar la calidad institucional y fortalecer la capacidad de gestión.
-
-C.U.R.A. también incluye un Sistema Federal de Capacitación Digital gratuito, con cursos específicos por rol, simuladores y acreditación obligatoria, garantizando que todos los profesionales del país cuenten con formación actualizada. En zonas sanitarias críticas, la ley incorpora incentivos, equidad territorial, bonificaciones y beneficios laborales para mejorar la distribución del recurso humano.
-
-En conjunto, C.U.R.A. crea un ecosistema sanitario más ágil, seguro, transparente y equitativo, donde pacientes y profesionales se benefician directamente de una infraestructura moderna, interoperable y diseñada para elevar los estándares de atención en toda la Argentina.
-             </p>
-            </a>
+      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <p class="text-cura-accentLight text-sm italic">Hacia una atención más segura, eficiente y humana.</p>
+        <div class="flex gap-4">
+          <a href="/Informacion/seg-priv" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
+            Siguiente: Seguridad y Privacidad
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
-    </section>
-
-   <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
-  <div class="max-w-2xl">
-    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-    <p class="text-sm text-cura-accentLight">
-      Para sumarte a la iniciativa, completá el formulario principal de ciudadanía digital de C.U.R.A.
-    </p>
-  </div>
-
-  <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-md max-w-4xl w-full">
-    <p class="text-sm text-cura-accentLight mb-4">
-      Centralizamos todas las adhesiones en un único formulario para asegurar mejor seguimiento,
-      trazabilidad y actualización de tus datos.
-    </p>
-
-    <div class="mt-4 w-full">
-      <a href="https://www.leycura.org/#sumate"
-         class="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10 w-full">
-        <span>Ir al formulario principal</span>
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="h-4 w-4 transition-transform group-hover:translate-x-1"
-             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-
-  </main>
-
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark mt-auto">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="/index.html" class="hover:text-white">Volver al Inicio</a>
-        <a href="mailto:contacto@leycura.org" class="hover:text-white">Contacto</a>
       </div>
     </div>
+  </main>
+
+  <footer class="py-12 border-t border-white/10 text-center">
+    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const textElement = document.getElementById('typewriter-text');
+      
+      const textToType = `<strong>1. Para el Paciente: Empoderamiento y Acceso Universal</strong><br>- <strong>Propiedad Efectiva de los Datos:</strong> El ciudadano recupera el control de su Historia Clínica mediante la <strong>Credencial Única de Salud (C.U.S.)</strong>, garantizando portabilidad absoluta: sus datos lo acompañan donde sea que se atienda.<br>- <strong>Gestión Inteligente de Turnos:</strong> Se eliminan las listas de espera locales mediante una <strong>Red Federal de Turnos</strong> unificada, que permite solicitar y gestionar citas de manera ágil, optimizando las agendas de todo el país en tiempo real.<br>- <strong>Salud Mental e Integración Digital:</strong> Implementación de la <strong>Teleconsulta Federal</strong> para pacientes digitales, garantizando atención inmediata por profesionales de toda la red nacional y reservando los turnos presenciales exclusivamente para adultos mayores y sectores vulnerables.<br>- <strong>Seguridad en Emergencias:</strong> Acceso instantáneo a información vital (alergias, antecedentes, grupo sanguíneo) mediante el <strong>QR Dinámico</strong>, permitiendo una respuesta médica precisa cuando el paciente no puede comunicarse.<br><br><strong>2. Para los Profesionales: Tecnología al Servicio del Cuidado</strong><br>- <strong>Asistencia Diagnóstica con IA:</strong> Acceso a herramientas de <strong>Inteligencia Artificial para soporte en diagnóstico general y análisis de imágenes</strong>. El sistema actúa como una "segunda opinión" científica de alta precisión, garantizando siempre que el profesional médico tenga la última palabra y la responsabilidad final sobre la decisión clínica.<br>- <strong>Desburocratización Total:</strong> Eliminación de la carga administrativa y del uso de papel, permitiendo que el profesional dedique el <strong>100% de su tiempo a la atención clínica</strong> y al vínculo humano con el paciente.<br>- <strong>Precisión y Antecedentes:</strong> Consulta inmediata de estudios previos y antecedentes realizados en cualquier jurisdicción, reduciendo drásticamente el error médico por falta de información o fragmentación de datos.<br>- <strong>Capacitación y Matrícula Federal:</strong> Acceso gratuito al <strong>Sistema Federal de Capacitación Digital</strong> y validez nacional de la matrícula para brindar servicios de telemedicina de forma segura dentro del ecosistema C.U.R.A.<br><br><strong>3. Para el Sistema de Salud: Eficiencia y Soberanía</strong><br>- <strong>Reinversión Total de Ahorros:</strong> Los ahorros generados por la eliminación de estudios duplicados y fraudes operativos son auditados y reinvertidos íntegramente en infraestructura pública, ciberseguridad y mejora de recursos humanos.<br>- <strong>Vigilancia Epidemiológica Proactiva:</strong> Uso de algoritmos soberanos para detectar patrones sanitarios o brotes en tiempo real, permitiendo al Estado anticiparse a crisis y optimizar la distribución de medicamentos e insumos.<br>- <strong>Equidad Territorial:</strong> Reducción de la brecha sanitaria, asegurando que un ciudadano en una zona remota acceda al mismo estándar de calidad y especialistas que en los grandes centros urbanos.<br><br><strong>4. Transparencia y Seguridad Ciudadana</strong><br>- <strong>Panel de Auditoría del Paciente:</strong> El ciudadano puede monitorear en tiempo real qué profesional o institución consultó sus datos, asegurando un control total sobre su privacidad y el uso de su información.<br>- <strong>Inmutabilidad por Blockchain:</strong> Registro de auditoría inalterable que protege la integridad y veracidad de la historia clínica durante toda la vida del paciente.`;
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+      let i = 0;
+      const speed = 5; 
 
-  // --- 1. ANIMACIÓN TYPEWRITER RÁPIDA ---
-  const textElement = document.getElementById('typewriter-text');
-  
-  if (textElement) {
-    const fullText = textElement.innerText;
-    textElement.innerText = ''; // Limpiamos texto inicial
-    
-    let i = 0;
-    // Ajusta velocidad: menor número = más rápido.
-    // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
-    const speed = 5; 
-
-    function typeWriter() {
-      if (i < fullText.length) {
-        // Escribimos varios caracteres a la vez para acelerar bloques grandes de texto
-        textElement.textContent += fullText.substring(i, i + 3);
-        i += 3;
-        setTimeout(typeWriter, speed);
-      } else {
-        // Al finalizar, quitamos el cursor parpadeante (opcional)
-        textElement.classList.remove('cursor-blink');
-      }
-    }
-    
-    // Iniciar con un pequeño delay para asegurar renderizado
-    setTimeout(typeWriter, 300);
-  }
-
-  // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
-  function smoothScrollTo(element, duration = 1700, offset = 100) {
-    if (!element) return;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      window.scrollTo(0, startY + distance * ease);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-    requestAnimationFrame(animation);
-  }
-
-  const scrollLinks = document.querySelectorAll('a[href^="#"]');
-  scrollLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId !== '#') {
-              const targetElement = document.querySelector(targetId);
-              if (targetElement) {
-                  e.preventDefault();
-                  smoothScrollTo(targetElement);
-              }
+      function typeWriter() {
+        if (i < textToType.length) {
+          if (textToType.charAt(i) === '<') {
+            let endTag = textToType.indexOf('>', i);
+            if (endTag !== -1) {
+              i = endTag + 1;
+            }
+          } else {
+            i++;
           }
-      });
-  });
-}); // <-- cierre de DOMContentLoaded
-</script>
+          textElement.innerHTML = textToType.substring(0, i);
+          setTimeout(typeWriter, speed);
+        } else {
+          textElement.classList.remove('cursor-blink');
+        }
+      }
 
-
+      setTimeout(typeWriter, 500);
+    });
+  </script>
 </body>
 </html>

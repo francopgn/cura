@@ -104,31 +104,8 @@
         <div class="w-full flex justify-center">
             <a href="/Informacion/objetivos.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
                 
-             <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink">
-Introducción: La Infraestructura del Siglo XXI
-El Proyecto de Ley C.U.R.A. no es solo una plataforma tecnológica; es la infraestructura crítica que transforma la salud argentina en un ecosistema digital de alta eficiencia, soberano y centrado en la persona. Se establece como el mecanismo de ejecución operativa de la Ley 27.706, transformando la "voluntad digital" en un estándar de Orden Público.
+            <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
 
-Ejes Estratégicos (Objetivos Principales)
-1. Soberanía Sanitaria Digital Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.
-
-2. Empoderamiento y Propiedad del Paciente Restituir al ciudadano la propiedad efectiva de su historial médico. A través de la Credencial Única de Salud (C.U.S.), el paciente garantiza la portabilidad total de sus datos: su información lo acompaña, sin importar si se atiende en el sector público, privado o de seguridad social.
-
-3. Interoperabilidad Universal y Obligatoria Eliminar los "silos de información". El sistema impone el uso de estándares internacionales (HL7 FHIR y SNOMED CT) como norma de cumplimiento obligatorio para todos los subsectores, permitiendo que diferentes sistemas de salud hablen el mismo idioma por primera vez en la historia argentina.
-
-4. Eficiencia Actuarial y Sostenibilidad Financiera Optimizar el gasto prestacional mediante la eliminación de la redundancia. Al evitar la duplicación de estudios, combatir el fraude de identidad y digitalizar la burocracia, el sistema proyecta un ahorro directo de hasta el 30% del gasto en salud, garantizando la viabilidad del sistema a largo plazo.
-
-5. Transformación hacia la Medicina Predictiva (IA) Transicionar de una medicina reactiva a una medicina basada en datos. Utilizar la Inteligencia Artificial de manera ética para el soporte diagnóstico, la vigilancia epidemiológica en tiempo real y la prevención personalizada, permitiendo al Estado anticiparse a crisis sanitarias.
-
-6. Liderazgo Global y Hub de Innovación Posicionar a la República Argentina como un referente regional en Salud Digital. Al implementar una red nacional unificada, el país se transforma en un Hub Global de Interoperabilidad, capaz de exportar conocimiento, tecnología y modelos de gestión sanitaria moderna.
-
-Metas de Impacto Directo
-Error Cero: Reducción drástica de errores médicos por falta de antecedentes clínicos al momento de la atención.
-
-Desburocratización: Eliminación total del papel en órdenes médicas, recetas y autorizaciones.
-
-Continuidad del Cuidado: Asegurar que un médico en Jujuy tenga el mismo acceso a la información crítica que un médico en Buenos Aires ante una emergencia.
-
-Transparencia: Auditoría en tiempo real del uso de recursos públicos y privados para evitar sobreprecios y malversaciones.
             </a>
         </div>
 <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
@@ -189,22 +166,26 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ajusta velocidad: menor número = más rápido.
     // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
     const speed = 5; 
-
-    function typeWriter() {
-      if (i < fullText.length) {
-        // Escribimos varios caracteres a la vez para acelerar bloques grandes de texto
-        textElement.textContent += fullText.substring(i, i + 3);
-        i += 3;
-        setTimeout(typeWriter, speed);
-      } else {
-        // Al finalizar, quitamos el cursor parpadeante (opcional)
-        textElement.classList.remove('cursor-blink');
+const textToType = `<strong>Introducción: La Infraestructura del Siglo XXI</strong><br>El Proyecto de Ley C.U.R.A. no es solo una plataforma tecnológica; es la infraestructura crítica que transforma la salud argentina en un ecosistema digital de alta eficiencia, soberano y centrado en la persona. Se establece como el mecanismo de ejecución operativa de la Ley 27.706, transformando la "voluntad digital" en un estándar de Orden Público.<br><br><strong>Ejes Estratégicos (Objetivos Principales)</strong><br>1. <strong>Soberanía Sanitaria Digital:</strong> Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.<br><br>2. <strong>Empoderamiento y Propiedad del Paciente:</strong> Restituir al ciudadano la propiedad efectiva de su historial médico. A través de la Credencial Única de Salud (C.U.S.), el paciente garantiza la portabilidad total de sus datos: su información lo acompaña, sin importar si se atiende en el sector público, privado o de seguridad social.<br><br>3. <strong>Interoperabilidad Universal y Obligatoria:</strong> Eliminar los "silos de información". El sistema impone el uso de estándares internacionales (HL7 FHIR y SNOMED CT) como norma de cumplimiento obligatorio para todos los subsectores, permitiendo que diferentes sistemas de salud hablen el mismo idioma por primera vez en la historia argentina.<br><br>4. <strong>Eficiencia Actuarial y Sostenibilidad Financiera:</strong> Optimizar el gasto prestacional mediante la eliminación de la redundancia. Al evitar la duplicación de estudios, combatir el fraude de identidad y digitalizar la burocracia, el sistema proyecta un ahorro directo de hasta el 30% del gasto en salud, garantizando la viabilidad del sistema a largo plazo.<br><br>5. <strong>Transformación hacia la Medicina Predictiva (IA):</strong> Transicionar de una medicina reactiva a una medicina basada en datos. Utilizar la Inteligencia Artificial de manera ética para el soporte diagnóstico, la vigilancia epidemiológica en tiempo real y la prevención personalizada, permitiendo al Estado anticiparse a crisis sanitarias.<br><br>6. <strong>Liderazgo Global y Hub de Innovación:</strong> Posicionar a la República Argentina como un referente regional en Salud Digital. Al implementar una red nacional unificada, el país se transforma en un Hub Global de Interoperabilidad, capaz de exportar conocimiento, tecnología y modelos de gestión sanitaria moderna.<br><br><strong>Metas de Impacto Directo</strong><br><strong>Error Cero:</strong> Reducción drástica de errores médicos por falta de antecedentes clínicos al momento de la atención.<br><br><strong>Desburocratización:</strong> Eliminación total del papel en órdenes médicas, recetas y autorizaciones.<br><br><strong>Continuidad del Cuidado:</strong> Asegurar que un médico en Jujuy tenga el mismo acceso a la información crítica que un médico en Buenos Aires ante una emergencia.<br><br><strong>Transparencia:</strong> Auditoría en tiempo real del uso de recursos públicos y privados para evitar sobreprecios y malversaciones.`;
+   function typeWriter() {
+  if (i < textToType.length) {
+    // Si encuentra una etiqueta HTML, la salta para que no se vea el código escribiéndose
+    if (textToType.charAt(i) === '<') {
+      let endTag = textToType.indexOf('>', i);
+      if (endTag !== -1) {
+        i = endTag + 1; 
       }
+    } else {
+      i++;
     }
     
-    // Iniciar con un pequeño delay para asegurar renderizado
-    setTimeout(typeWriter, 300);
+    // Usamos innerHTML para que reconozca las negritas (<strong>)
+    textElement.innerHTML = textToType.substring(0, i);
+    setTimeout(typeWriter, speed);
+  } else {
+    textElement.classList.remove('cursor-blink');
   }
+}
 
   // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
   function smoothScrollTo(element, duration = 1700, offset = 100) {

@@ -3,501 +3,351 @@
 <head>
   <meta charset="UTF-8" />
   <title>Prescripciones - C.U.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      --blue-dark: #0d3662;
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
       --blue-soft: #e3f0ff;
-      --bg-light: #f4f6fb;
-      --text-main: #0f172a;
-      --text-soft: #6b7280;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
       --border-soft: #e5e7eb;
-      --radius-lg: 24px;
-      --radius-pill: 999px;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 45%, #f4f6fb 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 14px 14px 24px;
+      max-width: 414px;
+      background-color: var(--main-bg);
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 110px; 
     }
 
-    /* HEADER estilo iOS */
-
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 28px;
-      padding: 12px 16px 18px;
-      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .header::before {
-      content: "";
-      position: absolute;
-      width: 190%;
-      height: 180%;
-      top: -70%;
-      left: -40%;
-      border-radius: 50%;
-      background: radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 60%);
-    }
-
-    .header-row {
-      position: relative;
+    /* --- HEADER PASTILLA --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      z-index: 2;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
     .back-btn {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       background: rgba(255,255,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(255,255,255,0.5);
-      backdrop-filter: blur(8px);
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
-      font-size: 18px;
+      margin-right: 12px;
     }
 
-    .header-title {
-      font-size: 19px;
-      font-weight: 600;
-    }
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
-    /* CARD PRINCIPAL */
+    /* --- CONTENIDO --- */
+    .main-content { padding: 10px 20px; flex: 1; }
 
     .card {
-      margin-top: 12px;
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 16px 16px 20px;
-      box-shadow: 0 12px 30px rgba(15,23,42,0.12);
-    }
-
-    .section {
-      margin-bottom: 16px;
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
     }
 
     .section-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
     }
 
     .hint {
-      font-size: 12px;
-      color: var(--text-soft);
+      font-size: 14px;
+      color: var(--text-gray);
+      margin-bottom: 16px;
     }
 
-    /* FILTROS */
-
+    /* --- FILTROS --- */
     .filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-      margin-bottom: 10px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
-    .input-text,
-    .select-field {
-      padding: 9px 10px;
-      border-radius: 12px;
+    .input-text, .select-field {
+      padding: 12px;
+      border-radius: 16px;
       border: 1px solid var(--border-soft);
-      font-size: 13px;
+      font-size: 14px;
       outline: none;
-      background: #f9fafb;
-      color: var(--text-main);
-      min-width: 0;
+      background: #f8fafc;
+      color: var(--text-dark);
+      width: 100%;
     }
 
-    .input-text:focus,
-    .select-field:focus {
-      border-color: var(--blue-main);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.28);
-      background: #ffffff;
+    .select-field {
+      width: calc(50% - 5px);
     }
-
-    .filters .input-text {
-      flex: 1 1 100%;
-    }
-
-    .filters .select-field {
-      flex: 1 1 calc(50% - 4px);
-    }
-
-    /* TOGGLE DATOS SENSIBLES */
 
     .toggle-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 4px;
+      gap: 12px;
+      padding: 10px 0;
     }
 
     .toggle {
       position: relative;
-      width: 40px;
-      height: 22px;
+      width: 44px;
+      height: 24px;
     }
 
-    .toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
 
     .slider {
       position: absolute;
       cursor: pointer;
       inset: 0;
-      background-color: #d1d5db;
+      background-color: #cbd5e1;
       border-radius: 999px;
-      transition: 0.2s;
+      transition: 0.3s;
     }
 
     .slider::before {
       content: "";
       position: absolute;
-      height: 16px;
-      width: 16px;
+      height: 18px;
+      width: 18px;
       left: 3px;
       top: 3px;
       background-color: #fff;
       border-radius: 50%;
-      transition: 0.2s;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      transition: 0.3s;
     }
 
-    .toggle input:checked + .slider {
-      background-color: var(--blue-main);
-    }
+    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
 
-    .toggle input:checked + .slider::before {
-      transform: translateX(16px);
-    }
+    .toggle-text { font-size: 13px; color: var(--text-gray); line-height: 1.3; }
 
-    .toggle-text {
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    /* LISTA DE PRESCRIPCIONES */
-
+    /* --- LISTA DE PRESCRIPCIONES --- */
     .prescription-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-top: 8px;
+      gap: 14px;
     }
 
     .rx-card {
-      border-radius: 18px;
+      border-radius: 24px;
+      background: #f8fafc;
       border: 1px solid var(--border-soft);
-      background: #f9fafb;
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--text-main);
+      padding: 16px;
     }
 
     .rx-header {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 4px;
+      align-items: flex-start;
+      margin-bottom: 8px;
     }
 
-    .rx-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
+    .rx-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
 
     .rx-dose {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
       background: var(--blue-soft);
-      color: var(--blue-dark);
-      white-space: nowrap;
+      color: var(--blue-header);
     }
 
-    .rx-body {
-      margin-bottom: 4px;
-    }
+    .rx-body { font-size: 14px; color: var(--text-dark); line-height: 1.5; margin-bottom: 10px; }
 
-    .rx-line {
-      margin: 1px 0;
-    }
+    .rx-meta { font-size: 12px; color: var(--text-gray); margin-bottom: 12px; }
 
-    .rx-meta {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-top: 2px;
-    }
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-    }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 
     .chip {
       font-size: 11px;
-      padding: 3px 7px;
-      border-radius: var(--radius-pill);
-      background: #e5e7eb;
-      color: #111827;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: #e2e8f0;
+      color: #475569;
     }
 
-    .chip-blue {
-      background: var(--blue-soft);
-      color: var(--blue-dark);
-    }
+    .chip-blue { background: #dbeafe; color: #1e40af; }
+    .chip-green { background: #dcfce7; color: #166534; }
+    .chip-red { background: #fee2e2; color: #991b1b; }
 
-    .chip-green {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-    .chip-red {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-    .mini-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
+    .mini-actions { display: flex; gap: 8px; }
 
     .mini-btn {
-      border-radius: var(--radius-pill);
+      flex: 1;
+      padding: 10px;
+      border-radius: 14px;
       border: 1px solid var(--border-soft);
-      padding: 4px 9px;
-      font-size: 11px;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+    }
+
+    /* --- NAV INFERIOR --- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
       background: #ffffff;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      z-index: 50;
+    }
+
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
+    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
+
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: #0066cc;
+      border-radius: 50%;
+      border: 5px solid var(--main-bg); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 600;
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
       cursor: pointer;
     }
   </style>
 </head>
 <body>
+
   <div class="app-shell">
-    <header class="header">
-      <div class="header-row">
-        <div class="back-btn" onclick="history.back()">‹</div>
-        <div class="header-title">Prescripciones</div>
-      </div>
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">Prescripciones</div>
     </header>
 
-    <main class="card">
-      <!-- FILTROS -->
-      <section class="section">
-        <div class="section-label">Tus medicamentos</div>
-        <div class="hint">
-          Prescripciones electrónicas interoperables vinculadas a tu historia de salud.
-        </div>
+    <main class="main-content">
+      <div class="card">
+        <h2 class="section-label">Mis medicamentos</h2>
+        <p class="hint">Recetas electrónicas vinculadas a tu CURA-ID.</p>
 
         <div class="filters">
-          <input
-            type="text"
-            class="input-text"
-            id="buscadorRx"
-            placeholder="Buscar por medicamento, diagnóstico o profesional..."
-            oninput="filtrarRx()"
-          />
-          <select class="select-field" id="filtroEstado" onchange="filtrarRx()">
-            <option value="todas">Todas</option>
+          <input type="text" id="buscadorRx" class="input-text" placeholder="Buscar medicamento o profesional..." oninput="filtrarRx()">
+          <select id="filtroEstado" class="select-field" onchange="filtrarRx()">
+            <option value="todas">Estado: Todas</option>
             <option value="activa">Activas</option>
-            <option value="renovacion">Próximas a renovar</option>
+            <option value="renovacion">Por renovar</option>
             <option value="finalizada">Finalizadas</option>
           </select>
-          <select class="select-field" id="filtroTipo" onchange="filtrarRx()">
+          <select id="filtroTipo" class="select-field" onchange="filtrarRx()">
             <option value="todos">Tipo: Todos</option>
-            <option value="cronico">Tratamiento crónico</option>
-            <option value="agudo">Tratamiento corto</option>
+            <option value="cronico">Crónico</option>
+            <option value="agudo">Agudo</option>
           </select>
         </div>
 
         <div class="toggle-row">
           <label class="toggle">
-            <input type="checkbox" id="toggleSensiblesRx" checked onchange="filtrarRx()" />
+            <input type="checkbox" id="toggleSensiblesRx" checked onchange="filtrarRx()">
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">
-            Mostrar medicación considerada dato sensible (salud mental, VIH, etc.)
-          </span>
+          <span class="toggle-text">Mostrar medicación de salud mental o datos sensibles.</span>
         </div>
-      </section>
+      </div>
 
-      <!-- LISTA PRESCRIPCIONES -->
-      <section class="section">
-        <div class="section-label">Prescripciones activas</div>
+      <div class="prescription-list" id="prescriptionList">
+        <article class="rx-card" data-estado="activa" data-tipo="cronico" data-sensible="no" data-texto="metformina 850 mg diabetes">
+          <div class="rx-header">
+            <div class="rx-name">Metformina</div>
+            <div class="rx-dose">850 mg</div>
+          </div>
+          <div class="rx-body">1 comprimido con el desayuno y 1 con la cena.</div>
+          <div class="rx-meta">Dra. López · Renovada: 05/12/2025.</div>
+          <div class="chip-row">
+            <span class="chip chip-blue">Diabetes tipo 2</span>
+            <span class="chip chip-green">Activa</span>
+          </div>
+          <div class="mini-actions">
+            <button class="mini-btn">Ver receta</button>
+            <button class="mini-btn">Interacciones</button>
+          </div>
+        </article>
 
-        <div class="prescription-list" id="prescriptionList">
-          <!-- Metformina -->
-          <article
-            class="rx-card"
-            data-estado="activa"
-            data-tipo="cronico"
-            data-sensible="no"
-            data-texto="metformina 850 mg diabetes tipo 2 desayuno cena laboratorio control">
-            <div class="rx-header">
-              <div class="rx-name">Metformina</div>
-              <div class="rx-dose">850&nbsp;mg · VO</div>
-            </div>
-            <div class="rx-body">
-              <div class="rx-line">Mañana: 1 comprimido con el desayuno.</div>
-              <div class="rx-line">Noche: 1 comprimido con la cena.</div>
-            </div>
-            <div class="rx-meta">
-              Indicado por: Dra. López (Clínica médica) · Última renovación: 05/12/2023
-            </div>
-            <div class="chip-row">
-              <span class="chip chip-blue">Diabetes tipo 2</span>
-              <span class="chip">Receta electrónica crónica</span>
-            </div>
-            <div class="mini-actions">
-              <button class="mini-btn">Ver receta</button>
-              <button class="mini-btn">Ver interacciones</button>
-            </div>
-          </article>
-
-          <!-- Losartán -->
-          <article
-            class="rx-card"
-            data-estado="activa"
-            data-tipo="cronico"
-            data-sensible="no"
-            data-texto="losartan 50 mg hipertension control tension arterial noche">
-            <div class="rx-header">
-              <div class="rx-name">Losartán</div>
-              <div class="rx-dose">50&nbsp;mg · VO</div>
-            </div>
-            <div class="rx-body">
-              <div class="rx-line">Noche: 1 comprimido antes de acostarse.</div>
-            </div>
-            <div class="rx-meta">
-              Indicado por: Dr. Juan González (Clínica médica) · Último control: 12/04/2024
-            </div>
-            <div class="chip-row">
-              <span class="chip chip-blue">Hipertensión arterial</span>
-              <span class="chip chip-green">Prescripción activa</span>
-            </div>
-            <div class="mini-actions">
-              <button class="mini-btn">Ver receta</button>
-              <button class="mini-btn">Enviar a farmacia</button>
-            </div>
-          </article>
-
-          <!-- Ibuprofeno agudo -->
-          <article
-            class="rx-card"
-            data-estado="renovacion"
-            data-tipo="agudo"
-            data-sensible="no"
-            data-texto="ibuprofeno 400 mg dolor toracico musculoesqueletico cinco dias">
-            <div class="rx-header">
-              <div class="rx-name">Ibuprofeno</div>
-              <div class="rx-dose">400&nbsp;mg · VO</div>
-            </div>
-            <div class="rx-body">
-              <div class="rx-line">Cada 8 horas mientras persista el dolor (máx. 5 días).</div>
-              <div class="rx-line">Tomar después de las comidas.</div>
-            </div>
-            <div class="rx-meta">
-              Indicado por: Dr. Juan González · Prescripción breve (finaliza el 17/04/2024)
-            </div>
-            <div class="chip-row">
-              <span class="chip">Tratamiento agudo</span>
-              <span class="chip chip-green">Próxima a finalizar</span>
-            </div>
-            <div class="mini-actions">
-              <button class="mini-btn">Ver indicaciones</button>
-            </div>
-          </article>
-
-          <!-- Antidepresivo (dato sensible) -->
-          <article
-            class="rx-card"
-            data-estado="activa"
-            data-tipo="cronico"
-            data-sensible="si"
-            data-texto="sertralina 50 mg salud mental depresion ansiedad tratamiento psiquiatria">
-            <div class="rx-header">
-              <div class="rx-name">Sertralina</div>
-              <div class="rx-dose">50&nbsp;mg · VO</div>
-            </div>
-            <div class="rx-body">
-              <div class="rx-line">Mañana: 1 comprimido con el desayuno.</div>
-            </div>
-            <div class="rx-meta">
-              Indicado por: Equipo de Salud mental · Inicio: 18/02/2024
-            </div>
-            <div class="chip-row">
-              <span class="chip chip-red">Salud mental · dato sensible</span>
-              <span class="chip">Seguimiento cada 30 días</span>
-            </div>
-            <div class="mini-actions">
-              <button class="mini-btn">Ver receta</button>
-              <button class="mini-btn">Configurar privacidad</button>
-            </div>
-          </article>
-
-          <!-- Prescripción finalizada -->
-          <article
-            class="rx-card"
-            data-estado="finalizada"
-            data-tipo="agudo"
-            data-sensible="no"
-            data-texto="amoxicilina 875 mg acido clavulanico infeccion respiratoria tratamiento completado">
-            <div class="rx-header">
-              <div class="rx-name">Amoxicilina / Ácido clavulánico</div>
-              <div class="rx-dose">875/125&nbsp;mg · VO</div>
-            </div>
-            <div class="rx-body">
-              <div class="rx-line">Cada 12 horas por 7 días. Tratamiento completado.</div>
-            </div>
-            <div class="rx-meta">
-              Indicado por: Dra. Pérez (Clínica médica) · Finalizó: 10/01/2024
-            </div>
-            <div class="chip-row">
-              <span class="chip">Infección respiratoria</span>
-              <span class="chip">Historial</span>
-            </div>
-          </article>
-        </div>
-      </section>
+        <article class="rx-card" data-estado="activa" data-tipo="cronico" data-sensible="si" data-texto="sertralina 50 mg salud mental">
+          <div class="rx-header">
+            <div class="rx-name">Sertralina</div>
+            <div class="rx-dose">50 mg</div>
+          </div>
+          <div class="rx-body">1 comprimido por la mañana.</div>
+          <div class="rx-meta">Equipo Salud Mental · Inicio: 18/02/2025.</div>
+          <div class="chip-row">
+            <span class="chip chip-red">Salud mental</span>
+            <span class="chip">Dato sensible</span>
+          </div>
+          <div class="mini-actions">
+            <button class="mini-btn">Ver receta</button>
+            <button class="mini-btn">Privacidad</button>
+          </div>
+        </article>
+      </div>
     </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </button>
+      <div class="center-question-btn">?</div>
+      <button class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+    </nav>
   </div>
 
   <script>
@@ -506,7 +356,6 @@
       const estado = document.getElementById("filtroEstado").value;
       const tipo = document.getElementById("filtroTipo").value;
       const mostrarSensibles = document.getElementById("toggleSensiblesRx").checked;
-
       const items = document.querySelectorAll("#prescriptionList .rx-card");
 
       items.forEach((item) => {
@@ -514,7 +363,6 @@
         const t = item.dataset.tipo;
         const s = item.dataset.sensible === "si";
         const fullText = (item.dataset.texto || "").toLowerCase();
-
         let visible = true;
 
         if (estado !== "todas" && e !== estado) visible = false;

@@ -2,11 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
- <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="manifest" href="site.webmanifest">
-  <title>Información | Ley C.U.R.A.</title>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest">
+  <title>Marco Legal | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -33,204 +34,101 @@
     }
   </script>
 
-<style>
-  /* --- ANIMACIONES DE MODALES --- */
-  .modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-  .modal-backdrop.show {
-    opacity: 1;
-  }
-  .modal-card {
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .modal-card.show {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-  
-  /* Cursor parpadeante para el efecto máquina de escribir */
-  .cursor-blink::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: #59D2FF;
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-</style>
-
+  <style>
+    body { background-color: #004E85; }
+    .cursor-blink::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
 </head>
-<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
+<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
 
-  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
-
-      <div class="flex items-center gap-2">
-        <img src="/Informacion/logo.png"
-             alt="Logo C.U.R.A."
-             class="h-16 w-auto object-contain shrink-0" />
+  <header class="sticky top-0 z-30 bg-cura-primaryDark/80 backdrop-blur-md text-white border-b border-white/10 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/index.html" class="flex items-center gap-2 group">
+        <img src="/logo.png" alt="Logo" class="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
         <div class="leading-tight">
-          <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
-          <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+          <p class="text-[9px] uppercase tracking-[0.2em] text-cura-accentLight">LEY NACIONAL</p>
+          <p class="text-xs font-bold">C.U.R.A.</p>
         </div>
-      </div>
-
-      <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-            <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> 
-            Volver
-        </a>
-        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">
-            Sumate
-        </a>
-        <a href="/random/demo-random.html"
-           class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
-          Demo Enfermero
-        </a>
+      </a>
+      <nav class="flex items-center gap-6 text-sm font-medium">
+        <a href="/index.html" class="text-cura-accentLight hover:text-white transition">Inicio</a>
+        <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="flex-grow w-full px-4 py-10 space-y-12 flex flex-col items-center">
-    
-    <section class="w-full max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-white mb-8 text-center">Marco Legal</h1>
-        
-        <div class="w-full flex justify-center">
-            <a href="/Informacion/marco-legal.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
-                
-             <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink">
-La Ley C.U.R.A. establece un marco jurídico moderno, integral y obligatorio que transforma la salud digital en una política de Estado. El sistema constituye el régimen operativo y técnico que articula las obligaciones previstas en la Ley 27.706 (Historia Clínica Electrónica Nacional) y la Ley 26.529 de Derechos del Paciente, garantizando interoperabilidad, portabilidad, privacidad y acceso seguro a la información clínica en todo el país.
+  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <span>/</span>
+      <span class="text-white">Marco Legal</span>
+    </nav>
 
-El marco legal declara de orden público todos los estándares técnicos, de seguridad, trazabilidad, interoperabilidad y protección de datos definidos por la ley. Esto significa que ninguna institución del sistema de salud —pública, privada o de la seguridad social— puede desentenderse de las obligaciones, y que cualquier norma o práctica incompatible queda automáticamente sin efecto.
+    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+        Marco Legal
+      </h1>
 
-C.U.R.A. funciona bajo un esquema federal y de máxima jerarquía normativa: establece obligaciones para hospitales, clínicas, obras sociales, PAMI, ART, farmacias, laboratorios, centros de diagnóstico, organismos del Estado y cualquier actor que intervenga en procesos asistenciales o administrativos vinculados a la salud. La adhesión de las provincias se realiza mediante normas locales y convenios federales, respetando la autonomía y asegurando compatibilidad plena con los sistemas provinciales.
+      <div class="prose prose-invert max-w-none">
+        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+      </div>
 
-El sistema garantiza los derechos del paciente a la privacidad, a la portabilidad de sus datos, al acceso seguro a su historia clínica y al control sobre quién consulta su información. También otorga al profesional un entorno jurídico claro, con respaldo documental, firma digital, trazabilidad obligatoria y protección frente a situaciones en las que antes dependían de registros incompletos o papeles fácilmente adulterables.
-
-El marco legal se complementa con obligaciones para el Estado Nacional como custodio tecnológico: residencia obligatoria de datos en territorio argentino, infraestructura a cargo de ARSAT, auditorías externas, controles permanentes de seguridad informática y actualización obligatoria del sistema al menos dos veces por año.
-
-En conjunto, C.U.R.A. establece un régimen jurídico robusto que garantiza interoperabilidad nacional, protección de datos, transparencia, eficiencia y derechos, convirtiéndolo en el proyecto normativo más importante en la historia de la salud digital argentina.
-        </p>
-            </a>
+      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <p class="text-cura-accentLight text-sm italic">Hacia una seguridad jurídica digital definitiva.</p>
+        <div class="flex gap-4">
+          <a href="/Informacion/alcance" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
+            Siguiente: Alcance Federal
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
-    </section>
-
- <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
-  <div class="max-w-2xl">
-    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-    <p class="text-sm text-cura-accentLight">
-      Para sumarte a la iniciativa, completá el formulario principal de ciudadanía digital de C.U.R.A.
-    </p>
-  </div>
-
-  <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-md max-w-4xl w-full">
-    <p class="text-sm text-cura-accentLight mb-4">
-      Centralizamos todas las adhesiones en un único formulario para asegurar mejor seguimiento,
-      trazabilidad y actualización de tus datos.
-    </p>
-
-    <div class="mt-4 w-full">
-      <a href="https://www.leycura.org/#sumate"
-         class="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10 w-full">
-        <span>Ir al formulario principal</span>
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="h-4 w-4 transition-transform group-hover:translate-x-1"
-             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-
-  </main>
-
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark mt-auto">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="/index.html" class="hover:text-white">Volver al Inicio</a>
-        <a href="mailto:contacto@leycura.org" class="hover:text-white">Contacto</a>
       </div>
     </div>
+  </main>
+
+  <footer class="py-12 border-t border-white/10 text-center">
+    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const textElement = document.getElementById('typewriter-text');
+      
+      const textToType = `<strong>1. Declaración de Orden Público:</strong> La Ley C.U.R.A. se establece como una norma de <strong>Orden Público</strong> en todo lo referente a la portabilidad de datos, interoperabilidad y estándares de ciberseguridad. Esto garantiza que el derecho del ciudadano a poseer su historia clínica digital es superior a cualquier normativa local o institucional, siendo de aplicación obligatoria en todo el territorio nacional de conformidad con la Constitución Nacional.<br><br><strong>2. Ejecución Operativa de la Ley 27.706:</strong> El sistema constituye el mecanismo técnico y operativo oficial para dar cumplimiento efectivo a la Ley Nacional de Historia Clínica Electrónica (27.706). C.U.R.A. transforma la "voluntad digital" de legislaciones previas en un estándar técnico vinculante, unificando el <strong>Sistema Único de Registro de Historias Clínicas Electrónicas (S.U.R.H.C.E.)</strong>.<br><br><strong>3. Federalismo de Concertación y Pacto de Mayo:</strong> En sintonía con el <strong>Pacto de Mayo</strong>, el proyecto se apoya en la institucionalidad del <strong>Consejo de Mayo</strong> como catalizador del federalismo moderno. Bajo el principio de <strong>Federalismo de Concertación</strong>, se invita a las provincias a adherir voluntariamente para alcanzar el equilibrio fiscal y la modernización administrativa, respetando sus autonomías pero unificando la "autopista digital" sanitaria.<br><br><strong>4. Soberanía Sanitaria Digital y Residencia de Datos:</strong> El marco legal impone la <strong>Residencia Obligatoria de Datos</strong> en territorio argentino. La infraestructura técnica debe ser provista de forma exclusiva por <strong>ARSAT</strong>, blindando la información sensible de los ciudadanos contra jurisdicciones extranjeras y garantizando que la soberanía tecnológica sea una política de Estado innegociable.<br><br><strong>5. Inmutabilidad y Respaldo Jurídico:</strong> Se otorga validez legal absoluta a los registros digitales integrados. Mediante el uso de <strong>Blockchain y Firma Digital</strong>, cada acto médico cuenta con un respaldo documental inalterable. Esto protege tanto al paciente como al profesional, eliminando la precariedad de los registros físicos o sistemas analógicos fácilmente adulterables.<br><br><strong>6. Protección Integral de Datos Personales:</strong> La ley refuerza los preceptos de la <strong>Ley 25.326</strong>, incorporando el principio de <strong>Privacidad por Diseño</strong>. Queda prohibido el uso de la información clínica para fines comerciales o políticos, estableciendo sanciones gravísimas y responsabilidad civil y penal para cualquier actor que vulnere la confidencialidad de los datos sanitarios.<br><br><strong>7. Máxima Eficiencia y Transparencia:</strong> El marco legal obliga a la <strong>Autoridad de Aplicación</strong> a publicar auditorías trimestrales de ejecución presupuestaria y métricas de ahorro operativo. La ley garantiza que el sistema sea autosostenible mediante la reinversión del <strong>100% de los ahorros</strong> generados por la despapelización y la eliminación de fraudes operativos en el sector público.`;
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+      let i = 0;
+      const speed = 5; 
 
-  // --- 1. ANIMACIÓN TYPEWRITER RÁPIDA ---
-  const textElement = document.getElementById('typewriter-text');
-  
-  if (textElement) {
-    const fullText = textElement.innerText;
-    textElement.innerText = ''; // Limpiamos texto inicial
-    
-    let i = 0;
-    // Ajusta velocidad: menor número = más rápido.
-    // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
-    const speed = 5; 
-
-    function typeWriter() {
-      if (i < fullText.length) {
-        // Escribimos varios caracteres a la vez para acelerar bloques grandes de texto
-        textElement.textContent += fullText.substring(i, i + 3);
-        i += 3;
-        setTimeout(typeWriter, speed);
-      } else {
-        // Al finalizar, quitamos el cursor parpadeante (opcional)
-        textElement.classList.remove('cursor-blink');
-      }
-    }
-    
-    // Iniciar con un pequeño delay para asegurar renderizado
-    setTimeout(typeWriter, 300);
-  }
-
-  // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
-  function smoothScrollTo(element, duration = 1700, offset = 100) {
-    if (!element) return;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      window.scrollTo(0, startY + distance * ease);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-    requestAnimationFrame(animation);
-  }
-
-  const scrollLinks = document.querySelectorAll('a[href^="#"]');
-  scrollLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId !== '#') {
-              const targetElement = document.querySelector(targetId);
-              if (targetElement) {
-                  e.preventDefault();
-                  smoothScrollTo(targetElement);
-              }
+      function typeWriter() {
+        if (i < textToType.length) {
+          if (textToType.charAt(i) === '<') {
+            let endTag = textToType.indexOf('>', i);
+            if (endTag !== -1) {
+              i = endTag + 1;
+            }
+          } else {
+            i++;
           }
-      });
-  });
-}); // <-- cierre de DOMContentLoaded
-</script>
+          textElement.innerHTML = textToType.substring(0, i);
+          setTimeout(typeWriter, speed);
+        } else {
+          textElement.classList.remove('cursor-blink');
+        }
+      }
 
-
+      setTimeout(typeWriter, 500);
+    });
+  </script>
 </body>
 </html>

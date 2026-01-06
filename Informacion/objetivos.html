@@ -6,7 +6,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="manifest" href="site.webmanifest">
-  <title>Información | Ley C.U.R.A.</title>
+  <title>Objetivos | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -33,195 +33,106 @@
     }
   </script>
 
-<style>
-  /* --- ANIMACIONES DE MODALES --- */
-  .modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-  .modal-backdrop.show {
-    opacity: 1;
-  }
-  .modal-card {
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .modal-card.show {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-  
-  /* Cursor parpadeante para el efecto máquina de escribir */
-  .cursor-blink::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: #59D2FF;
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-</style>
-
+  <style>
+    body {
+      background-color: #004E85;
+    }
+    .cursor-blink::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
 </head>
-<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
+<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
 
-  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
-
-      <div class="flex items-center gap-2">
-        <img src="/Informacion/logo.png"
-             alt="Logo C.U.R.A."
-             class="h-16 w-auto object-contain shrink-0" />
+  <header class="sticky top-0 z-30 bg-cura-primaryDark/80 backdrop-blur-md text-white border-b border-white/10 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/index.html" class="flex items-center gap-2 group">
+        <img src="/logo.png" alt="Logo" class="h-10 w-auto object-contain transition-transform group-hover:scale-105" />
         <div class="leading-tight">
-          <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
-          <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+          <p class="text-[9px] uppercase tracking-[0.2em] text-cura-accentLight">LEY NACIONAL</p>
+          <p class="text-xs font-bold">C.U.R.A.</p>
         </div>
-      </div>
-
-      <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-            <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> 
-            Volver
-        </a>
-        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">
-            Sumate
-        </a>
-        <a href="/random/demo-random.html"
-           class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
-          Demo Enfermero
-        </a>
+      </a>
+      <nav class="flex items-center gap-6 text-sm font-medium">
+        <a href="/index.html" class="text-cura-accentLight hover:text-white transition">Inicio</a>
+        <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="flex-grow w-full px-4 py-10 space-y-12 flex flex-col items-center">
-    
-    <section class="w-full max-w-4xl mx-auto">
-        <h1 class="text-3xl font-bold text-white mb-8 text-center">Objetivos del Sistema C.U.R.A.</h1>
-        
-        <div class="w-full flex justify-center">
-            <a href="/Informacion/objetivos.html" class="block w-full bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-h-[450px] md:min-h-[350px]">
-                
-            <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <span>/</span>
+      <span class="text-white">Objetivos del Sistema</span>
+    </nav>
 
-            </a>
+    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+        Objetivos Estratégicos
+      </h1>
+
+      <div class="prose prose-invert max-w-none">
+        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <p class="text-cura-accentLight text-sm italic">Hacia una soberanía sanitaria digital plena.</p>
+        <div class="flex gap-4">
+          <a href="/Informacion/fundamentos" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
+            Siguiente: Fundamentos
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </a>
         </div>
-<section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
-  <div class="max-w-2xl">
-    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-    <p class="text-sm text-cura-accentLight">
-      Para sumarte a la iniciativa, completá el formulario principal de ciudadanía digital de C.U.R.A.
-    </p>
-  </div>
-
-  <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-md max-w-4xl w-full">
-    <p class="text-sm text-cura-accentLight mb-4">
-      Centralizamos todas las adhesiones en un único formulario para asegurar mejor seguimiento,
-      trazabilidad y actualización de tus datos.
-    </p>
-
-    <div class="mt-4 w-full">
-      <a href="https://www.leycura.org/#sumate"
-         class="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10 w-full">
-        <span>Ir al formulario principal</span>
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="h-4 w-4 transition-transform group-hover:translate-x-1"
-             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-
-  </main>
-
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark mt-auto">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="/index.html" class="hover:text-white">Volver al Inicio</a>
-        <a href="mailto:contacto@leycura.org" class="hover:text-white">Contacto</a>
       </div>
     </div>
+  </main>
+
+  <footer class="py-12 border-t border-white/10 text-center">
+    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const textElement = document.getElementById('typewriter-text');
+      
+      const textToType = `<strong>Introducción: La Infraestructura del Siglo XXI</strong><br>El Proyecto de Ley C.U.R.A. no es solo una plataforma tecnológica; es la infraestructura crítica que transforma la salud argentina en un ecosistema digital de alta eficiencia, soberano y centrado en la persona. Se establece como el mecanismo de ejecución operativa de la Ley 27.706, transformando la "voluntad digital" en un estándar de Orden Público.<br><br><strong>Ejes Estratégicos (Objetivos Principales)</strong><br>1. <strong>Soberanía Sanitaria Digital:</strong> Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.<br><br>2. <strong>Empoderamiento y Propiedad del Paciente:</strong> Restituir al ciudadano la propiedad efectiva de su historial médico. A través de la Credencial Única de Salud (C.U.S.), el paciente garantiza la portabilidad total de sus datos: su información lo acompaña, sin importar si se atiende en el sector público, privado o de seguridad social.<br><br>3. <strong>Interoperabilidad Universal y Obligatoria:</strong> Eliminar los "silos de información". El sistema impone el uso de estándares internacionales (HL7 FHIR y SNOMED CT) como norma de cumplimiento obligatorio para todos los subsectores, permitiendo que diferentes sistemas de salud hablen el mismo idioma por primera vez en la historia argentina.<br><br>4. <strong>Eficiencia Actuarial y Sostenibilidad Financiera:</strong> Optimizar el gasto prestacional mediante la eliminación de la redundancia. Al evitar la duplicación de estudios, combatir el fraude de identidad y digitalizar la burocracia, el sistema proyecta un ahorro directo de hasta el 30% del gasto en salud, garantizando la viabilidad del sistema a largo plazo.<br><br>5. <strong>Transformación hacia la Medicina Predictiva (IA):</strong> Transicionar de una medicina reactiva a una medicina basada en datos. Utilizar la Inteligencia Artificial de manera ética para el soporte diagnóstico, la vigilancia epidemiológica en tiempo real y la prevención personalizada, permitiendo al Estado anticiparse a crisis sanitarias.<br><br>6. <strong>Liderazgo Global y Hub de Innovación:</strong> Posicionar a la República Argentina como un referente regional en Salud Digital. Al implementar una red nacional unificada, el país se transforma en un Hub Global de Interoperabilidad, capaz de exportar conocimiento, tecnología y modelos de gestión sanitaria moderna.<br><br><strong>Metas de Impacto Directo</strong><br><strong>Error Cero:</strong> Reducción drástica de errores médicos por falta de antecedentes clínicos al momento de la atención.<br><br><strong>Desburocratización:</strong> Eliminación total del papel en órdenes médicas, recetas y autorizaciones.<br><br><strong>Continuidad del Cuidado:</strong> Asegurar que un médico en Jujuy tenga el mismo acceso a la información crítica que un médico en Buenos Aires ante una emergencia.<br><br><strong>Transparencia:</strong> Auditoría en tiempo real del uso de recursos públicos y privados para evitar sobreprecios y malversaciones.`;
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
+      let i = 0;
+      const speed = 10; // Velocidad ajustada para texto largo
 
-  // --- 1. ANIMACIÓN TYPEWRITER RÁPIDA ---
-  const textElement = document.getElementById('typewriter-text');
-  
-  if (textElement) {
-    const fullText = textElement.innerText;
-    textElement.innerText = ''; // Limpiamos texto inicial
-    
-    let i = 0;
-    // Ajusta velocidad: menor número = más rápido.
-    // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
-    const speed = 5; 
-const textToType = `<strong>Introducción: La Infraestructura del Siglo XXI</strong><br>El Proyecto de Ley C.U.R.A. no es solo una plataforma tecnológica; es la infraestructura crítica que transforma la salud argentina en un ecosistema digital de alta eficiencia, soberano y centrado en la persona. Se establece como el mecanismo de ejecución operativa de la Ley 27.706, transformando la "voluntad digital" en un estándar de Orden Público.<br><br><strong>Ejes Estratégicos (Objetivos Principales)</strong><br>1. <strong>Soberanía Sanitaria Digital:</strong> Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.<br><br>2. <strong>Empoderamiento y Propiedad del Paciente:</strong> Restituir al ciudadano la propiedad efectiva de su historial médico. A través de la Credencial Única de Salud (C.U.S.), el paciente garantiza la portabilidad total de sus datos: su información lo acompaña, sin importar si se atiende en el sector público, privado o de seguridad social.<br><br>3. <strong>Interoperabilidad Universal y Obligatoria:</strong> Eliminar los "silos de información". El sistema impone el uso de estándares internacionales (HL7 FHIR y SNOMED CT) como norma de cumplimiento obligatorio para todos los subsectores, permitiendo que diferentes sistemas de salud hablen el mismo idioma por primera vez en la historia argentina.<br><br>4. <strong>Eficiencia Actuarial y Sostenibilidad Financiera:</strong> Optimizar el gasto prestacional mediante la eliminación de la redundancia. Al evitar la duplicación de estudios, combatir el fraude de identidad y digitalizar la burocracia, el sistema proyecta un ahorro directo de hasta el 30% del gasto en salud, garantizando la viabilidad del sistema a largo plazo.<br><br>5. <strong>Transformación hacia la Medicina Predictiva (IA):</strong> Transicionar de una medicina reactiva a una medicina basada en datos. Utilizar la Inteligencia Artificial de manera ética para el soporte diagnóstico, la vigilancia epidemiológica en tiempo real y la prevención personalizada, permitiendo al Estado anticiparse a crisis sanitarias.<br><br>6. <strong>Liderazgo Global y Hub de Innovación:</strong> Posicionar a la República Argentina como un referente regional en Salud Digital. Al implementar una red nacional unificada, el país se transforma en un Hub Global de Interoperabilidad, capaz de exportar conocimiento, tecnología y modelos de gestión sanitaria moderna.<br><br><strong>Metas de Impacto Directo</strong><br><strong>Error Cero:</strong> Reducción drástica de errores médicos por falta de antecedentes clínicos al momento de la atención.<br><br><strong>Desburocratización:</strong> Eliminación total del papel en órdenes médicas, recetas y autorizaciones.<br><br><strong>Continuidad del Cuidado:</strong> Asegurar que un médico en Jujuy tenga el mismo acceso a la información crítica que un médico en Buenos Aires ante una emergencia.<br><br><strong>Transparencia:</strong> Auditoría en tiempo real del uso de recursos públicos y privados para evitar sobreprecios y malversaciones.`;
-   function typeWriter() {
-  if (i < textToType.length) {
-    // Si encuentra una etiqueta HTML, la salta para que no se vea el código escribiéndose
-    if (textToType.charAt(i) === '<') {
-      let endTag = textToType.indexOf('>', i);
-      if (endTag !== -1) {
-        i = endTag + 1; 
-      }
-    } else {
-      i++;
-    }
-    
-    // Usamos innerHTML para que reconozca las negritas (<strong>)
-    textElement.innerHTML = textToType.substring(0, i);
-    setTimeout(typeWriter, speed);
-  } else {
-    textElement.classList.remove('cursor-blink');
-  }
-}
-
-  // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
-  function smoothScrollTo(element, duration = 1700, offset = 100) {
-    if (!element) return;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      window.scrollTo(0, startY + distance * ease);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-    requestAnimationFrame(animation);
-  }
-
-  const scrollLinks = document.querySelectorAll('a[href^="#"]');
-  scrollLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId !== '#') {
-              const targetElement = document.querySelector(targetId);
-              if (targetElement) {
-                  e.preventDefault();
-                  smoothScrollTo(targetElement);
-              }
+      function typeWriter() {
+        if (i < textToType.length) {
+          // Si encontramos una etiqueta HTML, la saltamos para aplicarla de golpe
+          if (textToType.charAt(i) === '<') {
+            let endTag = textToType.indexOf('>', i);
+            if (endTag !== -1) {
+              i = endTag + 1;
+            }
+          } else {
+            i++;
           }
-      });
-  });
-}); // <-- cierre de DOMContentLoaded
-</script>
+          
+          textElement.innerHTML = textToType.substring(0, i);
+          setTimeout(typeWriter, speed);
+        } else {
+          textElement.classList.remove('cursor-blink');
+        }
+      }
 
-
+      // Inicio diferido para suavidad
+      setTimeout(typeWriter, 500);
+    });
+  </script>
 </body>
 </html>

@@ -2,330 +2,300 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Credencial Única de Salud - C.U.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Credencial - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      --blue-dark: #0d3662;
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
-      --soft-bg: #e7f0ff;
-      --text-main: #0f172a;
-      --border-soft: #dbe3f0;
-      --radius: 26px;
+      --blue-soft: #e3f0ff;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
+      --border-soft: #e5e7eb;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 45%, #f4f6fb 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
-    .app {
+    .app-shell {
       width: 100%;
-      max-width: 430px;
-      padding: 14px;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 110px; 
     }
 
-  
- /* HEADER estilo iOS compacto */
-.header {
-  background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-  color: #fff;
-  border-radius: 28px;
-  padding: 12px 16px 18px;       /* <-- Ajuste correcto */
-  position: relative;
-  box-shadow: 0 10px 30px rgba(15,23,42,0.35);
-  z-index: 20;                   /* <-- Evita que la card lo tape */
-}
-
-.header::before {
-  content: "";
-  position: absolute;
-  width: 190%;
-  height: 180%;
-  top: -70%;
-  left: -40%;
-  border-radius: 50%;
-  background: radial-gradient(circle at top, rgba(255,255,255,0.18), transparent 60%);
-}
-
-.header-row {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 2;
-}
-
-.back-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255,255,255,0.5);
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-  font-size: 18px;
-}
-
-.header-title {
-  font-size: 20px;
-  font-weight: 600;
-}
-
-
-    /* Animación suave */
-    .fade-in {
-      animation: fadeSlideIn 0.35s ease-out;
-    }
-    @keyframes fadeSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    /* --- HEADER BAR (PASTILLA) --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
-    /* TARJETA */
-.card {
-  /* antes estaba algo así: margin-top: -18px; o -12px; */
-  margin-top: 12px;      /* <- ponelo POSITIVO */
-  background: #fff;
-  border-radius: var(--radius);
-  padding: 22px 18px 26px;
-  text-align: center;
-  box-shadow: 0 12px 30px rgba(15,23,42,0.12);
-}
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-right: 12px;
+    }
 
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
+    /* --- CONTENIDO --- */
+    .main-content { padding: 10px 20px; flex: 1; }
 
-    /* QR */
-    .qr-box {
-      background: #f7fbff;
-      padding: 18px;
-      border-radius: var(--radius);
+    .card {
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* --- QR BOX --- */
+    .qr-container {
+      background: #f8fafc;
+      border-radius: 24px;
+      padding: 24px;
       border: 1px solid var(--border-soft);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+    }
+
+    .qr-img {
+      width: 200px;
+      height: 200px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+    }
+
+    .cura-id {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-gray);
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .token-label {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--blue-header);
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     #token {
-      font-size: 38px;
-      font-weight: 700;
-      color: var(--blue-dark);
-      letter-spacing: 2px;
-      margin-top: 6px;
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--text-dark);
+      margin: 5px 0;
+      letter-spacing: 4px;
     }
 
-    /* PROGRESS BAR */
-    .progress-container {
+    /* --- PROGRESS BAR --- */
+    .progress-wrapper {
       width: 100%;
       height: 8px;
-      background: #dce6f7;
-      border-radius: 6px;
+      background: #e2e8f0;
+      border-radius: 10px;
       overflow: hidden;
-      margin: 12px 0 6px 0;
+      margin: 15px 0 8px;
     }
-    .progress-bar {
+
+    .progress-fill {
       width: 100%;
       height: 100%;
       background: var(--blue-main);
       transition: width 1s linear;
     }
 
-    /* TEXTO CONTADOR */
     #time-remaining {
-      font-size: 14px;
-      color: var(--text-main);
-      margin-bottom: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-gray);
     }
 
-    /* AVISO */
-    .alert-box {
-      background: var(--soft-bg);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-soft);
-      padding: 14px;
-      font-size: 13px;
-      color: #233247;
-      text-align: left;
+    /* --- ALERTA --- */
+    .security-alert {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 20px;
+      padding: 16px;
       display: flex;
-      gap: 10px;
-      margin-top: 18px;
+      gap: 12px;
       align-items: center;
+      text-align: left;
+      margin-bottom: 20px;
     }
 
-    .info-icon {
+    .alert-icon { font-size: 24px; flex-shrink: 0; }
+    .alert-text { font-size: 12px; color: #9a3412; line-height: 1.4; font-weight: 500; }
+
+    /* --- BOTONES --- */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: 20px;
+      border: none;
+      background: var(--blue-main);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2);
+    }
+
+    /* --- NAV INFERIOR --- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
+      background: #ffffff;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      z-index: 50;
+    }
+
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
+    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
+
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: #0066cc;
+      border-radius: 50%;
+      border: 5px solid var(--main-bg); 
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-    }
-    .info-icon img {
-      height: 32px;   /* tamaño real tipo captura */
-      width: auto;
-      display: block;
-    }
-
-    /* BOTONES */
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 18px;
-    }
-    .btn {
-      flex: 1;
-      border-radius: 999px;
-      padding: 12px;
-      font-size: 15px;
+      color: white;
+      font-size: 32px;
       font-weight: 600;
-      border: none;
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
       cursor: pointer;
-      transition: 0.15s;
-    }
-    .btn-secondary {
-      background: #e5ecf7;
-      color: #0d3662;
-    }
-    .btn-secondary:active {
-      transform: translateY(1px);
-      box-shadow: 0 4px 10px rgba(148,163,184,0.6);
-    }
-    .btn-primary {
-      background: var(--blue-main);
-      color: #fff;
-      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.4);
-    }
-    .btn-primary:active {
-      transform: translateY(1px);
-      box-shadow: 0 6px 12px rgba(37,99,235,0.35);
-    }
-
-    .button-print {
-      margin-top: 12px;
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: 999px;
-      border: 1px solid #d4dff7;
-      background: #f6f8ff;
-      color: #0d3662;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .button-print:hover {
-      background: #eef3ff;
-    }
-    .button-print:active {
-      transform: translateY(1px);
-      box-shadow: 0 4px 10px rgba(148,163,184,0.6);
     }
   </style>
 </head>
 <body>
-<div class="app">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-row">
-      <div class="back-btn" onclick="history.back()">‹</div>
-      <div class="header-title">Credencial Única de Salud</div>
-    </div>
-  </header>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">Credencial C.U.R.A.</div>
+      <div style="width: 36px;"></div>
+    </header>
 
-  <!-- TARJETA -->
-  <main class="card fade-in">
+    <main class="main-content">
+      <div class="card">
+        <div class="qr-container">
+          <img id="qrImg" src="qr_menu.png" class="qr-img" alt="QR Code">
+          <div class="cura-id">CURAID-41316202</div>
 
-    <div class="qr-box">
-      <!-- QR dinámico desde token -->
-<img id="qrImg" src="qr_menu.png" width="220" height="220" style="border-radius:12px" alt="QR C.U.R.A.">
-      <div style="margin-top:6px; font-size:14px;">CURAID01-41316202</div>
+          <div class="token-label">Token de Seguridad</div>
+          <div id="token">0000</div>
 
-      <div style="margin-top:16px; font-size:15px; font-weight:600;">TOKEN DE SEGURIDAD</div>
-      <div id="token">0000</div>
+          <div class="progress-wrapper">
+            <div class="progress-fill" id="progress"></div>
+          </div>
+          <div id="time-remaining">Expira en 05:00 min</div>
+        </div>
 
-      <div class="progress-container">
-        <div class="progress-bar" id="progress"></div>
+        <div class="security-alert">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-text">
+            Mostrá este código solo a profesionales de salud o farmacias autorizadas para validar tu identidad federal.
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="alert('Descargando credencial PDF...')">
+          Descargar Credencial Offline
+        </button>
       </div>
-      <div id="time-remaining">Expira en 05:00 minutos</div>
-    </div>
+    </main>
 
-    <div class="alert-box">
-      <div class="info-icon">
-        <img src="advertencia.png" alt="info">
-      </div>
-      <div>
-        Comparta el token de seguridad solo cuando sea solicitado por personal de farmacias,
-        centros de salud o su médico.
-      </div>
-    </div>
-
-    <div class="btn-row">
-      <button class="btn btn-secondary" type="button" onclick="history.back()">
-        Volver
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
-      <button class="btn btn-primary" type="button" onclick="window.location.href='credencial-imprimir.pdf'">
-        Descargar credencial
+      <div class="center-question-btn">?</div>
+      <button class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
       </button>
-    </div>
+    </nav>
+  </div>
 
-  </main>
-</div>
+  <script>
+    const duration = 300; // 5 minutos
+    let remaining = duration;
 
-<script>
-  // Duración de cada token en segundos (5 minutos)
-  const duration = 300;
-  let remaining = duration;
-
-  function generarToken() {
-    const t = Math.floor(1000 + Math.random() * 9000); // 4 dígitos
-    const tokenEl = document.getElementById("token");
-    tokenEl.textContent = t;
-
-    // QR basado en el token
-  //  const qrURL =
-    //  "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(t);
-   // document.getElementById("qrImg").src = qrURL;
-  }
-
-  function actualizarTimer() {
-    const timeEl = document.getElementById("time-remaining");
-    const progressEl = document.getElementById("progress");
-
-    const min = String(Math.floor(remaining / 60)).padStart(2, "0");
-    const sec = String(remaining % 60).padStart(2, "0");
-
-    timeEl.textContent = `Expira en ${min}:${sec} minutos`;
-
-    const pct = (remaining / duration) * 100;
-    progressEl.style.width = pct + "%";
-
-    remaining--;
-
-    if (remaining < 0) {
-      generarToken();
-      remaining = duration;
+    function generarToken() {
+      const t = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("token").textContent = t;
     }
-  }
 
-  generarToken();
-  actualizarTimer();
-  setInterval(actualizarTimer, 1000);
-</script>
+    function actualizarTimer() {
+      const timeEl = document.getElementById("time-remaining");
+      const progressEl = document.getElementById("progress");
+
+      const min = String(Math.floor(remaining / 60)).padStart(2, "0");
+      const sec = String(remaining % 60).padStart(2, "0");
+
+      timeEl.textContent = `Expira en ${min}:${sec} min`;
+
+      const pct = (remaining / duration) * 100;
+      progressEl.style.width = pct + "%";
+
+      remaining--;
+
+      if (remaining < 0) {
+        generarToken();
+        remaining = duration;
+      }
+    }
+
+    generarToken();
+    actualizarTimer();
+    setInterval(actualizarTimer, 1000);
+  </script>
 </body>
 </html>

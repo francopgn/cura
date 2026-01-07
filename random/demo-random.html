@@ -43,7 +43,6 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             border: 1px solid #e5e7eb;
         }
-        /* POPUP CENTRADO */
         .popup {
             position: fixed;
             top: 100px;
@@ -74,16 +73,17 @@
 </div>
 
 <header class="fixed top-0 left-0 w-full bg-medical-primaryDark text-white shadow-lg z-50">
-    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-3 min-w-0">
             <img src="/logo_cura.png" class="h-10 w-auto">
             <div class="leading-tight">
                 <h1 class="text-[10px] font-extrabold uppercase tracking-widest text-medical-accent">C.U.R.A.</h1>
                 <p class="text-[9px] opacity-80 font-bold uppercase">Nivel 2 (Urgencias)</p>
             </div>
         </div>
-        <div class="text-right leading-tight">
-            <span id="random-medico" class="text-[10px] font-bold opacity-90 uppercase"></span>
+        <div class="flex flex-col items-end leading-tight min-w-0 flex-shrink">
+            <span id="random-medico" class="text-[9px] font-bold opacity-90 uppercase text-right"></span>
+            <span id="hora-acceso" class="text-[8px] opacity-70 uppercase text-right tracking-tighter mt-1"></span>
         </div>
     </div>
 </header>
@@ -112,7 +112,7 @@
             </div>
 
             <div class="flex-grow">
-                <h2 id="nombre-completo" class="text-xl font-extrabold text-gray-900 leading-none mb-2 uppercase"></h2>
+                <h2 id="nombre-completo" class="text-xl font-extrabold text-gray-900 leading-none mb-2 uppercase tracking-tight"></h2>
                 <div class="space-y-1">
                     <p class="text-xs font-bold text-gray-500 uppercase">D.N.I.: <span id="dni" class="text-gray-900"></span></p>
                     <p class="text-xs font-bold text-gray-500 uppercase">Nac: <span id="fecha-nac" class="text-gray-900"></span> (<span id="edad" class="text-gray-900"></span> años)</p>
@@ -134,7 +134,7 @@
             <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center">
                 <i class="ph-fill ph-warning-octagon text-lg"></i>
             </div>
-            <h3 class="text-orange-900 font-black text-xs uppercase tracking-widest">Advertencias Críticas</h3>
+            <h3 class="text-orange-900 font-black text-xs uppercase tracking-widest text-center">Advertencias Críticas</h3>
         </div>
         <ul id="lista-advertencias" class="text-xs text-orange-900 space-y-2 font-bold leading-relaxed"></ul>
     </section>
@@ -156,19 +156,16 @@
         </div>
     </section>
 
-    <div class="h-4"></div>
 </main>
 
 <footer class="mt-auto bg-white border-t border-gray-100 py-10">
     <div class="flex flex-col items-center gap-3 text-center px-6">
         <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg" class="h-8 grayscale opacity-50">
         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Sistema C.U.R.A. · 2026</p>
-        <p class="text-[9px] text-gray-400 italic leading-snug">Acceso de Emergencia (Nivel 2) · Esta es una demostración con datos aleatorios para validación de arquitectura.</p>
     </div>
 </footer>
 
 <script>
-/* FUNCIONES RANDOM PRESERVADAS DEL NUEVO HTML */
 function randInt(min, max){return Math.floor(Math.random()*(max-min+1))+min;}
 function choice(arr){return arr[randInt(0, arr.length-1)];}
 function fechaRandom(){
@@ -204,6 +201,12 @@ const implantes = [
 ];
 
 document.addEventListener("DOMContentLoaded",()=>{
+    /* FECHA + HORA + ACCESO REGISTRADO */
+    const a=new Date();
+    let f=a.toLocaleDateString('es-AR',{weekday:'short',day:'2-digit',month:'short'}).toUpperCase();
+    const h=a.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById("hora-acceso").innerHTML = `${f} · ${h}<br>ACCESO REGISTRADO`;
+
     /* MÉDICO RANDOM */
     const medico = choice(medicos);
     const mp = randInt(10000, 99999);
@@ -258,7 +261,6 @@ document.addEventListener("DOMContentLoaded",()=>{
             <div>
                 <p class="text-sm font-bold text-gray-800">${im.t}</p>
                 <p class="text-[11px] font-medium text-gray-500">${im.d}</p>
-                <p class="text-[10px] text-gray-400 mt-1 italic">${im.a}</p>
             </div>
         </div>`;
     }
@@ -270,7 +272,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const advC=document.getElementById("lista-advertencias");
     adv.forEach(a=>{ advC.innerHTML+=`<li>• ${a}</li>`; });
 
-    /* MEDICACIÓN */
+    /* MEDICACIÓN (Se mantienen nombres y dosis juntos) */
     const meds=document.getElementById("lista-medicacion");
     usadas.forEach(c=>{
         c.meds.forEach(m=>{

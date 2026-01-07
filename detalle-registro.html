@@ -84,11 +84,11 @@
     }
 
     .section-label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 800;
       color: var(--blue-header);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
       margin-bottom: 12px;
       display: block;
     }
@@ -152,7 +152,6 @@
       background: #fff5f5;
       border-radius: 18px;
       border: 1px solid #fee2e2;
-      margin-top: 10px;
     }
 
     .toggle {
@@ -190,30 +189,6 @@
 
     .toggle-text { font-size: 12px; font-weight: 600; color: #991b1b; }
 
-    /* --- ADJUNTOS --- */
-    .attachment-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      background: #fff;
-      border: 1px solid var(--border-soft);
-      border-radius: 14px;
-      margin-bottom: 8px;
-    }
-
-    .attachment-name { font-size: 12px; font-weight: 600; color: var(--text-dark); }
-    .btn-action {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid var(--blue-main);
-      background: #fff;
-      color: var(--blue-main);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
     /* --- BOTONES --- */
     .btn-primary {
       width: 100%;
@@ -226,6 +201,7 @@
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2);
+      margin-top: 10px;
     }
 
     .btn-outline {
@@ -293,9 +269,12 @@
     </header>
 
     <main class="main-content">
+      
       <div class="card">
-        <span class="section-label">Información General</span>
-        <h2 style="font-size: 18px; color: var(--text-dark); margin-bottom: 10px;">Consulta Ambulatoria · 12/04/2025</h2>
+        <span class="section-label">Registro Clínico</span>
+        <h2 id="titulo-registro" style="font-size: 18px; color: var(--text-dark); margin-bottom: 10px;">
+          Consulta Ambulatoria · <span id="fecha-actual"></span>
+        </h2>
         
         <div class="meta-row">
           <span class="meta-item">Hospital General de Buenos Aires</span>
@@ -311,14 +290,23 @@
       </div>
 
       <div class="card">
+        <span class="section-label">Motivo de consulta</span>
+        <div class="info-box" style="background: #fff; border-left: 4px solid var(--blue-main);">
+          <p class="info-text">
+            Paciente consulta por dolor en el pecho de 3 días de evolución, localizado en hemitórax izquierdo, que aumenta con el movimiento y la palpación.
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
         <span class="section-label">Diagnósticos</span>
         <div class="info-box">
-          <p class="info-title">Principal</p>
+          <p class="info-title">Diagnóstico Principal</p>
           <p class="info-text">Dolor torácico inespecífico (posible origen musculoesquelético).</p>
         </div>
         <div class="info-box">
           <p class="info-title">Relacionados</p>
-          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px;">
+          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.6;">
             <li>Hipertensión arterial en control.</li>
             <li>Diabetes tipo 2 en seguimiento.</li>
           </ul>
@@ -326,50 +314,50 @@
       </div>
 
       <div class="card">
-        <span class="section-label">Evolución y Plan</span>
+        <span class="section-label">Estudios solicitados</span>
         <div class="info-box">
-          <p class="info-text">Examen físico sin signos de falla cardíaca aguda. Se descarta compromiso inmediato. Se solicita ECG de control y laboratorio. Se indica antiinflamatorio por 5 días.</p>
+          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.6;">
+            <li>ECG de 12 derivaciones.</li>
+            <li>Laboratorio: glucemia, perfil lipídico, troponinas según protocolo.</li>
+            <li><strong>Control clínico:</strong> en 7 días o antes si empeoran los síntomas.</li>
+          </ul>
         </div>
       </div>
 
       <div class="card">
-        <span class="section-label">Datos Sensibles</span>
-        <div class="chip-row" style="margin-bottom: 15px;">
-          <span class="chip chip-red">Salud Mental · Acceso Restringido 🔒</span>
+        <span class="section-label">Medicaciones indicadas</span>
+        <div class="info-box" style="background: #eff6ff;">
+          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.6;">
+            <li><strong>Ibuprofeno 400 mg:</strong> cada 8 hs por 5 días (si no presenta intolerancia).</li>
+            <li><strong>Metformina 850 mg:</strong> continuar según esquema previo.</li>
+            <li><strong>Losartán 50 mg:</strong> continuar según esquema previo.</li>
+          </ul>
         </div>
-        
+        <p style="font-size: 11px; color: var(--text-gray); line-height: 1.4; padding: 0 10px;">
+          ℹ️ Esta información se vincula a tus recetas electrónicas interoperables C.U.R.A.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Datos Sensibles</span>
         <div class="toggle-row">
           <label class="toggle">
             <input type="checkbox" id="toggleDetalle" checked>
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">Ver detalle sensible (vía PIN/Biometría)</span>
+          <span class="toggle-text">Ver detalle protegido (Salud Mental)</span>
         </div>
 
         <div id="boxSensible" class="info-box" style="margin-top: 15px; border-style: dashed;">
-          <p class="info-text" style="font-style: italic;">Registro de antecedentes de crisis de angustia en seguimiento. Sin ideación suicida actual. Dato protegido por Ley C.U.R.A.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <span class="section-label">Adjuntos</span>
-        <div class="attachment-card">
-          <span class="attachment-name">ECG_12_Derivaciones.pdf</span>
-          <button class="btn-action">Ver</button>
-        </div>
-        <div class="attachment-card">
-          <span class="attachment-name">Informe_Consulta.pdf</span>
-          <button class="btn-action">Ver</button>
+          <p class="info-text" style="font-style: italic;">
+            Registro de antecedentes de crisis de angustia en seguimiento por salud mental. Sin ideación suicida actual. Visible según configuración de privacidad federal.
+          </p>
         </div>
       </div>
 
       <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
-        <button class="btn-outline">
-          <span>⬇</span> Descargar Registro FHIR
-        </button>
-        <button class="btn-outline">
-          <span>🔗</span> Compartir Acceso Temporal
-        </button>
+        <button class="btn-outline"><span>⬇</span> Descargar Registro FHIR</button>
+        <button class="btn-outline"><span>🔗</span> Compartir Acceso Temporal</button>
         <button class="btn-primary" onclick="history.back()">Volver a la Historia</button>
       </div>
     </main>
@@ -386,11 +374,18 @@
   </div>
 
   <script>
-    const toggle = document.getElementById("toggleDetalle");
-    const box = document.getElementById("boxSensible");
+    document.addEventListener("DOMContentLoaded", () => {
+      // FECHA ACTUAL AUTOMÁTICA
+      const hoy = new Date();
+      const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      document.getElementById("fecha-actual").textContent = hoy.toLocaleDateString('es-AR', opciones);
 
-    toggle.addEventListener("change", () => {
-      box.style.display = toggle.checked ? "block" : "none";
+      // TOGGLE SENSIBLE
+      const toggle = document.getElementById("toggleDetalle");
+      const box = document.getElementById("boxSensible");
+      toggle.addEventListener("change", () => {
+        box.style.display = toggle.checked ? "block" : "none";
+      });
     });
   </script>
 </body>

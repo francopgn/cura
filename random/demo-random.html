@@ -181,17 +181,18 @@ const implantes = [
 ];
 
 document.addEventListener("DOMContentLoaded",()=>{
-    /* FECHA + HORA (En el contenido) */
+    /* FECHA + HORA */
     const ahora=new Date();
     const opciones = { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' };
     document.getElementById("hora-acceso").innerText = "ACCESO REGISTRADO: " + ahora.toLocaleDateString('es-AR', opciones).toUpperCase();
 
-    /* MÉDICO RANDOM */
+    /* MÉDICO RANDOM CON M.P. Y M.N. */
     const medico = choice(medicos);
-    const mp = randInt(10000, 99999);
-    document.getElementById("random-medico").innerHTML = `${medico}<br>M.P.: ${mp}`;
+    const mp = randInt(10000, 99999);      // M.P. (Provincial) usualmente 5 dígitos
+    const mn = randInt(100000, 999999);    // M.N. (Nacional) usualmente 6 dígitos
+    document.getElementById("random-medico").innerHTML = `${medico}<br>M.P.: ${mp}<br>M.N.: ${mn}`;
 
-    /* PACIENTE */
+    /* RESTO DE LA LÓGICA DE PACIENTE Y CONTENIDO PRESERVADA */
     const sexo=Math.random()<0.5?'M':'F';
     const nombre=sexo==='M'?choice(nombresM):choice(nombresF);
     const apellido=choice(apellidos);
@@ -205,11 +206,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("edad").textContent=edad(fn.d,fn.m,fn.y);
     document.getElementById("tipo-sangre").textContent=choice(sangres);
 
-    /* CONDICIONES */
     const cantCond=randInt(1,2);
     const usadas=[];
     const cont=document.getElementById("lista-condiciones");
-
     for(let i=0;i<cantCond;i++){
         const c=choice(condicionesCatalogo);
         if(usadas.includes(c)) continue;
@@ -226,13 +225,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         </div>`;
     }
 
-    /* IMPLANTES */
     const cantImpl=randInt(0,1);
     const implC=document.getElementById("lista-implantes");
     if(cantImpl===0) implC.innerHTML=`<p class="text-xs text-gray-400 italic px-2">Sin implantes registrados.</p>`;
     else {
         const im=choice(implantes);
-        implC.innerHTML=`
+        implC.innerHTML+=`
         <div class="cura-card p-4 flex gap-4">
             <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
                 <i class="ph-fill ph-bone text-xl"></i>
@@ -244,14 +242,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         </div>`;
     }
 
-    /* ADVERTENCIAS */
     const adv=[];
     usadas.forEach(c=>adv.push(...c.adv));
     if(cantImpl>0){adv.push(choice(implantes).a);}
     const advC=document.getElementById("lista-advertencias");
     adv.forEach(a=>{ advC.innerHTML+=`<li>• ${a}</li>`; });
 
-    /* MEDICACIÓN (Nombres y dosis mantenidos) */
     const meds=document.getElementById("lista-medicacion");
     usadas.forEach(c=>{
         c.meds.forEach(m=>{

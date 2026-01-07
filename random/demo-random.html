@@ -72,7 +72,7 @@
         <button onclick="window.location.reload()" 
                 class="w-full bg-white text-medical-primary hover:bg-gray-100 px-4 py-3 rounded-2xl flex items-center justify-center gap-3 shadow-sm border border-gray-200 active:scale-95 transition-all">
             <i class="ph-bold ph-arrows-clockwise text-lg"></i>
-            <span class="text-xs font-bold uppercase tracking-wide">Cargar Nuevo Caso</span>
+            <span class="text-xs font-bold uppercase tracking-wide">Cargar Nuevo Caso Clínico</span>
         </button>
     </div>
 
@@ -123,7 +123,7 @@
     </section>
 
     <section class="space-y-3">
-        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Dispositivos / Prótesis</h3>
+        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Implantes y Dispositivos</h3>
         <div id="lista-implantes" class="space-y-3"></div>
     </section>
 
@@ -136,8 +136,8 @@
 
 </main>
 
-<footer class="mt-auto bg-white border-t border-gray-100 py-10 px-6">
-    <div class="flex flex-col items-center gap-3 text-center opacity-50">
+<footer class="mt-auto bg-white border-t border-gray-100 py-10 px-6 opacity-50">
+    <div class="flex flex-col items-center gap-3 text-center">
         <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg" class="h-8 grayscale">
         <p class="text-[10px] font-black text-medical-textGray uppercase tracking-widest">Protocolo Federal C.U.R.A. · 2026</p>
     </div>
@@ -165,21 +165,26 @@ const apellidos=['Gómez','Rodríguez','Paganini','Fernández','López','Sánche
 const sangres=['O+','A+','B+','AB+','O-','A-','B-','AB-'];
 const medicos = ["Dr. Fabián Alonso","Dra. Julieta Ruiz","Dr. Mauro Etcheverry","Dra. Florencia Rivas","Dr. Sebastián López","Dra. Ana Beltrán"];
 
+/* CATÁLOGO CLÍNICO (No Psiquiátrico) */
 const condicionesCatalogo = [
     {titulo:'Diabetes Tipo 1', subt:'Insulino-dependiente', adv:['Riesgo de cetoacidosis','Verificar bomba de insulina'], meds:[['Insulina Asparta','Acción rápida'],['Insulina Glargina','Acción prolongada']]},
-    {titulo:'Hipertensión Arterial', subt:'Grado II Crónica', adv:['Controlar T.A. al ingreso','Riesgo de crisis hipertensiva'], meds:[['Enalapril 10 mg','IECA'],['Amlodipina 5 mg','Antagonista Ca']]},
-    {titulo:'Asma Bronquial', subt:'Moderada persistente', adv:['Riesgo de broncoespasmo','Controlar saturación O2'], meds:[['Salbutamol 100 mcg','Rescate'],['Fluticasona','Mantenimiento']]},
-    {titulo:'Fibrilación Auricular', subt:'En anticoagulación', adv:['RIESGO DE HEMORRAGIA ALTO','Informar anticoagulantes'], meds:[['Rivaroxabán 20 mg','Anticoagulante'],['Bisoprolol 5 mg','Beta-bloqueante']]},
-    {titulo:'Alergia Penicilina', subt:'Shock anafiláctico previo', adv:['CONTRAINDICADO: Betalactámicos','Administrar adrenalina en shock'], meds:[['Autoinyector Adrenalina','Emergencia'],['Cetirizina 10 mg','Antihistamínico']]},
-    {titulo:'Epilepsia', subt:'Focal estructural', adv:['Proteger vía aérea en crisis','No introducir objetos en boca'], meds:[['Levetiracetam 500 mg','Anticonvulsivo'],['Fenitoína','Antiepiléptico']]},
-    {titulo:'Hipotiroidismo', subt:'Post-tiroidectomía', adv:['Sin advertencias críticas'], meds:[['Levotiroxina 100 mcg','Hormona T4']]},
-    {titulo:'Insuficiencia Cardíaca', subt:'Controlada', adv:['Riesgo de disnea súbita'], meds:[['Furosemida 40 mg','Diurético']]}
+    {titulo:'Hipertensión Arterial', subt:'Grado II Crónica', adv:['Controlar T.A. al ingreso'], meds:[['Enalapril 10 mg','IECA'],['Amlodipina 5 mg','Antagonista Ca']]},
+    {titulo:'Asma Bronquial', subt:'Moderada persistente', adv:['Riesgo de broncoespasmo'], meds:[['Salbutamol 100 mcg','Rescate']]},
+    {titulo:'Fibrilación Auricular', subt:'En anticoagulación', adv:['RIESGO DE HEMORRAGIA ALTO'], meds:[['Rivaroxabán 20 mg','Anticoagulante']]},
+    {titulo:'Epilepsia focal', subt:'Crisis convulsivas recurrentes', adv:['Proteger vía aérea en crisis'], meds:[['Levetiracetam 500 mg','Anticonvulsivo']]},
+    {titulo:'Hipotiroidismo', subt:'Primario', adv:[], meds:[['Levotiroxina 100 mcg','Hormona']]},
+    {titulo:'Artritis Reumatoidea', subt:'Tratamiento biológico', adv:['Inmunosupresión activa'], meds:[['Metotrexato','Inmunomodulador']]}
 ];
 
+/* NUEVOS IMPLANTES VARIADOS */
 const implantes = [
-    {t:'Placa de Titanio PHILOS', d:'Húmero derecho', a:'Compatible con RM.'},
-    {t:'Stent Coronario', d:'Arteria Descendente Anterior', a:'Antiagregación activa.'},
-    {t:'Marcapasos Bicameral', d:'Síncope previo', a:'Evitar campos electromagnéticos.'}
+    {t:'Bomba de Morfina Intratecal', d:'Dolor crónico oncológico', a:'Bomba de infusión programable. No suspender sin especialista.', icon:'ph-fill ph-pill'},
+    {t:'Válvula DVP (Hidrocefalia)', d:'Derivación Ventrículo-Peritoneal', a:'Sensible a imanes de alta potencia. Riesgo de descalibración.', icon:'ph-fill ph-brain'},
+    {t:'Placa de Titanio PHILOS', d:'Osteosíntesis húmero derecho', a:'Compatible con RM ( Titanio).', icon:'ph-fill ph-bone'},
+    {t:'Marcapasos Bicameral', d:'Bloqueo AV Completo', a:'Evitar campos electromagnéticos fuertes. No realizar RM.', icon:'ph-fill ph-heartbeat'},
+    {t:'Neuroestimulador Medular', d:'Dolor neuropático lumbar', a:'Dispositivo electrónico implantado. Restricciones en RM.', icon:'ph-fill ph-cpu'},
+    {t:'DAI (Desfibrilador)', d:'Prevención muerte súbita', a:'Peligro de descarga involuntaria con bisturí eléctrico.', icon:'ph-fill ph-lightning-bold'},
+    {t:'Prótesis Total de Cadera', d:'Material Cerámica/Titanio', a:'Cuidado en movilización y rotación.', icon:'ph-fill ph-intersect-square'}
 ];
 
 document.addEventListener("DOMContentLoaded",()=>{
@@ -198,16 +203,16 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("edad").textContent = edad(fn.d, fn.m, fn.y);
     document.getElementById("tipo-sangre").textContent = choice(sangres);
 
-    /* --- LÓGICA DE CARGA EQUILIBRADA --- */
-    const numCond = randInt(0, 2); // Ahora puede ser 0, 1 o 2.
+    /* --- LÓGICA DE EQUILIBRIO --- */
+    let numCond = Math.random() < 0.15 ? 0 : (Math.random() < 0.8 ? 1 : 2);
     const seleccionadas = [];
     const contCond = document.getElementById("lista-condiciones");
     const advArr = [];
     const meds = document.getElementById("lista-medicacion");
 
     if (numCond === 0) {
-        contCond.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">No se registran condiciones crónicas relevantes.</p>`;
-        meds.innerHTML = `<li class="p-4 text-xs text-medical-textGray italic">Sin medicación reportada.</li>`;
+        contCond.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">Sin condiciones crónicas reportadas.</p>`;
+        meds.innerHTML = `<li class="p-4 text-xs text-medical-textGray italic">Sin medicación en curso.</li>`;
     } else {
         while(seleccionadas.length < numCond){
             const c = choice(condicionesCatalogo);
@@ -226,19 +231,29 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
     }
 
+    /* --- IMPLANTE CON ICONO DINÁMICO --- */
     const contImpl = document.getElementById("lista-implantes");
-    if(Math.random() > 0.8){ // 20% de probabilidad de implante
+    if(Math.random() > 0.55){ // ~45% de probabilidad
         const im = choice(implantes);
         advArr.push(im.a);
-        contImpl.innerHTML = `<div class="cura-card p-4 flex gap-4"><div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="ph-fill ph-bone text-xl"></i></div><div><p class="text-sm font-bold text-medical-textDark">${im.t}</p><p class="text-[11px] font-medium text-medical-textGray">${im.d}</p></div></div>`;
+        contImpl.innerHTML = `
+        <div class="cura-card p-4 flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                <i class="${im.icon} text-xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-medical-textDark">${im.t}</p>
+                <p class="text-[11px] font-medium text-medical-textGray">${im.d}</p>
+            </div>
+        </div>`;
     } else {
-        contImpl.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">No se detectan dispositivos internos.</p>`;
+        contImpl.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">No se detectan implantes.</p>`;
     }
 
     const advC = document.getElementById("lista-advertencias");
-    const unicas = [...new Set(advArr.filter(a => a !== "Sin advertencias críticas"))];
+    const unicas = [...new Set(advArr)];
     if (unicas.length === 0) {
-        advC.innerHTML = `<li>• Sin advertencias de urgencia detectadas.</li>`;
+        advC.innerHTML = `<li>• Sin advertencias urgentes.</li>`;
     } else {
         unicas.forEach(a => { advC.innerHTML += `<li>• ${a}</li>`; });
     }

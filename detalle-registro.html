@@ -40,7 +40,7 @@
       padding-bottom: 110px; 
     }
 
-    /* --- HEADER BAR (PASTILLA) --- */
+    /* --- HEADER BAR --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -62,9 +62,7 @@
       align-items: center;
       justify-content: center;
       color: #fff;
-      text-decoration: none;
       font-size: 20px;
-      font-weight: bold;
       border: none;
       cursor: pointer;
       margin-right: 12px;
@@ -93,7 +91,6 @@
       display: block;
     }
 
-    /* --- INFO BOXES --- */
     .info-box {
       background: #f8fafc;
       border-radius: 20px;
@@ -102,97 +99,40 @@
       margin-bottom: 16px;
     }
 
-    .info-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 6px;
-    }
+    .info-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+    .info-text { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
 
-    .info-text {
-      font-size: 13px;
-      color: var(--text-dark);
-      line-height: 1.5;
-    }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .meta-item { font-size: 12px; color: var(--text-gray); background: #f1f5f9; padding: 4px 10px; border-radius: 8px; }
 
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .meta-item {
-      font-size: 12px;
-      color: var(--text-gray);
-      background: #f1f5f9;
-      padding: 4px 10px;
-      border-radius: 8px;
-    }
-
-    /* --- CHIPS --- */
-    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .chip {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 8px;
-      background: #e2e8f0;
-      color: #475569;
-    }
-    .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
-    .chip-red { background: #fee2e2; color: #991b1b; }
-
-    /* --- TOGGLE --- */
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px;
-      background: #fff5f5;
-      border-radius: 18px;
-      border: 1px solid #fee2e2;
-    }
-
-    .toggle {
-      position: relative;
-      width: 44px;
-      height: 24px;
-      flex-shrink: 0;
-    }
-
-    .toggle input { opacity: 0; width: 0; height: 0; }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background-color: #cbd5e1;
-      border-radius: 999px;
-      transition: 0.3s;
-    }
-
-    .slider::before {
-      content: "";
-      position: absolute;
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      top: 3px;
-      background-color: #fff;
-      border-radius: 50%;
-      transition: 0.3s;
-    }
-
-    .toggle input:checked + .slider { background-color: var(--red-status); }
-    .toggle input:checked + .slider::before { transform: translateX(20px); }
-
-    .toggle-text { font-size: 12px; font-weight: 600; color: #991b1b; }
-
-    /* --- BOTONES --- */
-    .btn-primary {
+    /* --- BOTONES MODERNIZADOS --- */
+    .btn-outline {
       width: 100%;
       padding: 16px;
+      border-radius: 18px;
+      border: 1.5px solid var(--blue-soft);
+      background: #ffffff; /* Fondo blanco para que destaque */
+      color: var(--blue-main);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); /* Sombra suave */
+      transition: all 0.2s;
+    }
+
+    .btn-outline:active {
+      transform: scale(0.98);
+      background: #f0f7ff;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 18px;
       border-radius: 20px;
       border: none;
       background: var(--blue-main);
@@ -204,21 +144,15 @@
       margin-top: 10px;
     }
 
-    .btn-outline {
-      width: 100%;
-      padding: 14px;
-      border-radius: 16px;
-      border: 1.5px solid var(--border-soft);
-      background: transparent;
-      color: var(--text-dark);
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
+    /* --- COMPONENTES VARIOS --- */
+    .toggle-row { display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff5f5; border-radius: 18px; border: 1px solid #fee2e2; }
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1; border-radius: 999px; transition: 0.3s; }
+    .slider::before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px; background-color: #fff; border-radius: 50%; transition: 0.3s; }
+    .toggle input:checked + .slider { background-color: var(--red-status); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+    .toggle-text { font-size: 12px; font-weight: 600; color: #991b1b; }
 
     /* --- NAV INFERIOR --- */
     .bottom-bar {
@@ -238,26 +172,9 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       z-index: 50;
     }
-
     .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
     .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
-
-    .center-question-btn {
-      width: 64px;
-      height: 64px;
-      background: #0066cc;
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 600;
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
-      cursor: pointer;
-    }
+    .center-question-btn { width: 64px; height: 64px; background: #0066cc; border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3); }
   </style>
 </head>
 <body>
@@ -272,20 +189,14 @@
       
       <div class="card">
         <span class="section-label">Registro Clínico</span>
-        <h2 id="titulo-registro" style="font-size: 18px; color: var(--text-dark); margin-bottom: 10px;">
+        <h2 style="font-size: 18px; color: var(--text-dark); margin-bottom: 10px;">
           Consulta Ambulatoria · <span id="fecha-actual"></span>
         </h2>
         
         <div class="meta-row">
-          <span class="meta-item">Hospital General de Buenos Aires</span>
+          <span class="meta-item">Hospital General</span>
           <span class="meta-item">Dr. Juan González</span>
           <span class="meta-item">Clínica Médica</span>
-        </div>
-
-        <div class="chip-row">
-          <span class="chip chip-blue">Cardiología (Sospecha)</span>
-          <span class="chip">Seguimiento</span>
-          <span class="chip">Ambulatorio</span>
         </div>
       </div>
 
@@ -301,22 +212,15 @@
       <div class="card">
         <span class="section-label">Diagnósticos</span>
         <div class="info-box">
-          <p class="info-title">Diagnóstico Principal</p>
+          <p class="info-title">Principal</p>
           <p class="info-text">Dolor torácico inespecífico (posible origen musculoesquelético).</p>
-        </div>
-        <div class="info-box">
-          <p class="info-title">Relacionados</p>
-          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.6;">
-            <li>Hipertensión arterial en control.</li>
-            <li>Diabetes tipo 2 en seguimiento.</li>
-          </ul>
         </div>
       </div>
 
       <div class="card">
         <span class="section-label">Estudios solicitados</span>
         <div class="info-box">
-          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.6;">
+          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.8;">
             <li>ECG de 12 derivaciones.</li>
             <li>Laboratorio: glucemia, perfil lipídico, troponinas según protocolo.</li>
             <li><strong>Control clínico:</strong> en 7 días o antes si empeoran los síntomas.</li>
@@ -327,14 +231,14 @@
       <div class="card">
         <span class="section-label">Medicaciones indicadas</span>
         <div class="info-box" style="background: #eff6ff;">
-          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.6;">
-            <li><strong>Ibuprofeno 400 mg:</strong> cada 8 hs por 5 días (si no presenta intolerancia).</li>
-            <li><strong>Metformina 850 mg:</strong> continuar según esquema previo.</li>
-            <li><strong>Losartán 50 mg:</strong> continuar según esquema previo.</li>
+          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.8;">
+            <li><strong>Ibuprofeno 400 mg:</strong> cada 8 hs por 5 días.</li>
+            <li><strong>Metformina 850 mg:</strong> continuar esquema previo.</li>
+            <li><strong>Losartán 50 mg:</strong> continuar esquema previo.</li>
           </ul>
         </div>
-        <p style="font-size: 11px; color: var(--text-gray); line-height: 1.4; padding: 0 10px;">
-          ℹ️ Esta información se vincula a tus recetas electrónicas interoperables C.U.R.A.
+        <p style="font-size: 11px; color: var(--text-gray); text-align: center;">
+          Vinculado a tus recetas electrónicas interoperables C.U.R.A.
         </p>
       </div>
 
@@ -345,19 +249,26 @@
             <input type="checkbox" id="toggleDetalle" checked>
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">Ver detalle protegido (Salud Mental)</span>
+          <span class="toggle-text">Mostrar detalle protegido</span>
         </div>
-
         <div id="boxSensible" class="info-box" style="margin-top: 15px; border-style: dashed;">
           <p class="info-text" style="font-style: italic;">
-            Registro de antecedentes de crisis de angustia en seguimiento por salud mental. Sin ideación suicida actual. Visible según configuración de privacidad federal.
+            Antecedentes de crisis de angustia en seguimiento. Visible solo a profesionales autorizados.
           </p>
         </div>
       </div>
 
       <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
-        <button class="btn-outline"><span>⬇</span> Descargar Registro FHIR</button>
-        <button class="btn-outline"><span>🔗</span> Compartir Acceso Temporal</button>
+        <button class="btn-outline" onclick="alert('Descargando Registro FHIR...')">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Descargar Registro FHIR
+        </button>
+        
+        <button class="btn-outline" onclick="alert('Generando enlace de acceso temporal...')">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+          Compartir Acceso Temporal
+        </button>
+        
         <button class="btn-primary" onclick="history.back()">Volver a la Historia</button>
       </div>
     </main>
@@ -375,7 +286,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // FECHA ACTUAL AUTOMÁTICA
+      // FECHA ACTUAL
       const hoy = new Date();
       const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
       document.getElementById("fecha-actual").textContent = hoy.toLocaleDateString('es-AR', opciones);

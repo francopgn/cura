@@ -2,506 +2,395 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Detalle de Registro Clínico - C.U.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalle de Registro - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      --blue-dark: #0d3662;
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
       --blue-soft: #e3f0ff;
-      --bg-light: #f3f6fb;
-      --text-main: #0f172a;
-      --text-soft: #6b7280;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
       --border-soft: #e5e7eb;
-      --radius-lg: 24px;
-      --radius-pill: 999px;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --red-status: #ef4444;
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 50%, #f4f6fb 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 14px 14px 24px;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 110px; 
     }
 
-    /* HEADER (unificado) */
-
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 22px;
-      padding: 6px 14px 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
-    }
-
-    .header::before {
-      content: "";
-      position: absolute;
-      width: 180%;
-      height: 180%;
-      border-radius: 50%;
-      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 60%);
-      top: -70%;
-      left: -40%;
-      opacity: 0.9;
-    }
-
-    .header-row {
+    /* --- HEADER BAR (PASTILLA) --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      z-index: 2;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
     .back-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.18);
-      backdrop-filter: blur(10px);
+      margin-right: 12px;
     }
 
-    .header-title {
-      font-size: 19px;
-      font-weight: 600;
-    }
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
-    /* CARD PRINCIPAL (unificada) */
+    /* --- CONTENIDO --- */
+    .main-content { padding: 10px 20px; }
 
- .card {
-  margin-top: 8px; /* o 10 si querés un poco más de aire */
-  background: #ffffff;
-  border-radius: var(--radius-lg);
-  padding: 16px 16px 20px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
-}
-
-
-    .section {
-      margin-bottom: 16px;
+    .card {
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
     }
 
     .section-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--blue-header);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* --- INFO BOXES --- */
+    .info-box {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      border: 1px solid var(--border-soft);
+      margin-bottom: 16px;
+    }
+
+    .info-title {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
+      color: var(--text-dark);
       margin-bottom: 6px;
-      color: var(--text-main);
     }
 
-    .hint {
-      font-size: 12px;
-      color: var(--text-soft);
+    .info-text {
+      font-size: 13px;
+      color: var(--text-dark);
+      line-height: 1.5;
     }
 
-    .row {
+    .meta-row {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
-      font-size: 12px;
-      color: var(--text-soft);
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .tag {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: var(--radius-pill);
+    .meta-item {
+      font-size: 12px;
+      color: var(--text-gray);
       background: #f1f5f9;
-      color: var(--text-main);
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      margin-right: 4px;
-      margin-top: 4px;
+      padding: 4px 10px;
+      border-radius: 8px;
     }
 
-    .tag-blue {
-      background: var(--blue-soft);
-      color: var(--blue-dark);
+    /* --- CHIPS --- */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .chip {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: #475569;
     }
+    .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
+    .chip-red { background: #fee2e2; color: #991b1b; }
 
-    .tag-red {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-    .tag-muted {
-      background: #e5e7eb;
-      color: #6b7280;
-    }
-
-    .box {
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      background: #f9fafb;
-      padding: 10px 12px;
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .box + .box {
-      margin-top: 10px;
-    }
-
-    .box-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .list {
-      margin: 0;
-      padding-left: 16px;
-      font-size: 12px;
-      color: var(--text-main);
-    }
-
-    .list li {
-      margin-bottom: 3px;
-    }
-
-    /* BOTONES / ACCIONES */
-
-    .actions-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-
-    .btn-outline {
-      padding: 7px 12px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-soft);
-      background: #ffffff;
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text-main);
-    }
-
-    .btn-outline span.icon {
-      font-size: 14px;
-    }
-
-    .button-primary {
-      margin-top: 10px;
-      width: 100%;
-      padding: 12px 16px;
-      border-radius: var(--radius-pill);
-      border: none;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-    }
-
-    /* TOGGLE SENSIBLE */
-
+    /* --- TOGGLE --- */
     .toggle-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 8px;
+      gap: 12px;
+      padding: 16px;
+      background: #fff5f5;
+      border-radius: 18px;
+      border: 1px solid #fee2e2;
+      margin-top: 10px;
     }
 
     .toggle {
       position: relative;
-      width: 40px;
-      height: 22px;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
     }
 
-    .toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
 
     .slider {
       position: absolute;
       cursor: pointer;
       inset: 0;
-      background-color: #d1d5db;
+      background-color: #cbd5e1;
       border-radius: 999px;
-      transition: 0.2s;
+      transition: 0.3s;
     }
 
     .slider::before {
       content: "";
       position: absolute;
-      height: 16px;
-      width: 16px;
+      height: 18px;
+      width: 18px;
       left: 3px;
       top: 3px;
       background-color: #fff;
       border-radius: 50%;
-      transition: 0.2s;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+      transition: 0.3s;
     }
 
-    .toggle input:checked + .slider {
-      background-color: var(--blue-main);
-    }
+    .toggle input:checked + .slider { background-color: var(--red-status); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
 
-    .toggle input:checked + .slider::before {
-      transform: translateX(16px);
-    }
+    .toggle-text { font-size: 12px; font-weight: 600; color: #991b1b; }
 
-    .toggle-text {
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    .muted {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: 4px;
-    }
-
-    /* ADJUNTOS */
-
-    .attachments {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .attachment-item {
+    /* --- ADJUNTOS --- */
+    .attachment-card {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      padding: 6px 8px;
-      border-radius: 10px;
-      background: #f3f4f6;
-    }
-
-    .attachment-name {
-      color: var(--text-main);
-    }
-
-    .attachment-actions {
-      display: flex;
-      gap: 4px;
-    }
-
-    .mini-btn {
-      border-radius: 999px;
+      padding: 12px;
+      background: #fff;
       border: 1px solid var(--border-soft);
-      padding: 4px 8px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+    }
+
+    .attachment-name { font-size: 12px; font-weight: 600; color: var(--text-dark); }
+    .btn-action {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--blue-main);
+      background: #fff;
+      color: var(--blue-main);
       font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* --- BOTONES --- */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: 20px;
+      border: none;
+      background: var(--blue-main);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2);
+    }
+
+    .btn-outline {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1.5px solid var(--border-soft);
+      background: transparent;
+      color: var(--text-dark);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* --- NAV INFERIOR --- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
       background: #ffffff;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      z-index: 50;
+    }
+
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
+    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
+
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: #0066cc;
+      border-radius: 50%;
+      border: 5px solid var(--main-bg); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 600;
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
       cursor: pointer;
     }
   </style>
 </head>
 <body>
+
   <div class="app-shell">
-    <header class="header">
-      <div class="header-row">
-        <div class="back-btn" onclick="history.back()">‹</div>
-        <div class="header-title">Detalle del registro</div>
-      </div>
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">Detalle del Registro</div>
     </header>
 
-    <main class="card">
-      <!-- ENCABEZADO DEL REGISTRO -->
-      <section class="section">
-        <div class="section-label">Consulta ambulatoria · 12/04/2024</div>
-        <div class="row" style="margin-bottom:6px;">
-          <span>Hospital General de Buenos Aires</span>
-        </div>
-        <div class="row">
-          <span>Profesional: Dr. Juan González</span>
-          <span>·</span>
-          <span>Especialidad: Clínica médica</span>
-        </div>
-        <div class="row">
-          <span>Origen: Turno programado a través de C.U.R.A.</span>
+    <main class="main-content">
+      <div class="card">
+        <span class="section-label">Información General</span>
+        <h2 style="font-size: 18px; color: var(--text-dark); margin-bottom: 10px;">Consulta Ambulatoria · 12/04/2025</h2>
+        
+        <div class="meta-row">
+          <span class="meta-item">Hospital General de Buenos Aires</span>
+          <span class="meta-item">Dr. Juan González</span>
+          <span class="meta-item">Clínica Médica</span>
         </div>
 
-        <div style="margin-top:8px;" class="row">
-          <span class="tag tag-blue">Cardiología (sospecha)</span>
-          <span class="tag">Seguimiento</span>
-          <span class="tag tag-muted">Ambulatorio</span>
+        <div class="chip-row">
+          <span class="chip chip-blue">Cardiología (Sospecha)</span>
+          <span class="chip">Seguimiento</span>
+          <span class="chip">Ambulatorio</span>
         </div>
-      </section>
+      </div>
 
-      <!-- DIAGNÓSTICOS -->
-      <section class="section">
-        <div class="section-label">Diagnósticos</div>
-        <div class="box">
-          <div class="box-title">Diagnóstico principal</div>
-          <div>Dolor torácico inespecífico (posible origen musculoesquelético).</div>
-          <div class="muted">SNOMED CT (ejemplo): 29857009 – Dolor en el pecho</div>
+      <div class="card">
+        <span class="section-label">Diagnósticos</span>
+        <div class="info-box">
+          <p class="info-title">Principal</p>
+          <p class="info-text">Dolor torácico inespecífico (posible origen musculoesquelético).</p>
         </div>
-        <div class="box">
-          <div class="box-title">Diagnósticos relacionados</div>
-          <ul class="list">
+        <div class="info-box">
+          <p class="info-title">Relacionados</p>
+          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px;">
             <li>Hipertensión arterial en control.</li>
             <li>Diabetes tipo 2 en seguimiento.</li>
           </ul>
         </div>
-      </section>
+      </div>
 
-      <!-- MOTIVO / EVOLUCIÓN -->
-      <section class="section">
-        <div class="section-label">Motivo de consulta y evolución</div>
-        <div class="box">
-          <div class="box-title">Motivo de consulta</div>
-          <div>
-            Paciente consulta por dolor en el pecho de 3 días de evolución, localizado en hemitórax
-            izquierdo, que aumenta con el movimiento y la palpación.
-          </div>
+      <div class="card">
+        <span class="section-label">Evolución y Plan</span>
+        <div class="info-box">
+          <p class="info-text">Examen físico sin signos de falla cardíaca aguda. Se descarta compromiso inmediato. Se solicita ECG de control y laboratorio. Se indica antiinflamatorio por 5 días.</p>
         </div>
-        <div class="box">
-          <div class="box-title">Evolución y plan</div>
-          <div>
-            Examen físico sin signos de falla cardíaca aguda. Saturación y constantes dentro de
-            parámetros. Se descarta compromiso inmediato. Se solicita ECG de control, laboratorio
-            y se indica antiinflamatorio por 5 días, con instrucciones claras de alarma.
-          </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Datos Sensibles</span>
+        <div class="chip-row" style="margin-bottom: 15px;">
+          <span class="chip chip-red">Salud Mental · Acceso Restringido 🔒</span>
         </div>
-      </section>
-
-      <!-- ESTUDIOS SOLICITADOS -->
-      <section class="section">
-        <div class="section-label">Estudios solicitados</div>
-        <div class="box">
-          <ul class="list">
-            <li>ECG de 12 derivaciones.</li>
-            <li>Laboratorio: glucemia, perfil lipídico, troponinas según protocolo.</li>
-            <li>Control clínico en 7 días o antes si empeoran los síntomas.</li>
-          </ul>
+        
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="toggleDetalle" checked>
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-text">Ver detalle sensible (vía PIN/Biometría)</span>
         </div>
-      </section>
 
-      <!-- MEDICACIÓN -->
-      <section class="section">
-        <div class="section-label">Medicaciones indicadas</div>
-        <div class="box">
-          <ul class="list">
-            <li>Ibuprofeno 400 mg cada 8 hs por 5 días (si no presenta intolerancia).</li>
-            <li>Continuar Metformina 850 mg y Losartán 50 mg según esquema previo.</li>
-          </ul>
-          <div class="muted">
-            Esta información se vincula a tus recetas electrónicas interoperables.
-          </div>
+        <div id="boxSensible" class="info-box" style="margin-top: 15px; border-style: dashed;">
+          <p class="info-text" style="font-style: italic;">Registro de antecedentes de crisis de angustia en seguimiento. Sin ideación suicida actual. Dato protegido por Ley C.U.R.A.</p>
         </div>
-      </section>
+      </div>
 
-      <!-- DATOS SENSIBLES -->
-      <section class="section">
-        <div class="section-label">Datos sensibles</div>
-        <div class="box">
-          <div class="row">
-            <span class="tag tag-red">Salud mental · dato sensible</span>
-          </div>
-
-          <div class="toggle-row">
-            <label class="toggle">
-              <input type="checkbox" id="toggleDetalleSensible" checked />
-              <span class="slider"></span>
-            </label>
-            <span class="toggle-text">Mostrar detalle sensible permitidos por tu privacidad</span>
-          </div>
-
-          <div id="detalleSensible" style="margin-top:8px; font-size:12px; color:var(--text-main);">
-            Registro de antecedentes de crisis de angustia en seguimiento por salud mental.
-            Sin ideación suicida actual. Este dato sólo es visible a profesionales autorizados
-            según tu configuración C.U.R.A.
-          </div>
-
-          <div class="muted">
-            Podés cambiar quién ve estos datos en: Historia de Salud → Configurar privacidad.
-          </div>
+      <div class="card">
+        <span class="section-label">Adjuntos</span>
+        <div class="attachment-card">
+          <span class="attachment-name">ECG_12_Derivaciones.pdf</span>
+          <button class="btn-action">Ver</button>
         </div>
-      </section>
-
-      <!-- ARCHIVOS ADJUNTOS -->
-      <section class="section">
-        <div class="section-label">Archivos adjuntos</div>
-        <div class="attachments">
-          <div class="attachment-item">
-            <div class="attachment-name">ECG-12-derivaciones-2024-04-12.pdf</div>
-            <div class="attachment-actions">
-              <button class="mini-btn">Ver</button>
-              <button class="mini-btn">Descargar</button>
-            </div>
-          </div>
-          <div class="attachment-item">
-            <div class="attachment-name">Informe-consulta-ambulatoria.pdf</div>
-            <div class="attachment-actions">
-              <button class="mini-btn">Ver</button>
-              <button class="mini-btn">Descargar</button>
-            </div>
-          </div>
+        <div class="attachment-card">
+          <span class="attachment-name">Informe_Consulta.pdf</span>
+          <button class="btn-action">Ver</button>
         </div>
-      </section>
+      </div>
 
-      <!-- ACCIONES C.U.R.A. -->
-      <section class="section">
-        <div class="section-label">Acciones</div>
-        <div class="actions-row">
-          <button class="btn-outline" type="button">
-            <span class="icon">⬇</span>
-            <span>Descargar registro FHIR</span>
-          </button>
-          <button class="btn-outline" type="button">
-            <span class="icon">🔗</span>
-            <span>Compartir acceso temporal</span>
-          </button>
-          <button class="btn-outline" type="button">
-            <span class="icon">⚠</span>
-            <span>Reportar error en el registro</span>
-          </button>
-        </div>
-      </section>
-
-      <button class="button-primary" type="button" onclick="history.back()">
-        Volver a la historia clínica
-      </button>
+      <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
+        <button class="btn-outline">
+          <span>⬇</span> Descargar Registro FHIR
+        </button>
+        <button class="btn-outline">
+          <span>🔗</span> Compartir Acceso Temporal
+        </button>
+        <button class="btn-primary" onclick="history.back()">Volver a la Historia</button>
+      </div>
     </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </button>
+      <div class="center-question-btn">?</div>
+      <button class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+    </nav>
   </div>
 
   <script>
-    // Mostrar / ocultar detalle sensible
-    const toggleDetalle = document.getElementById("toggleDetalleSensible");
-    const detalleSensible = document.getElementById("detalleSensible");
+    const toggle = document.getElementById("toggleDetalle");
+    const box = document.getElementById("boxSensible");
 
-    toggleDetalle.addEventListener("change", () => {
-      detalleSensible.style.display = toggleDetalle.checked ? "block" : "none";
+    toggle.addEventListener("change", () => {
+      box.style.display = toggle.checked ? "block" : "none";
     });
   </script>
 </body>

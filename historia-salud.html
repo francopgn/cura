@@ -3,387 +3,286 @@
 <head>
   <meta charset="UTF-8" />
   <title>Historia de Salud - C.U.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      --blue-dark: #0d3662;
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
       --blue-soft: #e3f0ff;
-      --bg-light: #f3f6fb;
-      --text-main: #0f172a;
-      --text-soft: #6b7280;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
       --border-soft: #e5e7eb;
-      --radius-lg: 24px;
-      --radius-pill: 999px;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 50%, #f4f6fb 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 14px 14px 24px;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 110px; 
     }
 
-    /* HEADER (compacto unificado) */
-
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 22px;
-      padding: 6px 14px 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
-    }
-
-    .header::before {
-      content: "";
-      position: absolute;
-      width: 180%;
-      height: 180%;
-      border-radius: 50%;
-      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 60%);
-      top: -70%;
-      left: -40%;
-      opacity: 0.9;
-    }
-
-    .header-row {
+    /* --- HEADER PASTILLA --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      z-index: 2;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
     .back-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.18);
-      backdrop-filter: blur(10px);
+      margin-right: 12px;
     }
 
-    .header-title {
-      font-size: 19px;
-      font-weight: 600;
-    }
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
-    /* CARD PRINCIPAL (unificada) */
+    /* --- CONTENIDO --- */
+    .main-content { padding: 10px 20px; flex: 1; }
 
     .card {
-      margin-top: 8px;
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 18px 18px 20px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
     }
 
-    .section {
-      margin-bottom: 18px;
-    }
-
-    .section-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
-    }
-
-    .hint {
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    /* TABS */
-
+    /* --- TABS --- */
     .tabs {
       display: flex;
-      gap: 8px;
+      background: #e2e8f0;
       padding: 4px;
-      background: #f3f4f6;
-      border-radius: 999px;
-      margin-bottom: 14px;
+      border-radius: 16px;
+      margin-bottom: 20px;
     }
 
     .tab {
       flex: 1;
+      padding: 10px;
       text-align: center;
-      padding: 7px 10px;
       font-size: 13px;
-      border-radius: var(--radius-pill);
+      font-weight: 600;
       cursor: pointer;
-      color: var(--text-soft);
-      transition: all 0.15s;
-      white-space: nowrap;
+      border-radius: 12px;
+      color: var(--text-gray);
+      transition: all 0.2s;
     }
 
     .tab.active {
-      background: #ffffff;
-      color: var(--blue-dark);
-      font-weight: 600;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.12);
+      background: #fff;
+      color: var(--blue-header);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    /* CHIPS */
-
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .chip {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: var(--radius-pill);
-      background: #f1f5f9;
-      color: var(--text-main);
-    }
-
-    .chip-blue {
-      background: var(--blue-soft);
-      color: var(--blue-dark);
-    }
-
-    .chip-red {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-    /* BOTÓN PRIVACIDAD (pill grande) */
-
-    .btn-privacidad {
-      margin-top: 10px;
-      padding: 9px 14px;
-      border-radius: var(--radius-pill);
-      border: 1px solid #c7d7ff;
-      background: #f0f4ff;
-      color: #0d3662;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* TIMELINE */
-
-    .timeline {
-      position: relative;
-      margin-top: 6px;
-      padding-left: 14px;
-    }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      top: 4px;
-      left: 5px;
-      bottom: 8px;
-      width: 2px;
-      background: #e5e7eb;
-    }
-
-    .timeline-item {
-      position: relative;
-      padding-left: 12px;
-      margin-bottom: 14px;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: -2px;
-      top: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 2px solid var(--blue-main);
-    }
-
-    .timeline-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 2px;
-      color: var(--text-main);
-    }
-
-    .timeline-sub {
-      font-size: 12px;
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .timeline-text {
-      font-size: 12px;
-      color: var(--text-main);
+    .section-label {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-dark);
       margin-bottom: 6px;
     }
 
-    /* DOCS / ACCESOS */
-
-    .doc-card {
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      background: #f9fafb;
-      font-size: 12px;
-      margin-bottom: 10px;
+    .hint {
+      font-size: 13px;
+      color: var(--text-gray);
+      margin-bottom: 16px;
+      line-height: 1.4;
     }
 
-    .doc-name {
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
+    /* --- CHIPS --- */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 
-    .doc-meta {
-      color: var(--text-soft);
-      margin-bottom: 4px;
-    }
-
-    .doc-actions {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
-    .pill-btn {
-      padding: 5px 10px;
-      border-radius: var(--radius-pill);
-      border: 1px solid var(--border-soft);
-      background: #ffffff;
+    .chip {
       font-size: 11px;
-      cursor: pointer;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 10px;
+      background: #e2e8f0;
+      color: #475569;
     }
 
-    /* BOTÓN PRINCIPAL */
+    .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
+    .chip-red { background: #fee2e2; color: #991b1b; }
 
-    .button-primary {
-      margin-top: 6px;
+    /* --- BOTONES --- */
+    .btn-privacidad {
       width: 100%;
-      padding: 12px 16px;
-      border-radius: var(--radius-pill);
-      border: none;
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: 600;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid var(--blue-soft);
+      background: #f0f7ff;
+      color: var(--blue-header);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       cursor: pointer;
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.4);
+      margin-bottom: 20px;
     }
 
-    /* ESTADOS OCULTOS */
-
-    .view-panel {
-      display: none;
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: 20px;
+      border: none;
+      background: linear-gradient(135deg, var(--blue-main), #005fa3);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2);
     }
 
-    .view-panel.active {
-      display: block;
+    /* --- TIMELINE --- */
+    .timeline { padding-left: 10px; border-left: 2px solid #e2e8f0; margin-left: 10px; }
+
+    .timeline-item { position: relative; padding-bottom: 20px; padding-left: 20px; }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -27px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--blue-main);
     }
 
-    /* MODAL PRIVACIDAD */
+    .timeline-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .timeline-sub { font-size: 12px; color: var(--text-gray); margin-bottom: 4px; }
+    .timeline-text { font-size: 13px; color: var(--text-dark); line-height: 1.4; }
 
+    /* --- DOCS --- */
+    .doc-card {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      border: 1px solid var(--border-soft);
+      margin-bottom: 12px;
+    }
+
+    .doc-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .doc-meta { font-size: 12px; color: var(--text-gray); margin-bottom: 12px; }
+    .doc-actions { display: flex; gap: 8px; }
+    .mini-btn { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-soft); background: #fff; font-size: 11px; font-weight: 600; cursor: pointer; }
+
+    /* --- MODAL --- */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      backdrop-filter: blur(3px);
-      display: flex;
+      background: rgba(13, 43, 82, 0.4);
+      backdrop-filter: blur(4px);
+      display: none;
       justify-content: center;
-      align-items: flex-start;
-      padding: 30px 16px;
-      z-index: 30;
+      align-items: center;
+      padding: 20px;
+      z-index: 100;
     }
 
     .modal {
+      background: #fff;
       width: 100%;
-      max-width: 380px;
+      max-width: 360px;
+      border-radius: 32px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 16px; }
+
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 14px; color: var(--text-dark); }
+    
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    /* --- NAV INFERIOR --- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
       background: #ffffff;
-      border-radius: 20px;
-      padding: 18px 18px 16px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
-      animation: pop 0.15s ease-out;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      z-index: 50;
     }
 
-    @keyframes pop {
-      from {
-        transform: translateY(8px) scale(0.97);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-    }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
+    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
 
-    .modal-title {
-      font-size: 16px;
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: #0066cc;
+      border-radius: 50%;
+      border: 5px solid var(--main-bg); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
       font-weight: 600;
-      color: #0d3662;
-      margin-bottom: 4px;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 8px;
-      right: 14px;
-      font-size: 20px;
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
       cursor: pointer;
-      color: #9ca3af;
-    }
-
-    .modal-section-title {
-      margin-top: 10px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .modal label {
-      font-size: 12px;
-      display: block;
-      margin-top: 4px;
-      color: #374151;
     }
   </style>
 </head>
 <body>
+
   <div class="app-shell">
-    <header class="header">
-      <div class="header-row">
-        <div class="back-btn" onclick="history.back()">‹</div>
-        <div class="header-title">Historia de Salud</div>
-      </div>
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">Historia de Salud</div>
     </header>
 
-    <main class="card">
-      <!-- TABS -->
+    <main class="main-content">
       <div class="tabs">
         <div class="tab active" data-view="resumen">Resumen</div>
         <div class="tab" data-view="cronologia">Cronología</div>
@@ -391,224 +290,133 @@
         <div class="tab" data-view="accesos">Accesos</div>
       </div>
 
-      <!-- RESUMEN -->
-      <section id="view-resumen" class="view-panel active">
-        <div class="section">
-          <div class="section-label">Información esencial</div>
-          <div class="hint">
-            Estos datos se muestran primero en situaciones de atención habitual o de emergencia, según la Ley C.U.R.A.
-          </div>
-
+      <div class="card">
+        <section id="view-resumen" class="view-panel active">
+          <h2 class="section-label">Información esencial</h2>
+          <p class="hint">Datos críticos para atención inmediata según Ley C.U.R.A.</p>
+          
           <div class="chip-row">
-            <span class="chip chip-blue">Grupo sanguíneo: 0+</span>
-            <span class="chip chip-blue">Alergia: Penicilina</span>
-            <span class="chip">Hipertensión arterial</span>
-            <span class="chip">Diabetes tipo 2</span>
-
+            <span class="chip chip-blue">Grupo: 0+</span>
+            <span class="chip chip-red">Alergia: Penicilina</span>
+            <span class="chip">Hipertensión</span>
+            <span class="chip">Diabetes T2</span>
           </div>
 
-          <!-- BOTÓN CONFIGURAR PRIVACIDAD -->
-          <button class="btn-privacidad" type="button" onclick="abrirModalPrivacidad()">
-            <span>Configurar privacidad</span> <span>🔒</span>
+          <button class="btn-privacidad" onclick="abrirModal()">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            Configurar privacidad 🔒
           </button>
-        </div>
 
-        <div class="section">
-          <div class="section-label">Últimos eventos</div>
+          <h2 class="section-label">Últimos eventos</h2>
           <div class="timeline">
             <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">12/04/2024 · Consulta ambulatoria</div>
-              <div class="timeline-sub">
-                Hospital General · Dr. Juan González (Clínica médica)
-              </div>
-              <div class="timeline-text">
-                Dolor torácico inespecífico. Se indican estudios cardiológicos.
-              </div>
+              <div class="timeline-title">12/04/2025 · Consulta</div>
+              <div class="timeline-sub">Hospital General · Dr. González</div>
+              <div class="timeline-text">Dolor torácico inespecífico. Se indican estudios.</div>
             </div>
-
             <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">03/03/2024 · Laboratorio</div>
-              <div class="timeline-sub">
-                Laboratorio Central · Glucemia, perfil lipídico
-              </div>
-              <div class="timeline-text">
-                Resultados con leve descompensación metabólica. En seguimiento.
-              </div>
+              <div class="timeline-title">03/03/2025 · Laboratorio</div>
+              <div class="timeline-sub">Laboratorio Central · Perfil Lipídico</div>
             </div>
           </div>
-        </div>
+          <button class="btn-primary">Ver Historia Completa</button>
+        </section>
 
-        <button class="button-primary" type="button"
-          onclick="window.location.href='historia-clinica-completa.html'">
-          Ver Historia Clínica Completa
-        </button>
-        <button class="button-primary" onclick="window.location.href='documentos-estudios.html'">
-          Ver documentos y estudios
-        </button>
-      </section>
-
-      <!-- CRONOLOGÍA -->
-      <section id="view-cronologia" class="view-panel">
-        <div class="section">
-          <div class="section-label">Línea de tiempo</div>
-          <div class="hint">
-            Registros interoperables de hospitales, clínicas, laboratorios y obras sociales adheridos a C.U.R.A.
-          </div>
-
-          <div class="timeline">
+        <section id="view-cronologia" class="view-panel">
+          <h2 class="section-label">Línea de tiempo federal</h2>
+          <div class="timeline" style="margin-top: 20px;">
             <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">12/04/2024 · Consulta ambulatoria</div>
-              <div class="timeline-sub">
-                Hospital General · Consulta programada
-              </div>
-              <div class="timeline-text">
-                Dolor en el pecho de 3 días de evolución. ECG sin cambios agudos.
-              </div>
-              <div class="chip-row">
-                <span class="chip">Control</span>
-                <span class="chip chip-blue">Cardiología</span>
-              </div>
+              <div class="timeline-title">12/04/2025 · Cardiología</div>
+              <div class="timeline-text">ECG sin cambios agudos. Control programado.</div>
             </div>
-
             <div class="timeline-item">
-              <div class="timeline-dot"></div>
-              <div class="timeline-title">18/02/2024 · Guardia</div>
-              <div class="timeline-sub">
-                Hospital General · Atención por guardia
-              </div>
-              <div class="timeline-text">
-                Crisis de angustia. Registro clasificado como <strong>salud mental</strong>.
-              </div>
-              <div class="chip-row">
-                <span class="chip chip-red">Salud mental · oculto 🔒</span>
-                <span class="chip">Break-glass en emergencia</span>
-              </div>
+              <div class="timeline-title">18/02/2025 · Salud Mental</div>
+              <div class="timeline-text">Registro clasificado. Acceso restringido 🔒</div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- DOCUMENTOS -->
-      <section id="view-documentos" class="view-panel">
-        <div class="section">
-          <div class="section-label">Estudios y documentos</div>
-          <div class="hint">
-            Informes, imágenes y resultados asociados a tu historia, en formato interoperable.
-          </div>
-
+        <section id="view-documentos" class="view-panel">
+          <h2 class="section-label">Estudios e Imágenes</h2>
           <div class="doc-card">
-            <div class="doc-name">ECG · 12 derivaciones</div>
-            <div class="doc-meta">12/04/2024 · Hospital General</div>
+            <div class="doc-name">ECG - 12 derivaciones</div>
+            <div class="doc-meta">12/04/2025 · Hospital General</div>
             <div class="doc-actions">
-              <button class="pill-btn">Ver</button>
-              <button class="pill-btn">Descargar</button>
-              <button class="pill-btn">Compartir enlace seguro</button>
+              <button class="mini-btn">Ver</button>
+              <button class="mini-btn">Compartir</button>
             </div>
           </div>
-
           <div class="doc-card">
-            <div class="doc-name">Informe de laboratorio completo</div>
-            <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
+            <div class="doc-name">Laboratorio Completo</div>
+            <div class="doc-meta">03/03/2025 · Lab. Central</div>
             <div class="doc-actions">
-              <button class="pill-btn">Ver</button>
-              <button class="pill-btn">Descargar</button>
+              <button class="mini-btn">Ver</button>
+              <button class="mini-btn">Descargar</button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <!-- ACCESOS -->
-      <section id="view-accesos" class="view-panel">
-        <div class="section">
-          <div class="section-label">Registro de accesos</div>
-          <div class="hint">
-            Cada acceso a tu historia a través de C.U.R.A. queda registrado aquí.
-          </div>
-
+        <section id="view-accesos" class="view-panel">
+          <h2 class="section-label">Registro Blockchain</h2>
+          <p class="hint">Auditoría inmutable de quién consultó tus datos.</p>
           <div class="doc-card">
-            <div class="doc-name">12/04/2024 · Acceso profesional</div>
-            <div class="doc-meta">
-              Dr. Juan González · Hospital General · Consulta programada
-            </div>
+            <div class="doc-name">Dr. Juan González</div>
+            <div class="doc-meta">12/04/2025 · 09:45hs · Hospital General</div>
           </div>
-
-          <div class="doc-card">
-            <div class="doc-name">18/02/2024 · Acceso de emergencia</div>
-            <div class="doc-meta">
-              Guardia Hospital General · Break-glass por urgencia
-            </div>
-            <div class="doc-actions">
-              <button class="pill-btn">Reportar acceso sospechoso</button>
-            </div>
+          <div class="doc-card" style="border-left: 4px solid var(--red-status);">
+            <div class="doc-name">Guardia Hospital General</div>
+            <div class="doc-meta">18/02/2025 · 22:10hs · Acceso Emergencia</div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
 
-    <!-- MODAL PRIVACIDAD -->
-    <div id="modal-privacidad" class="modal-backdrop" style="display:none;">
-      <div class="modal">
-        <div class="modal-close" onclick="cerrarModalPrivacidad()">×</div>
-        <div class="modal-title">Privacidad de datos sensibles</div>
-        <p class="hint" style="margin-bottom:10px;">
-          Elegí qué información se comparte y con quién, según la Ley C.U.R.A.
-        </p>
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </button>
+      <div class="center-question-btn">?</div>
+      <button class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+    </nav>
+  </div>
 
-        <div class="modal-section-title">Ocultar información</div>
-        <label><input type="checkbox" checked> Salud mental</label>
-        <label><input type="checkbox" checked> VIH</label>
-        <label><input type="checkbox"> Salud sexual y reproductiva</label>
-        <label><input type="checkbox"> Consumo de sustancias</label>
-        <label><input type="checkbox"> Medicación psiquiátrica</label>
-
-        <div class="modal-section-title">Quién puede verla</div>
-        <label><input type="radio" name="acceso" checked> Solo yo</label>
-        <label><input type="radio" name="acceso"> Profesionales del turno actual</label>
-        <label><input type="radio" name="acceso"> Establecimientos donde me atiendo</label>
-        <label><input type="radio" name="acceso"> Emergencias (break-glass)</label>
-
-        <div class="modal-section-title">Notificaciones</div>
-        <label><input type="checkbox" checked> Avisarme ante accesos</label>
-        <label><input type="checkbox" checked> Avisarme ante accesos a datos sensibles</label>
-
-        <button class="button-primary" style="margin-top:16px;" onclick="cerrarModalPrivacidad()">
-          Guardar privacidad
-        </button>
+  <div id="modal-privacidad" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 class="modal-title">Privacidad Ley C.U.R.A.</h3>
+      <div class="toggle-row">
+        <span>Ocultar Salud Mental</span>
+        <input type="checkbox" checked>
       </div>
+      <div class="toggle-row">
+        <span>Ocultar VIH / Sensibles</span>
+        <input type="checkbox" checked>
+      </div>
+      <div class="toggle-row">
+        <span>Notificar cada acceso</span>
+        <input type="checkbox" checked>
+      </div>
+      <button class="btn-primary" style="margin-top:10px;" onclick="cerrarModal()">Guardar cambios</button>
     </div>
   </div>
 
   <script>
-    // Tabs
     const tabs = document.querySelectorAll(".tab");
-    const views = {
-      resumen: document.getElementById("view-resumen"),
-      cronologia: document.getElementById("view-cronologia"),
-      documentos: document.getElementById("view-documentos"),
-      accesos: document.getElementById("view-accesos"),
-    };
+    const panels = document.querySelectorAll(".view-panel");
 
-    tabs.forEach((tab) => {
+    tabs.forEach(tab => {
       tab.addEventListener("click", () => {
-        tabs.forEach((t) => t.classList.remove("active"));
+        tabs.forEach(t => t.classList.remove("active"));
+        panels.forEach(p => p.classList.remove("active"));
+        
         tab.classList.add("active");
-        const view = tab.dataset.view;
-        Object.keys(views).forEach((k) => {
-          views[k].classList.toggle("active", k === view);
-        });
+        document.getElementById("view-" + tab.dataset.view).classList.add("active");
       });
     });
 
-    // Modal privacidad
-    function abrirModalPrivacidad() {
-      document.getElementById("modal-privacidad").style.display = "flex";
-    }
-    function cerrarModalPrivacidad() {
-      document.getElementById("modal-privacidad").style.display = "none";
-    }
+    function abrirModal() { document.getElementById("modal-privacidad").style.display = "flex"; }
+    function cerrarModal() { document.getElementById("modal-privacidad").style.display = "none"; }
   </script>
 </body>
 </html>

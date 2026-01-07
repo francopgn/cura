@@ -2,15 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>Sistema C.U.R.A. | Nivel 2 (Urgencias)</title>
-    <link rel="icon" type="image/png" href="/random/favicon.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <script>
         tailwind.config = {
             theme: {
@@ -18,9 +19,12 @@
                     colors: {
                         medical: {
                             primary: '#004E85',
-                            light: '#E6F0F5',
-                            alert: '#FEFCE8',
-                            alertText: '#854D0E'
+                            primaryDark: '#00345C',
+                            blueMain: '#1f6fe5',
+                            blueSoft: '#e3f0ff',
+                            textDark: '#0d2b52',
+                            textGray: '#64748b',
+                            accent: '#00C2FF'
                         }
                     },
                     fontFamily: {
@@ -31,158 +35,121 @@
         }
     </script>
 
-<style>
-body {
-    -webkit-font-smoothing: antialiased;
-    background-color: #F3F4F6;
-}
-.card-shadow {
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
-}
-
-.popup {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #004E85;
-    color: #fff;
-    padding: 15px 20px;
-    border-radius: 10px;
-    font-size: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.6s ease;
-    z-index: 9999;
-    max-width: 280px;
-    text-align: center; 
-}
-.popup.show { opacity: 1; }
-</style>
-
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            background-color: #f0f4f8;
+        }
+        .cura-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+        }
+    </style>
 </head>
 
-<body class="min-h-screen flex flex-col pt-28 sm:pt-24 font-sans">
+<body class="min-h-screen flex flex-col pt-24 font-sans">
 
-<div id="popup" class="popup">
-  <p>Acceso Nivel 2: Datos clínicos de urgencia filtrados según Ley de Protección de Datos.</p>
-</div>
-
-<header class="fixed top-0 left-0 w-full bg-medical-primary text-white shadow-md z-50">
-    <div class="w-full px-4 py-2 flex flex-row items-center justify-between gap-2">
-        
-        <div class="flex items-center gap-3 min-w-0">
-            <img src="/logo_cura.png" class="h-12 sm:h-16 w-auto object-contain">
+<header class="fixed top-0 left-0 w-full bg-medical-primaryDark text-white shadow-lg z-50">
+    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <img src="/logo_cura.png" class="h-10 w-auto">
             <div class="leading-tight">
-                <h1 class="text-[11px] sm:text-sm font-bold uppercase tracking-wide">
-                    SISTEMA DE SALUD DIGITAL C.U.R.A.
-                </h1>
-                <p class="text-[10px] sm:text-[11px] opacity-80 tracking-wider hidden sm:block">
-                    NIVEL DE ACCESO 2 (URGENCIAS) · PROTOCOLO FEDERAL
-                </p>
-                 <p class="text-[9px] opacity-80 tracking-wider sm:hidden">
-                    ACCESO NIVEL 2
-                </p>
+                <h1 class="text-[10px] font-extrabold uppercase tracking-widest text-medical-accent">C.U.R.A.</h1>
+                <p class="text-[9px] opacity-80 font-bold uppercase">Nivel 2 (Urgencias)</p>
             </div>
         </div>
-
-        <div class="flex flex-col items-end leading-tight min-w-0 w-auto flex-shrink">
-            <span id="random-medico"
-                class="text-[9px] sm:text-[11px] font-medium tracking-wider opacity-90 text-right leading-tight">
-            </span>
-            <span id="hora-acceso"
-                class="text-[9px] sm:text-[11px] tracking-wider opacity-80 text-right leading-tight hidden sm:block">
-            </span>
+        <div class="text-right leading-tight">
+            <span id="random-medico" class="text-[10px] font-bold opacity-90 uppercase"></span>
         </div>
     </div>
 </header>
 
-<main class="max-w-lg mx-auto px-4 sm:px-6 py-4 space-y-4">
+<main class="w-full max-w-lg mx-auto px-5 py-6 space-y-5">
 
     <div class="pb-2">
         <button onclick="window.location.reload()" 
-                class="w-full bg-white text-medical-primary hover:bg-gray-100 transition-colors px-3 py-2 rounded flex items-center justify-center gap-2 shadow-sm border border-gray-200 active:scale-95 transform transition-transform cursor-pointer">
-            <i class="ph-bold ph-arrows-clockwise text-sm"></i>
-            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wide leading-none">Actualizar Registros</span>
+                class="w-full bg-white text-medical-primary hover:bg-gray-100 px-4 py-3 rounded-2xl flex items-center justify-center gap-3 shadow-sm border border-gray-200 active:scale-95 transition-all">
+            <i class="ph-bold ph-arrows-clockwise text-lg"></i>
+            <span class="text-xs font-bold uppercase tracking-wide">Actualizar Caso Clínico</span>
         </button>
     </div>
 
-    <section class="bg-white rounded-lg card-shadow border border-gray-200 p-4 relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1 bg-medical-primary"></div>
+    <div class="text-center pb-2">
+        <p id="hora-acceso" class="text-[11px] font-bold text-medical-textGray uppercase tracking-tighter leading-tight"></p>
+    </div>
 
-        <div class="flex items-start gap-4">
-            <div class="w-16 h-16 rounded-full bg-gray-200 border-2 border-medical-light overflow-hidden flex-shrink-0">
-                <img id="foto-paciente" src="" class="w-full h-full object-cover">
+    <section class="cura-card p-6 relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-medical-primary"></div>
+        
+        <div class="flex items-center gap-5">
+            <div class="relative flex-shrink-0">
+                <div class="w-20 h-20 rounded-full bg-gray-100 border-4 border-medical-light overflow-hidden shadow-sm">
+                    <img id="foto-paciente" src="" class="w-full h-full object-cover">
+                </div>
+                <div id="tipo-sangre" class="absolute -bottom-1 -right-1 flex items-center justify-center w-9 h-9 rounded-full bg-medical-blueMain text-white text-[11px] font-black border-2 border-white shadow-md">
+                    --
+                </div>
             </div>
 
             <div class="flex-grow">
-                <h2 id="nombre-completo" class="text-lg font-bold text-gray-900 leading-tight uppercase tracking-tight">
-                    PACIENTE
-                </h2>
-
-                <div class="mt-1 space-y-0.5">
-                    <p class="text-sm text-gray-600 font-medium">D.N.I.: <span id="dni"></span></p>
-                    <p class="text-sm text-gray-600 font-medium uppercase">
-                        NAC.: <span id="fecha-nac"></span> (<span id="edad"></span> AÑOS)
-                    </p>
-                    <p class="text-sm text-gray-600 font-medium">
-                        TIPO DE SANGRE: <span id="tipo-sangre" class="font-bold text-medical-primary"></span>
-                    </p>
+                <h2 id="nombre-completo" class="text-xl font-extrabold text-medical-textDark leading-none mb-2 uppercase tracking-tight"></h2>
+                <div class="space-y-1">
+                    <p class="text-xs font-bold text-medical-textGray uppercase">D.N.I.: <span id="dni" class="text-medical-textDark"></span></p>
+                    <p class="text-xs font-bold text-medical-textGray uppercase">Nac: <span id="fecha-nac" class="text-medical-textDark"></span> (<span id="edad" class="text-medical-textDark"></span> años)</p>
                 </div>
             </div>
         </div>
 
-        <div class="mt-4 pt-3 border-t border-gray-100">
+        <div class="mt-6 pt-5 border-t border-gray-100">
             <button type="button"
-                class="w-full border border-medical-primary text-medical-primary bg-white font-semibold py-2.5 px-4 rounded flex items-center justify-center gap-2 cursor-pointer active:bg-medical-light transition-colors">
-                <i class="ph-fill ph-phone-outgoing text-lg"></i>
-                Llamar Contacto de Emergencia 
+                class="w-full bg-gradient-to-r from-medical-blueMain to-medical-primary text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all">
+                <i class="ph-fill ph-phone-outgoing text-xl"></i>
+                <span class="tracking-wide">LLAMAR CONTACTO DE EMERGENCIA</span>
             </button>
         </div>
     </section>
 
-    <section class="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 flex gap-3 shadow-sm">
-        <i class="ph-fill ph-warning text-yellow-600 text-2xl mt-0.5"></i>
-        <div>
-            <h3 class="text-yellow-800 font-bold text-sm uppercase mb-1">Advertencias de Seguridad</h3>
-            <ul id="lista-advertencias" class="text-sm text-yellow-900 space-y-1 font-medium leading-snug"></ul>
+    <section class="bg-orange-50 border-2 border-orange-100 rounded-[28px] p-6 shadow-sm">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center">
+                <i class="ph-fill ph-warning-octagon text-lg"></i>
+            </div>
+            <h3 class="text-orange-900 font-black text-xs uppercase tracking-widest">Advertencias Críticas</h3>
         </div>
+        <ul id="lista-advertencias" class="text-xs text-orange-900 space-y-2 font-bold leading-relaxed"></ul>
     </section>
 
-    <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Condiciones Clínicas Relevantes</h3>
-        <div id="lista-condiciones" class="grid grid-cols-1 gap-2"></div>
+    <section class="space-y-3">
+        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Condiciones Relevantes</h3>
+        <div id="lista-condiciones" class="grid grid-cols-1 gap-3"></div>
     </section>
 
-    <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Implantes y Prótesis</h3>
-        <div id="lista-implantes" class="space-y-2"></div>
+    <section class="space-y-3">
+        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Implantes / Operaciones</h3>
+        <div id="lista-implantes" class="space-y-3"></div>
     </section>
 
-    <section>
-        <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Medicación Actual</h3>
-        <div class="bg-white border rounded card-shadow overflow-hidden">
+    <section class="space-y-3">
+        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Medicación Actual</h3>
+        <div class="cura-card overflow-hidden">
             <ul id="lista-medicacion" class="divide-y divide-gray-100"></ul>
         </div>
     </section>
 
-    <div class="h-4"></div>
 </main>
 
-<footer class="mt-auto bg-white border-t text-center py-6 px-4">
-    <div class="flex flex-col items-center gap-3">
-        <div class="w-50 h-12 opacity-90">
-            <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg"
-                 class="w-full h-full object-contain grayscale">
-        </div>
-        <p class="text-xs font-bold text-gray-500 uppercase">Sistema C.U.R.A.</p>
-        <p class="text-[10px] text-gray-400 italic">Acceso Nivel 2 (Urgencias) · La información sensible no asistencial se encuentra segmentada.</p>
+<footer class="mt-auto bg-white border-t border-gray-100 py-10 px-6">
+    <div class="flex flex-col items-center gap-3 text-center">
+        <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg" class="h-8 grayscale opacity-50">
+        <p class="text-[10px] font-black text-medical-textGray uppercase tracking-widest">Sistema C.U.R.A. · 2026</p>
+        <p class="text-[9px] text-medical-textGray italic">Acceso Nivel 2: Datos de salud mental protegidos por Ley de Privacidad.</p>
     </div>
 </footer>
 
 <script>
-/* FUNCIONES DE UTILIDAD */
+/* LÓGICA DE DATOS (Preservando catálogo no psiquiátrico) */
 function randInt(min, max){return Math.floor(Math.random()*(max-min+1))+min;}
 function choice(arr){return arr[randInt(0, arr.length-1)];}
 function fechaRandom(){
@@ -198,78 +165,54 @@ function edad(d,m,y){
     return e;
 }
 
-/* LISTAS DE DATOS PROFESIONALES */
-const medicos = ["Dr. Fabián Alonso", "Dra. Julieta Ruiz", "Dr. Mauro Etcheverry", "Dra. Florencia Rivas", "Dr. Sebastián López", "Dra. Ana Beltrán"];
-const nombresM = ['Franco','Juan','Lucas','Santiago','Matías','Agustín','Iván','Tomás','Bruno','Ezequiel'];
-const nombresF = ['Sofía','Camila','Valentina','Julieta','Martina','Ana','Paula','Rocío','Florencia','Lorena'];
-const apellidos = ['Gómez','Rodríguez','Paganini','Fernández','López','Sánchez','Romero','Martínez','García','Argüello'];
-const sangres = ['O+','A+','B+','AB+','O-','A-','B-','AB-'];
+const nombresM=['Franco','Juan','Lucas','Santiago','Matías','Agustín','Iván','Tomás','Bruno','Ezequiel'];
+const nombresF=['Sofía','Camila','Valentina','Julieta','Martina','Ana','Paula','Rocío','Florencia','Lorena'];
+const apellidos=['Gómez','Rodríguez','Paganini','Fernández','López','Sánchez','Romero','Martínez','García','Argüello'];
+const sangres=['O+','A+','B+','AB+','O-','A-','B-','AB-'];
+const medicos = ["Dr. Fabián Alonso","Dra. Julieta Ruiz","Dr. Mauro Etcheverry","Dra. Florencia Rivas","Dr. Sebastián López","Dra. Ana Beltrán"];
 
-/* CATÁLOGO CLÍNICO NIVEL 2 (SIN PSIQUIATRÍA) */
+/* CATÁLOGO CLÍNICO SEGURO (Nivel 2) */
 const condicionesCatalogo = [
-    {titulo:'Diabetes Tipo 1', subt:'Insulino-dependiente',
-     adv:['Riesgo de cetoacidosis','Verificar uso de bomba de insulina'],
-     meds:[['Insulina Asparta','Acción rápida'],['Insulina Glargina','Acción prolongada']]
-    },
-    {titulo:'Hipertensión Arterial', subt:'Grado II',
-     adv:['Controlar Tensión Arterial al ingreso','Riesgo de crisis hipertensiva'],
-     meds:[['Enalapril 10 mg','IECA'],['Hidroclorotiazida','Diurético']]
-    },
-    {titulo:'Asma Crónica', subt:'Persistente moderada',
-     adv:['Riesgo de broncoespasmo severo','Controlar saturación'],
-     meds:[['Salbutamol Aerosol','Rescate'],['Fluticasona','Mantenimiento']]
-    },
-    {titulo:'Fibrilación Auricular', subt:'Anticoagulado permanentemente',
-     adv:['ALTO RIESGO DE HEMORRAGIA','Informar cirujano/vacunador de inmediato'],
-     meds:[['Warfarina 5 mg','Anticoagulante'],['Bisoprolol 2.5 mg','Beta-bloqueante']]
-    },
-    {titulo:'Alergia Grave (Anafilaxia)', subt:'Reacción a Penicilinas',
-     adv:['CONTRAINDICADO: Betalactámicos','Administrar adrenalina en shock'],
-     meds:[['Autoinyector Adrenalina','Emergencia'],['Loratadina','Antihistamínico']]
-    },
-    {titulo:'Epilepsia', subt:'Focal con generalización',
-     adv:['Proteger vía aérea en convulsión','No introducir objetos en boca'],
-     meds:[['Levetiracetam 500 mg','Anticonvulsivo'],['Ácido Valproico','Estabilizador']]
-    }
+    {titulo:'Diabetes Tipo 1', subt:'Insulino-dependiente', adv:['Riesgo de cetoacidosis','Verificar bomba de insulina'], meds:[['Insulina Asparta','Acción rápida'],['Insulina Glargina','Acción prolongada']]},
+    {titulo:'Hipertensión Arterial', subt:'Grado II', adv:['Controlar T.A. al ingreso','Evitar descensos bruscos'], meds:[['Enalapril 10 mg','IECA'],['Hidroclorotiazida','Diurético']]},
+    {titulo:'Asma Crónica', subt:'Moderada persistente', adv:['Riesgo de broncoespasmo','Controlar saturación'], meds:[['Salbutamol 100 mcg','Rescate'],['Fluticasona','Mantenimiento']]},
+    {titulo:'Fibrilación Auricular', subt:'Anticoagulado', adv:['RIESGO DE HEMORRAGIA','Informar anticoagulación'], meds:[['Warfarina 5 mg','Anticoagulante'],['Bisoprolol 2.5 mg','Beta-bloqueante']]},
+    {titulo:'Alergia Penicilinas', subt:'Anafilaxia previa', adv:['CONTRAINDICADO: Betalactámicos','Administrar adrenalina en shock'], meds:[['Autoinyector Adrenalina','Emergencia'],['Loratadina','Antihistamínico']]},
+    {titulo:'Epilepsia', subt:'Focal estructural', adv:['Proteger vía aérea en convulsión','No introducir objetos en boca'], meds:[['Levetiracetam 500 mg','Anticonvulsivo'],['Ácido Valproico','Estabilizador']]}
 ];
 
 const implantes = [
-    {t:'Placa de Titanio PHILOS', d:'Osteosíntesis en húmero derecho', a:'Compatible con RM (verificar teslas).'},
-    {t:'Stent Coronario (DES)', d:'Colocado en Arteria Descendente Anterior', a:'Antiagregación activa.'},
-    {t:'Marcapasos Bicameral', d:'Síncope por bloqueo AV', a:'Evitar campos electromagnéticos fuertes.'},
-    {t:'Prótesis de Cadera Izquierda', d:'Reemplazo total por artrosis', a:'Verificar movilidad en traslados.'}
+    {t:'Placa PHILOS 3,5 mm',d:'Osteosíntesis húmero proximal derecho',a:'Verificar teslas antes de RM.'},
+    {t:'Stent coronario (DES)',d:'Arteria Descendente Anterior',a:'Paciente bajo antiagregación.'},
+    {t:'Marcapasos Bicameral',d:'Síncope por bloqueo AV',a:'Evitar campos electromagnéticos.'}
 ];
 
-/* GENERACIÓN DINÁMICA */
 document.addEventListener("DOMContentLoaded",()=>{
-
-    /* RELOJ DE ACCESO */
+    /* FECHA + HORA (Estética Franco Paganini) */
     const ahora = new Date();
-    const f = ahora.toLocaleDateString('es-AR', {weekday:'long', day:'numeric', month:'short'}).toUpperCase();
-    const h = ahora.toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
-    document.getElementById("hora-acceso").innerHTML = `${f} - ${h}<br>REGISTRO FEDERAL`;
+    const opciones = { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' };
+    document.getElementById("hora-acceso").innerText = "ACCESO REGISTRADO: " + ahora.toLocaleDateString('es-AR', opciones).toUpperCase();
 
-    /* IDENTIFICACIÓN PROFESIONAL */
+    /* MÉDICO + MATRÍCULAS */
     const medico = choice(medicos);
     const mp = randInt(10000, 99999);
     const mn = randInt(100000, 999999);
-    document.getElementById("random-medico").innerHTML = `${medico}<br>M.P.: ${mp} · M.N.: ${mn}`;
+    document.getElementById("random-medico").innerHTML = `${medico}<br>M.P.: ${mp}<br>M.N.: ${mn}`;
 
-    /* DATOS PACIENTE */
+    /* PACIENTE */
     const sexo = Math.random() < 0.5 ? 'M' : 'F';
     const nombre = sexo === 'M' ? choice(nombresM) : choice(nombresF);
     const apellido = choice(apellidos);
-    document.getElementById("nombre-completo").textContent = `${nombre} ${apellido}`;
-    document.getElementById("foto-paciente").src = `https://randomuser.me/api/portraits/${sexo==='M'?'men/':'women/'}${randInt(1,99)}.jpg`;
-    
-    document.getElementById("dni").textContent = randInt(15000000, 50000000).toLocaleString('es-AR');
+    document.getElementById("nombre-completo").textContent = nombre + " " + apellido;
+    document.getElementById("foto-paciente").src = "https://randomuser.me/api/portraits/" + (sexo==='M'?'men/':'women/') + randInt(1,99) + ".jpg";
+    document.getElementById("dni").textContent = randInt(15000000,50000000).toLocaleString('es-AR');
     const fn = fechaRandom();
     document.getElementById("fecha-nac").textContent = formatear(fn.d, fn.m, fn.y);
     document.getElementById("edad").textContent = edad(fn.d, fn.m, fn.y);
     document.getElementById("tipo-sangre").textContent = choice(sangres);
 
-    /* FILTRADO Y CARGA CLÍNICA */
-    const cantCond = randInt(1, 3);
+    /* CARGA CLÍNICA */
+    const cantCond = randInt(1, 2);
     const seleccionadas = [];
     const contCond = document.getElementById("lista-condiciones");
     const advArr = [];
@@ -280,58 +223,45 @@ document.addEventListener("DOMContentLoaded",()=>{
             seleccionadas.push(c);
             advArr.push(...c.adv);
             contCond.innerHTML += `
-            <div class="bg-white border rounded p-3 flex gap-3 card-shadow">
-                <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                    <i class="ph-fill ph-activity text-lg"></i>
+            <div class="cura-card p-4 flex gap-4">
+                <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                    <i class="ph-fill ph-activity text-xl"></i>
                 </div>
                 <div>
-                    <p class="text-sm font-bold text-gray-800">${c.titulo}</p>
-                    <p class="text-xs text-gray-500">${c.subt}</p>
+                    <p class="text-sm font-bold text-medical-textDark">${c.titulo}</p>
+                    <p class="text-[11px] font-medium text-medical-textGray">${c.subt}</p>
                 </div>
             </div>`;
         }
     }
 
-    /* CARGA IMPLANTES */
-    const cantImpl = randInt(0, 1);
     const contImpl = document.getElementById("lista-implantes");
-    if(cantImpl === 0){
-        contImpl.innerHTML = `<p class="text-xs text-gray-500 italic">No se reportan dispositivos internos.</p>`;
-    } else {
-        const im = choice(implantes);
-        advArr.push(im.a);
-        contImpl.innerHTML = `
-        <div class="bg-white border rounded card-shadow p-3 flex gap-3">
-            <div class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
-                <i class="ph-fill ph-shield-check text-lg"></i>
-            </div>
-            <div>
-                <p class="text-sm font-bold text-gray-800">${im.t}</p>
-                <p class="text-xs text-gray-500">${im.d}</p>
-            </div>
-        </div>`;
-    }
+    const im = choice(implantes);
+    advArr.push(im.a);
+    contImpl.innerHTML = `
+    <div class="cura-card p-4 flex gap-4">
+        <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0">
+            <i class="ph-fill ph-bone text-xl"></i>
+        </div>
+        <div>
+            <p class="text-sm font-bold text-medical-textDark">${im.t}</p>
+            <p class="text-[11px] font-medium text-medical-textGray">${im.d}</p>
+        </div>
+    </div>`;
 
-    /* CARGA ADVERTENCIAS */
-    const contAdv = document.getElementById("lista-advertencias");
-    advArr.forEach(a => contAdv.innerHTML += `<li>• ${a}</li>`);
+    const advC = document.getElementById("lista-advertencias");
+    advArr.forEach(a => { advC.innerHTML += `<li>• ${a}</li>`; });
 
-    /* CARGA MEDICACIÓN */
-    const contMeds = document.getElementById("lista-medicacion");
+    const meds = document.getElementById("lista-medicacion");
     seleccionadas.forEach(c => {
         c.meds.forEach(m => {
-            contMeds.innerHTML += `
-            <li class="p-3 flex justify-between items-center">
-                <span class="text-sm font-semibold text-gray-700">${m[0]}</span>
-                <span class="text-[10px] bg-blue-50 text-blue-700 font-bold px-2 py-1 rounded uppercase tracking-tighter">${m[1]}</span>
+            meds.innerHTML += `
+            <li class="p-4 flex justify-between items-center">
+                <span class="text-sm font-bold text-medical-primary">${m[0]}</span>
+                <span class="text-[10px] font-black bg-gray-100 px-2 py-1 rounded-lg uppercase text-medical-textGray">${m[1]}</span>
             </li>`;
         });
     });
-
-    /* EFECTO POPUP */
-    const popup = document.getElementById("popup");
-    setTimeout(() => popup.classList.add("show"), 500);
-    setTimeout(() => popup.classList.remove("show"), 4000);
 });
 </script>
 

@@ -36,16 +36,8 @@
     </script>
 
     <style>
-        body {
-            -webkit-font-smoothing: antialiased;
-            background-color: #f0f4f8;
-        }
-        .cura-card {
-            background: #ffffff;
-            border-radius: 28px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e5e7eb;
-        }
+        body { -webkit-font-smoothing: antialiased; background-color: #f0f4f8; }
+        .cura-card { background: #ffffff; border-radius: 28px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border: 1px solid #e5e7eb; }
     </style>
 </head>
 
@@ -61,7 +53,7 @@
             </div>
         </div>
         <div class="text-right leading-tight">
-            <span id="random-medico" class="text-[10px] font-bold opacity-90 uppercase leading-tight"></span>
+            <span id="random-medico" class="text-[10px] font-bold opacity-90 uppercase"></span>
         </div>
     </div>
 </header>
@@ -69,10 +61,9 @@
 <main class="w-full max-w-lg mx-auto px-5 py-6 space-y-5">
 
     <div class="pb-2">
-        <button onclick="window.location.reload()" 
-                class="w-full bg-white text-medical-primary hover:bg-gray-100 px-4 py-3 rounded-2xl flex items-center justify-center gap-3 shadow-sm border border-gray-200 active:scale-95 transition-all">
+        <button onclick="window.location.reload()" class="w-full bg-white text-medical-primary hover:bg-gray-100 px-4 py-3 rounded-2xl flex items-center justify-center gap-3 shadow-sm border border-gray-200 active:scale-95 transition-all">
             <i class="ph-bold ph-arrows-clockwise text-lg"></i>
-            <span class="text-xs font-bold uppercase tracking-wide">Cargar otro ejemplo (Demo)</span>
+            <span class="text-xs font-bold uppercase tracking-wide">Actualizar Caso Clínico</span>
         </button>
     </div>
 
@@ -82,52 +73,44 @@
 
     <section class="cura-card p-6 relative overflow-hidden">
         <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-medical-primary"></div>
-        
         <div class="flex items-center gap-5">
             <div class="relative flex-shrink-0">
                 <div class="w-20 h-20 rounded-full bg-gray-100 border-4 border-medical-light overflow-hidden shadow-sm">
                     <img id="foto-paciente" src="" class="w-full h-full object-cover">
                 </div>
-                <div id="tipo-sangre" class="absolute -bottom-1 -right-1 flex items-center justify-center w-9 h-9 rounded-full bg-medical-blueMain text-white text-[11px] font-black border-2 border-white shadow-md">
-                    --
-                </div>
+                <div id="tipo-sangre" class="absolute -bottom-1 -right-1 flex items-center justify-center w-9 h-9 rounded-full bg-medical-blueMain text-white text-[11px] font-black border-2 border-white shadow-md">--</div>
             </div>
-
             <div class="flex-grow">
-                <h2 id="nombre-completo" class="text-xl font-extrabold text-medical-textDark leading-none mb-2 uppercase tracking-tight tracking-tight"></h2>
+                <h2 id="nombre-completo" class="text-xl font-extrabold text-medical-textDark leading-none mb-2 uppercase tracking-tight"></h2>
                 <div class="space-y-1">
                     <p class="text-xs font-bold text-medical-textGray uppercase">D.N.I.: <span id="dni" class="text-medical-textDark"></span></p>
                     <p class="text-xs font-bold text-medical-textGray uppercase">Nac: <span id="fecha-nac" class="text-medical-textDark"></span> (<span id="edad" class="text-medical-textDark"></span> años)</p>
                 </div>
             </div>
         </div>
-
         <div class="mt-6 pt-5 border-t border-gray-100">
-            <button type="button"
-                class="w-full bg-medical-primary text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all">
+            <button class="w-full bg-gradient-to-r from-medical-blueMain to-medical-primary text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all uppercase text-xs">
                 <i class="ph-fill ph-phone-outgoing text-xl"></i>
-                <span class="tracking-wide uppercase text-xs">Llamar Contacto de Emergencia</span>
+                Llamar Contacto de Emergencia
             </button>
         </div>
     </section>
 
     <section class="bg-yellow-50 border-2 border-yellow-100 rounded-[28px] p-6 shadow-sm">
         <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 bg-yellow-600 text-white rounded-full flex items-center justify-center">
-                <i class="ph-fill ph-warning text-lg"></i>
-            </div>
+            <div class="w-8 h-8 bg-yellow-600 text-white rounded-full flex items-center justify-center"><i class="ph-fill ph-warning text-lg"></i></div>
             <h3 class="text-yellow-800 font-black text-xs uppercase tracking-widest">Advertencias Críticas</h3>
         </div>
-        <ul id="lista-advertencias" class="text-xs text-yellow-900 space-y-1.5 font-bold leading-relaxed"></ul>
+        <ul id="lista-advertencias" class="text-xs text-yellow-900 space-y-2 font-bold leading-relaxed"></ul>
     </section>
 
     <section class="space-y-3">
-        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Condiciones Clínicas Relevantes</h3>
+        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Condiciones Relevantes</h3>
         <div id="lista-condiciones" class="grid grid-cols-1 gap-3"></div>
     </section>
 
     <section class="space-y-3">
-        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Implantes / Operaciones</h3>
+        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Implantes y Dispositivos</h3>
         <div id="lista-implantes" class="space-y-3"></div>
     </section>
 
@@ -140,19 +123,18 @@
 
 </main>
 
-<footer class="mt-auto bg-white border-t border-gray-100 py-8 px-6">
-    <div class="flex flex-col items-center gap-3 text-center opacity-50">
+<footer class="mt-auto bg-white border-t border-gray-100 py-10 px-6 opacity-60">
+    <div class="flex flex-col items-center gap-3 text-center">
         <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg" class="h-8 grayscale">
-        <p class="text-[10px] font-black text-medical-textGray uppercase tracking-widest">Sistema C.U.R.A. · 2026</p>
+        <p class="text-[10px] font-black text-medical-textGray uppercase tracking-widest">Protocolo de Privacidad Federal · 2026</p>
     </div>
 </footer>
 
 <script>
-/* FUNCIONES LÓGICAS EXACTAS DEL DEMO-RANDOM 7 */
 function randInt(min, max){return Math.floor(Math.random()*(max-min+1))+min;}
 function choice(arr){return arr[randInt(0, arr.length-1)];}
 function fechaRandom(){
-    const y = randInt(1940, 2010);
+    const y = randInt(1945, 2010);
     const m = randInt(1,12);
     const d = randInt(1, [4,6,9,11].includes(m)?30:(m===2?28:31));
     return {d,m,y};
@@ -170,116 +152,86 @@ const apellidos=['Gómez','Rodríguez','Paganini','Fernández','López','Sánche
 const sangres=['O+','A+','B+','AB+','O-','A-','B-','AB-'];
 const medicos = ["Dr. Fabián Alonso","Dra. Julieta Ruiz","Dr. Mauro Etcheverry","Dra. Florencia Rivas","Dr. Sebastián López","Dra. Ana Beltrán"];
 
-/* CATÁLOGO (Se quitó salud mental por realismo de Nivel 2) */
 const condicionesCatalogo = [
-    {titulo:'Diabetes tipo 2', subt:'Control con hipoglucemiantes',
-     adv:['Riesgo de hipoglucemia','Controlar glucemia si está consciente'],
-     meds:[['Metformina 850 mg','Hipoglucemiante'],['Insulina NPH','Insulina']]
-    },
-    {titulo:'Hipertensión arterial',subt:'En tratamiento',
-     adv:['Controlar presión al ingreso','Evitar descensos bruscos'],
-     meds:[['Enalapril 10 mg','IECA'],['Amlodipina 5 mg','Calcioantagonista']]
-    },
-    {titulo:'Asma bronquial',subt:'Leve–moderado',
-     adv:['Consultar uso de broncodilatadores'],
-     meds:[['Salbutamol inhalador','Broncodilatador']]
-    }
+    {titulo:'Diabetes Tipo 2', subt:'Control metabólico', adv:['Riesgo de hipoglucemia'], meds:[['Metformina 850 mg','Hipoglucemiante']]},
+    {titulo:'Hipertensión Arterial', subt:'Grado II', adv:['Controlar T.A. al ingreso'], meds:[['Enalapril 10 mg','IECA']]},
+    {titulo:'Asma Bronquial', subt:'Moderada', adv:['Riesgo de broncoespasmo'], meds:[['Salbutamol','Broncodilatador']]},
+    {titulo:'Fibrilación Auricular', subt:'Arritmia crónica', adv:['RIESGO HEMORRÁGICO ALTO'], meds:[['Apixabán 5 mg','Anticoagulante']]},
+    {titulo:'EPOC', subt:'Enfermedad Pulmonar', adv:['Meta Saturación: 88-92%'], meds:[['Tiotropio','Broncodilatador']]},
+    {titulo:'Epilepsia', subt:'Neurológica clínica', adv:['Proteger vía aérea en crisis'], meds:[['Levetiracetam 500 mg','Anticonvulsivo']]},
+    {titulo:'Insuficiencia Cardíaca', subt:'Congestiva', adv:['Control de balance hídrico'], meds:[['Furosemida 40 mg','Diurético']]},
+    {titulo:'Hipotiroidismo', subt:'Sustitución hormonal', adv:['Administrar en ayunas'], meds:[['Levotiroxina 100 mcg','Hormona']]},
+    {titulo:'Enfermedad de Parkinson', subt:'Postural', adv:['Riesgo de caídas alto'], meds:[['Levodopa/Carbidopa','Dopaminérgico']]},
+    {titulo:'Gastritis Erosiva', subt:'Reflujo severo', adv:['Evitar AINES (Ibuprofeno)'], meds:[['Pantoprazol 40 mg','Protector']]},
+    {titulo:'Artritis Reumatoidea', subt:'Autoinmune', adv:['Paciente Inmunosuprimido'], meds:[['Metotrexato','Inmunomodulador']]},
+    {titulo:'Gota / Hiperuricemia', subt:'Articular', adv:['Consultar función renal'], meds:[['Alopurinol 300 mg','Uricosúrico']]},
+    {titulo:'Glaucoma', subt:'Ángulo abierto', adv:['Evitar Atropina en guardia'], meds:[['Timolol 0.5%','Gotas oft.']]}
 ];
 
 const implantes = [
-    {t:'Placa PHILOS 3,5 mm',d:'Osteosíntesis húmero proximal derecho',a:'Verificar compatibilidad con RM.'},
-    {t:'Stent coronario',d:'Antecedente coronario',a:'Paciente anticoagulado.'},
-    {t:'Prótesis total de rodilla',d:'Artrosis severa',a:'Evitar torsión brusca.'}
+    {t:'Bomba de Morfina', d:'Infusión intratecal', a:'Bomba programable. No suspender.', icon:'ph-fill ph-pill'},
+    {t:'Válvula DVP', d:'Hidrocefalia', a:'Sensible a imanes de alta potencia.', icon:'ph-fill ph-brain'},
+    {t:'Neuroestimulador', d:'Dolor neuropático', a:'Dispositivo electrónico implantado.', icon:'ph-fill ph-cpu'},
+    {t:'Marcapasos Bicameral', d:'Bloqueo AV', a:'Evitar campos electromagnéticos.', icon:'ph-fill ph-heartbeat'},
+    {t:'DAI (Desfibrilador)', d:'Prevención muerte súbita', a:'Peligro con bisturí eléctrico.', icon:'ph-fill ph-lightning-bold'},
+    {t:'Placa de Titanio', d:'Osteosíntesis húmero', a:'Compatible con RM.', icon:'ph-fill ph-bone'},
+    {t:'Bomba de Insulina', d:'Infusión continua', a:'No retirar sin supervisión.', icon:'ph-fill ph-drop'}
 ];
 
 document.addEventListener("DOMContentLoaded",()=>{
-    /* FECHA + HORA */
-    const a=new Date();
+    const ahora = new Date();
     const opciones = { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' };
-    document.getElementById("hora-acceso").innerText = "ACCESO REGISTRADO: " + a.toLocaleDateString('es-AR', opciones).toUpperCase();
+    document.getElementById("hora-acceso").innerText = "ACCESO REGISTRADO: " + ahora.toLocaleDateString('es-AR', opciones).toUpperCase();
+    document.getElementById("random-medico").innerHTML = `${choice(medicos)}<br>M.P.: ${randInt(10000, 99999)}<br>M.N.: ${randInt(100000, 999999)}`;
 
-    /* MÉDICO + MATRÍCULAS */
-    const medico = choice(medicos);
-    document.getElementById("random-medico").innerHTML = `${medico}<br>M.P.: ${randInt(10000, 99999)} · M.N.: ${randInt(100000, 999999)}`;
+    const sexo = Math.random() < 0.5 ? 'M' : 'F';
+    document.getElementById("nombre-completo").textContent = choice(sexo==='M'?nombresM:nombresF) + " " + choice(apellidos);
+    document.getElementById("foto-paciente").src = `https://randomuser.me/api/portraits/${sexo==='M'?'men/':'women/'}${randInt(1,99)}.jpg`;
+    document.getElementById("dni").textContent = randInt(15000000,50000000).toLocaleString('es-AR');
+    const fn = fechaRandom();
+    document.getElementById("fecha-nac").textContent = formatear(fn.d, fn.m, fn.y);
+    document.getElementById("edad").textContent = edad(fn.d, fn.m, fn.y);
+    document.getElementById("tipo-sangre").textContent = choice(sangres);
 
-    /* PACIENTE */
-    const sexo=Math.random()<0.5?'M':'F';
-    const nombre=sexo==='M'?choice(nombresM):choice(nombresF);
-    const apellido=choice(apellidos);
-    document.getElementById("nombre-completo").textContent=nombre+" "+apellido;
-    document.getElementById("foto-paciente").src="https://randomuser.me/api/portraits/"+(sexo==='M'?'men/':'women/')+randInt(1,99)+".jpg";
-    document.getElementById("dni").textContent=randInt(15000000,50000000).toLocaleString('es-AR');
-    
-    const fn=fechaRandom();
-    document.getElementById("fecha-nac").textContent=formatear(fn.d,fn.m,fn.y);
-    document.getElementById("edad").textContent=edad(fn.d,fn.m,fn.y);
-    document.getElementById("tipo-sangre").textContent=choice(sangres);
+    /* LÓGICA DE EQUILIBRIO (demo-random 7) */
+    const prob = Math.random();
+    let numCond = prob < 0.1 ? 0 : (prob < 0.8 ? 1 : 2); 
+    const usadas = [];
+    const advArr = [];
+    const contCond = document.getElementById("lista-condiciones");
+    const meds = document.getElementById("lista-medicacion");
 
-    /* LÓGICA DE GENERACIÓN REALISTA (Basada en demo-random 7) */
-    const cantCond=randInt(1,3);
-    const usadas=[];
-    const cont=document.getElementById("lista-condiciones");
-    const advArr=[];
-
-    for(let i=0; i<cantCond; i++){
-        const c=choice(condicionesCatalogo);
-        if(usadas.includes(c)) continue;
-        usadas.push(c);
-        advArr.push(...c.adv);
-
-        cont.innerHTML+=`
-        <div class="cura-card p-4 flex gap-4">
-            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
-                <i class="ph-fill ph-heartbeat text-xl"></i>
-            </div>
-            <div>
-                <p class="text-sm font-bold text-medical-textDark">${c.titulo}</p>
-                <p class="text-[11px] font-medium text-medical-textGray">${c.subt}</p>
-            </div>
-        </div>`;
-    }
-
-    /* IMPLANTES */
-    const cantImpl=randInt(0,2);
-    const implC=document.getElementById("lista-implantes");
-    if(cantImpl===0){
-        implC.innerHTML=`<p class="text-xs text-medical-textGray italic px-2">Sin implantes registrados.</p>`;
+    if (numCond === 0) {
+        contCond.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">Sin condiciones reportadas.</p>`;
+        meds.innerHTML = `<li class="p-4 text-xs text-medical-textGray italic">Sin medicación en curso.</li>`;
     } else {
-        for(let i=0;i<cantImpl;i++){
-            const im=choice(implantes);
-            advArr.push(im.a);
-            implC.innerHTML+=`
-            <div class="cura-card p-4 flex gap-4">
-                <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0">
-                    <i class="ph-fill ph-first-aid text-xl"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-medical-textDark">${im.t}</p>
-                    <p class="text-[11px] font-medium text-medical-textGray">${im.d}</p>
-                </div>
-            </div>`;
+        while(usadas.length < numCond){
+            const c = choice(condicionesCatalogo);
+            if(!usadas.includes(c)){
+                usadas.push(c);
+                advArr.push(...c.adv);
+                contCond.innerHTML += `<div class="cura-card p-4 flex gap-4"><div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0"><i class="ph-fill ph-activity text-xl"></i></div><div><p class="text-sm font-bold text-medical-textDark">${c.titulo}</p><p class="text-[11px] font-medium text-medical-textGray">${c.subt}</p></div></div>`;
+                c.meds.forEach(m => {
+                    meds.innerHTML += `<li class="p-4 flex justify-between items-center"><span class="text-sm font-bold text-medical-primary">${m[0]}</span><span class="text-[10px] font-black bg-gray-100 px-2 py-1 rounded-lg uppercase text-medical-textGray">${m[1]}</span></li>`;
+                });
+            }
         }
     }
 
-    /* ADVERTENCIAS */
-    const advC=document.getElementById("lista-advertencias");
-    [...new Set(advArr)].forEach(a=>{
-        advC.innerHTML+=`<li>• ${a}</li>`;
-    });
+    const contImpl = document.getElementById("lista-implantes");
+    if(Math.random() < 0.45){
+        const im = choice(implantes);
+        advArr.push(im.a);
+        contImpl.innerHTML = `<div class="cura-card p-4 flex gap-4"><div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="${im.icon} text-xl"></i></div><div><p class="text-sm font-bold text-medical-textDark">${im.t}</p><p class="text-[11px] font-medium text-medical-textGray">${im.d}</p></div></div>`;
+    } else {
+        contImpl.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">No se detectan implantes.</p>`;
+    }
 
-    /* MEDICACIÓN */
-    const meds=document.getElementById("lista-medicacion");
-    usadas.forEach(c=>{
-        c.meds.forEach(m=>{
-            meds.innerHTML+=`
-            <li class="p-4 flex justify-between items-center">
-                <span class="text-sm font-bold text-medical-primary">${m[0]}</span>
-                <span class="text-[10px] font-black bg-gray-100 px-2 py-1 rounded-lg uppercase text-medical-textGray">${m[1]}</span>
-            </li>`;
-        });
-    });
+    const advC = document.getElementById("lista-advertencias");
+    const unicas = [...new Set(advArr)];
+    if (unicas.length === 0) { advC.innerHTML = `<li>• Sin advertencias reportadas.</li>`; } 
+    else { unicas.forEach(a => { advC.innerHTML += `<li>• ${a}</li>`; }); }
 });
 </script>
-
 </body>
 </html>

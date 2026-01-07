@@ -2,441 +2,423 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Farmacias cercanas - C.U.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Farmacias Cercanas - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     :root {
-      --blue-dark: #0d3662;
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
       --blue-soft: #e3f0ff;
-      --bg-light: #f4f6fb;
-      --text-main: #0f172a;
-      --text-soft: #6b7280;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
       --border-soft: #e5e7eb;
-      --radius-lg: 24px;
-      --radius-pill: 999px;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --green-status: #16a34a;
+      --red-status: #ef4444;
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 45%, #f4f6fb 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 14px 14px 24px;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 120px; 
     }
 
-    /* HEADER estilo iOS */
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 28px;
-      padding: 12px 16px 18px;
-      box-shadow: 0 10px 30px rgba(15,23,42,0.35);
-      overflow: hidden;
-      z-index: 10;
-    }
-
-    .header::before {
-      content:"";
-      position:absolute;
-      width:190%;
-      height:180%;
-      top:-70%;
-      left:-40%;
-      border-radius:50%;
-      background:radial-gradient(circle at top,rgba(255,255,255,0.18),transparent 60%);
-    }
-
-    .header-row {
-      position:relative;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      z-index:2;
+    /* --- HEADER BAR (PASTILLA) --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      z-index: 100;
     }
 
     .back-btn {
-      width:32px;
-      height:32px;
-      border-radius:50%;
-      background:rgba(255,255,255,0.2);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid rgba(255,255,255,0.5);
-      backdrop-filter:blur(8px);
-      cursor:pointer;
-      font-size:18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      border: none;
+      cursor: pointer;
     }
 
     .header-title {
-      font-size:19px;
-      font-weight:600;
+      flex: 1;
+      text-align: center;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      margin-right: 36px; /* Para centrar compensando el back-btn */
     }
 
-    /* CARD PRINCIPAL */
+    /* --- CONTENIDO --- */
+    .main-content {
+      padding: 10px 20px;
+    }
+
     .card {
-      margin-top: 12px;
-      background:#fff;
-      border-radius:var(--radius-lg);
-      padding:16px 16px 20px;
-      box-shadow:0 12px 30px rgba(15,23,42,0.12);
-    }
-
-    .section {
-      margin-bottom:16px;
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
     }
 
     .section-label {
-      font-size:14px;
-      font-weight:600;
-      margin-bottom:6px;
-      color:var(--text-main);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--blue-header);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: block;
     }
 
-    .hint {
-      font-size:12px;
-      color:var(--text-soft);
-    }
-
-    /* UBICACIÓN / BUSCADOR */
-    .location-bar {
-      margin-top:8px;
-      padding:10px 12px;
-      border-radius:16px;
-      background:#f3f4ff;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      color:#1f2937;
+    /* --- UBICACIÓN --- */
+    .location-box {
+      background: var(--blue-soft);
+      border-radius: 20px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .loc-dot {
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:#16a34a;
-      box-shadow:0 0 0 4px rgba(22,163,74,0.18);
-      flex-shrink:0;
+      width: 10px;
+      height: 10px;
+      background: var(--green-status);
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
+      animation: pulse 2s infinite;
     }
 
-    .filters {
-      margin-top:10px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
     }
 
-    .input-text {
-      width:100%;
-      padding:9px 11px;
-      border-radius:12px;
-      border:1px solid var(--border-soft);
-      font-size:13px;
-      background:#f9fafb;
-      color:var(--text-main);
-      outline:none;
+    /* --- FILTROS --- */
+    .search-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: #f8fafc;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
     }
 
-    .input-text:focus {
-      border-color:var(--blue-main);
-      box-shadow:0 0 0 1px rgba(37,99,235,0.28);
-      background:#fff;
+    .pill-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 5px;
     }
-
-    .pill-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-    }
+    .pill-scroll::-webkit-scrollbar { display: none; }
 
     .pill {
-      padding:5px 9px;
-      border-radius:var(--radius-pill);
-      border:1px solid var(--border-soft);
-      background:#f9fafb;
-      font-size:11px;
-      color:var(--text-soft);
-      white-space:nowrap;
+      padding: 8px 16px;
+      background: #fff;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-gray);
+      white-space: nowrap;
+      cursor: pointer;
     }
-
     .pill.active {
-      background:var(--blue-soft);
-      border-color:var(--blue-main);
-      color:var(--blue-dark);
-      font-weight:500;
+      background: var(--blue-main);
+      color: #fff;
+      border-color: var(--blue-main);
     }
 
-    /* LISTA DE FARMACIAS */
-    .pharmacy-list {
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
+    /* --- LISTA FARMACIAS --- */
     .pharmacy-card {
-      border-radius:18px;
-      border:1px solid var(--border-soft);
-      background:#f9fafb;
-      padding:12px 12px 10px;
-      font-size:12px;
-      color:var(--text-main);
+      border: 1px solid var(--border-soft);
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: transform 0.2s;
     }
+    .pharmacy-card:active { transform: scale(0.98); }
 
     .ph-header {
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
-      margin-bottom:4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
     }
 
     .ph-name {
-      font-size:14px;
-      font-weight:600;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
     }
 
-    .ph-status {
-      font-size:11px;
-      padding:3px 8px;
-      border-radius:var(--radius-pill);
-      background:#dcfce7;
-      color:#166534;
-      white-space:nowrap;
+    .status-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+      text-transform: uppercase;
     }
+    .status-open { background: #dcfce7; color: #166534; }
+    .status-guardia { background: #fee2e2; color: #991b1b; }
 
-    .ph-status-guardia {
-      background:#fee2e2;
-      color:#b91c1c;
-    }
-
-    .ph-meta {
-      font-size:11px;
-      color:var(--text-soft);
-      margin-bottom:4px;
+    .ph-address {
+      font-size: 13px;
+      color: var(--text-gray);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 10px;
     }
 
     .tag-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:4px;
-      margin-top:4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 15px;
     }
-
     .tag {
-      font-size:10px;
-      padding:2px 6px;
-      border-radius:var(--radius-pill);
-      background:#e5e7eb;
-      color:#111827;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      background: #f1f5f9;
+      color: var(--text-dark);
+      border-radius: 8px;
     }
-
-    .tag-blue {
-      background:var(--blue-soft);
-      color:var(--blue-dark);
-    }
-
-    .tag-green {
-      background:#dcfce7;
-      color:#15803d;
-    }
+    .tag-cura { background: var(--blue-soft); color: var(--blue-header); }
 
     .ph-actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-      margin-top:8px;
+      display: flex;
+      gap: 10px;
+    }
+    .btn-ph {
+      flex: 1;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-map { background: var(--blue-main); color: #fff; }
+    .btn-detail { background: #f1f5f9; color: var(--text-dark); }
+
+    /* --- BOTTOM BAR --- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
+      background: #ffffff;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
     }
 
-    .btn-mini {
-      padding:5px 10px;
-      border-radius:var(--radius-pill);
-      border:1px solid var(--border-soft);
-      background:#fff;
-      font-size:11px;
-      cursor:pointer;
-      text-decoration:none;
-      color:var(--text-main);
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
+    .nav-icon-btn i { font-size: 26px; }
 
-    .btn-mini.primary {
-      border-color:#2563eb;
-      color:#1d4ed8;
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: var(--blue-main);
+      border-radius: 50%;
+      border: 5px solid var(--main-bg); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 600;
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-<div class="app-shell">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-row">
-      <div class="back-btn" onclick="history.back()">‹</div>
-      <div class="header-title">Farmacias cercanas</div>
-    </div>
-  </header>
+  <div class="app-shell">
+    
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
+      <div class="header-title">Farmacias Cercanas</div>
+    </header>
 
-  <main class="card">
-
-    <!-- Filtros y ubicación -->
-    <section class="section">
-      <div class="section-label">Búsqueda</div>
-      <div class="hint">
-        Farmacias adheridas a C.U.R.A. que pueden leer tu credencial y recetas electrónicas.
-      </div>
-
-      <div class="location-bar">
-        <div class="loc-dot"></div>
-        <div style="flex:1;">
-          Usando tu ubicación actual  
-          <div style="font-size:11px; color:var(--text-soft);">
-            General Rodríguez, Buenos Aires (ejemplo)
+    <main class="main-content">
+      
+      <div class="card">
+        <span class="section-label">Búsqueda Inteligente</span>
+        <div class="location-box">
+          <div class="loc-dot"></div>
+          <div>
+            <p style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Ubicación Actual</p>
+            <p style="font-size: 11px; color: var(--text-gray);">Gral. Rodríguez, Buenos Aires</p>
           </div>
+          <button style="margin-left: auto; font-size: 11px; font-weight: 700; color: var(--blue-main);">CAMBIAR</button>
         </div>
-        <button
-          type="button"
-          style="
-            border-radius:999px;
-            border:1px solid rgba(148,163,184,0.7);
-            background:#ffffff;
-            font-size:11px;
-            padding:4px 8px;
-            cursor:pointer;
-          ">
-          Cambiar
-        </button>
-      </div>
 
-      <div class="filters">
-        <input
-          type="text"
-          class="input-text"
-          placeholder="Buscar por zona, barrio o dirección..."
-        />
-
-        <div class="pill-row">
-          <span class="pill active">Abiertas ahora</span>
-          <span class="pill">Guardia 24 hs</span>
-          <span class="pill">Con tu cobertura</span>
-          <span class="pill">Descuento PAMI</span>
+        <input type="text" class="search-input" placeholder="Nombre de farmacia o dirección...">
+        
+        <div class="pill-scroll">
+          <div class="pill active">Abiertas ahora</div>
+          <div class="pill">Guardia 24hs</div>
+          <div class="pill">Cerca de mí</div>
+          <div class="pill">Descuento PAMI</div>
+          <div class="pill">Swiss Medical</div>
         </div>
       </div>
-    </section>
 
-    <!-- Lista de farmacias -->
-    <section class="section">
-      <div class="section-label">Resultados cercanos</div>
-      <div class="pharmacy-list">
-
-        <!-- Farmacia 1 -->
+      <div class="card">
+        <span class="section-label">Farmacias Adheridas</span>
+        
         <article class="pharmacy-card">
           <div class="ph-header">
-            <div class="ph-name">Farmacia Central C.U.R.A.</div>
-            <div class="ph-status">Abierto · cierra 20:00</div>
+            <h3 class="ph-name">Central C.U.R.A.</h3>
+            <span class="status-badge status-open">Abierto</span>
           </div>
-          <div class="ph-meta">
-            Av. Mitre 1234 · a 450 m · General Rodríguez  
-            Convenio: Obras sociales + prepagas
+          <div class="ph-address">
+            <i class="ph ph-map-pin"></i> Av. Mitre 1234 · 450m
           </div>
           <div class="tag-row">
-            <span class="tag tag-blue">Adherida a C.U.R.A.</span>
+            <span class="tag tag-cura">Digital C.U.R.A.</span>
             <span class="tag">OSDE</span>
             <span class="tag">PAMI</span>
           </div>
           <div class="ph-actions">
-            <a
-              class="btn-mini primary"
-              href="https://www.google.com/maps/search/?api=1&query=Farmacia+Central+General+Rodr%C3%ADguez"
-              target="_blank"
-              rel="noopener"
-            >
-              Ver cómo llegar
-            </a>
-            <button class="btn-mini" type="button">
-              Ver detalles
-            </button>
+            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
+            <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>
 
-        <!-- Farmacia 2 -->
-        <article class="pharmacy-card">
+        <article class="pharmacy-card" style="border-color: #fee2e2;">
           <div class="ph-header">
-            <div class="ph-name">Farmacia de Guardia Rodríguez</div>
-            <div class="ph-status ph-status-guardia">Guardia 24 hs</div>
+            <h3 class="ph-name">Guardia Rodríguez</h3>
+            <span class="status-badge status-guardia">24 Horas</span>
           </div>
-          <div class="ph-meta">
-            Rivadavia 890 · a 1,1 km · Guardia nocturna  
-            Atención prioritaria urgencias
+          <div class="ph-address">
+            <i class="ph ph-map-pin"></i> Rivadavia 890 · 1.1km
           </div>
           <div class="tag-row">
-            <span class="tag tag-blue">Adherida a C.U.R.A.</span>
-            <span class="tag">Recetas de guardia</span>
+            <span class="tag tag-cura">Urgencias</span>
+            <span class="tag">Todas las OS</span>
           </div>
           <div class="ph-actions">
-            <a
-              class="btn-mini primary"
-              href="https://www.google.com/maps/search/?api=1&query=Farmacia+de+Guardia+General+Rodr%C3%ADguez"
-              target="_blank"
-              rel="noopener"
-            >
-              Ver cómo llegar
-            </a>
-            <button class="btn-mini" type="button">
-              Ver detalles
-            </button>
+            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
+            <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>
 
-        <!-- Farmacia 3 -->
         <article class="pharmacy-card">
           <div class="ph-header">
-            <div class="ph-name">Farmacia Mitre y Ruta</div>
-            <div class="ph-status">Abierto · cierra 22:00</div>
+            <h3 class="ph-name">Farmacia Mitre y Ruta</h3>
+            <span class="status-badge status-open">Abierto</span>
           </div>
-          <div class="ph-meta">
-            Colectora Acceso Oeste km 50 · a 2,3 km  
-            Especializada en crónicos y alto costo
+          <div class="ph-address">
+            <i class="ph ph-map-pin"></i> Colectora Oeste km 50 · 2.3km
           </div>
           <div class="tag-row">
-            <span class="tag tag-blue">Adherida a C.U.R.A.</span>
-            <span class="tag">Swiss Medical</span>
+            <span class="tag tag-cura">Alto Costo</span>
             <span class="tag">Galeno</span>
-            <span class="tag">Obras sociales</span>
+            <span class="tag">S. Medical</span>
           </div>
           <div class="ph-actions">
-            <a
-              class="btn-mini primary"
-              href="https://www.google.com/maps/search/?api=1&query=Farmacia+Mitre+y+Ruta+General+Rodr%C3%ADguez"
-              target="_blank"
-              rel="noopener"
-            >
-              Ver cómo llegar
-            </a>
-            <button class="btn-mini" type="button">
-              Ver detalles
-            </button>
+            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
+            <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>
 
       </div>
-    </section>
+    </main>
 
-  </main>
-</div>
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn">
+        <i class="ph-bold ph-house"></i>
+      </button>
+      <button class="nav-icon-btn">
+        <i class="ph-bold ph-calendar-blank"></i>
+      </button>
+      
+      <div class="center-question-btn">?</div>
+      
+      <button class="nav-icon-btn">
+        <i class="ph-bold ph-prescription"></i>
+      </button>
+      <button class="nav-icon-btn">
+        <i class="ph-bold ph-user"></i>
+      </button>
+    </nav>
+
+  </div>
+
+  <script>
+    // Lógica simple para los filtros (efecto visual)
+    const pills = document.querySelectorAll('.pill');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>

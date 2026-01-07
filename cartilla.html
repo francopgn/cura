@@ -8,11 +8,14 @@
     :root {
       --main-bg: #f0f4f8; 
       --blue-header: #005fa3; 
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
       --text-dark: #0d2b52;
       --text-gray: #64748b;
       --card-white: #ffffff;
-      --accent-blue: #0066cc;
+      --border-soft: #e5e7eb;
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --green-status: #10b981;
     }
 
     * {
@@ -32,13 +35,12 @@
     .app-shell {
       width: 100%;
       max-width: 414px;
-      background-color: var(--main-bg);
       display: flex;
       flex-direction: column;
       padding-bottom: 110px; 
     }
 
-    /* --- HEADER PASTILLA --- */
+    /* --- HEADER BAR (PASTILLA) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -47,31 +49,47 @@
       border-radius: 999px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
-    .header-bar a { color: white; text-decoration: none; font-size: 20px; }
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      margin-right: 12px;
+    }
+
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
     
-    .section-header { margin-bottom: 20px; }
-    .section-title { font-size: 24px; font-weight: 800; color: var(--text-dark); }
+    .section-header { margin-bottom: 20px; padding: 0 5px; }
+    .section-title { font-size: 26px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
     .section-subtitle { font-size: 14px; color: var(--text-gray); margin-top: 4px; }
 
     /* --- BUSCADOR --- */
     .search-box {
       background: var(--card-white);
       border-radius: 20px;
-      padding: 12px 20px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       margin-bottom: 20px;
       box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
     }
     .search-box input {
       border: none;
@@ -79,6 +97,7 @@
       width: 100%;
       font-size: 15px;
       color: var(--text-dark);
+      background: transparent;
     }
 
     /* --- FILTROS RÁPIDOS --- */
@@ -86,56 +105,79 @@
       display: flex;
       gap: 10px;
       overflow-x: auto;
-      padding-bottom: 15px;
-      margin-bottom: 10px;
+      padding: 5px 0 20px 0;
     }
     .filters-scroll::-webkit-scrollbar { display: none; }
     
     .filter-chip {
-      background: #e3f0ff;
-      color: var(--accent-blue);
-      padding: 8px 16px;
-      border-radius: 20px;
+      background: var(--card-white);
+      color: var(--text-dark);
+      padding: 10px 18px;
+      border-radius: 16px;
       font-size: 13px;
       font-weight: 600;
       white-space: nowrap;
-      border: none;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+    }
+    .filter-chip.active {
+      background: var(--blue-main);
+      color: white;
+      border-color: var(--blue-main);
     }
 
     /* --- LISTA DE PRESTADORES --- */
     .prestador-card {
       background: var(--card-white);
-      border-radius: 24px;
-      padding: 16px;
-      margin-bottom: 15px;
+      border-radius: 28px;
+      padding: 18px;
+      margin-bottom: 16px;
       display: flex;
-      gap: 15px;
+      gap: 16px;
       box-shadow: var(--shadow-soft);
       align-items: center;
+      border: 1px solid transparent;
+      transition: border-color 0.2s;
     }
+    .prestador-card:active { border-color: var(--blue-main); }
     
     .prestador-img {
-      width: 60px;
-      height: 60px;
-      background: #f0f4f8;
-      border-radius: 16px;
+      width: 64px;
+      height: 64px;
+      background: var(--blue-soft);
+      border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 28px;
+      flex-shrink: 0;
     }
 
-    .prestador-info { flex: 1; }
-    .prestador-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
-    .prestador-desc { font-size: 13px; color: var(--text-gray); margin-top: 2px; }
+    .prestador-info { flex: 1; min-width: 0; }
+    .prestador-name { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .prestador-desc { font-size: 13px; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    .badge-interop {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      background: #dcfce7;
+      color: #166534;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
     .prestador-meta { 
       display: flex; 
       align-items: center; 
-      gap: 10px; 
-      margin-top: 8px; 
+      gap: 12px; 
+      margin-top: 10px; 
       font-size: 12px; 
-      font-weight: 600;
-      color: var(--accent-blue);
+      font-weight: 700;
+      color: var(--blue-main);
     }
 
     /* --- NAV INFERIOR --- */
@@ -153,7 +195,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 25px;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       z-index: 50;
     }
 
@@ -167,6 +209,7 @@
       color: white; font-size: 32px; font-weight: 600;
       margin-top: -35px; 
       box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+      cursor: pointer;
     }
   </style>
 </head>
@@ -174,76 +217,79 @@
 
   <div class="app-shell">
     <header class="header-bar">
-      <a href="menu.html">←</a>
+      <button class="back-btn" onclick="location.href='menu (12).html'">‹</button>
       <div class="header-title">Cartilla Federal</div>
-      <div style="color:white; opacity: 0;">🔔</div>
-    </header>
+      <div style="width: 36px;"></div> </header>
 
     <main class="main-content">
       <div class="section-header">
-        <h1 class="section-title">Encontrá tu atención</h1>
-        <p class="section-subtitle">Red nacional de efectores interoperables Ley 27.706</p>
+        <h1 class="section-title">Encontrá atención</h1>
+        <p class="section-subtitle">Red nacional interoperable · Ley C.U.R.A.</p>
       </div>
 
       <div class="search-box">
-        <span>🔍</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-gray)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" placeholder="Especialidad, nombre o centro...">
       </div>
 
       <div class="filters-scroll">
-        <button class="filter-chip">Cerca mío</button>
-        <button class="filter-chip">Guardias</button>
-        <button class="filter-chip">Odontología</button>
+        <button class="filter-chip active">Cerca mío</button>
+        <button class="filter-chip">Guardias 24h</button>
+        <button class="filter-chip">Cardiología</button>
         <button class="filter-chip">Pediatría</button>
+        <button class="filter-chip">Laboratorios</button>
       </div>
 
-      <div class="prestador-card">
+      <div class="prestador-card" onclick="alert('Abriendo detalle de Institución')">
         <div class="prestador-img">🏥</div>
         <div class="prestador-info">
           <p class="prestador-name">Hospital de Alta Complejidad</p>
-          <p class="prestador-desc">Red C.U.R.A. - Nodo Federal 001</p>
+          <p class="prestador-desc">Nodo Federal 001 · Público</p>
+          <span class="badge-interop">Interoperabilidad Nivel 7</span>
           <div class="prestador-meta">
             <span>📍 1.2 km</span>
-            <span>⭐ 4.8</span>
+            <span style="color: var(--green-status)">● Abierto ahora</span>
           </div>
         </div>
       </div>
 
-      <div class="prestador-card">
+      <div class="prestador-card" onclick="alert('Abriendo perfil profesional')">
         <div class="prestador-img">👨‍⚕️</div>
         <div class="prestador-info">
           <p class="prestador-name">Dr. Julián Martínez</p>
-          <p class="prestador-desc">Cardiología - Mat. Nacional 123456</p>
+          <p class="prestador-desc">Cardiología · Mat. Nac. 123456</p>
+          <span class="badge-interop">Receta Digital Habilitada</span>
           <div class="prestador-meta">
             <span>📍 2.5 km</span>
-            <span>🕒 Disponible</span>
+            <span>⭐ 4.9 (230 opiniones)</span>
           </div>
         </div>
       </div>
 
-      <div class="prestador-card">
-        <div class="prestador-img">🔬</div>
+      <div class="prestador-card" onclick="alert('Abriendo servicios de laboratorio')">
+        <div class="prestador-img">🧪</div>
         <div class="prestador-info">
-          <p class="prestador-name">Laboratorio Central Bio-Salud</p>
-          <p class="prestador-desc">Análisis Clínicos - Interoperable</p>
+          <p class="prestador-name">Laboratorio Bio-Salud</p>
+          <p class="prestador-desc">Análisis Clínicos · Red PAMI/IOMA</p>
+          <span class="badge-interop">Resultados vía CURA-ID</span>
           <div class="prestador-meta">
             <span>📍 0.8 km</span>
-            <span>🕒 Cerrado</span>
+            <span style="color: var(--text-gray)">🕒 Cierra 18:00</span>
           </div>
         </div>
       </div>
 
     </main>
 
-    <div class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'">
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       </button>
       <div class="center-question-btn">?</div>
       <button class="nav-icon-btn">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.5c1.933 0 3.5-1.567 3.5-3.5s-1.567-3.5-3.5-3.5-3.5 1.567-3.5 3.5 1.567 3.5 3.5 3.5zM19.433 12.994l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58z"/></svg>
       </button>
-    </div>
+    </nav>
   </div>
 
 </body>

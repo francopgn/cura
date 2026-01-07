@@ -3,515 +3,400 @@
 <head>
   <meta charset="UTF-8" />
   <title>Documentos y Estudios - C.U.R.A.</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
     :root {
-      --blue-dark: #0d3662;
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
       --blue-soft: #e3f0ff;
-      --bg-light: #f3f6fb;
-      --text-main: #0f172a;
-      --text-soft: #6b7280;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
       --border-soft: #e5e7eb;
-      --radius-lg: 24px;
-      --radius-pill: 999px;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --red-status: #ef4444;
     }
 
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #cfe3ff 0%, #f4f6fb 50%, #f4f6fb 100%);
+      background-color: var(--main-bg);
       display: flex;
       justify-content: center;
-      align-items: flex-start;
       min-height: 100vh;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      padding: 14px 14px 24px;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 110px; 
     }
 
-    /* HEADER (compacto unificado) */
-
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, var(--blue-dark), var(--blue-main));
-      color: #fff;
-      border-radius: 22px;
-      padding: 6px 14px 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.35);
-    }
-
-    .header::before {
-      content: "";
-      position: absolute;
-      width: 180%;
-      height: 180%;
-      border-radius: 50%;
-      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 60%);
-      top: -70%;
-      left: -40%;
-      opacity: 0.9;
-    }
-
-    .header-row {
+    /* --- HEADER BAR (PASTILLA) --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      z-index: 2;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
 
     .back-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
-      background: rgba(15, 23, 42, 0.18);
-      backdrop-filter: blur(10px);
+      margin-right: 12px;
     }
 
-    .header-title {
-      font-size: 19px;
-      font-weight: 600;
-    }
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
-    /* CARD PRINCIPAL (altura unificada) */
+    /* --- CONTENIDO --- */
+    .main-content { padding: 10px 20px; }
 
     .card {
-      margin-top: 8px;
-      background: #ffffff;
-      border-radius: var(--radius-lg);
-      padding: 16px 16px 20px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14);
-    }
-
-    .section {
-      margin-bottom: 16px;
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
     }
 
     .section-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
     }
 
     .hint {
-      font-size: 12px;
-      color: var(--text-soft);
+      font-size: 13px;
+      color: var(--text-gray);
+      margin-bottom: 20px;
+      line-height: 1.4;
     }
 
-    /* FILTROS */
-
+    /* --- FILTROS --- */
     .filters {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 4px;
-      margin-bottom: 10px;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
     }
 
-    .input-text,
-    .select-field {
-      padding: 9px 10px;
-      border-radius: 12px;
+    .input-text, .select-field {
+      width: 100%;
+      padding: 14px;
+      border-radius: 16px;
       border: 1px solid var(--border-soft);
-      font-size: 13px;
+      font-size: 14px;
       outline: none;
-      background: #f9fafb;
-      color: var(--text-main);
-      min-width: 0;
+      background: #f8fafc;
+      color: var(--text-dark);
     }
 
-    .input-text:focus,
-    .select-field:focus {
-      border-color: var(--blue-main);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.28);
-      background: #fff;
-    }
-
-    .filters .input-text {
-      flex: 1 1 100%;
-    }
-
-    .filters .select-field {
-      flex: 1 1 calc(50% - 4px);
-    }
-
-    /* TOGGLE SENSIBLES */
+    .filter-row { display: flex; gap: 10px; }
+    .filter-row .select-field { flex: 1; }
 
     .toggle-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 6px;
+      gap: 12px;
+      margin-top: 4px;
     }
 
     .toggle {
       position: relative;
-      width: 40px;
-      height: 22px;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
     }
 
-    .toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
 
     .slider {
       position: absolute;
       cursor: pointer;
       inset: 0;
-      background-color: #d1d5db;
+      background-color: #cbd5e1;
       border-radius: 999px;
-      transition: 0.2s;
+      transition: 0.3s;
     }
 
     .slider::before {
       content: "";
       position: absolute;
-      height: 16px;
-      width: 16px;
+      height: 18px;
+      width: 18px;
       left: 3px;
       top: 3px;
       background-color: #fff;
       border-radius: 50%;
-      transition: 0.2s;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+      transition: 0.3s;
     }
 
-    .toggle input:checked + .slider {
-      background-color: var(--blue-main);
-    }
+    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
 
-    .toggle input:checked + .slider::before {
-      transform: translateX(16px);
-    }
+    .toggle-text { font-size: 12px; color: var(--text-gray); line-height: 1.3; }
 
-    .toggle-text {
-      font-size: 12px;
-      color: var(--text-soft);
-    }
-
-    /* GRUPOS POR FECHA / TIPO */
-
+    /* --- LISTA DE DOCUMENTOS --- */
     .group-label {
       font-size: 12px;
-      color: #6b7280;
-      margin-top: 10px;
-      margin-bottom: 4px;
+      font-weight: 700;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 10px 0 10px 10px;
     }
 
-    .doc-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    .doc-list { display: flex; flex-direction: column; gap: 12px; }
 
     .doc-card {
       display: flex;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 14px;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 24px;
+      background: #f8fafc;
       border: 1px solid var(--border-soft);
-      background: #f9fafb;
-      font-size: 12px;
       align-items: center;
     }
 
     .thumb {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--blue-soft), #e5e7eb);
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--blue-soft);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-      color: #1f2933;
+      font-size: 22px;
       flex-shrink: 0;
     }
 
-    .doc-main {
-      flex: 1;
-      min-width: 0;
-    }
+    .doc-main { flex: 1; min-width: 0; }
+    .doc-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .doc-meta { font-size: 11px; color: var(--text-gray); margin-bottom: 6px; }
 
-    .doc-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .doc-meta {
-      font-size: 11px;
-      color: var(--text-soft);
-      margin-bottom: 2px;
-    }
-
-    .doc-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
+    .doc-tags { display: flex; flex-wrap: wrap; gap: 4px; }
     .tag {
       font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      color: #111827;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #e2e8f0;
+      color: #475569;
     }
+    .tag-blue { background: var(--blue-soft); color: var(--blue-header); }
+    .tag-red { background: #fee2e2; color: #991b1b; }
 
-    .tag-blue {
-      background: var(--blue-soft);
-      color: var(--blue-dark);
-    }
-
-    .tag-red {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-    .doc-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
+    .doc-actions { display: flex; flex-direction: column; gap: 6px; }
     .mini-btn {
-      border-radius: 999px;
+      padding: 8px 12px;
+      border-radius: 10px;
       border: 1px solid var(--border-soft);
-      padding: 4px 8px;
+      background: #fff;
       font-size: 11px;
-      background: #ffffff;
+      font-weight: 700;
+      color: var(--text-dark);
       cursor: pointer;
       white-space: nowrap;
     }
+    .mini-btn.primary { background: var(--blue-main); color: #fff; border: none; }
 
-    .mini-btn.primary {
-      border-color: #2563eb;
-      color: #1d4ed8;
+    .muted-footer { font-size: 11px; color: var(--text-gray); text-align: center; margin-top: 20px; line-height: 1.4; }
+
+    /* --- NAV INFERIOR --- */
+    .bottom-bar {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 360px;
+      background: #ffffff;
+      border-radius: 35px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      z-index: 50;
     }
 
-    .muted {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: 4px;
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
+    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
+
+    .center-question-btn {
+      width: 64px;
+      height: 64px;
+      background: #0066cc;
+      border-radius: 50%;
+      border: 5px solid var(--main-bg); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 600;
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+
   <div class="app-shell">
-    <header class="header">
-      <div class="header-row">
-        <div class="back-btn" onclick="history.back()">‹</div>
-        <div class="header-title">Documentos y Estudios</div>
-      </div>
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()">‹</button>
+      <div class="header-title">Documentos y Estudios</div>
     </header>
 
-    <main class="card">
-      <!-- FILTROS -->
-      <section class="section">
-        <div class="section-label">Buscar</div>
+    <main class="main-content">
+      <div class="card">
+        <h2 class="section-label">Buscador</h2>
         <div class="filters">
-          <input
-            type="text"
-            class="input-text"
-            id="buscadorDocs"
-            placeholder="Ej: laboratorio, ECG, tórax, informe de alta..."
-            oninput="filtrarDocs()"
-          />
-          <select class="select-field" id="filtroTipoDoc" onchange="filtrarDocs()">
-            <option value="todos">Tipo: Todos</option>
-            <option value="laboratorio">Laboratorio</option>
-            <option value="imagen">Imágenes</option>
-            <option value="informe">Informes</option>
-            <option value="receta">Recetas</option>
-            <option value="certificado">Certificados</option>
-          </select>
-          <select class="select-field" id="filtroPeriodoDoc" onchange="filtrarDocs()">
-            <option value="todos">Período: Todos</option>
-            <option value="12m">Últimos 12 meses</option>
-            <option value="6m">Últimos 6 meses</option>
-            <option value="3m">Últimos 3 meses</option>
-          </select>
+          <input type="text" id="buscadorDocs" class="input-text" placeholder="Buscar laboratorio, ECG, Rx..." oninput="filtrarDocs()">
+          <div class="filter-row">
+            <select id="filtroTipoDoc" class="select-field" onchange="filtrarDocs()">
+              <option value="todos">Todos los tipos</option>
+              <option value="laboratorio">Laboratorio</option>
+              <option value="imagen">Imágenes</option>
+              <option value="receta">Recetas</option>
+              <option value="certificado">Certificados</option>
+            </select>
+          </div>
         </div>
 
         <div class="toggle-row">
           <label class="toggle">
-            <input type="checkbox" id="toggleDocsSensibles" checked onchange="filtrarDocs()" />
+            <input type="checkbox" id="toggleDocsSensibles" checked onchange="filtrarDocs()">
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">
-            Incluir documentos sensibles que tengas habilitados (salud mental, VIH, etc.)
-          </span>
+          <span class="toggle-text">Incluir documentos de salud mental y datos sensibles.</span>
         </div>
-      </section>
+      </div>
 
-      <!-- LISTA DE DOCUMENTOS -->
-      <section class="section">
-        <div class="section-label">Estudios y documentos</div>
-        <div class="hint">
-          Resultados, informes e imágenes vinculados a tu historia de salud interoperable C.U.R.A.
-        </div>
-
-        <!-- Grupo reciente -->
-        <div class="group-label">Abril 2024</div>
+      <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
+        <div class="group-label">Recientes</div>
         <div class="doc-list" id="docList">
-          <!-- ECG -->
-          <div class="doc-card"
-               data-tipo="imagen"
-               data-sensible="no"
-               data-texto="ecg electrocardiograma cardiologia abril 2024 hospital general">
+          
+          <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="ecg cardiologia hospital general 2024">
             <div class="thumb">🫀</div>
             <div class="doc-main">
               <div class="doc-name">ECG · 12 derivaciones</div>
-              <div class="doc-meta">12/04/2024 · Hospital General · Cardiología</div>
+              <div class="doc-meta">12/04/2024 · Hospital General</div>
               <div class="doc-tags">
-                <span class="tag tag-blue">Imagen / señal</span>
+                <span class="tag tag-blue">Imagen / Señal</span>
                 <span class="tag">Cardiología</span>
               </div>
             </div>
             <div class="doc-actions">
               <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Descargar PDF</button>
-              <button class="mini-btn">Compartir enlace</button>
-            </div>
-          </div>
-
-          <!-- Laboratorio completo -->
-          <div class="doc-card"
-               data-tipo="laboratorio"
-               data-sensible="no"
-               data-texto="laboratorio glucemia hba1c perfil lipidico analisis sangre">
-            <div class="thumb">🧪</div>
-            <div class="doc-main">
-              <div class="doc-name">Informe de laboratorio completo</div>
-              <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
-              <div class="doc-tags">
-                <span class="tag tag-blue">Laboratorio</span>
-                <span class="tag">Diabetes</span>
-                <span class="tag">Perfil lipídico</span>
-              </div>
-            </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Descargar PDF</button>
-            </div>
-          </div>
-
-          <!-- Informe de salud mental (sensible) -->
-          <div class="doc-card"
-               data-tipo="informe"
-               data-sensible="si"
-               data-texto="informe salud mental crisis angustia guardia psicologia psiquiatria">
-            <div class="thumb">🧠</div>
-            <div class="doc-main">
-              <div class="doc-name">Informe de guardia · Salud mental</div>
-              <div class="doc-meta">18/02/2024 · Hospital General · Guardia</div>
-              <div class="doc-tags">
-                <span class="tag tag-red">Dato sensible · Salud mental</span>
-                <span class="tag">Guardia</span>
-              </div>
-            </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver (según privacidad)</button>
               <button class="mini-btn">Descargar</button>
             </div>
-          </div>
+          </article>
 
-          <!-- Rx tórax -->
-          <div class="doc-card"
-               data-tipo="imagen"
-               data-sensible="no"
-               data-texto="radiografia torax rx imagen pulmones centro diagnostico">
+          <article class="doc-card" data-tipo="laboratorio" data-sensible="no" data-texto="laboratorio sangre glucemia analisis">
+            <div class="thumb">🧪</div>
+            <div class="doc-main">
+              <div class="doc-name">Informe de Laboratorio</div>
+              <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Bioquímica</span>
+                <span class="tag">Diabetes</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">PDF</button>
+            </div>
+          </article>
+
+          <article class="doc-card" data-tipo="informe" data-sensible="si" data-texto="salud mental crisis angustia informe psicologia">
+            <div class="thumb">🧠</div>
+            <div class="doc-main">
+              <div class="doc-name">Informe Salud Mental</div>
+              <div class="doc-meta">18/02/2024 · Hospital General</div>
+              <div class="doc-tags">
+                <span class="tag tag-red">Sensible 🔒</span>
+                <span class="tag">Psiquiatría</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+            </div>
+          </article>
+
+          <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="rx radiografia torax imagen pulmones">
             <div class="thumb">🩻</div>
             <div class="doc-main">
-              <div class="doc-name">Rx de tórax PA y lateral</div>
-              <div class="doc-meta">10/01/2024 · Centro de Diagnóstico Norte</div>
+              <div class="doc-name">Rx de Tórax</div>
+              <div class="doc-meta">10/01/2024 · Diagnóstico Norte</div>
               <div class="doc-tags">
-                <span class="tag tag-blue">Imágenes</span>
-                <span class="tag">Seguimiento</span>
+                <span class="tag tag-blue">Radiología</span>
               </div>
             </div>
             <div class="doc-actions">
               <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Descargar DICOM</button>
+              <button class="mini-btn">DICOM</button>
             </div>
-          </div>
+          </article>
 
-          <!-- Receta electrónica -->
-          <div class="doc-card"
-               data-tipo="receta"
-               data-sensible="no"
-               data-texto="receta electronica metformina losartan tratamiento cronico">
+          <article class="doc-card" data-tipo="receta" data-sensible="no" data-texto="receta metformina losartan cronica">
             <div class="thumb">💊</div>
             <div class="doc-main">
-              <div class="doc-name">Receta electrónica crónica</div>
-              <div class="doc-meta">05/12/2023 · Consultorio externo</div>
+              <div class="doc-name">Receta Crónica</div>
+              <div class="doc-meta">05/12/2023 · Consultorio Externo</div>
               <div class="doc-tags">
-                <span class="tag">Receta electrónica</span>
-                <span class="tag">Tratamiento crónico</span>
+                <span class="tag">Electrónica</span>
               </div>
             </div>
             <div class="doc-actions">
               <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Descargar PDF</button>
-              <button class="mini-btn">Enviar a farmacia</button>
+              <button class="mini-btn">Farmacia</button>
             </div>
-          </div>
+          </article>
 
-          <!-- Certificado médico -->
-          <div class="doc-card"
-               data-tipo="certificado"
-               data-sensible="no"
-               data-texto="certificado medico reposo laboral">
-            <div class="thumb">📄</div>
-            <div class="doc-main">
-              <div class="doc-name">Certificado médico</div>
-              <div class="doc-meta">20/11/2023 · Hospital General</div>
-              <div class="doc-tags">
-                <span class="tag">Certificado</span>
-                <span class="tag">Reposo laboral</span>
-              </div>
-            </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Descargar PDF</button>
-            </div>
-          </div>
         </div>
-
-        <div class="muted">
-          Todos los documentos fueron generados por prestadores adheridos a la Ley C.U.R.A. y
-          pueden compartirse de forma segura mediante enlaces temporales.
-        </div>
-      </section>
+        <p class="muted-footer">
+          Documentos generados bajo Ley C.U.R.A. con validez federal e interoperabilidad inmediata.
+        </p>
+      </div>
     </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </button>
+      <div class="center-question-btn">?</div>
+      <button class="nav-icon-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      </button>
+    </nav>
   </div>
 
   <script>
@@ -519,14 +404,12 @@
       const texto = document.getElementById("buscadorDocs").value.toLowerCase();
       const tipo = document.getElementById("filtroTipoDoc").value;
       const mostrarSensibles = document.getElementById("toggleDocsSensibles").checked;
-
       const items = document.querySelectorAll("#docList .doc-card");
 
       items.forEach((item) => {
         const t = item.dataset.tipo;
         const s = item.dataset.sensible === "si";
         const fullText = (item.dataset.texto || "").toLowerCase();
-
         let visible = true;
 
         if (tipo !== "todos" && t !== tipo) visible = false;

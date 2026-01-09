@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mi Perfil - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --main-bg: #f0f4f8; 
+      --blue-header: #005fa3; 
+      --blue-main: #1f6fe5;
+      --blue-soft: #e3f0ff;
+      --text-dark: #0d2b52;
+      --text-gray: #64748b;
+      --card-white: #ffffff;
+      --border-soft: #e5e7eb;
+      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --red-status: #ef4444;
+    }
+
+    /* --- ESTABILIDAD DE PANTALLA --- */
+    html {
+      overflow-y: scroll;
+      scrollbar-width: none; 
+    }
+    ::-webkit-scrollbar { display: none; }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--main-bg);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 120px; 
+    }
+
+    /* --- HEADER SIMÉTRICO --- */
+    .header-bar {
+      background-color: var(--blue-header);
+      width: calc(100% - 40px);
+      margin: 20px auto 10px; 
+      height: 60px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      z-index: 100;
+    }
+
+    .back-btn {
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; 
+      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+    }
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+    .header-spacer { width: 36px; height: 36px; }
+
+    /* --- CONTENIDO --- */
+    .main-content { padding: 10px 20px; flex: 1; }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .avatar-wrapper {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      border: 4px solid #fff;
+      box-shadow: var(--shadow-soft);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; margin-bottom: 12px;
+      position: relative;
+    }
+
+    .badge-verified {
+      position: absolute; bottom: 0; right: 0;
+      background: #10b981; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid #fff; font-size: 14px;
+    }
+
+    .user-name { font-size: 20px; font-weight: 800; color: var(--text-dark); }
+    .user-id { font-size: 13px; color: var(--text-gray); font-weight: 600; }
+
+    .card {
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 12px; font-weight: 800; color: var(--blue-main);
+      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 16px; display: block;
+    }
+
+    /* --- MENU ITEMS --- */
+    .menu-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 0; border-bottom: 1px solid var(--border-soft);
+      cursor: pointer; transition: 0.2s;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:active { opacity: 0.6; }
+
+    .menu-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: #f8fafc; color: var(--text-dark);
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+
+    .menu-text { flex: 1; }
+    .menu-title { font-size: 15px; font-weight: 700; color: var(--text-dark); }
+    .menu-sub { font-size: 12px; color: var(--text-gray); }
+
+    .chevron { color: #cbd5e1; font-size: 18px; }
+
+    /* --- TOGGLE LEY CURA --- */
+    .privacy-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px; background: #f0f7ff; border-radius: 18px; margin-bottom: 10px;
+    }
+    .toggle-label { font-size: 13px; font-weight: 700; color: var(--blue-header); }
+
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1;
+      border-radius: 999px; transition: 0.3s;
+    }
+    .slider::before {
+      content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px;
+      background-color: #fff; border-radius: 50%; transition: 0.3s;
+    }
+    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+
+    /* --- BOTTOM BAR --- */
+    .bottom-bar {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+    }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .nav-icon-btn.active { color: var(--blue-main); }
+    .nav-icon-btn i { font-size: 26px; }
+    
+    .center-question-btn { 
+      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
+      border: 5px solid var(--main-bg); display: flex; align-items: center; 
+      justify-content: center; color: white; font-size: 32px; 
+      font-weight: 600; 
+      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
+      <div class="header-title">Mi Perfil</div>
+      <div class="header-spacer"></div>
+    </header>
+
+    <main class="main-content">
+      
+      <div class="profile-header">
+        <div class="avatar-wrapper">
+          <i class="ph ph-user"></i>
+          <div class="badge-verified"><i class="ph-fill ph-check-circle"></i></div>
+        </div>
+        <h1 class="user-name">Franco Agustín Paganini</h1>
+        <p class="user-id">CURA-ID: 41316202-AR</p>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Información Vital</span>
+        <div class="menu-item" onclick="location.href='datos-salud.html'">
+          <div class="menu-icon"><i class="ph ph-drop"></i></div>
+          <div class="menu-text">
+            <div class="menu-title">Ficha Médica Base</div>
+            <div class="menu-sub">0+, Alergia Penicilina, Implantes</div>
+          </div>
+          <i class="ph ph-caret-right chevron"></i>
+        </div>
+        <div class="menu-item" onclick="location.href='emergencia.html'">
+          <div class="menu-icon" style="color: var(--red-status);"><i class="ph ph-phone-call"></i></div>
+          <div class="menu-text">
+            <div class="menu-title">Contactos de Emergencia</div>
+            <div class="menu-sub">2 contactos configurados</div>
+          </div>
+          <i class="ph ph-caret-right chevron"></i>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Privacidad y Consentimiento</span>
+        <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 16px;">
+          Configura la visibilidad de tus datos sensibles para profesionales de salud.
+        </p>
+        
+        <div class="privacy-toggle">
+          <span class="toggle-label">Ocultar Salud Mental</span>
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="privacy-toggle">
+          <span class="toggle-label">Ocultar VIH / ITS</span>
+          <label class="toggle">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="menu-item" style="margin-top: 10px;" onclick="location.href='auditoria.html'">
+          <div class="menu-icon"><i class="ph ph-blockchain"></i></div>
+          <div class="menu-text">
+            <div class="menu-title">Registro de Auditoría</div>
+            <div class="menu-sub">Quién accedió a mis datos</div>
+          </div>
+          <i class="ph ph-caret-right chevron"></i>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="section-label">Sistema</span>
+        <div class="menu-item">
+          <div class="menu-icon"><i class="ph ph-shield-check"></i></div>
+          <div class="menu-text">
+            <div class="menu-title">Vincular Mi Argentina</div>
+            <div class="menu-sub">Identidad validada</div>
+          </div>
+          <i class="ph ph-caret-right chevron"></i>
+        </div>
+        <div class="menu-item" style="color: var(--red-status);">
+          <div class="menu-icon" style="color: var(--red-status);"><i class="ph ph-sign-out"></i></div>
+          <div class="menu-text">
+            <div class="menu-title">Cerrar Sesión</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-icon-btn active" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+    </nav>
+  </div>
+
+</body>
+</html>

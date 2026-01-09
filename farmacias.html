@@ -30,7 +30,7 @@
 
     .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    /* --- HEADER --- */
+    /* --- HEADER SIMÉTRICO --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -96,7 +96,7 @@
 
     @media (pointer: coarse) { .nav-arrow { display: none !important; } }
 
-    /* --- FARMACIAS (SOLUCIÓN ESPACIADO BOTÓN) --- */
+    /* --- FARMACIAS (SOLUCIÓN DE CENTRADO) --- */
     .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
@@ -106,17 +106,16 @@
     
     .btn-ph { 
       flex: 1; 
-      padding: 12px; 
+      padding: 12px 0; /* Padding lateral 0 para que no empuje el contenido */
       border-radius: 14px; 
       font-size: 11px; 
       font-weight: 800; 
       text-decoration: none; 
       text-transform: uppercase;
-      /* Ajuste para separar icono de texto */
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px; /* Espacio exacto entre flecha y LLEGAR */
+      justify-content: center; /* Centrado perfecto */
+      gap: 6px; 
     }
     
     .btn-map { background: var(--blue-main); color: #fff; }
@@ -192,9 +191,19 @@
           </div>
           <p class="text-[13px] text-gray-500 mb-4">Av. Mitre 1234 · 450m</p>
           <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map">
-                <i class="ph ph-navigation-arrow"></i> LLEGAR
-            </a>
+            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i>LLEGAR</a>
+            <a href="#" class="btn-ph btn-detail">DETALLES</a>
+          </div>
+        </article>
+
+        <article class="pharmacy-card" style="border-color: #fee2e2;">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="ph-name">Guardia Rodríguez</h3>
+            <span class="status-badge status-guardia">24 Horas</span>
+          </div>
+          <p class="text-[13px] text-gray-500 mb-4">Rivadavia 890 · 1.1km</p>
+          <div class="ph-actions">
+            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i>LLEGAR</a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>

@@ -363,7 +363,7 @@
             const provincia = data.address.state || "Argentina";
             
             ciudadLabel.innerText = `${ciudad}, ${provincia}`;
-            statusLabel.innerText = "Ubicación Real Detectada";
+            statusLabel.innerText = "Ubicación Actual";
           } catch (error) {
             ciudadLabel.innerText = `${lat.toFixed(4)}, ${lon.toFixed(4)} (Error de nombre)`;
           }

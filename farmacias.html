@@ -163,8 +163,9 @@
   </div>
 
 <script>
+    // 1. DEFINICIONES DE INTERFAZ (Instatáneas)
     const resultsList = document.getElementById('resultsList');
-const scrollContainer = document.getElementById('pillScroll');
+    const scrollContainer = document.getElementById('pillScroll');
     const fadeLeft = document.getElementById('fadeLeft');
     const fadeRight = document.getElementById('fadeRight');
 
@@ -172,26 +173,27 @@ const scrollContainer = document.getElementById('pillScroll');
     let uLat, uLon;
     let filter = 'all';
 
+    // 2. INICIO TURBO (Sin esperar alta precisión)
     function init() {
       if (navigator.geolocation) {
-        // Reducimos el tiempo de espera para que no se quede "colgado"
         navigator.geolocation.getCurrentPosition(pos => {
           uLat = pos.coords.latitude;
           uLon = pos.coords.longitude;
           
-          // Lanzamos AMBAS tareas al mismo tiempo (Paralelo)
+          // Lanzamos todo en paralelo para que nada espere a nada
           loadCity(uLat, uLon);
           loadPharmacies(uLat, uLon);
         }, () => {
           resultsList.innerHTML = "<p style='text-align:center; padding:20px; font-size:13px;'>Habilita el GPS para ver farmacias reales.</p>";
         }, { 
-          enableHighAccuracy: false, // Cambiado a false para que sea instantáneo
-          timeout: 5000 
+          enableHighAccuracy: false, // CLAVE: Carga mucho más rápido
+          timeout: 4000,             // Si en 4 seg no responde, falla rápido
+          maximumAge: 30000          // Usa ubicación guardada si tiene menos de 30 seg
         });
       }
     }
 
-    // Función independiente para que no bloquee a la otra
+    // 3. CARGA DE DATOS (No bloquea la interfaz)
     async function loadCity(lat, lon) {
       try {
         const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
@@ -210,12 +212,13 @@ const scrollContainer = document.getElementById('pillScroll');
         const d = await r.json();
         allPh = d.elements;
         render();
+        updateFades(); // Calculamos las sombras después de cargar
       } catch(e) {
-        // Si falla, el spinner sigue hasta que reintente solo
-        setTimeout(() => loadPharmacies(lat, lon), 2000);
+        setTimeout(() => loadPharmacies(lat, lon), 2000); // Reintento silencioso
       }
     }
 
+    // 4. LÓGICA DE ESTADO Y RENDER (Fiel a tu diseño)
     function getSt(tags) {
       if (!tags.opening_hours) return { l: "Abierto", c: "status-open", isO: true, isG: false };
       const oh = tags.opening_hours.toLowerCase();
@@ -226,8 +229,10 @@ const scrollContainer = document.getElementById('pillScroll');
     }
 
     function render() {
+      if (!uLat) return;
       resultsList.innerHTML = "";
       let res = allPh.map(p => ({ ...p, st: getSt(p.tags), d: getD(uLat, uLon, p.lat, p.lon) })).sort((a,b) => a.d - b.d);
+      
       if (filter === 'open') res = res.filter(x => x.st.isO);
       if (filter === 'guardia') res = res.filter(x => x.st.isG);
 
@@ -246,16 +251,28 @@ const scrollContainer = document.getElementById('pillScroll');
               <i class="ph ph-navigation-arrow"></i>LLEGAR
             </a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
-          </div>
-        `;
+          </div>`;
         resultsList.appendChild(card);
       });
     }
 
+    // 5. FUNCIONES DE INTERFAZ (Flechas y Scroll)
     function setFilter(f) {
       filter = f;
       document.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p.innerText.toLowerCase().includes(f === 'all' ? 'mí' : f === 'open' ? 'abier' : 'guardia')));
       render();
+    }
+
+    function scrollPills(amount) {
+      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
+    }
+
+    function updateFades() {
+      if (!scrollContainer) return;
+      const scrollLeft = scrollContainer.scrollLeft;
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      if(fadeLeft) fadeLeft.style.opacity = scrollLeft > 5 ? "1" : "0";
+      if(fadeRight) fadeRight.style.opacity = scrollLeft < maxScroll - 5 ? "1" : "0";
     }
 
     function getD(la1, lo1, la2, lo2) {
@@ -266,34 +283,20 @@ const scrollContainer = document.getElementById('pillScroll');
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
-window.onload = () => {
-      init();
-      updateFades(); // Activa las sombras al inicio
-    };
-
-  // Hace que las flechas funcionen
-    function scrollPills(amount) {
-      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
-    }
-
-    // Hace que las sombras (fades) aparezcan o desaparezcan al moverte
-    function updateFades() {
-      const scrollLeft = scrollContainer.scrollLeft;
-      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-      if(fadeLeft) fadeLeft.style.opacity = scrollLeft > 5 ? "1" : "0";
-      if(fadeRight) fadeRight.style.opacity = scrollLeft < maxScroll - 5 ? "1" : "0";
-    }
-
-    // Escuchar el movimiento del scroll
+    // Eventos de interfaz
     scrollContainer.addEventListener('scroll', updateFades);
     window.addEventListener('resize', updateFades);
 
-    // Hace que la pill se mueva al centro al hacerle click
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       });
     });
+
+    window.onload = () => {
+      init();
+      updateFades();
+    };
 </script>
 </body>
 </html>

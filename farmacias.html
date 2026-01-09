@@ -164,6 +164,10 @@
 
 <script>
     const resultsList = document.getElementById('resultsList');
+const scrollContainer = document.getElementById('pillScroll');
+    const fadeLeft = document.getElementById('fadeLeft');
+    const fadeRight = document.getElementById('fadeRight');
+
     let allPh = [];
     let uLat, uLon;
     let filter = 'all';
@@ -262,11 +266,34 @@
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
-    window.onload = init;
- // Función de desplazamiento de flechas del archivo (7)
-    function scrollPills(amount) { 
-      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' }); 
+window.onload = () => {
+      init();
+      updateFades(); // Activa las sombras al inicio
+    };
+
+  // Hace que las flechas funcionen
+    function scrollPills(amount) {
+      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
     }
+
+    // Hace que las sombras (fades) aparezcan o desaparezcan al moverte
+    function updateFades() {
+      const scrollLeft = scrollContainer.scrollLeft;
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      if(fadeLeft) fadeLeft.style.opacity = scrollLeft > 5 ? "1" : "0";
+      if(fadeRight) fadeRight.style.opacity = scrollLeft < maxScroll - 5 ? "1" : "0";
+    }
+
+    // Escuchar el movimiento del scroll
+    scrollContainer.addEventListener('scroll', updateFades);
+    window.addEventListener('resize', updateFades);
+
+    // Hace que la pill se mueva al centro al hacerle click
+    document.querySelectorAll('.pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
 </script>
 </body>
 </html>

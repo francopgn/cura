@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <title>Credencial - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <style>
     :root {
       --main-bg: #f0f4f8; 
@@ -17,9 +23,16 @@
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
+    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
+    html {
+      overflow-y: scroll; /* Reserva espacio para el scroll siempre */
+      scrollbar-width: none; 
+    }
+    ::-webkit-scrollbar { display: none; }
+
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -29,6 +42,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app-shell {
@@ -36,10 +50,10 @@
       max-width: 414px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 110px; 
+      padding-bottom: 120px; /* Unificado con el resto de la app */
     }
 
-    /* --- HEADER BAR (PASTILLA) --- */
+    /* --- HEADER SIMÉTRICO --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -48,28 +62,19 @@
       border-radius: 999px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      z-index: 100;
     }
 
     .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-right: 12px;
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; 
+      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
     }
-
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+    .header-spacer { width: 36px; height: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
@@ -97,6 +102,7 @@
       height: 200px;
       border-radius: 16px;
       margin-bottom: 12px;
+      mix-blend-mode: multiply; /* Para mejor integración si el fondo no es blanco puro */
     }
 
     .cura-id {
@@ -146,7 +152,7 @@
       color: var(--text-gray);
     }
 
-    /* --- ALERTA --- */
+    /* --- ALERTA SEGURIDAD --- */
     .security-alert {
       background: #fff7ed;
       border: 1px solid #fed7aa;
@@ -159,10 +165,9 @@
       margin-bottom: 20px;
     }
 
-    .alert-icon { font-size: 24px; flex-shrink: 0; }
+    .alert-icon { font-size: 24px; flex-shrink: 0; color: #f97316; }
     .alert-text { font-size: 12px; color: #9a3412; line-height: 1.4; font-weight: 500; }
 
-    /* --- BOTONES --- */
     .btn-primary {
       width: 100%;
       padding: 16px;
@@ -176,53 +181,34 @@
       box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2);
     }
 
-    /* --- NAV INFERIOR --- */
+    /* --- BOTTOM BAR (COPIA EXACTA) --- */
     .bottom-bar {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 360px;
-      background: #ffffff;
-      border-radius: 35px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      z-index: 50;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
-    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
-
-    .center-question-btn {
-      width: 64px;
-      height: 64px;
-      background: #0066cc;
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 600;
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
-      cursor: pointer;
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .nav-icon-btn.active { color: var(--blue-main); }
+    .nav-icon-btn i { font-size: 26px; }
+    
+    .center-question-btn { 
+      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
+      border: 5px solid var(--main-bg); display: flex; align-items: center; 
+      justify-content: center; color: white; font-size: 32px; 
+      font-weight: 600; 
+      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
     }
+    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()">‹</button>
+      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
       <div class="header-title">Credencial C.U.R.A.</div>
-      <div style="width: 36px;"></div>
+      <div class="header-spacer"></div>
     </header>
 
     <main class="main-content">
@@ -241,26 +227,24 @@
         </div>
 
         <div class="security-alert">
-          <div class="alert-icon">⚠️</div>
+          <div class="alert-icon"><i class="ph-fill ph-warning-circle"></i></div>
           <div class="alert-text">
             Mostrá este código solo a profesionales de salud o farmacias autorizadas para validar tu identidad federal.
           </div>
         </div>
 
         <button class="btn-primary" onclick="alert('Descargando credencial PDF...')">
-          Descargar Credencial Offline
+          <i class="ph ph-download-simple"></i> Descargar Credencial Offline
         </button>
       </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </button>
-      <div class="center-question-btn">?</div>
-      <button class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-      </button>
+      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 

@@ -32,29 +32,25 @@
     body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
     .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    /* HEADER */
     .header-bar {
       background-color: var(--blue-header); width: calc(100% - 40px); margin: 20px auto 10px; 
       height: 60px; border-radius: 999px; display: flex; align-items: center; padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2); justify-content: space-between; z-index: 100;
     }
-    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer; }
+    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; }
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
     .header-spacer { width: 36px; }
 
-    /* CONTENT */
     .main-content { padding: 10px 20px; }
     .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
     .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
 
-    /* FILTROS */
     .pill-scroll-container { width: 100%; overflow-x: auto; display: flex; padding-bottom: 10px; }
     .pill-scroll-container::-webkit-scrollbar { display: none; }
     .pill-wrapper { display: flex; gap: 10px; }
     .pill { flex-shrink: 0; padding: 10px 18px; background: #fff; border: 1.5px solid var(--border-soft); border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--text-gray); cursor: pointer; }
-    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2); }
+    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); }
 
-    /* RESULTADOS */
     .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
@@ -63,18 +59,16 @@
     .btn-ph { flex: 1; padding: 12px 0; border-radius: 14px; font-size: 11px; font-weight: 800; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .btn-map { background: var(--blue-main); color: #fff; }
 
-    /* BOTTOM BAR ORIGINAL */
     .bottom-bar {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
       max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
       display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .nav-icon-btn { background: none; border: none; padding: 10px; color: var(--text-gray); }
     .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
     .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); }
-
+    
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
@@ -94,7 +88,7 @@
           <div style="width: 10px; height: 10px; background: var(--green-status); border-radius: 50%; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);"></div>
           <div>
             <p id="loc-status" style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Ubicación Actual</p>
-            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Detectando ciudad...</p>
+            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Cargando...</p>
           </div>
         </div>
 
@@ -112,9 +106,9 @@
       <div class="card">
         <span class="section-label">Resultados</span>
         <div id="resultsList">
-          <div style="text-align: center; padding: 20px;">
-            <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-          </div>
+            <div style="text-align: center; padding: 20px;">
+                <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+            </div>
         </div>
       </div>
     </main>
@@ -128,141 +122,105 @@
     </nav>
   </div>
 
-  
-     <script>
+  <script>
     const resultsList = document.getElementById('resultsList');
     let allPharmacies = [];
-    let userCoords = null;
     let currentFilter = 'all';
 
-    // 1. GESTIÓN DE CACHÉ ULTRA-RÁPIDA
-    function loadInitialData() {
+    async function init() {
+      // 1. Mostrar caché inmediatamente
       const cachedPh = localStorage.getItem('cura_ph_cache');
       const cachedCity = localStorage.getItem('cura_city_cache');
-      
       if (cachedCity) document.getElementById("loc-ciudad").innerText = cachedCity;
-      
       if (cachedPh) {
         allPharmacies = JSON.parse(cachedPh);
-        renderFiltered(); // Renderiza al instante lo viejo
+        renderFiltered();
       }
-    }
 
-    // 2. GEOLOCALIZACIÓN OPTIMIZADA
-    function initSearch() {
-      loadInitialData(); // Carga inmediata
-      
+      // 2. Obtener ubicación rápido
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError, { 
-          enableHighAccuracy: false, // Mucho más rápido
-          timeout: 4000, 
-          maximumAge: 300000 // Acepta ubicación de hasta 5 min atrás
-        });
+        navigator.geolocation.getCurrentPosition(pos => {
+          updateData(pos.coords.latitude, pos.coords.longitude);
+        }, async () => {
+          // Si el GPS falla, intentar por IP (muy rápido)
+          try {
+            const res = await fetch('https://ipapi.co/json/');
+            const data = await res.json();
+            updateData(data.latitude, data.longitude);
+          } catch(e) {}
+        }, { timeout: 4000 });
       }
     }
 
-    async function onSuccess(pos) {
-      userCoords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+    async function updateData(lat, lon) {
+      // Ciudad y Farmacias en paralelo
+      fetchCity(lat, lon);
       
-      // Lanzamos las peticiones pero no esperamos a una para la otra
-      fetchCity(userCoords.lat, userCoords.lon);
-      fetchPharmacies(userCoords.lat, userCoords.lon);
+      const query = `[out:json][timeout:10];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out qt;`;
+      try {
+        const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        if (data.elements.length > 0) {
+          allPharmacies = data.elements.map(ph => ({
+            ...ph,
+            dist: getDist(lat, lon, ph.lat, ph.lon)
+          })).sort((a,b) => a.dist - b.dist);
+          localStorage.setItem('cura_ph_cache', JSON.stringify(allPharmacies));
+          renderFiltered();
+        }
+      } catch(e) {}
     }
 
-    // 3. FETCH DE CIUDAD (Sin bloquear las farmacias)
     async function fetchCity(lat, lon) {
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
         const data = await res.json();
-        const city = data.address.city || data.address.town || data.address.suburb || "Cerca tuyo";
-        const fullCity = city + ", " + (data.address.state || "Argentina");
-        document.getElementById("loc-ciudad").innerText = fullCity;
-        localStorage.setItem('cura_city_cache', fullCity);
+        const cityStr = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Arg");
+        document.getElementById("loc-ciudad").innerText = cityStr;
+        localStorage.setItem('cura_city_cache', cityStr);
       } catch(e) {}
     }
 
-    // 4. QUERY DE OVERPASS OPTIMIZADA (Turbo Mode)
-    async function fetchPharmacies(lat, lon) {
-      // Usamos un radio más pequeño (3km) para que el servidor responda más rápido
-      // [timeout:5] le dice al servidor: "si tardas más de 5 seg, corta"
-      const query = `[out:json][timeout:5];node(around:3000,${lat},${lon})["amenity"="pharmacy"];out qt;`;
-      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout local de 5 seg
-
-        const response = await fetch(url, { signal: controller.signal });
-        const data = await response.json();
-        
-        if (data.elements && data.elements.length > 0) {
-          allPharmacies = data.elements;
-          localStorage.setItem('cura_ph_cache', JSON.stringify(allPharmacies));
-          renderFiltered();
-        }
-      } catch (error) {
-        console.warn("API lenta o caída, usando caché.");
-      }
-    }
-
-    // 5. RENDERIZADO LIGERO
-    function checkStatus(openingHours) {
-      if (!openingHours) return { label: "Abierto", class: "bg-green-100 text-green-700", isOpen: true, is24hs: false };
-      const hours = openingHours.toLowerCase();
-      if (hours.includes("24/7")) return { label: "Guardia 24hs", class: "bg-amber-100 text-amber-700", isOpen: true, is24hs: true };
-      
-      const now = new Date().getHours();
-      const isOpen = (now >= 8 && now < 21); 
-      return isOpen ? 
-        { label: "Abierto ahora", class: "bg-green-100 text-green-700", isOpen: true, is24hs: false } : 
-        { label: "Cerrado", class: "bg-red-100 text-red-700", isOpen: false, is24hs: false };
-    }
-
     function renderFiltered() {
-      if (!allPharmacies.length) return;
-      
+      const now = new Date().getHours();
       let html = "";
-      let filtered = allPharmacies.map(ph => ({
-        ...ph,
-        status: checkStatus(ph.tags.opening_hours),
-        dist: userCoords ? getDist(userCoords.lat, userCoords.lon, ph.lat, ph.lon) : null
-      })).sort((a,b) => (a.dist || 0) - (b.dist || 0));
+      let filtered = allPharmacies;
 
-      if (currentFilter === 'open') filtered = filtered.filter(f => f.status.isOpen);
-      if (currentFilter === 'guardia') filtered = filtered.filter(f => f.status.is24hs);
+      if (currentFilter === 'open') {
+        filtered = allPharmacies.filter(f => (f.tags.opening_hours || "").toLowerCase().includes("24/7") || (now >= 8 && now < 21));
+      } else if (currentFilter === 'guardia') {
+        filtered = allPharmacies.filter(f => (f.tags.opening_hours || "").includes("24/7"));
+      }
 
       filtered.forEach(ph => {
-        const distStr = ph.dist ? (ph.dist > 1 ? ph.dist.toFixed(1)+'km' : (ph.dist*1000).toFixed(0)+'m') : '--';
+        const h = (ph.tags.opening_hours || "").toLowerCase();
+        let status = { label: "Abierto", class: "bg-green-100 text-green-700" };
+        if (h.includes("24/7")) status = { label: "Guardia 24hs", class: "bg-amber-100 text-amber-700" };
+        else if (now < 8 || now >= 21) status = { label: "Cerrado", class: "bg-red-100 text-red-700" };
+
         html += `
           <article class="pharmacy-card">
             <div class="flex justify-between items-start mb-2">
               <h3 class="ph-name">${ph.tags.name || "Farmacia"}</h3>
-              <span class="status-badge ${ph.status.class}">${ph.status.label}</span>
+              <span class="status-badge ${status.class}">${status.label}</span>
             </div>
-            <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Dirección disponible'} · ${distStr}</p>
+            <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Gral. Rodríguez'} · ${ph.dist ? (ph.dist > 1 ? ph.dist.toFixed(1)+'km' : (ph.dist*1000).toFixed(0)+'m') : '--'}</p>
             <div class="ph-actions">
               <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
                 <i class="ph ph-navigation-arrow"></i> LLEGAR
               </a>
             </div>
-          </article>
-        `;
+          </article>`;
       });
-      resultsList.innerHTML = html;
+      resultsList.innerHTML = html || '<p style="text-align:center; padding:20px; font-size:13px; color:var(--text-gray);">No hay farmacias disponibles.</p>';
     }
 
     function getDist(lat1, lon1, lat2, lon2) {
       const R = 6371;
-      const dLat = (lat2-lat1) * 0.017453292519943295;
-      const dLon = (lon2-lon1) * 0.017453292519943295;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*0.017453292519943295) * Math.cos(lat2*0.017453292519943295) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      const dLat = (lat2-lat1) * 0.01745329;
+      const dLon = (lon2-lon1) * 0.01745329;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*0.01745329) * Math.cos(lat2*0.01745329) * Math.sin(dLon/2) * Math.sin(dLon/2);
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-    }
-
-    function onError() { 
-      if (!allPharmacies.length) {
-        resultsList.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-gray); padding:20px;">Esperando señal GPS...</p>`;
-      }
     }
 
     document.querySelectorAll('.pill').forEach(pill => {
@@ -274,8 +232,7 @@
       });
     });
 
-    window.onload = initSearch;
+    init();
   </script>
-
 </body>
 </html>

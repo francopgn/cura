@@ -144,7 +144,7 @@
     </nav>
   </div>
 
-  <script>
+<script>
     const resultsList = document.getElementById('resultsList');
     let allPh = [];
     let uLat, uLon;
@@ -152,23 +152,33 @@
 
     function init() {
       if (navigator.geolocation) {
+        // Reducimos el tiempo de espera para que no se quede "colgado"
         navigator.geolocation.getCurrentPosition(pos => {
           uLat = pos.coords.latitude;
           uLon = pos.coords.longitude;
+          
+          // Lanzamos AMBAS tareas al mismo tiempo (Paralelo)
           loadCity(uLat, uLon);
           loadPharmacies(uLat, uLon);
         }, () => {
           resultsList.innerHTML = "<p style='text-align:center; padding:20px; font-size:13px;'>Habilita el GPS para ver farmacias reales.</p>";
+        }, { 
+          enableHighAccuracy: false, // Cambiado a false para que sea instantáneo
+          timeout: 5000 
         });
       }
     }
 
+    // Función independiente para que no bloquee a la otra
     async function loadCity(lat, lon) {
       try {
         const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
         const d = await r.json();
-        document.getElementById("loc-ciudad").innerText = (d.address.city || d.address.town || d.address.suburb || "Cerca tuyo") + ", Argentina";
-      } catch(e) {}
+        const city = d.address.city || d.address.town || d.address.suburb || d.address.village || "Cerca tuyo";
+        document.getElementById("loc-ciudad").innerText = city + ", Argentina";
+      } catch(e) {
+        document.getElementById("loc-ciudad").innerText = "Ubicación detectada";
+      }
     }
 
     async function loadPharmacies(lat, lon) {
@@ -179,7 +189,7 @@
         allPh = d.elements;
         render();
       } catch(e) {
-        // En lugar de error, reintenta silenciosamente una vez
+        // Si falla, el spinner sigue hasta que reintente solo
         setTimeout(() => loadPharmacies(lat, lon), 2000);
       }
     }

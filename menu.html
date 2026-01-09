@@ -32,10 +32,9 @@
 
     /* --- FIX 1: EVITAR SALTOS DE PANTALLA --- */
     html {
-      overflow-y: scroll; /* Reserva espacio para el scroll siempre */
-      scrollbar-width: none; /* Oculta en Firefox */
+      overflow-y: scroll; 
+      scrollbar-width: none; 
     }
-    /* Oculta scroll en Chrome/Safari para que parezca App */
     ::-webkit-scrollbar { display: none; }
 
     * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
@@ -53,26 +52,23 @@
       max-width: 414px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; /* Unificado con Farmacias */
+      padding-bottom: 120px; 
     }
 
-    /* --- HEADER (AJUSTADO PARA SIMETRÍA TOTAL) --- */
+    /* --- HEADER --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
       margin: 20px auto 10px; 
-      height: 60px; /* Altura fija */
+      height: 60px; 
       border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px; /* Bajado de 24 a 16 para alinear con botones de otras páginas */
+      padding: 0 16px; 
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
-
-    /* Espaciador para que el título "Salud" esté en el mismo lugar que en las páginas con botón atrás */
     .header-left-spacer { width: 36px; height: 36px; } 
-
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
     /* --- CONTENIDO --- */
@@ -133,6 +129,25 @@
       align-items: center; justify-content: center;
     }
 
+    /* --- MODAL AYUDA (Premium) --- */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      position: relative; display: flex; flex-direction: column;
+    }
+    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
+    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
+    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
+    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
+    .help-icon { color: var(--blue-main); font-size: 22px; }
+    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
+
     /* --- BOTTOM BAR --- */
     .bottom-bar {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
@@ -143,14 +158,7 @@
     .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
     .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
-    
-    .center-question-btn { 
-      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
-      border: 5px solid var(--main-bg); display: flex; align-items: center; 
-      justify-content: center; color: white; font-size: 32px; 
-      font-weight: 600; /* Igual al de Farmacias */
-      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
-    }
+    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
     .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
@@ -219,11 +227,49 @@
     <nav class="bottom-bar">
       <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
       <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
       <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-top">
+        <h3 id="modal-title" class="modal-title">Ayuda</h3>
+        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalAyuda() {
+      const modal = document.getElementById('modal-container');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+      title.innerText = "Bienvenido a C.U.R.A.";
+      body.innerHTML = `
+        <div class="help-item">
+          <i class="ph ph-heartbeat help-icon"></i>
+          <p><strong>Ecosistema de Salud:</strong> Esta sección unifica toda tu información médica federal bajo la Ley C.U.R.A.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-fingerprint help-icon"></i>
+          <p><strong>Identidad Federal:</strong> Tu credencial digital y QR permiten que cualquier prestador autorizado del país acceda a tu información de forma segura.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-grid-four help-icon"></i>
+          <p><strong>Herramientas:</strong> Gestiona turnos, recetas y recordatorios de medicación. Toda tu historia clínica está ahora en un solo lugar.</p>
+        </div>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
+  </script>
 </body>
 </html>

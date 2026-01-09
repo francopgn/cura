@@ -124,7 +124,7 @@
     }
 
     /* --- NUEVA NAV INFERIOR PREMIUM --- */
-/* --- BOTTOM BAR (Copia Exacta) --- */
+/* --- BARRA INFERIOR GLOBAL --- */
 .bottom-bar {
   position: fixed; 
   bottom: 24px; 
@@ -148,11 +148,12 @@
   border: none; 
   padding: 10px; 
   cursor: pointer; 
-  color: var(--text-gray); /* Asegurate de tener definido --text-gray: #64748b; */
+  color: var(--text-gray); /* Inactivo: #64748b */
+  transition: all 0.2s ease;
 }
 
 .nav-icon-btn.active { 
-  color: var(--blue-main); /* Asegurate de tener definido --blue-main: #1f6fe5; */
+  color: var(--blue-main); /* Activo: #1f6fe5 */
 }
 
 .nav-icon-btn i { 
@@ -164,15 +165,17 @@
   height: 64px; 
   background: var(--blue-main); 
   border-radius: 50%; 
-  border: 5px solid var(--main-bg); /* El color del fondo para el efecto de recorte */
+  /* IMPORTANTE: El borde debe ser del mismo color que el fondo de la página */
+  border: 5px solid var(--main-bg); 
   display: flex; 
   align-items: center; 
   justify-content: center; 
   color: white; 
   font-size: 32px; 
-  font-weight: 600; 
+  font-weight: 700; /* Grosor robusto para el "?" */
   margin-top: -35px; 
   box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
+  cursor: pointer;
 }
 
     .nav-icon-btn:active, .center-question-btn:active {
@@ -240,7 +243,6 @@
         </a>
       </div>
     </main>
-
 <nav class="bottom-bar">
   <button class="nav-icon-btn" onclick="location.href='menu.html'">
     <i class="ph-bold ph-house"></i>
@@ -250,9 +252,9 @@
     <i class="ph-bold ph-calendar-blank"></i>
   </button>
 
-  <div class="center-question-btn">?</div>
+  <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
 
-  <button class="nav-icon-btn active" onclick="location.href='farmacias.html'">
+  <button class="nav-icon-btn" onclick="location.href='farmacias.html'">
     <i class="ph-bold ph-prescription"></i>
   </button>
 

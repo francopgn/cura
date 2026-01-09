@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>Solicitar Turno - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <style>
     :root {
       --main-bg: #f0f4f8; 
@@ -37,7 +40,7 @@
       background-color: var(--main-bg);
       display: flex;
       flex-direction: column;
-      padding-bottom: 110px; 
+      padding-bottom: 120px; /* Ajustado para la nueva barra flotante */
     }
 
     /* --- HEADER PASTILLA --- */
@@ -202,7 +205,7 @@
       margin-top: 10px;
     }
 
-    /* --- NAV INFERIOR --- */
+    /* --- NUEVA NAV INFERIOR PREMIUM --- */
     .bottom-bar {
       position: fixed;
       bottom: 24px;
@@ -218,16 +221,34 @@
       justify-content: space-between;
       padding: 0 25px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      z-index: 50;
+      z-index: 1000;
     }
 
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
-    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
+    .nav-icon-btn {
+      background: none;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      color: #64748b; /* Gris inactivo */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    /* Estado ACTIVO para Calendario (Turnos) */
+    .nav-icon-btn.active {
+      color: var(--blue-main);
+    }
+
+    .nav-icon-btn i {
+      font-size: 26px;
+    }
 
     .center-question-btn {
       width: 64px;
       height: 64px;
-      background: #0066cc;
+      background: var(--blue-main);
       border-radius: 50%;
       border: 5px solid var(--main-bg); 
       display: flex;
@@ -237,8 +258,12 @@
       font-size: 32px;
       font-weight: 600;
       margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3);
       cursor: pointer;
+    }
+
+    .nav-icon-btn:active, .center-question-btn:active {
+      transform: scale(0.9);
     }
   </style>
 </head>
@@ -325,12 +350,22 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <button class="nav-icon-btn" onclick="location.href='menu.html'">
+        <i class="ph-bold ph-house"></i>
       </button>
-      <div class="center-question-btn">?</div>
-      <button class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+      
+      <button class="nav-icon-btn active" onclick="location.href='turnos.html'">
+        <i class="ph-bold ph-calendar-blank"></i>
+      </button>
+      
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'">
+        <i class="ph-bold ph-prescription"></i>
+      </button>
+      
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'">
+        <i class="ph-bold ph-user"></i>
       </button>
     </nav>
   </div>

@@ -25,12 +25,30 @@
       --green-status: #16a34a;
     }
 
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
+    body {
+      background-color: var(--main-bg);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-    /* --- HEADER BAR (PASTILLA CENTRADA) --- */
+    .app-shell {
+      width: 100%;
+      max-width: 414px;
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 120px; 
+    }
+
+    /* --- HEADER (BALANCEO SIMÉTRICO) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -46,62 +64,109 @@
     }
 
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      border: none;
+      cursor: pointer;
     }
 
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+    .header-title {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
     .header-spacer { width: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; }
-    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
-    .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
 
-    /* --- FILTROS CON DRAG-TO-SCROLL --- */
+    .card {
+      background: var(--card-white);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 20px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--blue-header);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    /* --- FILTROS (SOLUCIÓN SCROLL DEFINITIVA) --- */
+    .search-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: #f8fafc;
+      font-size: 14px;
+      margin-bottom: 15px;
+      outline: none;
+    }
+
     .pill-scroll-container {
       width: 100%;
-      overflow-x: auto;
-      cursor: grab; /* Indica que se puede arrastrar */
-      user-select: none; /* Evita seleccionar texto al arrastrar */
+      overflow-x: auto; /* Permite el scroll */
+      display: flex;
       padding-bottom: 10px;
-      scrollbar-width: none; /* Oculta scroll en Firefox */
+      -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
     }
+
+    /* Ocultar barra de scroll pero mantener funcionalidad */
     .pill-scroll-container::-webkit-scrollbar { display: none; }
-    .pill-scroll-container:active { cursor: grabbing; }
 
     .pill-wrapper {
       display: flex;
       gap: 10px;
-      flex-wrap: nowrap;
+      flex-wrap: nowrap; /* Evita que los botones bajen */
     }
 
     .pill {
-      flex-shrink: 0;
-      padding: 10px 20px;
+      flex-shrink: 0; /* CRUCIAL: Evita que los botones se achiquen */
+      padding: 10px 18px;
       background: #fff;
       border: 1.5px solid var(--border-soft);
       border-radius: 999px;
       font-size: 12px;
       font-weight: 600;
       color: var(--text-gray);
-      white-space: nowrap;
+      white-space: nowrap; /* Texto siempre en una línea */
+      cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2); }
+    .pill.active {
+      background: var(--blue-main);
+      color: #fff;
+      border-color: var(--blue-main);
+      box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2);
+    }
 
-    /* --- FARMACIAS (CONTENIDO COMPLETO) --- */
-    .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
+    /* --- FARMACIAS --- */
+    .pharmacy-card {
+      border: 1px solid var(--border-soft);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 12px;
+    }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
-    .status-guardia { background: #fee2e2; color: #991b1b; }
     
-    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
-    .tag { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; background: #f1f5f9; color: var(--text-dark); }
-    .tag-blue { background: var(--blue-soft); color: var(--blue-header); }
-
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
     .btn-ph { flex: 1; padding: 12px; border-radius: 14px; font-size: 11px; font-weight: 800; text-align: center; text-decoration: none; text-transform: uppercase; }
     .btn-map { background: var(--blue-main); color: #fff; }
@@ -145,17 +210,18 @@
       
       <div class="card">
         <span class="section-label">Búsqueda Inteligente</span>
+        
         <div style="background: var(--blue-soft); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
           <div style="width: 10px; height: 10px; background: var(--green-status); border-radius: 50%; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);"></div>
           <div>
             <p id="loc-status" style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Ubicación Actual</p>
-            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Detectando ciudad...</p>
+            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Cargando ubicación real...</p>
           </div>
         </div>
 
-        <input type="text" class="search-input" placeholder="Buscar farmacia o barrio...">
+        <input type="text" class="search-input" placeholder="Nombre o dirección...">
         
-        <div class="pill-scroll-container" id="scrollContainer">
+        <div class="pill-scroll-container">
           <div class="pill-wrapper">
             <div class="pill active">Abiertas ahora</div>
             <div class="pill">Guardia 24hs</div>
@@ -163,48 +229,25 @@
             <div class="pill">Descuento PAMI</div>
             <div class="pill">Swiss Medical</div>
             <div class="pill">Galeno</div>
-            <div class="pill">OSDE</div>
             <div class="pill">OMINT</div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <span class="section-label">Farmacias Adheridas</span>
+        <span class="section-label">Resultados</span>
         
         <article class="pharmacy-card">
-          <div class="ph-header">
+          <div class="flex justify-between items-start mb-2">
             <h3 class="ph-name">Central C.U.R.A.</h3>
             <span class="status-badge status-open">Abierto</span>
           </div>
-          <p class="text-[13px] text-gray-500"><i class="ph ph-map-pin"></i> Av. Mitre 1234 · 450m</p>
-          <div class="tag-row">
-            <span class="tag tag-blue">Digital C.U.R.A.</span>
-            <span class="tag">PAMI</span>
-            <span class="tag">OSDE</span>
-          </div>
+          <p class="text-[13px] text-gray-500 mb-4">Av. Mitre 1234 · 450m</p>
           <div class="ph-actions">
             <a href="#" class="btn-ph btn-map">LLEGAR</a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>
-
-        <article class="pharmacy-card" style="border-color: #fee2e2;">
-          <div class="ph-header">
-            <h3 class="ph-name">Guardia Rodríguez</h3>
-            <span class="status-badge status-guardia">24 Horas</span>
-          </div>
-          <p class="text-[13px] text-gray-500"><i class="ph ph-map-pin"></i> Rivadavia 890 · 1.1km</p>
-          <div class="tag-row">
-            <span class="tag tag-blue">Urgencias</span>
-            <span class="tag">Todas las OS</span>
-          </div>
-          <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map">LLEGAR</a>
-            <a href="#" class="btn-ph btn-detail">DETALLES</a>
-          </div>
-        </article>
-
       </div>
     </main>
 
@@ -218,29 +261,7 @@
   </div>
 
   <script>
-    // --- LÓGICA DE ARRASTRAR CON EL MOUSE (DRAG-TO-SCROLL) ---
-    const slider = document.getElementById('scrollContainer');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    slider.addEventListener('mousedown', (e) => {
-      isDown = true;
-      slider.classList.add('active');
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-    });
-    slider.addEventListener('mouseleave', () => { isDown = false; });
-    slider.addEventListener('mouseup', () => { isDown = false; });
-    slider.addEventListener('mousemove', (e) => {
-      if(!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 2; // Velocidad del scroll
-      slider.scrollLeft = scrollLeft - walk;
-    });
-
-    // --- UBICACIÓN REAL ---
+    // UBICACIÓN REAL
     window.onload = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -248,10 +269,19 @@
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
             const data = await res.json();
             document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
-          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
-        });
+          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación actual"; }
+        }, () => { document.getElementById("loc-ciudad").innerText = "Permiso de ubicación denegado"; });
       }
     };
+
+    // LÓGICA DE PILLS
+    document.querySelectorAll('.pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      });
+    });
   </script>
 </body>
 </html>

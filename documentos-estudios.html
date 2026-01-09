@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Historia Clínica Completa - C.U.R.A.</title>
+  <title>Documentos y Estudios - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,7 @@
       --red-status: #ef4444;
     }
 
-    /* --- FIX 1: ESTABILIDAD DE PANTALLA --- */
+    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
     html {
       overflow-y: scroll; 
       scrollbar-width: none; 
@@ -34,7 +34,7 @@
 
     * {
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -96,19 +96,6 @@
       margin-bottom: 8px;
     }
 
-    .hint {
-      font-size: 13px;
-      color: var(--text-gray);
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-
-    .btn-secondary-action {
-      width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--blue-soft);
-      background: #f0f7ff; color: var(--blue-header); font-size: 14px;
-      font-weight: 700; cursor: pointer; margin-bottom: 12px; text-align: center;
-    }
-
     /* --- FILTROS --- */
     .filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
     .input-text, .select-field {
@@ -133,24 +120,42 @@
     .toggle input:checked + .slider::before { transform: translateX(20px); }
     .toggle-text { font-size: 12px; color: var(--text-gray); line-height: 1.3; }
 
-    /* --- TIMELINE --- */
-    .timeline { display: flex; flex-direction: column; gap: 16px; margin-top: 10px; }
-    .timeline-item {
-      position: relative; border-radius: 24px; background: #f8fafc;
-      border: 1px solid var(--border-soft); padding: 18px; cursor: pointer; transition: transform 0.2s;
+    /* --- LISTA DE DOCUMENTOS --- */
+    .group-label {
+      font-size: 12px; font-weight: 700; color: var(--text-gray);
+      text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 10px 10px;
     }
-    .timeline-item:active { transform: scale(0.98); }
-    .timeline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .timeline-date { font-size: 12px; font-weight: 700; color: var(--text-gray); }
-    .badge-tipo {
-      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
-      background: var(--blue-soft); color: var(--blue-header);
+
+    .doc-list { display: flex; flex-direction: column; gap: 12px; }
+    .doc-card {
+      display: flex; gap: 12px; padding: 16px; border-radius: 24px;
+      background: #f8fafc; border: 1px solid var(--border-soft); align-items: center;
     }
-    .timeline-sub { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-    .timeline-text { font-size: 13px; color: var(--text-dark); line-height: 1.4; margin-bottom: 12px; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-    .chip { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 8px; background: #e2e8f0; color: #475569; }
-    .chip-red { background: #fee2e2; color: #991b1b; }
+    .thumb {
+      width: 48px; height: 48px; border-radius: 14px; background: var(--blue-soft);
+      display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+    }
+    .doc-main { flex: 1; min-width: 0; }
+    .doc-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
+    .doc-meta { font-size: 11px; color: var(--text-gray); margin-bottom: 6px; }
+
+    .doc-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag {
+      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+      background: #e2e8f0; color: #475569;
+    }
+    .tag-blue { background: var(--blue-soft); color: var(--blue-header); }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+
+    .doc-actions { display: flex; flex-direction: column; gap: 6px; }
+    .mini-btn {
+      padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border-soft);
+      background: #fff; font-size: 11px; font-weight: 700; color: var(--text-dark);
+      cursor: pointer; white-space: nowrap;
+    }
+    .mini-btn.primary { background: var(--blue-main); color: #fff; border: none; }
+
+    .muted-footer { font-size: 11px; color: var(--text-gray); text-align: center; margin-top: 20px; line-height: 1.4; }
 
     /* --- MODAL AYUDA (Premium) --- */
     .modal-backdrop {
@@ -190,88 +195,126 @@
   <div class="app-shell">
     <header class="header-bar">
       <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Historia Clínica</div>
+      <div class="header-title">Documentos y Estudios</div>
       <div class="header-spacer"></div>
     </header>
 
     <main class="main-content">
-      <button class="btn-secondary-action" onclick="location.href='documentos-estudios.html'">
-        Ver documentos y estudios vinculados
-      </button>
-
       <div class="card">
-        <h2 class="section-label">Filtros de búsqueda</h2>
+        <h2 class="section-label">Buscador</h2>
         <div class="filters">
-          <input type="text" id="buscador" class="input-text" placeholder="Buscar síntoma, profesional..." oninput="filtrar()">
+          <input type="text" id="buscadorDocs" class="input-text" placeholder="Buscar laboratorio, ECG, Rx..." oninput="filtrarDocs()">
           <div class="filter-row">
-            <select id="filtroTipo" class="select-field" onchange="filtrar()">
+            <select id="filtroTipoDoc" class="select-field" onchange="filtrarDocs()">
               <option value="todos">Todos los tipos</option>
-              <option value="consulta">Consultas</option>
-              <option value="guardia">Guardia</option>
               <option value="laboratorio">Laboratorio</option>
+              <option value="imagen">Imágenes</option>
               <option value="receta">Recetas</option>
+              <option value="certificado">Certificados</option>
             </select>
           </div>
         </div>
 
         <div class="toggle-row">
           <label class="toggle">
-            <input type="checkbox" id="toggleSensibles" checked onchange="filtrar()">
+            <input type="checkbox" id="toggleDocsSensibles" checked onchange="filtrarDocs()">
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">Mostrar registros de salud mental y datos sensibles.</span>
+          <span class="toggle-text">Incluir documentos de salud mental y datos sensibles.</span>
         </div>
       </div>
 
-      <div class="card">
-        <h2 class="section-label">Línea de tiempo</h2>
-        <p class="hint">Vista longitudinal unificada del sistema C.U.R.A.</p>
-
-        <div class="timeline" id="timeline">
-          <article class="timeline-item" data-tipo="consulta" data-sensible="no" data-texto="cardiologia juan gonzalez dolor pecho" onclick="location.href='detalle-registro.html'">
-            <div class="timeline-header">
-              <span class="timeline-date" id="fecha-actual">Cargando...</span>
-              <span class="badge-tipo">Consulta</span>
+      <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
+        <div class="group-label">Recientes</div>
+        <div class="doc-list" id="docList">
+          
+          <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="ecg cardiologia hospital general 2024">
+            <div class="thumb">🫀</div>
+            <div class="doc-main">
+              <div class="doc-name">ECG · 12 derivaciones</div>
+              <div class="doc-meta">12/04/2024 · Hospital General</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Imagen / Señal</span>
+                <span class="tag">Cardiología</span>
+              </div>
             </div>
-            <div class="timeline-sub">Dr. Juan González · Clínica Médica</div>
-            <p class="timeline-text">Consulta por dolor torácico inespecífico. ECG sin cambios agudos. Se indican estudios complementarios.</p>
-            <div class="chip-row">
-              <span class="chip">Cardiología</span>
-              <span class="chip">Seguimiento</span>
-            </div>
-          </article>
-
-          <article class="timeline-item" data-tipo="guardia" data-sensible="si" data-texto="salud mental crisis angustia guardia">
-            <div class="timeline-header">
-              <span class="timeline-date">18/02/2025</span>
-              <span class="badge-tipo">Guardia</span>
-            </div>
-            <div class="timeline-sub">Hospital General · Salud Mental</div>
-            <p class="timeline-text" style="color: var(--text-gray); font-style: italic;">Registro de Salud Mental. Detalle visible según tu configuración de privacidad.</p>
-            <div class="chip-row">
-              <span class="chip chip-red">Salud Mental</span>
-              <span class="chip">Sensible 🔒</span>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Descargar</button>
             </div>
           </article>
 
-          <article class="timeline-item" data-tipo="laboratorio" data-sensible="no" data-texto="laboratorio central glucemia diabetes">
-            <div class="timeline-header">
-              <span class="timeline-date">03/03/2025</span>
-              <span class="badge-tipo">Laboratorio</span>
+          <article class="doc-card" data-tipo="laboratorio" data-sensible="no" data-texto="laboratorio sangre glucemia analisis">
+            <div class="thumb">🧪</div>
+            <div class="doc-main">
+              <div class="doc-name">Informe de Laboratorio</div>
+              <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Bioquímica</span>
+                <span class="tag">Diabetes</span>
+              </div>
             </div>
-            <div class="timeline-sub">Laboratorio Central · Perfil Lipídico</div>
-            <p class="timeline-text">HbA1c: 6.8%. Se mantiene esquema de Metformina.</p>
-            <div class="chip-row">
-              <span class="chip">Diabetes T2</span>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">PDF</button>
             </div>
           </article>
+
+          <article class="doc-card" data-tipo="informe" data-sensible="si" data-texto="salud mental crisis angustia informe psicologia">
+            <div class="thumb">🧠</div>
+            <div class="doc-main">
+              <div class="doc-name">Informe Salud Mental</div>
+              <div class="doc-meta">18/02/2024 · Hospital General</div>
+              <div class="doc-tags">
+                <span class="tag tag-red">Sensible 🔒</span>
+                <span class="tag">Psiquiatría</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+            </div>
+          </article>
+
+          <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="rx radiografia torax imagen pulmones">
+            <div class="thumb">🩻</div>
+            <div class="doc-main">
+              <div class="doc-name">Rx de Tórax</div>
+              <div class="doc-meta">10/01/2024 · Diagnóstico Norte</div>
+              <div class="doc-tags">
+                <span class="tag tag-blue">Radiología</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">DICOM</button>
+            </div>
+          </article>
+
+          <article class="doc-card" data-tipo="receta" data-sensible="no" data-texto="receta metformina losartan cronica">
+            <div class="thumb">💊</div>
+            <div class="doc-main">
+              <div class="doc-name">Receta Crónica</div>
+              <div class="doc-meta">05/12/2023 · Consultorio Externo</div>
+              <div class="doc-tags">
+                <span class="tag">Electrónica</span>
+              </div>
+            </div>
+            <div class="doc-actions">
+              <button class="mini-btn primary">Ver</button>
+              <button class="mini-btn">Farmacia</button>
+            </div>
+          </article>
+
         </div>
+        <p class="muted-footer">
+          Documentos generados bajo Ley C.U.R.A. con validez federal e interoperabilidad inmediata.
+        </p>
       </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
       <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
       <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
@@ -292,31 +335,23 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const hoy = new Date();
-      const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      const fechaFormateada = hoy.toLocaleDateString('es-AR', opciones);
-      const elementoFecha = document.getElementById("fecha-actual");
-      if (elementoFecha) elementoFecha.textContent = fechaFormateada;
-    });
-
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
       const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Mi Historia";
+      title.innerText = "Ayuda: Documentos";
       body.innerHTML = `
         <div class="help-item">
-          <i class="ph ph-clock-counter-clockwise help-icon"></i>
-          <p><strong>Línea Longitudinal:</strong> El sistema C.U.R.A. unifica tus registros de todos los hospitales públicos y privados del país en una sola vista cronológica.</p>
+          <i class="ph ph-file-pdf help-icon"></i>
+          <p><strong>Validez Federal:</strong> Todos los documentos generados en el sistema C.U.R.A. son oficiales y válidos en cualquier centro de salud del país.</p>
         </div>
         <div class="help-item">
-          <i class="ph ph-eye-slash help-icon"></i>
-          <p><strong>Privacidad:</strong> Los registros de Salud Mental y datos sensibles están protegidos por el Art. 27. Puedes ocultarlos o mostrarlos con el interruptor de la página.</p>
+          <i class="ph ph-microscope help-icon"></i>
+          <p><strong>Estudios:</strong> Puedes visualizar informes de laboratorio e imágenes radiológicas (DICOM) sin necesidad de llevar papeles físicos al médico.</p>
         </div>
         <div class="help-item">
-          <i class="ph ph-shield-check help-icon"></i>
-          <p><strong>Seguridad:</strong> Cada vez que un médico accede a tu historia clínica, queda registrado de forma inmutable en el historial de accesos.</p>
+          <i class="ph ph-lock help-icon"></i>
+          <p><strong>Privacidad:</strong> Los documentos sensibles están encriptados. Usa el interruptor de la página para decidir cuándo visualizarlos en tu lista.</p>
         </div>
       `;
       modal.style.display = "flex";
@@ -324,11 +359,11 @@
 
     function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
 
-    function filtrar() {
-      const texto = document.getElementById("buscador").value.toLowerCase();
-      const tipo = document.getElementById("filtroTipo").value;
-      const mostrarSensibles = document.getElementById("toggleSensibles").checked;
-      const items = document.querySelectorAll("#timeline .timeline-item");
+    function filtrarDocs() {
+      const texto = document.getElementById("buscadorDocs").value.toLowerCase();
+      const tipo = document.getElementById("filtroTipoDoc").value;
+      const mostrarSensibles = document.getElementById("toggleDocsSensibles").checked;
+      const items = document.querySelectorAll("#docList .doc-card");
 
       items.forEach((item) => {
         const t = item.dataset.tipo;
@@ -340,7 +375,7 @@
         if (!mostrarSensibles && s) visible = false;
         if (texto && !fullText.includes(texto)) visible = false;
 
-        item.style.display = visible ? "block" : "none";
+        item.style.display = visible ? "flex" : "none";
       });
     }
   </script>

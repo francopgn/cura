@@ -33,7 +33,7 @@
     body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
     .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    /* HEADER */
+    /* HEADER SIMÉTRICO */
     .header-bar {
       background-color: var(--blue-header); width: calc(100% - 40px); margin: 20px auto 10px; 
       height: 60px; border-radius: 999px; display: flex; align-items: center; padding: 0 16px;
@@ -43,7 +43,7 @@
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
     .header-spacer { width: 36px; }
 
-    /* CONTENT */
+    /* CONTENIDO */
     .main-content { padding: 10px 20px; }
     .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
     .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
@@ -116,7 +116,7 @@
       <div class="card">
         <span class="section-label">Resultados</span>
         <div id="resultsList">
-           <div style="text-align: center; padding: 20px;">
+          <div style="text-align: center; padding: 20px;">
             <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 10px;">Buscando farmacias reales...</p>
             <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
           </div>
@@ -139,12 +139,12 @@
     let userCoords = null;
     let currentFilter = 'all';
 
-    // --- 1. GEOLOCALIZACIÓN ---
-    function initSearch() {
+    // 1. GEOLOCALIZACIÓN
+    function init() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true, timeout: 10000 });
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true });
       } else {
-        showErrorMessage("Navegador no compatible.");
+        resultsList.innerHTML = "<p style='text-align:center; padding:20px;'>GPS no compatible.</p>";
       }
     }
 
@@ -154,20 +154,18 @@
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lon}`);
         const data = await res.json();
-        const city = data.address.city || data.address.town || data.address.suburb || "General Rodríguez";
+        const city = data.address.city || data.address.town || data.address.suburb || "Cerca tuyo";
         document.getElementById("loc-ciudad").innerText = city + ", " + (data.address.state || "Argentina");
       } catch(e) {}
 
       fetchPharmacies();
     }
 
-    function onError() { 
-        showErrorMessage("Permiso de ubicación denegado."); 
-        // Reintento automático breve para Franco
-        setTimeout(initSearch, 2000);
+    function onError() {
+      resultsList.innerHTML = "<div style='text-align:center; padding:20px;'><p style='font-size:13px;'>Permiso de ubicación necesario.</p><button onclick='init()' style='background:var(--blue-main); color:white; padding:8px 15px; border-radius:10px; border:none; margin-top:10px;'>Permitir</button></div>";
     }
 
-    // --- 2. FETCH DATA ---
+    // 2. BUSCAR DATOS REALES
     async function fetchPharmacies() {
       const query = `[out:json];node(around:5000,${userCoords.lat},${userCoords.lon})["amenity"="pharmacy"];out;`;
       const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
@@ -176,50 +174,45 @@
         const response = await fetch(url);
         const data = await response.json();
         allPharmacies = data.elements;
-        renderFiltered();
+        render();
       } catch (error) {
-        showErrorMessage("Error de conexión con la red de farmacias.");
+        resultsList.innerHTML = "<p style='text-align:center; padding:20px;'>Error de red. Reintenta.</p>";
       }
     }
 
-    // --- 3. LÓGICA DE FILTRADO Y HORARIOS ---
-    function checkStatus(openingHours) {
-      if (!openingHours) return { label: "Disponible", class: "status-open", isOpen: true, is24hs: false };
+    // 3. LÓGICA DE ESTADO (TURNOS Y HORARIOS)
+    function getStatus(oh) {
+      if (!oh) return { label: "Consultar turno", class: "status-open", isOpen: true, is24: false };
       
-      const hours = openingHours.toLowerCase();
+      const hours = oh.toLowerCase();
       if (hours.includes("24/7") || hours.includes("00:00-24:00")) {
-        return { label: "Guardia 24hs", class: "status-guardia", isOpen: true, is24hs: true };
+        return { label: "Guardia 24hs", class: "status-guardia", isOpen: true, is24: true };
       }
 
-      // Lógica simplificada de "Abierto ahora" (puedes expandirla)
       const now = new Date();
-      const hour = now.getHours();
-      // Asumimos horario comercial estándar si existe la etiqueta pero no es 24/7
-      const isOpenNow = (hour >= 8 && hour < 21); 
+      const h = now.getHours();
+      const isOpen = (h >= 8 && h < 21); // Horario comercial estimado
 
-      if (isOpenNow) {
-        return { label: "Abierto ahora", class: "status-open", isOpen: true, is24hs: false };
+      if (isOpen) {
+        return { label: "Abierto ahora", class: "status-open", isOpen: true, is24: false };
       } else {
-        return { label: "Cerrado", class: "status-closed", isOpen: false, is24hs: false };
+        return { label: "Cerrado ahora", class: "status-closed", isOpen: false, is24: false };
       }
     }
 
-    function renderFiltered() {
+    function render() {
       resultsList.innerHTML = "";
       
       let filtered = allPharmacies.map(ph => {
-        const status = checkStatus(ph.tags.opening_hours);
+        const status = getStatus(ph.tags.opening_hours);
         return { ...ph, status, dist: getDist(userCoords.lat, userCoords.lon, ph.lat, ph.lon) };
       }).sort((a,b) => a.dist - b.dist);
 
-      if (currentFilter === 'open') {
-        filtered = filtered.filter(f => f.status.isOpen);
-      } else if (currentFilter === 'guardia') {
-        filtered = filtered.filter(f => f.status.is24hs);
-      }
+      if (currentFilter === 'open') filtered = filtered.filter(f => f.status.isOpen);
+      if (currentFilter === 'guardia') filtered = filtered.filter(f => f.status.is24);
 
       if (filtered.length === 0) {
-        resultsList.innerHTML = `<p style="text-align:center; padding:20px; font-size:13px; color:var(--text-gray);">No hay farmacias que coincidan con el filtro.</p>`;
+        resultsList.innerHTML = "<p style='text-align:center; padding:20px; font-size:13px; color:var(--text-gray);'>Sin resultados para este filtro.</p>";
         return;
       }
 
@@ -234,9 +227,11 @@
             <h3 class="ph-name">${name}</h3>
             <span class="status-badge ${ph.status.class}">${ph.status.label}</span>
           </div>
-          <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Dirección en mapa'} · ${distStr}</p>
+          <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Gral. Rodríguez'} · ${distStr}</p>
           <div class="ph-actions">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">LLEGAR</a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
+              <i class="ph ph-navigation-arrow"></i>LLEGAR
+            </a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         `;
@@ -244,7 +239,6 @@
       });
     }
 
-    // --- UTILIDADES ---
     function getDist(lat1, lon1, lat2, lon2) {
       const R = 6371;
       const dLat = (lat2-lat1) * Math.PI/180;
@@ -253,21 +247,16 @@
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
-    function showErrorMessage(msg) {
-      resultsList.innerHTML = `<div style="text-align:center; padding:20px;"><p style="font-size:13px; color:var(--text-gray);">${msg}</p><button onclick="initSearch()" style="margin-top:10px; background:var(--blue-main); color:white; border:none; padding:8px 15px; border-radius:10px;">Reintentar</button></div>`;
-    }
-
-    // Manejo de PILLS
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
         currentFilter = pill.dataset.filter;
-        renderFiltered();
+        render();
       });
     });
 
-    window.onload = initSearch;
+    window.onload = init;
   </script>
 </body>
 </html>

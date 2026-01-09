@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <title>Cartilla Federal - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <style>
     :root {
       --main-bg: #f0f4f8; 
@@ -18,9 +24,16 @@
       --green-status: #10b981;
     }
 
+    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
+    html {
+      overflow-y: scroll; /* Reserva espacio para el scroll siempre */
+      scrollbar-width: none; 
+    }
+    ::-webkit-scrollbar { display: none; }
+
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -30,6 +43,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app-shell {
@@ -37,10 +51,10 @@
       max-width: 414px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 110px; 
+      padding-bottom: 120px; 
     }
 
-    /* --- HEADER BAR (PASTILLA) --- */
+    /* --- HEADER SIMÉTRICO --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -49,28 +63,19 @@
       border-radius: 999px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      z-index: 100;
     }
 
     .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-right: 12px;
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; 
+      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
     }
-
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+    .header-spacer { width: 36px; height: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
@@ -140,18 +145,12 @@
       border: 1px solid transparent;
       transition: border-color 0.2s;
     }
-    .prestador-card:active { border-color: var(--blue-main); }
+    .prestador-card:active { border-color: var(--blue-main); transform: scale(0.98); }
     
     .prestador-img {
-      width: 64px;
-      height: 64px;
-      background: var(--blue-soft);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      flex-shrink: 0;
+      width: 64px; height: 64px; background: var(--blue-soft);
+      border-radius: 20px; display: flex; align-items: center;
+      justify-content: center; font-size: 28px; flex-shrink: 0;
     }
 
     .prestador-info { flex: 1; min-width: 0; }
@@ -159,67 +158,46 @@
     .prestador-desc { font-size: 13px; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
     .badge-interop {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 700;
-      background: #dcfce7;
-      color: #166534;
-      padding: 2px 8px;
-      border-radius: 6px;
-      margin-top: 4px;
-      text-transform: uppercase;
+      display: inline-block; font-size: 10px; font-weight: 700;
+      background: #dcfce7; color: #166534; padding: 2px 8px;
+      border-radius: 6px; margin-top: 4px; text-transform: uppercase;
     }
 
     .prestador-meta { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-      margin-top: 10px; 
-      font-size: 12px; 
-      font-weight: 700;
+      display: flex; align-items: center; gap: 12px; 
+      margin-top: 10px; font-size: 12px; font-weight: 700;
       color: var(--blue-main);
     }
 
-    /* --- NAV INFERIOR --- */
+    /* --- BARRA INFERIOR (COPIA EXACTA) --- */
     .bottom-bar {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 360px;
-      background: #ffffff;
-      border-radius: 35px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      z-index: 50;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-dark); }
-    .center-question-btn {
-      width: 64px; height: 64px;
-      background: #0066cc;
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 32px; font-weight: 600;
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
-      cursor: pointer;
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .nav-icon-btn.active { color: var(--blue-main); }
+    .nav-icon-btn i { font-size: 26px; }
+    
+    .center-question-btn { 
+      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
+      border: 5px solid var(--main-bg); display: flex; align-items: center; 
+      justify-content: center; color: white; font-size: 32px; 
+      font-weight: 600; 
+      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
     }
+    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="location.href='menu (12).html'">‹</button>
+      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
       <div class="header-title">Cartilla Federal</div>
-      <div style="width: 36px;"></div> </header>
+      <div class="header-spacer"></div>
+    </header>
 
     <main class="main-content">
       <div class="section-header">
@@ -228,7 +206,7 @@
       </div>
 
       <div class="search-box">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-gray)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <i class="ph-bold ph-magnifying-glass" style="color: var(--text-gray); font-size: 20px;"></i>
         <input type="text" placeholder="Especialidad, nombre o centro...">
       </div>
 
@@ -282,13 +260,11 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </button>
-      <div class="center-question-btn">?</div>
-      <button class="nav-icon-btn">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.5c1.933 0 3.5-1.567 3.5-3.5s-1.567-3.5-3.5-3.5-3.5 1.567-3.5 3.5 1.567 3.5 3.5 3.5zM19.433 12.994l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58z"/></svg>
-      </button>
+      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 

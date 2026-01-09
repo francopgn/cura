@@ -30,7 +30,7 @@
 
     .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    /* --- HEADER (BALANCEO SIMÉTRICO) --- */
+    /* --- HEADER --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -44,7 +44,6 @@
       justify-content: space-between;
       z-index: 100;
     }
-
     .back-btn {
       width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
       display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer;
@@ -62,23 +61,20 @@
       background: #f8fafc; font-size: 14px; margin-bottom: 15px; outline: none;
     }
 
-    /* --- SOLUCIÓN DE SCROLL DINÁMICO --- */
+    /* --- FILTROS DINÁMICOS --- */
     .pill-container-relative { position: relative; width: 100%; }
-
-    /* Degradados como elementos independientes para controlar su visibilidad */
     .fade-edge {
       position: absolute; top: 0; bottom: 0; width: 40px; z-index: 2;
       pointer-events: none; transition: opacity 0.3s ease; opacity: 0;
     }
     .fade-left { left: 0; background: linear-gradient(to right, white, transparent); }
-    .fade-right { right: 0; background: linear-gradient(to left, white, transparent); opacity: 1; } /* El derecho inicia visible */
+    .fade-right { right: 0; background: linear-gradient(to left, white, transparent); opacity: 1; }
 
     .pill-scroll-container {
       width: 100%; overflow-x: auto; display: flex; padding-bottom: 10px;
       -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; scroll-behavior: smooth;
     }
     .pill-scroll-container::-webkit-scrollbar { display: none; }
-
     .pill-wrapper { display: flex; gap: 10px; flex-wrap: nowrap; }
 
     .pill {
@@ -88,7 +84,6 @@
     }
     .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2); }
 
-    /* Flechas PC */
     .nav-arrow {
       position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
       background: var(--blue-main); color: white; border-radius: 50%; border: none;
@@ -101,13 +96,29 @@
 
     @media (pointer: coarse) { .nav-arrow { display: none !important; } }
 
-    /* --- FARMACIAS --- */
+    /* --- FARMACIAS (SOLUCIÓN ESPACIADO BOTÓN) --- */
     .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
+    
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
-    .btn-ph { flex: 1; padding: 12px; border-radius: 14px; font-size: 11px; font-weight: 800; text-align: center; text-decoration: none; text-transform: uppercase; }
+    
+    .btn-ph { 
+      flex: 1; 
+      padding: 12px; 
+      border-radius: 14px; 
+      font-size: 11px; 
+      font-weight: 800; 
+      text-decoration: none; 
+      text-transform: uppercase;
+      /* Ajuste para separar icono de texto */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px; /* Espacio exacto entre flecha y LLEGAR */
+    }
+    
     .btn-map { background: var(--blue-main); color: #fff; }
     .btn-detail { background: #f1f5f9; color: var(--text-dark); }
 
@@ -153,9 +164,7 @@
           <div id="fadeLeft" class="fade-edge fade-left"></div>
           <div id="fadeRight" class="fade-edge fade-right"></div>
 
-          <button class="nav-arrow left" onclick="scrollPills(-120)">
-            <i class="ph-bold ph-caret-left"></i>
-          </button>
+          <button class="nav-arrow left" onclick="scrollPills(-120)"><i class="ph-bold ph-caret-left"></i></button>
 
           <div class="pill-scroll-container" id="pillScroll">
             <div class="pill-wrapper">
@@ -169,9 +178,7 @@
             </div>
           </div>
 
-          <button class="nav-arrow right" onclick="scrollPills(120)">
-            <i class="ph-bold ph-caret-right"></i>
-          </button>
+          <button class="nav-arrow right" onclick="scrollPills(120)"><i class="ph-bold ph-caret-right"></i></button>
         </div>
       </div>
 
@@ -185,7 +192,9 @@
           </div>
           <p class="text-[13px] text-gray-500 mb-4">Av. Mitre 1234 · 450m</p>
           <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map">LLEGAR</a>
+            <a href="#" class="btn-ph btn-map">
+                <i class="ph ph-navigation-arrow"></i> LLEGAR
+            </a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>
@@ -206,15 +215,10 @@
     const fadeLeft = document.getElementById('fadeLeft');
     const fadeRight = document.getElementById('fadeRight');
 
-    // Función para manejar la visibilidad de los degradados
     function updateFades() {
       const scrollLeft = scrollContainer.scrollLeft;
       const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-
-      // Si se movió más de 5px a la derecha, mostrar sombra izquierda
       fadeLeft.style.opacity = scrollLeft > 5 ? "1" : "0";
-      
-      // Si falta más de 5px para llegar al final, mostrar sombra derecha
       fadeRight.style.opacity = scrollLeft < maxScroll - 5 ? "1" : "0";
     }
 
@@ -225,22 +229,20 @@
       scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
     }
 
-    // UBICACIÓN REAL
     window.onload = () => {
-      updateFades(); // Inicializar sombras
+      updateFades();
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (pos) => {
           try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
             const data = await res.json();
             document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
-            updateFades(); // Re-chequear sombras al cargar contenido
+            updateFades();
           } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
         });
       }
     };
 
-    // LÓGICA DE PILLS
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));

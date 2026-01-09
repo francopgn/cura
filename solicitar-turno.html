@@ -5,6 +5,9 @@
   <title>Solicitar Turno - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
   <style>
@@ -20,9 +23,16 @@
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
+    /* --- FIX 1: ESTABILIDAD DE PANTALLA --- */
+    html {
+      overflow-y: scroll; /* Reserva el espacio del scroll siempre */
+      scrollbar-width: none; 
+    }
+    ::-webkit-scrollbar { display: none; }
+
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -32,48 +42,39 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
-      background-color: var(--main-bg);
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; /* Ajustado para la nueva barra flotante */
+      padding-bottom: 120px; /* Unificado con el resto */
     }
 
-    /* --- HEADER PASTILLA --- */
+    /* --- HEADER SIMÉTRICO --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
       margin: 20px auto 10px; 
-      height: 60px;
+      height: 60px; /* Altura fija */
       border-radius: 999px;
       display: flex;
       align-items: center;
       padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      justify-content: space-between;
+      z-index: 100;
     }
 
     .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-right: 12px;
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; 
+      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
     }
-
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+    .header-spacer { width: 36px; height: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
@@ -114,165 +115,67 @@
       background: #fff;
     }
 
-    /* Pills Selectors */
     .pill-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-    
     .pill {
-      padding: 10px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      background: #f1f5f9;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-gray);
-      cursor: pointer;
-      transition: all 0.2s;
+      padding: 10px 16px; border-radius: 14px; border: 1px solid var(--border-soft);
+      background: #f1f5f9; font-size: 13px; font-weight: 600; color: var(--text-gray);
+      cursor: pointer; transition: all 0.2s;
     }
+    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); }
 
-    .pill.active {
-      background: var(--blue-main);
-      color: #fff;
-      border-color: var(--blue-main);
-    }
+    .option-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; color: var(--text-dark); }
+    .option-row input[type="radio"] { width: 20px; height: 20px; accent-color: var(--blue-main); }
 
-    /* Radio/Options */
-    .option-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-      font-size: 14px;
-      color: var(--text-dark);
-    }
-
-    .option-row input[type="radio"] {
-      width: 20px;
-      height: 20px;
-      accent-color: var(--blue-main);
-    }
-
-    /* Info Alerts */
     .info-box {
-      background: #f0f7ff;
-      border-radius: 16px;
-      padding: 12px 16px;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-top: 10px;
-      border: 1px solid #dbeafe;
+      background: #f0f7ff; border-radius: 16px; padding: 12px 16px;
+      display: flex; gap: 12px; align-items: center; margin-top: 10px; border: 1px solid #dbeafe;
     }
-
     .info-icon {
-      width: 24px;
-      height: 24px;
-      background: var(--blue-main);
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: bold;
-      flex-shrink: 0;
+      width: 24px; height: 24px; background: var(--blue-main); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: bold; flex-shrink: 0;
     }
-
     .info-text { font-size: 12px; color: var(--blue-header); line-height: 1.4; }
 
     .chip {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 8px;
-      background: #dcfce7;
-      color: #166534;
-      font-size: 11px;
-      font-weight: 700;
-      margin-top: 6px;
+      display: inline-block; padding: 4px 10px; border-radius: 8px;
+      background: #dcfce7; color: #166534; font-size: 11px; font-weight: 700; margin-top: 6px;
     }
 
-    /* Submit Button */
     .btn-submit {
-      width: 100%;
-      padding: 18px;
-      border-radius: 20px;
-      border: none;
-      background: var(--blue-main);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2);
-      margin-top: 10px;
+      width: 100%; padding: 18px; border-radius: 20px; border: none;
+      background: var(--blue-main); color: #fff; font-size: 16px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2); margin-top: 10px;
     }
 
-    /* --- NUEVA NAV INFERIOR PREMIUM --- */
+    /* --- BARRA INFERIOR (COPIA EXACTA) --- */
     .bottom-bar {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 360px;
-      background: #ffffff;
-      border-radius: 35px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-
-    .nav-icon-btn {
-      background: none;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      color: #64748b; /* Gris inactivo */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.2s ease;
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .nav-icon-btn.active { color: var(--blue-main); }
+    .nav-icon-btn i { font-size: 26px; }
+    
+    .center-question-btn { 
+      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
+      border: 5px solid var(--main-bg); display: flex; align-items: center; 
+      justify-content: center; color: white; font-size: 32px; 
+      font-weight: 600; 
+      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
     }
-
-    /* Estado ACTIVO para Calendario (Turnos) */
-    .nav-icon-btn.active {
-      color: var(--blue-main);
-    }
-
-    .nav-icon-btn i {
-      font-size: 26px;
-    }
-
-    .center-question-btn {
-      width: 64px;
-      height: 64px;
-      background: var(--blue-main);
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 600;
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3);
-      cursor: pointer;
-    }
-
-    .nav-icon-btn:active, .center-question-btn:active {
-      transform: scale(0.9);
-    }
+    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()">‹</button>
+      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
       <div class="header-title">Solicitar Turno</div>
+      <div class="header-spacer"></div>
     </header>
 
     <main class="main-content">
@@ -350,23 +253,11 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'">
-        <i class="ph-bold ph-house"></i>
-      </button>
-      
-      <button class="nav-icon-btn active" onclick="location.href='turnos.html'">
-        <i class="ph-bold ph-calendar-blank"></i>
-      </button>
-      
+      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn active" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
       <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
-      
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'">
-        <i class="ph-bold ph-prescription"></i>
-      </button>
-      
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'">
-        <i class="ph-bold ph-user"></i>
-      </button>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 

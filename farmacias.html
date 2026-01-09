@@ -23,127 +23,61 @@
       --border-soft: #e5e7eb;
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
       --green-status: #16a34a;
+      --red-status: #dc2626;
+      --amber-status: #d97706;
     }
 
-    html {
-      overflow-y: scroll;
-      scrollbar-width: none; 
-    }
+    html { overflow-y: scroll; scrollbar-width: none; }
     ::-webkit-scrollbar { display: none; }
-
     * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-    
-    body { 
-      background-color: var(--main-bg); 
-      display: flex; 
-      justify-content: center; 
-      min-height: 100vh; 
-      overflow-x: hidden; 
-    }
+    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    .app-shell { 
-      width: 100%; 
-      max-width: 414px; 
-      display: flex; 
-      flex-direction: column; 
-      padding-bottom: 120px; 
-    }
-
+    /* HEADER */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      justify-content: space-between;
-      z-index: 100;
+      background-color: var(--blue-header); width: calc(100% - 40px); margin: 20px auto 10px; 
+      height: 60px; border-radius: 999px; display: flex; align-items: center; padding: 0 16px;
+      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2); justify-content: space-between; z-index: 100;
     }
-
-    .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer;
-    }
+    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer; }
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
+    .header-spacer { width: 36px; }
 
+    /* CONTENT */
     .main-content { padding: 10px 20px; }
     .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
     .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
+    .search-input { width: 100%; padding: 14px 18px; border-radius: 16px; border: 1px solid var(--border-soft); background: #f8fafc; font-size: 14px; margin-bottom: 15px; outline: none; }
 
-    .search-input {
-      width: 100%; padding: 14px 18px; border-radius: 16px; border: 1px solid var(--border-soft);
-      background: #f8fafc; font-size: 14px; margin-bottom: 15px; outline: none;
-    }
-
+    /* PILLS */
     .pill-container-relative { position: relative; width: 100%; }
-    .fade-edge {
-      position: absolute; top: 0; bottom: 0; width: 40px; z-index: 2;
-      pointer-events: none; transition: opacity 0.3s ease; opacity: 0;
-    }
-    .fade-left { left: 0; background: linear-gradient(to right, white, transparent); }
-    .fade-right { right: 0; background: linear-gradient(to left, white, transparent); opacity: 1; }
-
-    .pill-scroll-container {
-      width: 100%; overflow-x: auto; display: flex; padding-bottom: 10px;
-      -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; scroll-behavior: smooth;
-    }
+    .pill-scroll-container { width: 100%; overflow-x: auto; display: flex; padding-bottom: 10px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
     .pill-scroll-container::-webkit-scrollbar { display: none; }
-    .pill-wrapper { display: flex; gap: 10px; flex-wrap: nowrap; }
+    .pill-wrapper { display: flex; gap: 10px; }
+    .pill { flex-shrink: 0; padding: 10px 18px; background: #fff; border: 1.5px solid var(--border-soft); border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--text-gray); white-space: nowrap; cursor: pointer; }
+    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); }
 
-    .pill {
-      flex-shrink: 0; scroll-snap-align: start; padding: 10px 18px; background: #fff;
-      border: 1.5px solid var(--border-soft); border-radius: 999px; font-size: 12px;
-      font-weight: 600; color: var(--text-gray); white-space: nowrap; cursor: pointer;
-    }
-    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2); }
-
-    .nav-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
-      background: var(--blue-main); color: white; border-radius: 50%; border: none;
-      z-index: 10; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; opacity: 0; transition: opacity 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .pill-container-relative:hover .nav-arrow { opacity: 1; }
-    .nav-arrow.left { left: -10px; }
-    .nav-arrow.right { right: -10px; }
-
+    /* PHARMACY CARD */
     .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+    
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
-    
+    .status-closed { background: #fee2e2; color: #991b1b; }
+    .status-guardia { background: #fef3c7; color: #92400e; }
+
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
-    
-    .btn-ph { 
-      flex: 1; padding: 12px 0; border-radius: 14px; font-size: 11px; font-weight: 800; 
-      text-decoration: none; text-transform: uppercase; display: flex; align-items: center;
-      justify-content: center; gap: 6px; 
-    }
+    .btn-ph { flex: 1; padding: 12px 0; border-radius: 14px; font-size: 11px; font-weight: 800; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; }
     .btn-map { background: var(--blue-main); color: #fff; }
     .btn-detail { background: #f1f5f9; color: var(--text-dark); }
 
-    .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
-    }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    /* BOTTOM BAR */
+    .bottom-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000; }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
     .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
     .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
 
-    /* --- NUEVOS ESTILOS DE ESTADO --- */
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .error-btn {
-      background: var(--blue-main); color: white; padding: 10px 20px; border-radius: 12px;
-      font-size: 13px; font-weight: 700; border: none; cursor: pointer; margin-top: 10px;
-    }
   </style>
 </head>
 <body>
@@ -169,25 +103,20 @@
         <input type="text" class="search-input" id="mainSearch" placeholder="Nombre o dirección...">
         
         <div class="pill-container-relative">
-          <div id="fadeLeft" class="fade-edge fade-left"></div>
-          <div id="fadeRight" class="fade-edge fade-right"></div>
-          <button class="nav-arrow left" onclick="scrollPills(-120)"><i class="ph-bold ph-caret-left"></i></button>
           <div class="pill-scroll-container" id="pillScroll">
             <div class="pill-wrapper">
-              <div class="pill active">Cerca de mí</div>
-              <div class="pill">Abiertas ahora</div>
-              <div class="pill">PAMI</div>
-              <div class="pill">IOMA</div>
+              <div class="pill active" data-filter="all">Todas</div>
+              <div class="pill" data-filter="open">Abiertas ahora</div>
+              <div class="pill" data-filter="guardia">Guardia 24hs</div>
             </div>
           </div>
-          <button class="nav-arrow right" onclick="scrollPills(120)"><i class="ph-bold ph-caret-right"></i></button>
         </div>
       </div>
 
       <div class="card">
         <span class="section-label">Resultados</span>
         <div id="resultsList">
-          <div class="loading-state" style="text-align: center; padding: 20px;">
+           <div style="text-align: center; padding: 20px;">
             <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 10px;">Buscando farmacias reales...</p>
             <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
           </div>
@@ -198,132 +127,116 @@
     <nav class="bottom-bar">
       <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
       <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <div class="center-question-btn">?</div>
       <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 
   <script>
-    const scrollContainer = document.getElementById('pillScroll');
-    const fadeLeft = document.getElementById('fadeLeft');
-    const fadeRight = document.getElementById('fadeRight');
     const resultsList = document.getElementById('resultsList');
-    
-    let retryCount = 0;
-    const MAX_RETRIES = 2;
+    let allPharmacies = [];
+    let userCoords = null;
+    let currentFilter = 'all';
 
-    function updateFades() {
-      const scrollLeft = scrollContainer.scrollLeft;
-      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-      fadeLeft.style.opacity = scrollLeft > 5 ? "1" : "0";
-      fadeRight.style.opacity = scrollLeft < maxScroll - 5 ? "1" : "0";
-    }
-
-    scrollContainer.addEventListener('scroll', updateFades);
-    window.addEventListener('resize', updateFades);
-    function scrollPills(amount) { scrollContainer.scrollBy({ left: amount, behavior: 'smooth' }); }
-
-    // --- LÓGICA DE GEOLOCALIZACIÓN RESILIENTE ---
+    // --- 1. GEOLOCALIZACIÓN ---
     function initSearch() {
       if (navigator.geolocation) {
-        const geoOptions = {
-          enableHighAccuracy: true,
-          timeout: 10000, 
-          maximumAge: 0
-        };
-        navigator.geolocation.getCurrentPosition(onSuccess, onError, geoOptions);
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, { enableHighAccuracy: true, timeout: 10000 });
       } else {
-        showErrorMessage("Tu navegador no soporta geolocalización.");
+        showErrorMessage("Navegador no compatible.");
       }
     }
 
     async function onSuccess(pos) {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
+      userCoords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
       
       try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lon}`);
         const data = await res.json();
-        const city = data.address.city || data.address.town || data.address.suburb || data.address.village || "Cerca tuyo";
+        const city = data.address.city || data.address.town || data.address.suburb || "General Rodríguez";
         document.getElementById("loc-ciudad").innerText = city + ", " + (data.address.state || "Argentina");
-      } catch(e) { console.error("Error ciudad", e); }
+      } catch(e) {}
 
-      fetchRealPharmacies(lat, lon);
+      fetchPharmacies();
     }
 
-    function onError(error) {
-      if ((error.code === 3 || error.code === 1) && retryCount < MAX_RETRIES) {
-        retryCount++;
-        setTimeout(initSearch, 1500);
-      } else {
-        showErrorMessage("No pudimos obtener tu ubicación exacta. Asegúrate de permitir los permisos.");
-      }
+    function onError() { 
+        showErrorMessage("Permiso de ubicación denegado."); 
+        // Reintento automático breve para Franco
+        setTimeout(initSearch, 2000);
     }
 
-    function showErrorMessage(msg) {
-      resultsList.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-          <p style="font-size: 13px; color: var(--text-gray);">${msg}</p>
-          <button class="error-btn" onclick="retryManual()">REINTENTAR AHORA</button>
-        </div>
-      `;
-    }
-
-    function retryManual() {
-      retryCount = 0;
-      resultsList.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-          <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 10px;">Reintentando...</p>
-          <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-        </div>`;
-      initSearch();
-    }
-
-    // --- BÚSQUEDA REAL (OVERPASS API) ---
-    async function fetchRealPharmacies(lat, lon) {
-      const query = `[out:json];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
+    // --- 2. FETCH DATA ---
+    async function fetchPharmacies() {
+      const query = `[out:json];node(around:5000,${userCoords.lat},${userCoords.lon})["amenity"="pharmacy"];out;`;
       const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
       try {
         const response = await fetch(url);
         const data = await response.json();
-        renderPharmacies(data.elements, lat, lon);
+        allPharmacies = data.elements;
+        renderFiltered();
       } catch (error) {
-        showErrorMessage("Error al conectar con la red federal de farmacias.");
+        showErrorMessage("Error de conexión con la red de farmacias.");
       }
     }
 
-    function renderPharmacies(pharmacies, userLat, userLon) {
-      if (!pharmacies || pharmacies.length === 0) {
-        resultsList.innerHTML = `<p style="text-align:center; padding:20px; font-size:13px; color:var(--text-gray);">No encontramos farmacias en 5km a la redonda.</p>`;
+    // --- 3. LÓGICA DE FILTRADO Y HORARIOS ---
+    function checkStatus(openingHours) {
+      if (!openingHours) return { label: "Disponible", class: "status-open", isOpen: true, is24hs: false };
+      
+      const hours = openingHours.toLowerCase();
+      if (hours.includes("24/7") || hours.includes("00:00-24:00")) {
+        return { label: "Guardia 24hs", class: "status-guardia", isOpen: true, is24hs: true };
+      }
+
+      // Lógica simplificada de "Abierto ahora" (puedes expandirla)
+      const now = new Date();
+      const hour = now.getHours();
+      // Asumimos horario comercial estándar si existe la etiqueta pero no es 24/7
+      const isOpenNow = (hour >= 8 && hour < 21); 
+
+      if (isOpenNow) {
+        return { label: "Abierto ahora", class: "status-open", isOpen: true, is24hs: false };
+      } else {
+        return { label: "Cerrado", class: "status-closed", isOpen: false, is24hs: false };
+      }
+    }
+
+    function renderFiltered() {
+      resultsList.innerHTML = "";
+      
+      let filtered = allPharmacies.map(ph => {
+        const status = checkStatus(ph.tags.opening_hours);
+        return { ...ph, status, dist: getDist(userCoords.lat, userCoords.lon, ph.lat, ph.lon) };
+      }).sort((a,b) => a.dist - b.dist);
+
+      if (currentFilter === 'open') {
+        filtered = filtered.filter(f => f.status.isOpen);
+      } else if (currentFilter === 'guardia') {
+        filtered = filtered.filter(f => f.status.is24hs);
+      }
+
+      if (filtered.length === 0) {
+        resultsList.innerHTML = `<p style="text-align:center; padding:20px; font-size:13px; color:var(--text-gray);">No hay farmacias que coincidan con el filtro.</p>`;
         return;
       }
 
-      resultsList.innerHTML = "";
-      
-      const sorted = pharmacies.map(ph => ({
-        ...ph,
-        distanceVal: getDistanceNum(userLat, userLon, ph.lat, ph.lon)
-      })).sort((a, b) => a.distanceVal - b.distanceVal);
-
-      sorted.forEach(ph => {
+      filtered.forEach(ph => {
         const name = ph.tags.name || "Farmacia Social";
-        const address = ph.tags["addr:street"] ? `${ph.tags["addr:street"]} ${ph.tags["addr:housenumber"] || ""}` : "Ver ubicación en mapa";
-        const distStr = ph.distanceVal > 1 ? `${ph.distanceVal.toFixed(1)}km` : `${(ph.distanceVal * 1000).toFixed(0)}m`;
+        const distStr = ph.dist > 1 ? `${ph.dist.toFixed(1)}km` : `${(ph.dist * 1000).toFixed(0)}m`;
         
         const card = document.createElement('article');
         card.className = "pharmacy-card";
         card.innerHTML = `
           <div class="flex justify-between items-start mb-2">
             <h3 class="ph-name">${name}</h3>
-            <span class="status-badge status-open">Disponible</span>
+            <span class="status-badge ${ph.status.class}">${ph.status.label}</span>
           </div>
-          <p class="text-[13px] text-gray-500 mb-4">${address} · ${distStr}</p>
+          <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Dirección en mapa'} · ${distStr}</p>
           <div class="ph-actions">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
-              <i class="ph ph-navigation-arrow"></i>LLEGAR
-            </a>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">LLEGAR</a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         `;
@@ -331,7 +244,8 @@
       });
     }
 
-    function getDistanceNum(lat1, lon1, lat2, lon2) {
+    // --- UTILIDADES ---
+    function getDist(lat1, lon1, lat2, lon2) {
       const R = 6371;
       const dLat = (lat2-lat1) * Math.PI/180;
       const dLon = (lon2-lon1) * Math.PI/180;
@@ -339,18 +253,21 @@
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
-    window.onload = () => {
-      updateFades();
-      initSearch();
-    };
+    function showErrorMessage(msg) {
+      resultsList.innerHTML = `<div style="text-align:center; padding:20px;"><p style="font-size:13px; color:var(--text-gray);">${msg}</p><button onclick="initSearch()" style="margin-top:10px; background:var(--blue-main); color:white; border:none; padding:8px 15px; border-radius:10px;">Reintentar</button></div>`;
+    }
 
+    // Manejo de PILLS
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
-        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        currentFilter = pill.dataset.filter;
+        renderFiltered();
       });
     });
+
+    window.onload = initSearch;
   </script>
 </body>
 </html>

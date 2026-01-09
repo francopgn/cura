@@ -16,25 +16,20 @@
       --main-bg: #f0f4f8; 
       --blue-header: #005fa3; 
       --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
       --text-dark: #0d2b52;
       --text-gray: #64748b;
       --card-white: #ffffff;
       --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --red-status: #ef4444;
     }
 
+    /* Estabilidad de pantalla */
     html { overflow-y: scroll; scrollbar-width: none; }
     ::-webkit-scrollbar { display: none; }
 
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-
-    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; }
-
+    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; font-family: 'Inter', sans-serif; }
     .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    /* --- HEADER --- */
+    /* --- HEADER SIMÉTRICO --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px); margin: 20px auto 10px; height: 60px;
@@ -47,50 +42,40 @@
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
-    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
-    .tabs { display: flex; background: #e2e8f0; padding: 4px; border-radius: 16px; margin-bottom: 20px; }
-    .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 12px; color: var(--text-gray); transition: all 0.2s; }
-    .tab.active { background: #fff; color: var(--blue-header); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .section-label { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
-    .hint { font-size: 13px; color: var(--text-gray); margin-bottom: 16px; line-height: 1.4; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .chip { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 10px; background: #e2e8f0; color: #475569; }
-    .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
-    .chip-red { background: #fee2e2; color: #991b1b; }
+    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .btn-privacidad { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid #e3f0ff; background: #f0f7ff; color: var(--blue-header); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
 
-    .btn-privacidad { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--blue-soft); background: #f0f7ff; color: var(--blue-header); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 20px; }
-    .btn-primary { width: 100%; padding: 16px; border-radius: 20px; border: none; background: linear-gradient(135deg, var(--blue-main), #005fa3); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2); }
-
-    .timeline { padding-left: 10px; border-left: 2px solid #e2e8f0; margin-left: 10px; }
-    .timeline-item { position: relative; padding-bottom: 20px; padding-left: 20px; }
-    .timeline-item::before { content: ''; position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid var(--blue-main); }
-    .timeline-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
-    .timeline-sub { font-size: 12px; color: var(--text-gray); margin-bottom: 4px; }
-    .timeline-text { font-size: 13px; color: var(--text-dark); line-height: 1.4; }
-
-    .view-panel { display: none; }
-    .view-panel.active { display: block; }
-
-    /* --- MODAL REFORZADO --- */
+    /* --- MODAL PREMIUM DINÁMICO --- */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(8px);
-      display: none; justify-content: center; align-items: flex-end; padding: 20px; z-index: 2000;
+      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+      transition: all 0.3s;
     }
     .modal {
-      background: #fff; width: 100%; max-width: 380px; border-radius: 32px;
-      padding: 24px; box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
-      position: relative; margin-bottom: 40px; /* Separación del fondo */
+      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      position: relative; display: flex; flex-direction: column;
     }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 14px; }
-    .modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); }
     
-    .help-content { font-size: 14px; color: var(--text-gray); line-height: 1.6; }
-    .help-item { margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
-    .help-icon { color: var(--blue-main); font-size: 20px; margin-top: 2px; }
+    /* Cabecera del modal: Título y X */
+    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
+    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; font-size: 18px; }
 
-    /* --- NAV --- */
+    /* Cuerpo del modal */
+    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 25px; }
+    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
+    .help-icon { color: var(--blue-main); font-size: 22px; }
+
+    /* Pie del modal: Botón Volver abajo a la izquierda */
+    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; pt: 15px; margin-top: 5px; padding-top: 15px;}
+    .modal-back-btn { 
+      background: none; border: none; color: var(--blue-main); 
+      font-weight: 700; display: flex; align-items: center; 
+      gap: 6px; cursor: pointer; font-size: 15px; padding: 5px 0;
+    }
+
+    /* --- NAV INFERIOR --- */
     .bottom-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000; }
     .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
     .nav-icon-btn.active { color: var(--blue-main); }
@@ -108,41 +93,21 @@
     </header>
 
     <main class="main-content">
-      <div class="tabs">
-        <div class="tab active" data-view="resumen">Resumen</div>
-        <div class="tab" data-view="cronologia">Cronología</div>
-        <div class="tab" data-view="documentos">Documentos</div>
-        <div class="tab" data-view="accesos">Accesos</div>
-      </div>
-
       <div class="card">
-        <section id="view-resumen" class="view-panel active">
-          <h2 class="section-label">Información esencial</h2>
-          <p class="hint">Datos críticos para atención inmediata según Ley C.U.R.A.</p>
-          <div class="chip-row">
-            <span class="chip chip-blue">Grupo: 0+</span>
-            <span class="chip chip-red">Alergia: Penicilina</span>
-          </div>
-          <button class="btn-privacidad" onclick="abrirModalPrivacidad()">
-            <i class="ph ph-lock-key"></i> Configurar privacidad 🔒
-          </button>
-          <h2 class="section-label">Últimos eventos</h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-title">12/04/2025 · Consulta</div>
-              <div class="timeline-sub">Hospital General · Dr. González</div>
-              <div class="timeline-text">Dolor torácico inespecífico.</div>
-            </div>
-          </div>
-          <button class="btn-primary" onclick="location.href='historia-clinica-completa.html'">Ver Historia Completa</button>
-       </section>
-       </div>
+        <h2 class="text-lg font-bold text-slate-800 mb-2">Resumen</h2>
+        <p class="text-sm text-slate-500 mb-4">Información clínica esencial.</p>
+        <button class="btn-privacidad" onclick="abrirModalPrivacidad()">
+          <i class="ph ph-lock-key"></i> Configurar privacidad
+        </button>
+      </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
       <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      
       <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
+      
       <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
@@ -150,29 +115,24 @@
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-caret-left"></i> Volver</button>
+      <div class="modal-top">
         <h3 id="modal-title" class="modal-title">Título</h3>
-        <button class="modal-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="help-content">
+
+      <div id="modal-body" class="modal-body">
         </div>
+
+      <div class="modal-footer">
+        <button class="modal-back-btn" onclick="cerrarModal()">
+          <i class="ph ph-arrow-left"></i> Volver
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
-    // Lógica de Tabs
-    const tabs = document.querySelectorAll(".tab");
-    tabs.forEach(tab => {
-      tab.addEventListener("click", () => {
-        tabs.forEach(t => t.classList.remove("active"));
-        document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
-        tab.classList.add("active");
-        document.getElementById("view-" + tab.dataset.view).classList.add("active");
-      });
-    });
-
-    // FUNCIONES DEL MODAL
+    // FUNCIÓN: AYUDA (Contextual para esta pantalla)
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
       const title = document.getElementById('modal-title');
@@ -181,21 +141,22 @@
       title.innerText = "Ayuda: Historia de Salud";
       body.innerHTML = `
         <div class="help-item">
-          <i class="ph ph-info help-icon"></i>
-          <p><strong>Resumen:</strong> Muestra tus alergias y datos críticos que un médico vería en una emergencia.</p>
-        </div>
-        <div class="help-item">
-          <i class="ph ph-clock help-icon"></i>
-          <p><strong>Cronología:</strong> Tu historial completo de visitas y estudios en orden de fecha.</p>
+          <i class="ph ph-file-text help-icon"></i>
+          <p>Aquí puedes ver tu historial médico unificado de todos los hospitales del país.</p>
         </div>
         <div class="help-item">
           <i class="ph ph-lock help-icon"></i>
-          <p><strong>Privacidad:</strong> Aquí controlas qué datos sensibles pueden ver otros profesionales.</p>
+          <p><strong>Privacidad:</strong> Tú decides qué datos son visibles para los médicos.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-shield-check help-icon"></i>
+          <p>Tus datos están protegidos y cada acceso queda registrado para tu seguridad.</p>
         </div>
       `;
       modal.style.display = "flex";
     }
 
+    // FUNCIÓN: PRIVACIDAD
     function abrirModalPrivacidad() {
       const modal = document.getElementById('modal-container');
       const title = document.getElementById('modal-title');
@@ -204,14 +165,14 @@
       title.innerText = "Privacidad Ley C.U.R.A.";
       body.innerHTML = `
         <div class="flex justify-between items-center mb-4">
-          <span class="text-sm font-semibold">Ocultar Salud Mental</span>
+          <span class="text-sm font-semibold">Salud Mental</span>
           <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
         </div>
         <div class="flex justify-between items-center mb-4">
-          <span class="text-sm font-semibold">Ocultar VIH / Sensibles</span>
+          <span class="text-sm font-semibold">Datos Sensibles / VIH</span>
           <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
         </div>
-        <button class="btn-primary w-full mt-4" onclick="cerrarModal()">Guardar Configuración</button>
+        <p class="text-xs text-slate-400 mt-4 italic">Al activar estos filtros, los profesionales solo podrán ver estos datos en caso de emergencia extrema (Art. 28).</p>
       `;
       modal.style.display = "flex";
     }

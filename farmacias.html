@@ -25,28 +25,10 @@
       --green-status: #16a34a;
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
 
-    body {
-      background-color: var(--main-bg);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 414px;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 120px; 
-    }
+    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
     /* --- HEADER (BALANCEO SIMÉTRICO) --- */
     .header-bar {
@@ -64,171 +46,66 @@
     }
 
     .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 22px;
-      border: none;
-      cursor: pointer;
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer;
     }
-
-    .header-title {
-      color: #ffffff;
-      font-size: 18px;
-      font-weight: 700;
-    }
-
+    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
     .header-spacer { width: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; }
-
-    .card {
-      background: var(--card-white);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
-    }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 800;
-      color: var(--blue-header);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 16px;
-      display: block;
-    }
+    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
+    .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
 
     .search-input {
-      width: 100%;
-      padding: 14px 18px;
-      border-radius: 16px;
-      border: 1px solid var(--border-soft);
-      background: #f8fafc;
-      font-size: 14px;
-      margin-bottom: 15px;
-      outline: none;
+      width: 100%; padding: 14px 18px; border-radius: 16px; border: 1px solid var(--border-soft);
+      background: #f8fafc; font-size: 14px; margin-bottom: 15px; outline: none;
     }
 
-    /* --- SOLUCIÓN DE SCROLL (OPCIONES 2, 3 y 4) --- */
-    
-    .pill-container-relative {
-      position: relative; /* Para posicionar flechas y degradados */
-      width: 100%;
-    }
+    /* --- SOLUCIÓN DE SCROLL DINÁMICO --- */
+    .pill-container-relative { position: relative; width: 100%; }
 
-    /* OPCIÓN 2: Degradados en los bordes */
-    .pill-container-relative::before,
-    .pill-container-relative::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 30px;
-      z-index: 2;
-      pointer-events: none; /* No bloquea el click */
+    /* Degradados como elementos independientes para controlar su visibilidad */
+    .fade-edge {
+      position: absolute; top: 0; bottom: 0; width: 40px; z-index: 2;
+      pointer-events: none; transition: opacity 0.3s ease; opacity: 0;
     }
-    .pill-container-relative::before {
-      left: 0;
-      background: linear-gradient(to right, white, transparent);
-    }
-    .pill-container-relative::after {
-      right: 0;
-      background: linear-gradient(to left, white, transparent);
-    }
+    .fade-left { left: 0; background: linear-gradient(to right, white, transparent); }
+    .fade-right { right: 0; background: linear-gradient(to left, white, transparent); opacity: 1; } /* El derecho inicia visible */
 
     .pill-scroll-container {
-      width: 100%;
-      overflow-x: auto;
-      display: flex;
-      padding-bottom: 10px;
-      -webkit-overflow-scrolling: touch;
-      /* OPCIÓN 3: Scroll Snapping (Imanes) */
-      scroll-snap-type: x mandatory; 
-      scroll-behavior: smooth;
+      width: 100%; overflow-x: auto; display: flex; padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; scroll-behavior: smooth;
     }
-
     .pill-scroll-container::-webkit-scrollbar { display: none; }
 
-    .pill-wrapper {
-      display: flex;
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
+    .pill-wrapper { display: flex; gap: 10px; flex-wrap: nowrap; }
 
     .pill {
-      flex-shrink: 0;
-      scroll-snap-align: start; /* El imán se alinea al inicio de cada botón */
-      padding: 10px 18px;
-      background: #fff;
-      border: 1.5px solid var(--border-soft);
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-gray);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      flex-shrink: 0; scroll-snap-align: start; padding: 10px 18px; background: #fff;
+      border: 1.5px solid var(--border-soft); border-radius: 999px; font-size: 12px;
+      font-weight: 600; color: var(--text-gray); white-space: nowrap; cursor: pointer;
     }
+    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2); }
 
-    .pill.active {
-      background: var(--blue-main);
-      color: #fff;
-      border-color: var(--blue-main);
-      box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2);
-    }
-
-    /* OPCIÓN 4: Flechas para PC */
+    /* Flechas PC */
     .nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 28px;
-      height: 28px;
-      background: var(--blue-main);
-      color: white;
-      border-radius: 50%;
-      border: none;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0; /* Ocultas por defecto */
-      transition: opacity 0.3s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
+      background: var(--blue-main); color: white; border-radius: 50%; border: none;
+      z-index: 10; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; opacity: 0; transition: opacity 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-
-    .pill-container-relative:hover .nav-arrow {
-      opacity: 1; /* Aparecen al pasar el mouse (PC) */
-    }
-
+    .pill-container-relative:hover .nav-arrow { opacity: 1; }
     .nav-arrow.left { left: -10px; }
     .nav-arrow.right { right: -10px; }
 
-    /* Ocultar flechas en dispositivos táctiles (Celular) */
-    @media (pointer: coarse) {
-      .nav-arrow { display: none !important; }
-    }
+    @media (pointer: coarse) { .nav-arrow { display: none !important; } }
 
     /* --- FARMACIAS --- */
-    .pharmacy-card {
-      border: 1px solid var(--border-soft);
-      border-radius: 22px;
-      padding: 18px;
-      margin-bottom: 12px;
-    }
+    .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
-    
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
     .btn-ph { flex: 1; padding: 12px; border-radius: 14px; font-size: 11px; font-weight: 800; text-align: center; text-decoration: none; text-transform: uppercase; }
     .btn-map { background: var(--blue-main); color: #fff; }
@@ -236,21 +113,10 @@
 
     /* --- BOTTOM BAR --- */
     .bottom-bar {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 360px;
-      background: #ffffff;
-      border-radius: 35px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
     .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
     .nav-icon-btn.active { color: var(--blue-main); }
@@ -284,6 +150,9 @@
         <input type="text" class="search-input" placeholder="Nombre o dirección...">
         
         <div class="pill-container-relative">
+          <div id="fadeLeft" class="fade-edge fade-left"></div>
+          <div id="fadeRight" class="fade-edge fade-right"></div>
+
           <button class="nav-arrow left" onclick="scrollPills(-120)">
             <i class="ph-bold ph-caret-left"></i>
           </button>
@@ -333,25 +202,41 @@
   </div>
 
   <script>
-    // LÓGICA DE LAS FLECHAS (OPCIÓN 4)
+    const scrollContainer = document.getElementById('pillScroll');
+    const fadeLeft = document.getElementById('fadeLeft');
+    const fadeRight = document.getElementById('fadeRight');
+
+    // Función para manejar la visibilidad de los degradados
+    function updateFades() {
+      const scrollLeft = scrollContainer.scrollLeft;
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+
+      // Si se movió más de 5px a la derecha, mostrar sombra izquierda
+      fadeLeft.style.opacity = scrollLeft > 5 ? "1" : "0";
+      
+      // Si falta más de 5px para llegar al final, mostrar sombra derecha
+      fadeRight.style.opacity = scrollLeft < maxScroll - 5 ? "1" : "0";
+    }
+
+    scrollContainer.addEventListener('scroll', updateFades);
+    window.addEventListener('resize', updateFades);
+
     function scrollPills(amount) {
-      const container = document.getElementById('pillScroll');
-      container.scrollBy({
-        left: amount,
-        behavior: 'smooth'
-      });
+      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
     }
 
     // UBICACIÓN REAL
     window.onload = () => {
+      updateFades(); // Inicializar sombras
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (pos) => {
           try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
             const data = await res.json();
             document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
+            updateFades(); // Re-chequear sombras al cargar contenido
           } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
-        }, () => { document.getElementById("loc-ciudad").innerText = "Permiso de ubicación denegado"; });
+        });
       }
     };
 

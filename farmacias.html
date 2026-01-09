@@ -25,17 +25,37 @@
       --green-status: #16a34a;
     }
 
+    /* --- FIX 1: ESTABILIDAD DE PANTALLA --- */
+    html {
+      overflow-y: scroll; /* Reserva el espacio del scroll */
+      scrollbar-width: none; 
+    }
+    ::-webkit-scrollbar { display: none; } /* Oculta la barra visualmente */
+
     * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
+    
+    body { 
+      background-color: var(--main-bg); 
+      display: flex; 
+      justify-content: center; 
+      min-height: 100vh; 
+      overflow-x: hidden; 
+    }
 
-    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
+    .app-shell { 
+      width: 100%; 
+      max-width: 414px; 
+      display: flex; 
+      flex-direction: column; 
+      padding-bottom: 120px; 
+    }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER SIMÉTRICO (IGUAL A MENU.HTML) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
       margin: 20px auto 10px; 
-      height: 60px;
+      height: 60px; /* Altura fija idéntica */
       border-radius: 999px;
       display: flex;
       align-items: center;
@@ -44,12 +64,14 @@
       justify-content: space-between;
       z-index: 100;
     }
+
+    /* Botón y espaciador de 36px para centrar el título perfectamente */
     .back-btn {
       width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
       display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer;
     }
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; }
+    .header-spacer { width: 36px; height: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; }
@@ -96,17 +118,18 @@
 
     @media (pointer: coarse) { .nav-arrow { display: none !important; } }
 
-    /* --- FARMACIAS (SOLUCIÓN DE CENTRADO) --- */
+    /* --- RESULTADOS --- */
     .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
+    .status-guardia { background: #fee2e2; color: #991b1b; }
     
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
     
     .btn-ph { 
       flex: 1; 
-      padding: 12px 0; /* Padding lateral 0 para que no empuje el contenido */
+      padding: 12px 0; 
       border-radius: 14px; 
       font-size: 11px; 
       font-weight: 800; 
@@ -114,24 +137,24 @@
       text-transform: uppercase;
       display: flex;
       align-items: center;
-      justify-content: center; /* Centrado perfecto */
+      justify-content: center; 
       gap: 6px; 
     }
-    
     .btn-map { background: var(--blue-main); color: #fff; }
     .btn-detail { background: #f1f5f9; color: var(--text-dark); }
 
-    /* --- BOTTOM BAR --- */
+    /* --- BOTTOM BAR (COPIA EXACTA DE MENU.HTML) --- */
     .bottom-bar {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
       max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
       display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
     .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
     .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); }
+    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
@@ -162,7 +185,6 @@
         <div class="pill-container-relative">
           <div id="fadeLeft" class="fade-edge fade-left"></div>
           <div id="fadeRight" class="fade-edge fade-right"></div>
-
           <button class="nav-arrow left" onclick="scrollPills(-120)"><i class="ph-bold ph-caret-left"></i></button>
 
           <div class="pill-scroll-container" id="pillScroll">
@@ -176,7 +198,6 @@
               <div class="pill">OMINT</div>
             </div>
           </div>
-
           <button class="nav-arrow right" onclick="scrollPills(120)"><i class="ph-bold ph-caret-right"></i></button>
         </div>
       </div>
@@ -213,7 +234,7 @@
     <nav class="bottom-bar">
       <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
       <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn">?</div>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
       <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>

@@ -87,6 +87,20 @@
     .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); }
 
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Estilos de flechas del archivo (7) */
+    .nav-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 28px;
+      background: var(--blue-main); color: white; border-radius: 50%; border: none;
+      z-index: 10; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; opacity: 0; transition: opacity 0.3s; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .pill-container-relative:hover .nav-arrow { opacity: 1; }
+    .nav-arrow.left { left: -10px; }
+    .nav-arrow.right { right: -10px; }
+
+    /* Ocultar en dispositivos táctiles (celulares) */
+    @media (pointer: coarse) { .nav-arrow { display: none !important; } }
   </style>
 </head>
 <body>
@@ -111,9 +125,12 @@
 
         <input type="text" class="search-input" id="mainSearch" placeholder="Nombre o dirección...">
         
-        <div class="pill-container-relative">
+       <div class="pill-container-relative">
           <div id="fadeLeft" class="fade-edge fade-left"></div>
           <div id="fadeRight" class="fade-edge fade-right"></div>
+          
+          <button class="nav-arrow left" onclick="scrollPills(-120)"><i class="ph-bold ph-caret-left"></i></button>
+          
           <div class="pill-scroll-container" id="pillScroll">
             <div class="pill-wrapper">
               <div class="pill active" onclick="setFilter('all')">Cerca de mí</div>
@@ -121,8 +138,9 @@
               <div class="pill" onclick="setFilter('guardia')">Guardia 24hs</div>
             </div>
           </div>
+
+          <button class="nav-arrow right" onclick="scrollPills(120)"><i class="ph-bold ph-caret-right"></i></button>
         </div>
-      </div>
 
       <div class="card">
         <span class="section-label">Resultados</span>
@@ -245,6 +263,10 @@
     }
 
     window.onload = init;
-  </script>
+ // Función de desplazamiento de flechas del archivo (7)
+    function scrollPills(amount) { 
+      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' }); 
+    }
+</script>
 </body>
 </html>

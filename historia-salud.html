@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <title>Historia de Salud - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     :root {
       --main-bg: #f0f4f8; 
@@ -15,11 +22,19 @@
       --card-white: #ffffff;
       --border-soft: #e5e7eb;
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --red-status: #ef4444;
     }
+
+    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
+    html {
+      overflow-y: scroll; /* Reserva espacio para el scroll */
+      scrollbar-width: none; 
+    }
+    ::-webkit-scrollbar { display: none; }
 
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -29,6 +44,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app-shell {
@@ -36,10 +52,10 @@
       max-width: 414px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 110px; 
+      padding-bottom: 120px; /* Unificado */
     }
 
-    /* --- HEADER PASTILLA --- */
+    /* --- HEADER SIMÉTRICO --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -48,28 +64,19 @@
       border-radius: 999px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      z-index: 100;
     }
 
     .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: bold;
-      border: none;
-      cursor: pointer;
-      margin-right: 12px;
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: #fff; 
+      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
     }
-
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
+    .header-spacer { width: 36px; height: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
@@ -125,7 +132,6 @@
 
     /* --- CHIPS --- */
     .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-
     .chip {
       font-size: 11px;
       font-weight: 700;
@@ -134,7 +140,6 @@
       background: #e2e8f0;
       color: #475569;
     }
-
     .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
     .chip-red { background: #fee2e2; color: #991b1b; }
 
@@ -172,9 +177,7 @@
 
     /* --- TIMELINE --- */
     .timeline { padding-left: 10px; border-left: 2px solid #e2e8f0; margin-left: 10px; }
-
     .timeline-item { position: relative; padding-bottom: 20px; padding-left: 20px; }
-
     .timeline-item::before {
       content: '';
       position: absolute;
@@ -186,7 +189,6 @@
       background: #fff;
       border: 3px solid var(--blue-main);
     }
-
     .timeline-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
     .timeline-sub { font-size: 12px; color: var(--text-gray); margin-bottom: 4px; }
     .timeline-text { font-size: 13px; color: var(--text-dark); line-height: 1.4; }
@@ -199,7 +201,6 @@
       border: 1px solid var(--border-soft);
       margin-bottom: 12px;
     }
-
     .doc-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
     .doc-meta { font-size: 12px; color: var(--text-gray); margin-bottom: 12px; }
     .doc-actions { display: flex; gap: 8px; }
@@ -217,7 +218,6 @@
       padding: 20px;
       z-index: 100;
     }
-
     .modal {
       background: #fff;
       width: 100%;
@@ -226,60 +226,40 @@
       padding: 24px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
-
     .modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 16px; }
-
     .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 14px; color: var(--text-dark); }
     
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
-    /* --- NAV INFERIOR --- */
+    /* --- BOTTOM BAR (COPIA EXACTA) --- */
     .bottom-bar {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 360px;
-      background: #ffffff;
-      border-radius: 35px;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-      z-index: 50;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; }
-    .nav-icon-btn svg { width: 26px; height: 26px; fill: var(--text-dark); }
-
-    .center-question-btn {
-      width: 64px;
-      height: 64px;
-      background: #0066cc;
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 600;
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
-      cursor: pointer;
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .nav-icon-btn.active { color: var(--blue-main); }
+    .nav-icon-btn i { font-size: 26px; }
+    
+    .center-question-btn { 
+      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
+      border: 5px solid var(--main-bg); display: flex; align-items: center; 
+      justify-content: center; color: white; font-size: 32px; 
+      font-weight: 600; 
+      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
     }
+    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()">‹</button>
+      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
       <div class="header-title">Historia de Salud</div>
+      <div class="header-spacer"></div>
     </header>
 
     <main class="main-content">
@@ -303,7 +283,7 @@
           </div>
 
           <button class="btn-privacidad" onclick="abrirModal()">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+            <i class="ph ph-lock-key"></i>
             Configurar privacidad 🔒
           </button>
 
@@ -319,8 +299,8 @@
               <div class="timeline-sub">Laboratorio Central · Perfil Lipídico</div>
             </div>
           </div>
-<button class="btn-primary" onclick="location.href='historia-clinica-completa.html'">Ver Historia Completa</button>
-     </section>
+          <button class="btn-primary" onclick="location.href='historia-clinica-completa.html'">Ver Historia Completa</button>
+       </section>
 
         <section id="view-cronologia" class="view-panel">
           <h2 class="section-label">Línea de tiempo federal</h2>
@@ -372,13 +352,11 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu (12).html'">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </button>
-      <div class="center-question-btn">?</div>
-      <button class="nav-icon-btn">
-        <svg viewBox="0 0 24 24"><path d="M12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-      </button>
+      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 

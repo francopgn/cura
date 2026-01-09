@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Farmacias Cercanas - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,7 +23,6 @@
       --border-soft: #e5e7eb;
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
       --green-status: #16a34a;
-      --red-status: #ef4444;
     }
 
     * {
@@ -47,7 +47,7 @@
       padding-bottom: 120px; 
     }
 
-    /* --- HEADER BAR (PASTILLA) --- */
+    /* --- HEADER BAR (SIMÉTRICO) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -58,6 +58,7 @@
       align-items: center;
       padding: 0 16px;
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
+      justify-content: space-between; /* Clave para el centrado */
       z-index: 100;
     }
 
@@ -70,25 +71,25 @@
       align-items: center;
       justify-content: center;
       color: #fff;
-      text-decoration: none;
-      font-size: 20px;
+      font-size: 22px;
       border: none;
       cursor: pointer;
+      transition: all 0.2s;
     }
+    .back-btn:active { transform: scale(0.9); }
 
     .header-title {
-      flex: 1;
-      text-align: center;
       color: #ffffff;
       font-size: 18px;
       font-weight: 700;
-      margin-right: 36px; /* Para centrar compensando el back-btn */
+    }
+
+    .header-spacer {
+      width: 36px; /* Balancea el back-btn para centrar el título */
     }
 
     /* --- CONTENIDO --- */
-    .main-content {
-      padding: 10px 20px;
-    }
+    .main-content { padding: 10px 20px; }
 
     .card {
       background: var(--card-white);
@@ -171,28 +172,15 @@
       border-color: var(--blue-main);
     }
 
-    /* --- LISTA FARMACIAS --- */
+    /* --- FARMACIAS --- */
     .pharmacy-card {
       border: 1px solid var(--border-soft);
       border-radius: 22px;
       padding: 16px;
       margin-bottom: 12px;
-      transition: transform 0.2s;
-    }
-    .pharmacy-card:active { transform: scale(0.98); }
-
-    .ph-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
     }
 
-    .ph-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
+    .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
 
     .status-badge {
       font-size: 10px;
@@ -204,44 +192,17 @@
     .status-open { background: #dcfce7; color: #166534; }
     .status-guardia { background: #fee2e2; color: #991b1b; }
 
-    .ph-address {
-      font-size: 13px;
-      color: var(--text-gray);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 10px;
-    }
-
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 15px;
-    }
-    .tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      background: #f1f5f9;
-      color: var(--text-dark);
-      border-radius: 8px;
-    }
-    .tag-cura { background: var(--blue-soft); color: var(--blue-header); }
-
-    .ph-actions {
-      display: flex;
-      gap: 10px;
-    }
+    .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
     .btn-ph {
       flex: 1;
       padding: 10px;
       border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       text-align: center;
       cursor: pointer;
       text-decoration: none;
+      text-transform: uppercase;
     }
     .btn-map { background: var(--blue-main); color: #fff; }
     .btn-detail { background: #f1f5f9; color: var(--text-dark); }
@@ -270,12 +231,12 @@
       border: none;
       padding: 10px;
       cursor: pointer;
-      color: var(--text-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      color: var(--text-gray); /* Inactivo por defecto */
+      transition: all 0.2s ease;
     }
+    .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
+    .nav-icon-btn:active { transform: scale(0.9); }
 
     .center-question-btn {
       width: 64px;
@@ -292,7 +253,9 @@
       margin-top: -35px; 
       box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3);
       cursor: pointer;
+      transition: all 0.2s;
     }
+    .center-question-btn:active { transform: scale(0.9) translateY(5px); }
   </style>
 </head>
 <body>
@@ -300,8 +263,11 @@
   <div class="app-shell">
     
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
+      <button class="back-btn" onclick="history.back()">
+        <i class="ph ph-caret-left"></i>
+      </button>
       <div class="header-title">Farmacias Cercanas</div>
+      <div class="header-spacer"></div>
     </header>
 
     <main class="main-content">
@@ -324,7 +290,6 @@
           <div class="pill">Guardia 24hs</div>
           <div class="pill">Cerca de mí</div>
           <div class="pill">Descuento PAMI</div>
-          <div class="pill">Swiss Medical</div>
         </div>
       </div>
 
@@ -332,18 +297,13 @@
         <span class="section-label">Farmacias Adheridas</span>
         
         <article class="pharmacy-card">
-          <div class="ph-header">
+          <div class="flex justify-between items-start mb-2">
             <h3 class="ph-name">Central C.U.R.A.</h3>
             <span class="status-badge status-open">Abierto</span>
           </div>
-          <div class="ph-address">
+          <p class="text-[13px] text-gray-500 flex items-center gap-1 mb-3">
             <i class="ph ph-map-pin"></i> Av. Mitre 1234 · 450m
-          </div>
-          <div class="tag-row">
-            <span class="tag tag-cura">Digital C.U.R.A.</span>
-            <span class="tag">OSDE</span>
-            <span class="tag">PAMI</span>
-          </div>
+          </p>
           <div class="ph-actions">
             <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
@@ -351,36 +311,13 @@
         </article>
 
         <article class="pharmacy-card" style="border-color: #fee2e2;">
-          <div class="ph-header">
+          <div class="flex justify-between items-start mb-2">
             <h3 class="ph-name">Guardia Rodríguez</h3>
             <span class="status-badge status-guardia">24 Horas</span>
           </div>
-          <div class="ph-address">
+          <p class="text-[13px] text-gray-500 flex items-center gap-1 mb-3">
             <i class="ph ph-map-pin"></i> Rivadavia 890 · 1.1km
-          </div>
-          <div class="tag-row">
-            <span class="tag tag-cura">Urgencias</span>
-            <span class="tag">Todas las OS</span>
-          </div>
-          <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
-            <a href="#" class="btn-ph btn-detail">DETALLES</a>
-          </div>
-        </article>
-
-        <article class="pharmacy-card">
-          <div class="ph-header">
-            <h3 class="ph-name">Farmacia Mitre y Ruta</h3>
-            <span class="status-badge status-open">Abierto</span>
-          </div>
-          <div class="ph-address">
-            <i class="ph ph-map-pin"></i> Colectora Oeste km 50 · 2.3km
-          </div>
-          <div class="tag-row">
-            <span class="tag tag-cura">Alto Costo</span>
-            <span class="tag">Galeno</span>
-            <span class="tag">S. Medical</span>
-          </div>
+          </p>
           <div class="ph-actions">
             <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
@@ -391,19 +328,21 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn">
+      <button class="nav-icon-btn" onclick="location.href='menu.html'">
         <i class="ph-bold ph-house"></i>
       </button>
-      <button class="nav-icon-btn">
+      
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'">
         <i class="ph-bold ph-calendar-blank"></i>
       </button>
       
-      <div class="center-question-btn">?</div>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
       
-      <button class="nav-icon-btn">
+      <button class="nav-icon-btn active" onclick="location.href='farmacias.html'">
         <i class="ph-bold ph-prescription"></i>
       </button>
-      <button class="nav-icon-btn">
+      
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'">
         <i class="ph-bold ph-user"></i>
       </button>
     </nav>
@@ -411,11 +350,10 @@
   </div>
 
   <script>
-    // Lógica simple para los filtros (efecto visual)
-    const pills = document.querySelectorAll('.pill');
-    pills.forEach(pill => {
+    // Cambio visual de pills
+    document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
-        pills.forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
       });
     });

@@ -32,7 +32,7 @@
 
     * {
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -84,7 +84,6 @@
         box-shadow: var(--shadow-soft);
         margin-bottom: 30px;
         position: relative;
-        transition: transform 0.1s ease-out;
     }
     .credencial-card-light:active { transform: scale(0.98); }
     .cred-title-light { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 20px; }
@@ -127,62 +126,24 @@
       align-items: center; justify-content: center;
     }
 
-    /* --- BARRA INFERIOR GLOBAL (COPIA EXACTA) --- */
+    /* --- BOTTOM BAR (COPIA EXACTA DE FARMACIAS CERCANAS) --- */
     .bottom-bar {
-      position: fixed; 
-      bottom: 24px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 90%;
-      max-width: 360px; 
-      background: #ffffff; 
-      border-radius: 35px; 
-      height: 70px;
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
-      z-index: 1000;
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
+      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-
-    .nav-icon-btn { 
-      background: none; 
-      border: none; 
-      padding: 10px; 
-      cursor: pointer; 
-      color: var(--text-gray);
-      transition: all 0.2s ease;
-    }
-
-    .nav-icon-btn.active { 
-      color: var(--blue-main);
-    }
-
-    .nav-icon-btn i { 
-      font-size: 26px; 
-    }
-
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
+    .nav-icon-btn.active { color: var(--blue-main); }
+    .nav-icon-btn i { font-size: 26px; }
+    
     .center-question-btn { 
-      width: 64px; 
-      height: 64px; 
-      background: var(--blue-main); 
-      border-radius: 50%; 
-      border: 5px solid var(--main-bg); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      color: white; 
-      font-size: 32px; 
-      /* PESO 800 PARA GROSOR MÁXIMO DEL "?" */
-      font-weight: 800; 
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
-      cursor: pointer;
-    }
-
-    .nav-icon-btn:active, .center-question-btn:active {
-      transform: scale(0.9);
+      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
+      border: 5px solid var(--main-bg); display: flex; align-items: center; 
+      justify-content: center; color: white; font-size: 32px; 
+      /* VALOR EXACTO DEL ORIGINAL: */
+      font-weight: 600; 
+      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
     }
   </style>
 </head>
@@ -248,23 +209,11 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn active" onclick="location.href='menu.html'">
-        <i class="ph-bold ph-house"></i>
-      </button>
-
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'">
-        <i class="ph-bold ph-calendar-blank"></i>
-      </button>
-
+      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
       <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
-
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'">
-        <i class="ph-bold ph-prescription"></i>
-      </button>
-
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'">
-        <i class="ph-bold ph-user"></i>
-      </button>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 

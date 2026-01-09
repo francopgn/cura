@@ -30,42 +30,49 @@
       --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+    /* --- FIX 1: EVITAR SALTOS DE PANTALLA --- */
+    html {
+      overflow-y: scroll; /* Reserva espacio para el scroll siempre */
+      scrollbar-width: none; /* Oculta en Firefox */
     }
+    /* Oculta scroll en Chrome/Safari para que parezca App */
+    ::-webkit-scrollbar { display: none; }
+
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
     body {
       background-color: var(--main-bg);
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
-      background-color: var(--main-bg);
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
+      padding-bottom: 120px; /* Unificado con Farmacias */
     }
 
-    /* --- HEADER PASTILLA --- */
+    /* --- HEADER (AJUSTADO PARA SIMETRÍA TOTAL) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
       margin: 20px auto 10px; 
-      height: 60px;
+      height: 60px; /* Altura fija */
       border-radius: 999px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
+      padding: 0 16px; /* Bajado de 24 a 16 para alinear con botones de otras páginas */
       box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
     }
+
+    /* Espaciador para que el título "Salud" esté en el mismo lugar que en las páginas con botón atrás */
+    .header-left-spacer { width: 36px; height: 36px; } 
+
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
 
     /* --- CONTENIDO --- */
@@ -73,7 +80,7 @@
     .greeting-text { font-size: 28px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
     .greeting-sub { font-size: 16px; color: var(--text-gray); margin-bottom: 24px; }
 
-    /* --- CREDENCIAL CELESTE --- */
+    /* --- CREDENCIAL --- */
     .credencial-card-light {
         display: block;
         text-decoration: none;
@@ -107,7 +114,7 @@
         padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; border: none;
     }
 
-    /* --- GRID MENÚ --- */
+    /* --- GRID --- */
     .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
     .menu-item {
       background: var(--card-white); border-radius: 24px; padding: 15px 5px;
@@ -126,14 +133,14 @@
       align-items: center; justify-content: center;
     }
 
-    /* --- BOTTOM BAR (COPIA EXACTA DE FARMACIAS CERCANAS) --- */
+    /* --- BOTTOM BAR --- */
     .bottom-bar {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
       max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
       display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
     .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
     
@@ -141,18 +148,19 @@
       width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
       border: 5px solid var(--main-bg); display: flex; align-items: center; 
       justify-content: center; color: white; font-size: 32px; 
-      /* VALOR EXACTO DEL ORIGINAL: */
-      font-weight: 600; 
+      font-weight: 600; /* Igual al de Farmacias */
       margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
     }
+    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
+      <div class="header-left-spacer"></div>
       <div class="header-title">Salud</div>
-      <div style="color:white; cursor:pointer">🔔</div>
+      <div style="color:white; cursor:pointer; width:36px; text-align:right;">🔔</div>
     </header>
 
     <main class="main-content">

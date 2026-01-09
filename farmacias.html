@@ -137,6 +137,13 @@
     .nav-icon-btn i { font-size: 26px; }
     .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); }
     .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+
+    /* --- NUEVOS ESTILOS DE ESTADO --- */
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .error-btn {
+      background: var(--blue-main); color: white; padding: 10px 20px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; border: none; cursor: pointer; margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -180,7 +187,10 @@
       <div class="card">
         <span class="section-label">Resultados</span>
         <div id="resultsList">
-          <p style="font-size: 13px; color: var(--text-gray); text-align: center; padding: 20px;">Buscando farmacias reales...</p>
+          <div class="loading-state" style="text-align: center; padding: 20px;">
+            <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 10px;">Buscando farmacias reales...</p>
+            <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+          </div>
         </div>
       </div>
     </main>
@@ -199,6 +209,9 @@
     const fadeLeft = document.getElementById('fadeLeft');
     const fadeRight = document.getElementById('fadeRight');
     const resultsList = document.getElementById('resultsList');
+    
+    let retryCount = 0;
+    const MAX_RETRIES = 2;
 
     function updateFades() {
       const scrollLeft = scrollContainer.scrollLeft;
@@ -211,9 +224,64 @@
     window.addEventListener('resize', updateFades);
     function scrollPills(amount) { scrollContainer.scrollBy({ left: amount, behavior: 'smooth' }); }
 
-    // --- LÓGICA DE FARMACIAS REALES (OVERPASS API) ---
+    // --- LÓGICA DE GEOLOCALIZACIÓN RESILIENTE ---
+    function initSearch() {
+      if (navigator.geolocation) {
+        const geoOptions = {
+          enableHighAccuracy: true,
+          timeout: 10000, 
+          maximumAge: 0
+        };
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, geoOptions);
+      } else {
+        showErrorMessage("Tu navegador no soporta geolocalización.");
+      }
+    }
+
+    async function onSuccess(pos) {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+        const data = await res.json();
+        const city = data.address.city || data.address.town || data.address.suburb || data.address.village || "Cerca tuyo";
+        document.getElementById("loc-ciudad").innerText = city + ", " + (data.address.state || "Argentina");
+      } catch(e) { console.error("Error ciudad", e); }
+
+      fetchRealPharmacies(lat, lon);
+    }
+
+    function onError(error) {
+      if ((error.code === 3 || error.code === 1) && retryCount < MAX_RETRIES) {
+        retryCount++;
+        setTimeout(initSearch, 1500);
+      } else {
+        showErrorMessage("No pudimos obtener tu ubicación exacta. Asegúrate de permitir los permisos.");
+      }
+    }
+
+    function showErrorMessage(msg) {
+      resultsList.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+          <p style="font-size: 13px; color: var(--text-gray);">${msg}</p>
+          <button class="error-btn" onclick="retryManual()">REINTENTAR AHORA</button>
+        </div>
+      `;
+    }
+
+    function retryManual() {
+      retryCount = 0;
+      resultsList.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+          <p style="font-size: 13px; color: var(--text-gray); margin-bottom: 10px;">Reintentando...</p>
+          <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+        </div>`;
+      initSearch();
+    }
+
+    // --- BÚSQUEDA REAL (OVERPASS API) ---
     async function fetchRealPharmacies(lat, lon) {
-      // Query de Overpass para buscar farmacias en 5000 metros a la redonda
       const query = `[out:json];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
       const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
@@ -222,34 +290,27 @@
         const data = await response.json();
         renderPharmacies(data.elements, lat, lon);
       } catch (error) {
-        resultsList.innerHTML = `<p style="color:red; font-size:12px; text-align:center;">Error al conectar con la red federal de farmacias.</p>`;
+        showErrorMessage("Error al conectar con la red federal de farmacias.");
       }
-    }
-
-    // Calcula distancia lineal simple para mostrar en metros/km
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-      const R = 6371; // Radio de la tierra en km
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      const d = R * c;
-      return d > 1 ? `${d.toFixed(1)}km` : `${(d * 1000).toFixed(0)}m`;
     }
 
     function renderPharmacies(pharmacies, userLat, userLon) {
-      if (pharmacies.length === 0) {
-        resultsList.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-gray);">No se encontraron farmacias cerca de tu posición.</p>`;
+      if (!pharmacies || pharmacies.length === 0) {
+        resultsList.innerHTML = `<p style="text-align:center; padding:20px; font-size:13px; color:var(--text-gray);">No encontramos farmacias en 5km a la redonda.</p>`;
         return;
       }
 
-      resultsList.innerHTML = ""; // Limpiar cargando
+      resultsList.innerHTML = "";
       
-      pharmacies.forEach(ph => {
-        const name = ph.tags.name || "Farmacia sin nombre";
-        const address = ph.tags["addr:street"] ? `${ph.tags["addr:street"]} ${ph.tags["addr:housenumber"] || ""}` : "Dirección no disponible";
-        const dist = calculateDistance(userLat, userLon, ph.lat, ph.lon);
+      const sorted = pharmacies.map(ph => ({
+        ...ph,
+        distanceVal: getDistanceNum(userLat, userLon, ph.lat, ph.lon)
+      })).sort((a, b) => a.distanceVal - b.distanceVal);
+
+      sorted.forEach(ph => {
+        const name = ph.tags.name || "Farmacia Social";
+        const address = ph.tags["addr:street"] ? `${ph.tags["addr:street"]} ${ph.tags["addr:housenumber"] || ""}` : "Ver ubicación en mapa";
+        const distStr = ph.distanceVal > 1 ? `${ph.distanceVal.toFixed(1)}km` : `${(ph.distanceVal * 1000).toFixed(0)}m`;
         
         const card = document.createElement('article');
         card.className = "pharmacy-card";
@@ -258,7 +319,7 @@
             <h3 class="ph-name">${name}</h3>
             <span class="status-badge status-open">Disponible</span>
           </div>
-          <p class="text-[13px] text-gray-500 mb-4">${address} · ${dist}</p>
+          <p class="text-[13px] text-gray-500 mb-4">${address} · ${distStr}</p>
           <div class="ph-actions">
             <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
               <i class="ph ph-navigation-arrow"></i>LLEGAR
@@ -270,27 +331,19 @@
       });
     }
 
+    function getDistanceNum(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2-lat1) * Math.PI/180;
+      const dLon = (lon2-lon1) * Math.PI/180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+    }
+
     window.onload = () => {
       updateFades();
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          
-          // 1. Obtener ciudad real (Nominatim)
-          try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-            const data = await res.json();
-            document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || data.address.suburb || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
-          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
-
-          // 2. Buscar farmacias reales
-          fetchRealPharmacies(lat, lon);
-        });
-      }
+      initSearch();
     };
 
-    // Estética de los filtros
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));

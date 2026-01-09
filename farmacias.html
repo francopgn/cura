@@ -145,25 +145,35 @@
       outline: none;
     }
 
-    .pill-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 5px;
-    }
-    .pill-scroll::-webkit-scrollbar { display: none; }
+  /* 1. El contenedor: ahora permite el desplazamiento real */
+.pill-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto; /* Permite scroll horizontal */
+  padding: 5px 0 15px 0; /* Un poco de aire abajo para que no se corte la sombra */
+  scroll-behavior: smooth; /* Desplazamiento suave */
+  -webkit-overflow-scrolling: touch; /* Suavidad extra en iPhone/iOS */
+  white-space: nowrap; /* Fuerza a que todo esté en una sola línea */
+}
 
-    .pill {
-      padding: 8px 16px;
-      background: #fff;
-      border: 1px solid var(--border-soft);
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-gray);
-      white-space: nowrap;
-      cursor: pointer;
-    }
+/* Opcional: Oculta la barra de scroll pero mantiene la funcionalidad */
+.pill-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 2. El botón: IMPORTANTE para que no se achiquen */
+.pill {
+  flex-shrink: 0; /* ESTO ES LA CLAVE: evita que los botones se aplasten */
+  padding: 8px 16px;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: all 0.2s;
+}
     .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); }
 
     /* --- FARMACIAS --- */

@@ -5,7 +5,11 @@
   <title>Salud - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
@@ -28,7 +32,7 @@
 
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -46,7 +50,7 @@
       background-color: var(--main-bg);
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; /* Ajustado para la nueva barra flotante */
+      padding-bottom: 120px; 
     }
 
     /* --- HEADER PASTILLA --- */
@@ -123,60 +127,59 @@
       align-items: center; justify-content: center;
     }
 
-    /* --- NUEVA NAV INFERIOR PREMIUM --- */
-/* --- BARRA INFERIOR GLOBAL --- */
-.bottom-bar {
-  position: fixed; 
-  bottom: 24px; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  width: 90%;
-  max-width: 360px; 
-  background: #ffffff; 
-  border-radius: 35px; 
-  height: 70px;
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between; 
-  padding: 0 25px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
-  z-index: 1000;
-}
+    /* --- BARRA INFERIOR GLOBAL (COPIA EXACTA) --- */
+    .bottom-bar {
+      position: fixed; 
+      bottom: 24px; 
+      left: 50%; 
+      transform: translateX(-50%); 
+      width: 90%;
+      max-width: 360px; 
+      background: #ffffff; 
+      border-radius: 35px; 
+      height: 70px;
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 0 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); 
+      z-index: 1000;
+    }
 
-.nav-icon-btn { 
-  background: none; 
-  border: none; 
-  padding: 10px; 
-  cursor: pointer; 
-  color: var(--text-gray); /* Inactivo: #64748b */
-  transition: all 0.2s ease;
-}
+    .nav-icon-btn { 
+      background: none; 
+      border: none; 
+      padding: 10px; 
+      cursor: pointer; 
+      color: var(--text-gray);
+      transition: all 0.2s ease;
+    }
 
-.nav-icon-btn.active { 
-  color: var(--blue-main); /* Activo: #1f6fe5 */
-}
+    .nav-icon-btn.active { 
+      color: var(--blue-main);
+    }
 
-.nav-icon-btn i { 
-  font-size: 26px; 
-}
+    .nav-icon-btn i { 
+      font-size: 26px; 
+    }
 
-.center-question-btn { 
-  width: 64px; 
-  height: 64px; 
-  background: var(--blue-main); 
-  border-radius: 50%; 
-  /* IMPORTANTE: El borde debe ser del mismo color que el fondo de la página */
-  border: 5px solid var(--main-bg); 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  color: white; 
-  font-size: 32px; 
-  font-weight: 700; /* Grosor robusto para el "?" */
-  margin-top: -35px; 
-  box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
-  cursor: pointer;
-}
+    .center-question-btn { 
+      width: 64px; 
+      height: 64px; 
+      background: var(--blue-main); 
+      border-radius: 50%; 
+      border: 5px solid var(--main-bg); 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      color: white; 
+      font-size: 32px; 
+      /* PESO 800 PARA GROSOR MÁXIMO DEL "?" */
+      font-weight: 800; 
+      margin-top: -35px; 
+      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
+      cursor: pointer;
+    }
 
     .nav-icon-btn:active, .center-question-btn:active {
       transform: scale(0.9);
@@ -243,25 +246,26 @@
         </a>
       </div>
     </main>
-<nav class="bottom-bar">
-  <button class="nav-icon-btn" onclick="location.href='menu.html'">
-    <i class="ph-bold ph-house"></i>
-  </button>
 
-  <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'">
-    <i class="ph-bold ph-calendar-blank"></i>
-  </button>
+    <nav class="bottom-bar">
+      <button class="nav-icon-btn active" onclick="location.href='menu.html'">
+        <i class="ph-bold ph-house"></i>
+      </button>
 
-  <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'">
+        <i class="ph-bold ph-calendar-blank"></i>
+      </button>
 
-  <button class="nav-icon-btn" onclick="location.href='farmacias.html'">
-    <i class="ph-bold ph-prescription"></i>
-  </button>
+      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
 
-  <button class="nav-icon-btn" onclick="location.href='perfil.html'">
-    <i class="ph-bold ph-user"></i>
-  </button>
-</nav>
+      <button class="nav-icon-btn" onclick="location.href='farmacias.html'">
+        <i class="ph-bold ph-prescription"></i>
+      </button>
+
+      <button class="nav-icon-btn" onclick="location.href='perfil.html'">
+        <i class="ph-bold ph-user"></i>
+      </button>
+    </nav>
   </div>
 
 </body>

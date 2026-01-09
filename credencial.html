@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
@@ -25,7 +26,7 @@
 
     /* --- FIX: ESTABILIDAD DE PANTALLA --- */
     html {
-      overflow-y: scroll; /* Reserva espacio para el scroll siempre */
+      overflow-y: scroll; 
       scrollbar-width: none; 
     }
     ::-webkit-scrollbar { display: none; }
@@ -50,7 +51,7 @@
       max-width: 414px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; /* Unificado con el resto de la app */
+      padding-bottom: 120px; 
     }
 
     /* --- HEADER SIMÉTRICO --- */
@@ -102,7 +103,7 @@
       height: 200px;
       border-radius: 16px;
       margin-bottom: 12px;
-      mix-blend-mode: multiply; /* Para mejor integración si el fondo no es blanco puro */
+      mix-blend-mode: multiply; 
     }
 
     .cura-id {
@@ -181,7 +182,26 @@
       box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2);
     }
 
-    /* --- BOTTOM BAR (COPIA EXACTA) --- */
+    /* --- MODAL AYUDA (Premium) --- */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      position: relative; display: flex; flex-direction: column;
+    }
+    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
+    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
+    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
+    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
+    .help-icon { color: var(--blue-main); font-size: 22px; }
+    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
+
+    /* --- BOTTOM BAR --- */
     .bottom-bar {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
       max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
@@ -191,14 +211,7 @@
     .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
     .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
-    
-    .center-question-btn { 
-      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
-      border: 5px solid var(--main-bg); display: flex; align-items: center; 
-      justify-content: center; color: white; font-size: 32px; 
-      font-weight: 600; 
-      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
-    }
+    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
     .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
@@ -242,15 +255,52 @@
     <nav class="bottom-bar">
       <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
       <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
       <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-top">
+        <h3 id="modal-title" class="modal-title">Ayuda</h3>
+        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     const duration = 300; // 5 minutos
     let remaining = duration;
+
+    function abrirModalAyuda() {
+      const modal = document.getElementById('modal-container');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+      title.innerText = "Ayuda: Credencial";
+      body.innerHTML = `
+        <div class="help-item">
+          <i class="ph ph-key help-icon"></i>
+          <p><strong>Token Dinámico:</strong> El número de 4 dígitos cambia cada 5 minutos por seguridad. Asegurate de mostrar el código vigente al profesional.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-qr-code help-icon"></i>
+          <p><strong>Uso Federal:</strong> Este código permite que médicos y farmacias de todo el país validen tu identidad y accedan a tus recetas o historia clínica autorizada.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-shield-check help-icon"></i>
+          <p><strong>Seguridad:</strong> El QR y el Token son personales. Según la Ley C.U.R.A., nadie puede obligarte a mostrar este código fuera de un contexto de atención sanitaria.</p>
+        </div>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
 
     function generarToken() {
       const t = Math.floor(1000 + Math.random() * 9000);
@@ -264,10 +314,10 @@
       const min = String(Math.floor(remaining / 60)).padStart(2, "0");
       const sec = String(remaining % 60).padStart(2, "0");
 
-      timeEl.textContent = `Expira en ${min}:${sec} min`;
+      if (timeEl) timeEl.textContent = `Expira en ${min}:${sec} min`;
 
       const pct = (remaining / duration) * 100;
-      progressEl.style.width = pct + "%";
+      if (progressEl) progressEl.style.width = pct + "%";
 
       remaining--;
 

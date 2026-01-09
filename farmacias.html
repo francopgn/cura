@@ -93,13 +93,11 @@
           </div>
         </div>
 
-        <div class="pill-container-relative">
-          <div class="pill-scroll-container" id="pillScroll">
-            <div class="pill-wrapper">
-              <div class="pill active" data-filter="all">Todas</div>
-              <div class="pill" data-filter="open">Abiertas ahora</div>
-              <div class="pill" data-filter="guardia">Guardia 24hs</div>
-            </div>
+        <div class="pill-scroll-container">
+          <div class="pill-wrapper">
+            <div class="pill active" data-filter="all">Todas</div>
+            <div class="pill" data-filter="open">Abiertas ahora</div>
+            <div class="pill" data-filter="guardia">Guardia 24hs</div>
           </div>
         </div>
       </div>
@@ -137,7 +135,7 @@
       renderFiltered();
     }
 
-    // 2. ACTUALIZACIÓN DE DATOS
+    // 2. ACTUALIZACIÓN DE DATOS (GPS)
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const lat = pos.coords.latitude;
@@ -147,15 +145,16 @@
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
           .then(res => res.json()).then(data => {
             const city = data.address.city || data.address.town || "Cerca tuyo";
-            document.getElementById("loc-ciudad").innerText = city + ", " + (data.address.state || "Argentina");
-            localStorage.setItem('cura_city_cache', document.getElementById("loc-ciudad").innerText);
+            const fullCity = city + ", " + (data.address.state || "Argentina");
+            document.getElementById("loc-ciudad").innerText = fullCity;
+            localStorage.setItem('cura_city_cache', fullCity);
           });
 
         // Farmacias (5KM)
-        const query = `[out:json][timeout:10];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
+        const query = `[out:json][timeout:15];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
         fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
           .then(res => res.json()).then(data => {
-            if (data.elements.length > 0) {
+            if (data.elements && data.elements.length > 0) {
               allPharmacies = data.elements.map(ph => ({
                 ...ph,
                 dist: getDist(lat, lon, ph.lat, ph.lon)
@@ -176,6 +175,9 @@
       if (currentFilter === 'open') filtered = allPharmacies.filter(f => (f.tags.opening_hours || "").includes("24/7") || (now >= 8 && now < 21));
       if (currentFilter === 'guardia') filtered = allPharmacies.filter(f => (f.tags.opening_hours || "").includes("24/7"));
 
+      // DETECTAR iOS
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
       filtered.forEach(ph => {
         const h = (ph.tags.opening_hours || "").toLowerCase();
         let status = (h.includes("24/7")) ? { label: "Guardia 24hs", class: "bg-amber-100 text-amber-700" } : 
@@ -183,6 +185,11 @@
                      { label: "Abierto", class: "bg-green-100 text-green-700" };
 
         const distStr = ph.dist ? (ph.dist > 1 ? ph.dist.toFixed(1)+'km' : (ph.dist*1000).toFixed(0)+'m') : '--';
+        
+        // LINK DINÁMICO SEGÚN SISTEMA OPERATIVO
+        const mapUrl = isIOS 
+          ? `http://maps.apple.com/?daddr=${ph.lat},${ph.lon}&dirflg=d` 
+          : `https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}`;
 
         html += `
           <article class="pharmacy-card">
@@ -192,7 +199,7 @@
             </div>
             <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Dirección disponible'} · ${distStr}</p>
             <div class="ph-actions">
-              <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
+              <a href="${mapUrl}" target="_blank" class="btn-ph btn-map">
                 <i class="ph ph-navigation-arrow"></i> LLEGAR
               </a>
             </div>

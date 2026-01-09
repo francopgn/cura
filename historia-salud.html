@@ -25,232 +25,77 @@
       --red-status: #ef4444;
     }
 
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; /* Reserva espacio para el scroll */
-      scrollbar-width: none; 
-    }
+    html { overflow-y: scroll; scrollbar-width: none; }
     ::-webkit-scrollbar { display: none; }
 
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
-    body {
-      background-color: var(--main-bg);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; }
 
-    .app-shell {
-      width: 100%;
-      max-width: 414px;
-      display: flex;
-      flex-direction: column;
-      padding-bottom: 120px; /* Unificado */
-    }
+    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
       background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      width: calc(100% - 40px); margin: 20px auto 10px; height: 60px;
+      border-radius: 999px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px; box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2); z-index: 100;
     }
-
-    .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
-    }
+    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer; }
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
     .header-spacer { width: 36px; height: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
-    }
-
-    /* --- TABS --- */
-    .tabs {
-      display: flex;
-      background: #e2e8f0;
-      padding: 4px;
-      border-radius: 16px;
-      margin-bottom: 20px;
-    }
-
-    .tab {
-      flex: 1;
-      padding: 10px;
-      text-align: center;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      border-radius: 12px;
-      color: var(--text-gray);
-      transition: all 0.2s;
-    }
-
-    .tab.active {
-      background: #fff;
-      color: var(--blue-header);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .section-label {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 6px;
-    }
-
-    .hint {
-      font-size: 13px;
-      color: var(--text-gray);
-      margin-bottom: 16px;
-      line-height: 1.4;
-    }
-
-    /* --- CHIPS --- */
+    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
+    .tabs { display: flex; background: #e2e8f0; padding: 4px; border-radius: 16px; margin-bottom: 20px; }
+    .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 12px; color: var(--text-gray); transition: all 0.2s; }
+    .tab.active { background: #fff; color: var(--blue-header); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .section-label { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+    .hint { font-size: 13px; color: var(--text-gray); margin-bottom: 16px; line-height: 1.4; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .chip {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 12px;
-      border-radius: 10px;
-      background: #e2e8f0;
-      color: #475569;
-    }
+    .chip { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 10px; background: #e2e8f0; color: #475569; }
     .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
     .chip-red { background: #fee2e2; color: #991b1b; }
 
-    /* --- BOTONES --- */
-    .btn-privacidad {
-      width: 100%;
-      padding: 14px;
-      border-radius: 16px;
-      border: 1px solid var(--blue-soft);
-      background: #f0f7ff;
-      color: var(--blue-header);
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      margin-bottom: 20px;
-    }
+    .btn-privacidad { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--blue-soft); background: #f0f7ff; color: var(--blue-header); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 20px; }
+    .btn-primary { width: 100%; padding: 16px; border-radius: 20px; border: none; background: linear-gradient(135deg, var(--blue-main), #005fa3); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2); }
 
-    .btn-primary {
-      width: 100%;
-      padding: 16px;
-      border-radius: 20px;
-      border: none;
-      background: linear-gradient(135deg, var(--blue-main), #005fa3);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 10px;
-      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2);
-    }
-
-    /* --- TIMELINE --- */
     .timeline { padding-left: 10px; border-left: 2px solid #e2e8f0; margin-left: 10px; }
     .timeline-item { position: relative; padding-bottom: 20px; padding-left: 20px; }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -27px;
-      top: 4px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #fff;
-      border: 3px solid var(--blue-main);
-    }
+    .timeline-item::before { content: ''; position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid var(--blue-main); }
     .timeline-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
     .timeline-sub { font-size: 12px; color: var(--text-gray); margin-bottom: 4px; }
     .timeline-text { font-size: 13px; color: var(--text-dark); line-height: 1.4; }
 
-    /* --- DOCS --- */
-    .doc-card {
-      background: #f8fafc;
-      border-radius: 20px;
-      padding: 16px;
-      border: 1px solid var(--border-soft);
-      margin-bottom: 12px;
-    }
-    .doc-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-    .doc-meta { font-size: 12px; color: var(--text-gray); margin-bottom: 12px; }
-    .doc-actions { display: flex; gap: 8px; }
-    .mini-btn { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-soft); background: #fff; font-size: 11px; font-weight: 600; cursor: pointer; }
-
-    /* --- MODAL --- */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(13, 43, 82, 0.4);
-      backdrop-filter: blur(4px);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      z-index: 100;
-    }
-    .modal {
-      background: #fff;
-      width: 100%;
-      max-width: 360px;
-      border-radius: 32px;
-      padding: 24px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-    .modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); margin-bottom: 16px; }
-    .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 14px; color: var(--text-dark); }
-    
     .view-panel { display: none; }
     .view-panel.active { display: block; }
 
-    /* --- BOTTOM BAR (COPIA EXACTA) --- */
-    .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+    /* --- MODAL REFORZADO --- */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(8px);
+      display: none; justify-content: center; align-items: flex-end; padding: 20px; z-index: 2000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
+    .modal {
+      background: #fff; width: 100%; max-width: 380px; border-radius: 32px;
+      padding: 24px; box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
+      position: relative; margin-bottom: 40px; /* Separación del fondo */
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
+    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 14px; }
+    .modal-title { font-size: 18px; font-weight: 800; color: var(--text-dark); }
+    
+    .help-content { font-size: 14px; color: var(--text-gray); line-height: 1.6; }
+    .help-item { margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
+    .help-icon { color: var(--blue-main); font-size: 20px; margin-top: 2px; }
+
+    /* --- NAV --- */
+    .bottom-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000; }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
     .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
-    
-    .center-question-btn { 
-      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
-      border: 5px solid var(--main-bg); display: flex; align-items: center; 
-      justify-content: center; color: white; font-size: 32px; 
-      font-weight: 600; 
-      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
-    }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
   </style>
 </head>
 <body>
@@ -274,127 +119,106 @@
         <section id="view-resumen" class="view-panel active">
           <h2 class="section-label">Información esencial</h2>
           <p class="hint">Datos críticos para atención inmediata según Ley C.U.R.A.</p>
-          
           <div class="chip-row">
             <span class="chip chip-blue">Grupo: 0+</span>
             <span class="chip chip-red">Alergia: Penicilina</span>
-            <span class="chip">Hipertensión</span>
-            <span class="chip">Diabetes T2</span>
           </div>
-
-          <button class="btn-privacidad" onclick="abrirModal()">
-            <i class="ph ph-lock-key"></i>
-            Configurar privacidad 🔒
+          <button class="btn-privacidad" onclick="abrirModalPrivacidad()">
+            <i class="ph ph-lock-key"></i> Configurar privacidad 🔒
           </button>
-
           <h2 class="section-label">Últimos eventos</h2>
           <div class="timeline">
             <div class="timeline-item">
               <div class="timeline-title">12/04/2025 · Consulta</div>
               <div class="timeline-sub">Hospital General · Dr. González</div>
-              <div class="timeline-text">Dolor torácico inespecífico. Se indican estudios.</div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-title">03/03/2025 · Laboratorio</div>
-              <div class="timeline-sub">Laboratorio Central · Perfil Lipídico</div>
+              <div class="timeline-text">Dolor torácico inespecífico.</div>
             </div>
           </div>
           <button class="btn-primary" onclick="location.href='historia-clinica-completa.html'">Ver Historia Completa</button>
        </section>
-
-        <section id="view-cronologia" class="view-panel">
-          <h2 class="section-label">Línea de tiempo federal</h2>
-          <div class="timeline" style="margin-top: 20px;">
-            <div class="timeline-item">
-              <div class="timeline-title">12/04/2025 · Cardiología</div>
-              <div class="timeline-text">ECG sin cambios agudos. Control programado.</div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-title">18/02/2025 · Salud Mental</div>
-              <div class="timeline-text">Registro clasificado. Acceso restringido 🔒</div>
-            </div>
-          </div>
-        </section>
-
-        <section id="view-documentos" class="view-panel">
-          <h2 class="section-label">Estudios e Imágenes</h2>
-          <div class="doc-card">
-            <div class="doc-name">ECG - 12 derivaciones</div>
-            <div class="doc-meta">12/04/2025 · Hospital General</div>
-            <div class="doc-actions">
-              <button class="mini-btn">Ver</button>
-              <button class="mini-btn">Compartir</button>
-            </div>
-          </div>
-          <div class="doc-card">
-            <div class="doc-name">Laboratorio Completo</div>
-            <div class="doc-meta">03/03/2025 · Lab. Central</div>
-            <div class="doc-actions">
-              <button class="mini-btn">Ver</button>
-              <button class="mini-btn">Descargar</button>
-            </div>
-          </div>
-        </section>
-
-        <section id="view-accesos" class="view-panel">
-          <h2 class="section-label">Registro Blockchain</h2>
-          <p class="hint">Auditoría inmutable de quién consultó tus datos.</p>
-          <div class="doc-card">
-            <div class="doc-name">Dr. Juan González</div>
-            <div class="doc-meta">12/04/2025 · 09:45hs · Hospital General</div>
-          </div>
-          <div class="doc-card" style="border-left: 4px solid var(--red-status);">
-            <div class="doc-name">Guardia Hospital General</div>
-            <div class="doc-meta">18/02/2025 · 22:10hs · Acceso Emergencia</div>
-          </div>
-        </section>
-      </div>
+       </div>
     </main>
 
     <nav class="bottom-bar">
       <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-    <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
       <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
   </div>
 
-  <div id="modal-privacidad" class="modal-backdrop" onclick="cerrarModal()">
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <h3 class="modal-title">Privacidad Ley C.U.R.A.</h3>
-      <div class="toggle-row">
-        <span>Ocultar Salud Mental</span>
-        <input type="checkbox" checked>
+      <div class="modal-header">
+        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-caret-left"></i> Volver</button>
+        <h3 id="modal-title" class="modal-title">Título</h3>
+        <button class="modal-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
       </div>
-      <div class="toggle-row">
-        <span>Ocultar VIH / Sensibles</span>
-        <input type="checkbox" checked>
-      </div>
-      <div class="toggle-row">
-        <span>Notificar cada acceso</span>
-        <input type="checkbox" checked>
-      </div>
-      <button class="btn-primary" style="margin-top:10px;" onclick="cerrarModal()">Guardar cambios</button>
+      <div id="modal-body" class="help-content">
+        </div>
     </div>
   </div>
 
   <script>
+    // Lógica de Tabs
     const tabs = document.querySelectorAll(".tab");
-    const panels = document.querySelectorAll(".view-panel");
-
     tabs.forEach(tab => {
       tab.addEventListener("click", () => {
         tabs.forEach(t => t.classList.remove("active"));
-        panels.forEach(p => p.classList.remove("active"));
-        
+        document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
         tab.classList.add("active");
         document.getElementById("view-" + tab.dataset.view).classList.add("active");
       });
     });
 
-    function abrirModal() { document.getElementById("modal-privacidad").style.display = "flex"; }
-    function cerrarModal() { document.getElementById("modal-privacidad").style.display = "none"; }
+    // FUNCIONES DEL MODAL
+    function abrirModalAyuda() {
+      const modal = document.getElementById('modal-container');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+
+      title.innerText = "Ayuda: Historia de Salud";
+      body.innerHTML = `
+        <div class="help-item">
+          <i class="ph ph-info help-icon"></i>
+          <p><strong>Resumen:</strong> Muestra tus alergias y datos críticos que un médico vería en una emergencia.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-clock help-icon"></i>
+          <p><strong>Cronología:</strong> Tu historial completo de visitas y estudios en orden de fecha.</p>
+        </div>
+        <div class="help-item">
+          <i class="ph ph-lock help-icon"></i>
+          <p><strong>Privacidad:</strong> Aquí controlas qué datos sensibles pueden ver otros profesionales.</p>
+        </div>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function abrirModalPrivacidad() {
+      const modal = document.getElementById('modal-container');
+      const title = document.getElementById('modal-title');
+      const body = document.getElementById('modal-body');
+
+      title.innerText = "Privacidad Ley C.U.R.A.";
+      body.innerHTML = `
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-sm font-semibold">Ocultar Salud Mental</span>
+          <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+        </div>
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-sm font-semibold">Ocultar VIH / Sensibles</span>
+          <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+        </div>
+        <button class="btn-primary w-full mt-4" onclick="cerrarModal()">Guardar Configuración</button>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-container').style.display = "none";
+    }
   </script>
 </body>
 </html>

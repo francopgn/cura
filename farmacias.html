@@ -25,12 +25,11 @@
       --green-status: #16a34a;
     }
 
-    /* --- FIX 1: ESTABILIDAD DE PANTALLA --- */
     html {
-      overflow-y: scroll; /* Reserva el espacio del scroll */
+      overflow-y: scroll;
       scrollbar-width: none; 
     }
-    ::-webkit-scrollbar { display: none; } /* Oculta la barra visualmente */
+    ::-webkit-scrollbar { display: none; }
 
     * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
     
@@ -50,12 +49,11 @@
       padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO (IGUAL A MENU.HTML) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
       margin: 20px auto 10px; 
-      height: 60px; /* Altura fija idéntica */
+      height: 60px;
       border-radius: 999px;
       display: flex;
       align-items: center;
@@ -65,7 +63,6 @@
       z-index: 100;
     }
 
-    /* Botón y espaciador de 36px para centrar el título perfectamente */
     .back-btn {
       width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
       display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer;
@@ -73,7 +70,6 @@
     .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
     .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; }
     .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
     .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
@@ -83,7 +79,6 @@
       background: #f8fafc; font-size: 14px; margin-bottom: 15px; outline: none;
     }
 
-    /* --- FILTROS DINÁMICOS --- */
     .pill-container-relative { position: relative; width: 100%; }
     .fade-edge {
       position: absolute; top: 0; bottom: 0; width: 40px; z-index: 2;
@@ -116,34 +111,21 @@
     .nav-arrow.left { left: -10px; }
     .nav-arrow.right { right: -10px; }
 
-    @media (pointer: coarse) { .nav-arrow { display: none !important; } }
-
-    /* --- RESULTADOS --- */
     .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
-    .status-guardia { background: #fee2e2; color: #991b1b; }
     
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
     
     .btn-ph { 
-      flex: 1; 
-      padding: 12px 0; 
-      border-radius: 14px; 
-      font-size: 11px; 
-      font-weight: 800; 
-      text-decoration: none; 
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: center; 
-      gap: 6px; 
+      flex: 1; padding: 12px 0; border-radius: 14px; font-size: 11px; font-weight: 800; 
+      text-decoration: none; text-transform: uppercase; display: flex; align-items: center;
+      justify-content: center; gap: 6px; 
     }
     .btn-map { background: var(--blue-main); color: #fff; }
     .btn-detail { background: #f1f5f9; color: var(--text-dark); }
 
-    /* --- BOTTOM BAR (COPIA EXACTA DE MENU.HTML) --- */
     .bottom-bar {
       position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
       max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
@@ -160,7 +142,6 @@
 <body>
 
   <div class="app-shell">
-    
     <header class="header-bar">
       <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
       <div class="header-title">Farmacias Cercanas</div>
@@ -168,10 +149,8 @@
     </header>
 
     <main class="main-content">
-      
       <div class="card">
         <span class="section-label">Búsqueda Inteligente</span>
-        
         <div style="background: var(--blue-soft); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
           <div style="width: 10px; height: 10px; background: var(--green-status); border-radius: 50%; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);"></div>
           <div>
@@ -180,22 +159,18 @@
           </div>
         </div>
 
-        <input type="text" class="search-input" placeholder="Nombre o dirección...">
+        <input type="text" class="search-input" id="mainSearch" placeholder="Nombre o dirección...">
         
         <div class="pill-container-relative">
           <div id="fadeLeft" class="fade-edge fade-left"></div>
           <div id="fadeRight" class="fade-edge fade-right"></div>
           <button class="nav-arrow left" onclick="scrollPills(-120)"><i class="ph-bold ph-caret-left"></i></button>
-
           <div class="pill-scroll-container" id="pillScroll">
             <div class="pill-wrapper">
-              <div class="pill active">Abiertas ahora</div>
-              <div class="pill">Guardia 24hs</div>
-              <div class="pill">Cerca de mí</div>
-              <div class="pill">Grupo Salud</div>
+              <div class="pill active">Cerca de mí</div>
+              <div class="pill">Abiertas ahora</div>
               <div class="pill">PAMI</div>
-              <div class="pill">Galeno</div>
-              <div class="pill">OMINT</div>
+              <div class="pill">IOMA</div>
             </div>
           </div>
           <button class="nav-arrow right" onclick="scrollPills(120)"><i class="ph-bold ph-caret-right"></i></button>
@@ -204,30 +179,9 @@
 
       <div class="card">
         <span class="section-label">Resultados</span>
-        
-        <article class="pharmacy-card">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="ph-name">Central C.U.R.A.</h3>
-            <span class="status-badge status-open">Abierto</span>
-          </div>
-          <p class="text-[13px] text-gray-500 mb-4">Av. Mitre 1234 · 450m</p>
-          <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i>LLEGAR</a>
-            <a href="#" class="btn-ph btn-detail">DETALLES</a>
-          </div>
-        </article>
-
-        <article class="pharmacy-card" style="border-color: #fee2e2;">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="ph-name">Guardia Rodríguez</h3>
-            <span class="status-badge status-guardia">24 Horas</span>
-          </div>
-          <p class="text-[13px] text-gray-500 mb-4">Rivadavia 890 · 1.1km</p>
-          <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i>LLEGAR</a>
-            <a href="#" class="btn-ph btn-detail">DETALLES</a>
-          </div>
-        </article>
+        <div id="resultsList">
+          <p style="font-size: 13px; color: var(--text-gray); text-align: center; padding: 20px;">Buscando farmacias reales...</p>
+        </div>
       </div>
     </main>
 
@@ -244,6 +198,7 @@
     const scrollContainer = document.getElementById('pillScroll');
     const fadeLeft = document.getElementById('fadeLeft');
     const fadeRight = document.getElementById('fadeRight');
+    const resultsList = document.getElementById('resultsList');
 
     function updateFades() {
       const scrollLeft = scrollContainer.scrollLeft;
@@ -254,25 +209,88 @@
 
     scrollContainer.addEventListener('scroll', updateFades);
     window.addEventListener('resize', updateFades);
+    function scrollPills(amount) { scrollContainer.scrollBy({ left: amount, behavior: 'smooth' }); }
 
-    function scrollPills(amount) {
-      scrollContainer.scrollBy({ left: amount, behavior: 'smooth' });
+    // --- LÓGICA DE FARMACIAS REALES (OVERPASS API) ---
+    async function fetchRealPharmacies(lat, lon) {
+      // Query de Overpass para buscar farmacias en 5000 metros a la redonda
+      const query = `[out:json];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
+      const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        renderPharmacies(data.elements, lat, lon);
+      } catch (error) {
+        resultsList.innerHTML = `<p style="color:red; font-size:12px; text-align:center;">Error al conectar con la red federal de farmacias.</p>`;
+      }
+    }
+
+    // Calcula distancia lineal simple para mostrar en metros/km
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Radio de la tierra en km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      const d = R * c;
+      return d > 1 ? `${d.toFixed(1)}km` : `${(d * 1000).toFixed(0)}m`;
+    }
+
+    function renderPharmacies(pharmacies, userLat, userLon) {
+      if (pharmacies.length === 0) {
+        resultsList.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-gray);">No se encontraron farmacias cerca de tu posición.</p>`;
+        return;
+      }
+
+      resultsList.innerHTML = ""; // Limpiar cargando
+      
+      pharmacies.forEach(ph => {
+        const name = ph.tags.name || "Farmacia sin nombre";
+        const address = ph.tags["addr:street"] ? `${ph.tags["addr:street"]} ${ph.tags["addr:housenumber"] || ""}` : "Dirección no disponible";
+        const dist = calculateDistance(userLat, userLon, ph.lat, ph.lon);
+        
+        const card = document.createElement('article');
+        card.className = "pharmacy-card";
+        card.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="ph-name">${name}</h3>
+            <span class="status-badge status-open">Disponible</span>
+          </div>
+          <p class="text-[13px] text-gray-500 mb-4">${address} · ${dist}</p>
+          <div class="ph-actions">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
+              <i class="ph ph-navigation-arrow"></i>LLEGAR
+            </a>
+            <a href="#" class="btn-ph btn-detail">DETALLES</a>
+          </div>
+        `;
+        resultsList.appendChild(card);
+      });
     }
 
     window.onload = () => {
       updateFades();
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (pos) => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          
+          // 1. Obtener ciudad real (Nominatim)
           try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
             const data = await res.json();
-            document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
-            updateFades();
+            document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || data.address.suburb || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
           } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
+
+          // 2. Buscar farmacias reales
+          fetchRealPharmacies(lat, lon);
         });
       }
     };
 
+    // Estética de los filtros
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));

@@ -128,43 +128,48 @@
     </nav>
   </div>
 
-  <script>
+  
+     <script>
     const resultsList = document.getElementById('resultsList');
     let allPharmacies = [];
     let userCoords = null;
     let currentFilter = 'all';
 
-    // 1. GESTIÓN DE CACHÉ PARA CARGA INMEDIATA
-    function loadCache() {
-      const cached = localStorage.getItem('cura_ph_cache');
+    // 1. GESTIÓN DE CACHÉ ULTRA-RÁPIDA
+    function loadInitialData() {
+      const cachedPh = localStorage.getItem('cura_ph_cache');
       const cachedCity = localStorage.getItem('cura_city_cache');
-      if (cached) {
-        allPharmacies = JSON.parse(cached);
-        if (cachedCity) document.getElementById("loc-ciudad").innerText = cachedCity;
-        renderFiltered();
+      
+      if (cachedCity) document.getElementById("loc-ciudad").innerText = cachedCity;
+      
+      if (cachedPh) {
+        allPharmacies = JSON.parse(cachedPh);
+        renderFiltered(); // Renderiza al instante lo viejo
       }
     }
 
-    // 2. GEOLOCALIZACIÓN
+    // 2. GEOLOCALIZACIÓN OPTIMIZADA
     function initSearch() {
-      loadCache();
+      loadInitialData(); // Carga inmediata
+      
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(onSuccess, onError, { 
-          enableHighAccuracy: false, 
-          timeout: 5000, 
-          maximumAge: 60000 
+          enableHighAccuracy: false, // Mucho más rápido
+          timeout: 4000, 
+          maximumAge: 300000 // Acepta ubicación de hasta 5 min atrás
         });
       }
     }
 
     async function onSuccess(pos) {
       userCoords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-      Promise.all([
-        fetchCity(userCoords.lat, userCoords.lon),
-        fetchPharmacies(userCoords.lat, userCoords.lon)
-      ]);
+      
+      // Lanzamos las peticiones pero no esperamos a una para la otra
+      fetchCity(userCoords.lat, userCoords.lon);
+      fetchPharmacies(userCoords.lat, userCoords.lon);
     }
 
+    // 3. FETCH DE CIUDAD (Sin bloquear las farmacias)
     async function fetchCity(lat, lon) {
       try {
         const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
@@ -176,21 +181,31 @@
       } catch(e) {}
     }
 
+    // 4. QUERY DE OVERPASS OPTIMIZADA (Turbo Mode)
     async function fetchPharmacies(lat, lon) {
-      const query = `[out:json][timeout:15];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
+      // Usamos un radio más pequeño (3km) para que el servidor responda más rápido
+      // [timeout:5] le dice al servidor: "si tardas más de 5 seg, corta"
+      const query = `[out:json][timeout:5];node(around:3000,${lat},${lon})["amenity"="pharmacy"];out qt;`;
       const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
       try {
-        const response = await fetch(url);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // Timeout local de 5 seg
+
+        const response = await fetch(url, { signal: controller.signal });
         const data = await response.json();
-        allPharmacies = data.elements;
-        localStorage.setItem('cura_ph_cache', JSON.stringify(allPharmacies));
-        renderFiltered();
+        
+        if (data.elements && data.elements.length > 0) {
+          allPharmacies = data.elements;
+          localStorage.setItem('cura_ph_cache', JSON.stringify(allPharmacies));
+          renderFiltered();
+        }
       } catch (error) {
-        console.error("API Error", error);
+        console.warn("API lenta o caída, usando caché.");
       }
     }
 
+    // 5. RENDERIZADO LIGERO
     function checkStatus(openingHours) {
       if (!openingHours) return { label: "Abierto", class: "bg-green-100 text-green-700", isOpen: true, is24hs: false };
       const hours = openingHours.toLowerCase();
@@ -205,47 +220,49 @@
 
     function renderFiltered() {
       if (!allPharmacies.length) return;
-      resultsList.innerHTML = "";
       
+      let html = "";
       let filtered = allPharmacies.map(ph => ({
         ...ph,
         status: checkStatus(ph.tags.opening_hours),
-        dist: userCoords ? getDist(userCoords.lat, userCoords.lon, ph.lat, ph.lon) : 0
-      })).sort((a,b) => a.dist - b.dist);
+        dist: userCoords ? getDist(userCoords.lat, userCoords.lon, ph.lat, ph.lon) : null
+      })).sort((a,b) => (a.dist || 0) - (b.dist || 0));
 
       if (currentFilter === 'open') filtered = filtered.filter(f => f.status.isOpen);
       if (currentFilter === 'guardia') filtered = filtered.filter(f => f.status.is24hs);
 
       filtered.forEach(ph => {
         const distStr = ph.dist ? (ph.dist > 1 ? ph.dist.toFixed(1)+'km' : (ph.dist*1000).toFixed(0)+'m') : '--';
-        const card = document.createElement('article');
-        card.className = "pharmacy-card";
-        card.innerHTML = `
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="ph-name">${ph.tags.name || "Farmacia"}</h3>
-            <span class="status-badge ${ph.status.class}">${ph.status.label}</span>
-          </div>
-          <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Gral. Rodríguez'} · ${distStr}</p>
-          <div class="ph-actions">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
-              <i class="ph ph-navigation-arrow"></i> LLEGAR
-            </a>
-          </div>
+        html += `
+          <article class="pharmacy-card">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="ph-name">${ph.tags.name || "Farmacia"}</h3>
+              <span class="status-badge ${ph.status.class}">${ph.status.label}</span>
+            </div>
+            <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Dirección disponible'} · ${distStr}</p>
+            <div class="ph-actions">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}" target="_blank" class="btn-ph btn-map">
+                <i class="ph ph-navigation-arrow"></i> LLEGAR
+              </a>
+            </div>
+          </article>
         `;
-        resultsList.appendChild(card);
       });
+      resultsList.innerHTML = html;
     }
 
     function getDist(lat1, lon1, lat2, lon2) {
       const R = 6371;
-      const dLat = (lat2-lat1) * Math.PI/180;
-      const dLon = (lon2-lon1) * Math.PI/180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      const dLat = (lat2-lat1) * 0.017453292519943295;
+      const dLon = (lon2-lon1) * 0.017453292519943295;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1*0.017453292519943295) * Math.cos(lat2*0.017453292519943295) * Math.sin(dLon/2) * Math.sin(dLon/2);
       return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
     }
 
     function onError() { 
-      if (!allPharmacies.length) resultsList.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-gray); padding:20px;">Permite el GPS para ver las farmacias reales de tu zona.</p>`;
+      if (!allPharmacies.length) {
+        resultsList.innerHTML = `<p style="text-align:center; font-size:13px; color:var(--text-gray); padding:20px;">Esperando señal GPS...</p>`;
+      }
     }
 
     document.querySelectorAll('.pill').forEach(pill => {
@@ -259,5 +276,6 @@
 
     window.onload = initSearch;
   </script>
+
 </body>
 </html>

@@ -37,6 +37,7 @@
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .app-shell {
@@ -47,7 +48,7 @@
       padding-bottom: 120px; 
     }
 
-    /* --- HEADER BAR (SIMÉTRICO Y CENTRADO) --- */
+    /* --- HEADER (BALANCEO SIMÉTRICO) --- */
     .header-bar {
       background-color: var(--blue-header);
       width: calc(100% - 40px);
@@ -82,9 +83,7 @@
       font-weight: 700;
     }
 
-    .header-spacer {
-      width: 36px;
-    }
+    .header-spacer { width: 36px; }
 
     /* --- CONTENIDO --- */
     .main-content { padding: 10px 20px; }
@@ -107,33 +106,7 @@
       display: block;
     }
 
-    /* --- UBICACIÓN --- */
-    .location-box {
-      background: var(--blue-soft);
-      border-radius: 20px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .loc-dot {
-      width: 10px;
-      height: 10px;
-      background: var(--green-status);
-      border-radius: 50%;
-      box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.2); opacity: 0.7; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    /* --- FILTROS --- */
+    /* --- FILTROS (SOLUCIÓN SCROLL DEFINITIVA) --- */
     .search-input {
       width: 100%;
       padding: 14px 18px;
@@ -141,73 +114,61 @@
       border: 1px solid var(--border-soft);
       background: #f8fafc;
       font-size: 14px;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       outline: none;
     }
 
-  /* 1. El contenedor: ahora permite el desplazamiento real */
-.pill-scroll {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto; /* Permite scroll horizontal */
-  padding: 5px 0 15px 0; /* Un poco de aire abajo para que no se corte la sombra */
-  scroll-behavior: smooth; /* Desplazamiento suave */
-  -webkit-overflow-scrolling: touch; /* Suavidad extra en iPhone/iOS */
-  white-space: nowrap; /* Fuerza a que todo esté en una sola línea */
-}
+    .pill-scroll-container {
+      width: 100%;
+      overflow-x: auto; /* Permite el scroll */
+      display: flex;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+    }
 
-/* Opcional: Oculta la barra de scroll pero mantiene la funcionalidad */
-.pill-scroll::-webkit-scrollbar {
-  display: none;
-}
+    /* Ocultar barra de scroll pero mantener funcionalidad */
+    .pill-scroll-container::-webkit-scrollbar { display: none; }
 
-/* 2. El botón: IMPORTANTE para que no se achiquen */
-.pill {
-  flex-shrink: 0; /* ESTO ES LA CLAVE: evita que los botones se aplasten */
-  padding: 8px 16px;
-  background: #fff;
-  border: 1px solid var(--border-soft);
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-gray);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); }
+    .pill-wrapper {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap; /* Evita que los botones bajen */
+    }
+
+    .pill {
+      flex-shrink: 0; /* CRUCIAL: Evita que los botones se achiquen */
+      padding: 10px 18px;
+      background: #fff;
+      border: 1.5px solid var(--border-soft);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-gray);
+      white-space: nowrap; /* Texto siempre en una línea */
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pill.active {
+      background: var(--blue-main);
+      color: #fff;
+      border-color: var(--blue-main);
+      box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2);
+    }
 
     /* --- FARMACIAS --- */
     .pharmacy-card {
       border: 1px solid var(--border-soft);
       border-radius: 22px;
-      padding: 16px;
+      padding: 18px;
       margin-bottom: 12px;
     }
-
     .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
-
-    .status-badge {
-      font-size: 10px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 8px;
-      text-transform: uppercase;
-    }
+    .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
     .status-open { background: #dcfce7; color: #166534; }
-    .status-guardia { background: #fee2e2; color: #991b1b; }
-
+    
     .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
-    .btn-ph {
-      flex: 1;
-      padding: 10px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 800;
-      text-align: center;
-      cursor: pointer;
-      text-decoration: none;
-      text-transform: uppercase;
-    }
+    .btn-ph { flex: 1; padding: 12px; border-radius: 14px; font-size: 11px; font-weight: 800; text-align: center; text-decoration: none; text-transform: uppercase; }
     .btn-map { background: var(--blue-main); color: #fff; }
     .btn-detail { background: #f1f5f9; color: var(--text-dark); }
 
@@ -229,34 +190,10 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       z-index: 1000;
     }
-
-    .nav-icon-btn {
-      background: none;
-      border: none;
-      padding: 10px;
-      cursor: pointer;
-      color: var(--text-gray);
-      transition: all 0.2s ease;
-    }
+    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
     .nav-icon-btn.active { color: var(--blue-main); }
     .nav-icon-btn i { font-size: 26px; }
-
-    .center-question-btn {
-      width: 64px;
-      height: 64px;
-      background: var(--blue-main);
-      border-radius: 50%;
-      border: 5px solid var(--main-bg); 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 32px;
-      font-weight: 600;
-      margin-top: -35px; 
-      box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3);
-      cursor: pointer;
-    }
+    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); }
   </style>
 </head>
 <body>
@@ -273,116 +210,76 @@
       
       <div class="card">
         <span class="section-label">Búsqueda Inteligente</span>
-        <div class="location-box">
-          <div class="loc-dot"></div>
+        
+        <div style="background: var(--blue-soft); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="width: 10px; height: 10px; background: var(--green-status); border-radius: 50%; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);"></div>
           <div>
             <p id="loc-status" style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Ubicación Actual</p>
-            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Detectando ubicación...</p>
+            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Cargando ubicación real...</p>
           </div>
-          <button onclick="obtenerUbicacionReal()" style="margin-left: auto; font-size: 11px; font-weight: 700; color: var(--blue-main);">REINTENTAR</button>
         </div>
 
-        <input type="text" class="search-input" placeholder="Nombre de farmacia o dirección...">
+        <input type="text" class="search-input" placeholder="Nombre o dirección...">
         
-        <div class="pill-scroll">
-          <div class="pill active">Abiertas ahora</div>
-          <div class="pill">Guardia 24hs</div>
-          <div class="pill">Cerca de mí</div>
-          <div class="pill">Descuento PAMI</div>
+        <div class="pill-scroll-container">
+          <div class="pill-wrapper">
+            <div class="pill active">Abiertas ahora</div>
+            <div class="pill">Guardia 24hs</div>
+            <div class="pill">Cerca de mí</div>
+            <div class="pill">Descuento PAMI</div>
+            <div class="pill">Swiss Medical</div>
+            <div class="pill">Galeno</div>
+            <div class="pill">OMINT</div>
+          </div>
         </div>
       </div>
 
       <div class="card">
-        <span class="section-label">Farmacias Adheridas</span>
+        <span class="section-label">Resultados</span>
         
         <article class="pharmacy-card">
           <div class="flex justify-between items-start mb-2">
             <h3 class="ph-name">Central C.U.R.A.</h3>
             <span class="status-badge status-open">Abierto</span>
           </div>
-          <p class="text-[13px] text-gray-500 flex items-center gap-1 mb-3">
-            <i class="ph ph-map-pin"></i> Av. Mitre 1234 · 450m
-          </p>
+          <p class="text-[13px] text-gray-500 mb-4">Av. Mitre 1234 · 450m</p>
           <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
+            <a href="#" class="btn-ph btn-map">LLEGAR</a>
             <a href="#" class="btn-ph btn-detail">DETALLES</a>
           </div>
         </article>
-
-        <article class="pharmacy-card" style="border-color: #fee2e2;">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="ph-name">Guardia Rodríguez</h3>
-            <span class="status-badge status-guardia">24 Horas</span>
-          </div>
-          <p class="text-[13px] text-gray-500 flex items-center gap-1 mb-3">
-            <i class="ph ph-map-pin"></i> Rivadavia 890 · 1.1km
-          </p>
-          <div class="ph-actions">
-            <a href="#" class="btn-ph btn-map"><i class="ph ph-navigation-arrow"></i> LLEGAR</a>
-            <a href="#" class="btn-ph btn-detail">DETALLES</a>
-          </div>
-        </article>
-
       </div>
     </main>
 
     <nav class="bottom-bar">
       <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
       <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
+      <div class="center-question-btn">?</div>
       <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
       <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
     </nav>
-
   </div>
 
   <script>
-    // --- LÓGICA DE UBICACIÓN REAL ---
-    function obtenerUbicacionReal() {
-      const ciudadLabel = document.getElementById("loc-ciudad");
-      const statusLabel = document.getElementById("loc-status");
-
-      if (!navigator.geolocation) {
-        ciudadLabel.innerText = "Geolocalización no soportada";
-        return;
-      }
-
-      ciudadLabel.innerText = "Localizando...";
-
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-
+    // UBICACIÓN REAL
+    window.onload = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (pos) => {
           try {
-            // Usamos la API gratuita de Nominatim (OpenStreetMap) para Reverse Geocoding
-            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`);
-            const data = await response.json();
-            
-            const ciudad = data.address.city || data.address.town || data.address.village || "Desconocido";
-            const provincia = data.address.state || "Argentina";
-            
-            ciudadLabel.innerText = `${ciudad}, ${provincia}`;
-            statusLabel.innerText = "Ubicación Actual";
-          } catch (error) {
-            ciudadLabel.innerText = `${lat.toFixed(4)}, ${lon.toFixed(4)} (Error de nombre)`;
-          }
-        },
-        (error) => {
-          ciudadLabel.innerText = "Permiso de ubicación denegado";
-          console.error(error);
-        }
-      );
-    }
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+            const data = await res.json();
+            document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
+          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación actual"; }
+        }, () => { document.getElementById("loc-ciudad").innerText = "Permiso de ubicación denegado"; });
+      }
+    };
 
-    // Ejecutar al cargar la página
-    window.onload = obtenerUbicacionReal;
-
-    // Lógica para los filtros (pills)
+    // LÓGICA DE PILLS
     document.querySelectorAll('.pill').forEach(pill => {
       pill.addEventListener('click', () => {
         document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
         pill.classList.add('active');
+        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       });
     });
   </script>

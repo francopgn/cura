@@ -213,9 +213,9 @@
         
         <div style="background: var(--blue-soft); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
           <div style="width: 10px; height: 10px; background: var(--green-status); border-radius: 50%; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);"></div>
-          <div>
+     <div>
             <p id="loc-status" style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Ubicación Actual</p>
-            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Cargando ubicación real...</p>
+            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Detectando ciudad...</p>
           </div>
         </div>
 
@@ -261,7 +261,7 @@
   </div>
 
   <script>
-    // UBICACIÓN REAL
+// --- UBICACIÓN REAL ---
     window.onload = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -269,10 +269,11 @@
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
             const data = await res.json();
             document.getElementById("loc-ciudad").innerText = (data.address.city || data.address.town || "Cerca tuyo") + ", " + (data.address.state || "Argentina");
-          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación actual"; }
-        }, () => { document.getElementById("loc-ciudad").innerText = "Permiso de ubicación denegado"; });
+          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
+        });
       }
     };
+
 
     // LÓGICA DE PILLS
     document.querySelectorAll('.pill').forEach(pill => {

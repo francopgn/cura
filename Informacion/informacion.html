@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest">
   <title>Información | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -35,83 +34,51 @@
     }
   </script>
 
-<style>
-  /* --- ANIMACIONES DE MODALES --- */
-  .modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-  .modal-backdrop.show {
-    opacity: 1;
-  }
-  .modal-card {
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .modal-card.show {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-</style>
-
+  <style>
+    .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+    .modal-backdrop.show { opacity: 1; }
+    .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+    .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+  </style>
 </head>
+
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
-  <!-- Aviso Superior -->
   <div class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
    La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.
   </div>
 
-  <!-- Header -->
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
-
       <div class="flex items-center gap-2">
-        <!-- Asumiendo ruta absoluta para el logo -->
-        <img src="/Informacion/logo.png"
-             alt="Logo C.U.R.A."
-             class="h-16 w-auto object-contain shrink-0" />
+        <img src="/Informacion/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
         <div class="leading-tight">
           <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
           <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
         </div>
       </div>
-
       <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-        <!-- BOTÓN VOLVER CON ANIMACIÓN -->
         <a href="/index.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-            <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> 
-            Volver
+            <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
         </a>
-        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">
-            Sumate
-        </a>
-        <a href="/demo.html"
-           class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
-          Demostración
-        </a>
+        <a href="#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumate</a>
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <!-- Contenido Principal -->
-    <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
+  <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
     
     <section>
         <h1 class="text-3xl font-bold text-white mb-6 text-center md:text-left">Información sobre el Proyecto</h1>
         
         <div class="w-full flex justify-center md:justify-start mb-10">
-            <a href="documentos/Resumen_Ejecutivo.pdf" 
-               download="Resumen_Ejecutivo_Ley_CURA.pdf"
+            <a href="documentos/Resumen_Ejecutivo.pdf" download="Resumen_Ejecutivo_Ley_CURA.pdf"
                class="group relative inline-flex items-center gap-3 px-6 py-3 bg-white hover:bg-gray-100 text-cura-primary font-bold text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/50 hover:-translate-y-1 ring-2 ring-transparent hover:ring-cura-accent/50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
                 <span>Descargar Resumen Ejecutivo (PDF)</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cura-primary opacity-50 group-hover:opacity-100 group-hover:translate-y-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
             </a>
         </div>
 
@@ -120,347 +87,56 @@
             <div class="md:col-span-7 lg:col-span-8 order-1 md:order-2">
                 <div class="grid sm:grid-cols-2 gap-4">
                     <a href="/Informacion/objetivos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                            <i class="ph-bold ph-target text-cura-accent"></i> Objetivos del Sistema
-                        </h3>
-                        <p class="text-xs md:text-sm text-cura-accentLight">Propósitos centrales: simplificar el acceso, reducir errores y unificar historias clínicas.</p>
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-target text-cura-accent"></i> Objetivos</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Propósitos centrales del proyecto para modernizar la infraestructura digital.</p>
                     </a>
-                    
                     <a href="/Informacion/fundamentos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                            <i class="ph-bold ph-scales text-cura-accent"></i> Fundamentos de la Ley
-                        </h3>
-                        <p class="text-xs md:text-sm text-cura-accentLight">Por qué la salud digital unificada es necesaria y cómo soluciona problemas actuales.</p>
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-scales text-cura-accent"></i> Fundamentos</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Por qué la salud digital unificada es necesaria para el sistema sanitario actual.</p>
                     </a>
-
                     <a href="/Informacion/financiamiento.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                            <i class="ph-bold ph-bank text-cura-accent"></i> Financiamiento
-                        </h3>
-                        <p class="text-xs md:text-sm text-cura-accentLight">Detalles del modelo económico y la viabilidad del sistema a largo plazo.</p>
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-bank text-cura-accent"></i> Financiamiento</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Detalles del modelo de financiamiento y sostenibilidad del sistema.</p>
                     </a>
-
                     <a href="/Informacion/implementacion-tecnica.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                            <i class="ph-bold ph-cpu text-cura-accent"></i> Implementación Técnica
-                        </h3>
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cpu text-cura-accent"></i> Implementación Técnica</h3>
                         <p class="text-xs md:text-sm text-cura-accentLight">Arquitectura, APIs, blockchain, encriptación y componentes tecnológicos.</p>
                     </a>
-
-                    <a href="/Informacion/beneficios.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                            <i class="ph-bold ph-hand-heart text-cura-accent"></i> Beneficios
-                        </h3>
-                        <p class="text-xs md:text-sm text-cura-accentLight">Ventajas para pacientes y profesionales: reducción de errores y atención humana.</p>
-                    </a>
-
                     <a href="/Informacion/seg-priv.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                            <i class="ph-bold ph-shield-check text-cura-accent"></i> Seguridad y Privacidad
-                        </h3>
-                        <p class="text-xs md:text-sm text-cura-accentLight">Cifrado extremo a extremo, tokenización y controles de acceso por niveles.</p>
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-lock-key text-cura-accent"></i> Seguridad y Privacidad</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Cifrado extremo a extremo y controles que garantizan protección plena.</p>
                     </a>
-
-                    </div>
+                    <a href="/Informacion/interoperabilidad.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-intersect text-cura-accent"></i> Interoperabilidad</h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Estandarización del intercambio usando HL7 FHIR y SNOMED CT.</p>
+                    </a>
+                </div>
             </div>
 
             <div class="md:col-span-5 lg:col-span-4 order-2 md:order-1 md:sticky md:top-24 self-start">
                 <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-lg flex flex-col items-center text-center">
-                    
                     <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-cura-accent mb-4 shadow-md bg-white">
                         <img src="/ID01-41316202/profile.png" alt="Franco Agustin Paganini" class="w-full h-full object-cover">
                     </div>
-                    
                     <h2 class="text-xl font-bold text-white mb-3">Franco A. Paganini</h2>
-                    
                     <a href="https://linkedin.com/in/franco-paganini" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077b5] hover:bg-[#005e93] text-white text-sm font-semibold rounded-md transition-colors w-full justify-center mb-4">
                         <i class="ph-fill ph-linkedin-logo"></i> LinkedIn
                     </a>
-
                     <div class="w-full border-t border-white/20 my-2"></div>
-
                     <div class="text-sm text-cura-accentLight text-left mt-3 space-y-4 leading-relaxed">
-                        <div class="flex gap-3">
-                            <i class="ph-bold ph-medal text-cura-accent shrink-0 text-xl"></i>
-                            <p><strong>Franco Agustín Paganini</strong> es <strong>Especialista en Gestión de Salud Digital</strong> (ADEN Business School / George Washington University) y profesional de tecnologías de la información con una sólida trayectoria en el sector público.</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <i class="ph-bold ph-graduation-cap text-cura-accent shrink-0 text-xl"></i>
-                            <p>Su formación combina la arquitectura técnica con la estrategia sanitaria. Cursó estudios en la <strong>Licenciatura en Sistemas (Universidad Nacional de Luján)</strong>, lo que le brindó los fundamentos lógicos para el diseño de infraestructuras complejas, y cuenta con más de diez años de experiencia en soporte y soluciones tecnológicas. Ha complementado este perfil con certificaciones internacionales de la <strong>OPS/OMS</strong> en Sistemas de Información y el estándar de interoperabilidad <strong>HL7 FHIR</strong>, además de especializaciones en Derecho Presupuestario y Técnica Normativa.</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <i class="ph-bold ph-scroll text-cura-accent shrink-0 text-xl"></i>
-                            <p>Es el autor intelectual e impulsor de la <strong>Ley C.U.R.A.</strong>, una iniciativa de infraestructura crítica diseñada para modernizar el Estado. Su trabajo se centra en transformar la gestión pública mediante herramientas concretas que aumenten la calidad, la eficiencia del gasto y la transparencia del sistema sanitario, garantizando la trazabilidad plena en todo el país.</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <i class="ph-bold ph-user-focus text-cura-accent shrink-0 text-xl"></i>
-                            <p><strong>La motivación detrás de la Ley:</strong> El proyecto no nace en un escritorio, sino de la experiencia personal. Franco vivió en primera persona la fragmentación del sistema: historias clínicas dispersas, diagnósticos inconexos y la burocracia de los trámites repetidos. Ese recorrido lo llevó a transformar la frustración de paciente en una propuesta técnica y operativa con una sola meta: <strong>que ninguna persona vuelva a atravesar las barreras de un sistema desconectado.</strong></p>
-                        </div>
-                        <div class="flex gap-3">
-                            <i class="ph-bold ph-strategy text-cura-accent shrink-0 text-xl"></i>
-                            <p>Con una visión centrada en el ciudadano y un compromiso real con la modernización, Franco impulsa hoy la Ley C.U.R.A. como el cambio estructural necesario para el futuro de la salud en Argentina.</p>
-                        </div>
+                        <div class="flex gap-3"><i class="ph-bold ph-medal text-cura-accent shrink-0 text-xl"></i>
+                        <p><strong>Franco Agustín Paganini</strong> es Especialista en Gestión de Salud Digital y profesional de TI con sólida trayectoria en el sector público.</p></div>
+                        <div class="flex gap-3"><i class="ph-bold ph-graduation-cap text-cura-accent shrink-0 text-xl"></i>
+                        <p>Su formación combina arquitectura técnica y estrategia sanitaria. Cursó Lic. en Sistemas (UNLU) y cuenta con certificaciones internacionales de la OPS/OMS y HL7 FHIR.</p></div>
+                        <div class="flex gap-3"><i class="ph-bold ph-scroll text-cura-accent shrink-0 text-xl"></i>
+                        <p>Es autor intelectual de la Ley C.U.R.A., diseñada para modernizar el Estado mediante herramientas que aumenten la calidad y transparencia del sistema sanitario.</p></div>
+                        <div class="flex gap-3"><i class="ph-bold ph-user-focus text-cura-accent shrink-0 text-xl"></i>
+                        <p><strong>Motivación:</strong> El proyecto nace de la experiencia personal con la fragmentación del sistema, buscando que nadie vuelva a atravesar barreras burocráticas desconectadas.</p></div>
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
   </main>
-
-
-            <!-- 
-                COLUMNA DERECHA: RECUADROS EDITABLES (Ahora son enlaces)
-                - order-1: En celular va PRIMERO (arriba).
-                - md:order-2: En PC va SEGUNDO (derecha).
-            -->
-            <div class="md:col-span-7 lg:col-span-8 order-1 md:order-2">
-    <div class="grid sm:grid-cols-2 gap-4">
-
-        <a href="/Informacion/objetivos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-target text-cura-accent"></i> Objetivos del Sistema
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Propósitos centrales: simplificar el acceso, reducir errores y unificar historias clínicas.
-            </p>
-        </a>
-        
-        <a href="/Informacion/fundamentos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-scales text-cura-accent"></i> Fundamentos de la Ley
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Por qué la salud digital unificada es necesaria y cómo soluciona problemas actuales.
-            </p>
-        </a>
-
-        <a href="/Informacion/financiamiento.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-bank text-cura-accent"></i> Financiamiento y Sostenibilidad
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Detalles del modelo económico y la viabilidad del sistema a largo plazo.
-            </p>
-        </a>
-
-        <a href="/Informacion/implementacion-tecnica.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-cpu text-cura-accent"></i> Implementación Técnica
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Arquitectura, APIs, blockchain, encriptación y componentes tecnológicos.
-            </p>
-        </a>
-
-        <a href="/Informacion/beneficios.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-hand-heart text-cura-accent"></i> Beneficios Generales
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Ventajas para pacientes y profesionales: reducción de errores y atención humana.
-            </p>
-        </a>
-
-        <a href="/Informacion/seg-priv.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-    <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-        <i class="ph-bold ph-shield-check text-cura-accent"></i> Seguridad y Privacidad
-    </h3>
-    <p class="text-xs md:text-sm text-cura-accentLight">
-        Cifrado extremo a extremo, tokenización y controles de acceso por niveles para proteger tus datos.
-    </p>
-</a>
-
-
-        <a href="/Informacion/marco-legal.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-gavel text-cura-accent"></i> Marco Legal y Normativo
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Integración con leyes de protección de datos, firma digital y regulaciones sanitarias.
-            </p>
-        </a>
-
-        <a href="/Informacion/alcance.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-map-trifold text-cura-accent"></i> Alcance y Gobernanza
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Cómo se integran provincias y municipios en la autoridad de aplicación federal.
-            </p>
-        </a>
-
-        <a href="/Informacion/interoperabilidad.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-intersect text-cura-accent"></i> HL7 FHIR / SNOMED CT
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Estándares internacionales para el intercambio de información médica nacional.
-            </p>
-        </a>
-      
-        <a href="/Informacion/infraestructura.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-hard-drives text-cura-accent"></i> Infraestructura Nacional
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Servidores, nodos de respaldo, alta disponibilidad y redundancia del sistema.
-            </p>
-        </a>
-      
-        <a href="/Informacion/roadmap.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-path text-cura-accent"></i> Implementación por Etapas
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Cronograma de despliegue: pilotos, adopción provincial y lanzamiento oficial.
-            </p>
-        </a>
-
-        <a href="/Informacion/participacion.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-users-four text-cura-accent"></i> Control Social Ciudadano
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Herramientas para que las personas auditen y supervisen la transparencia.
-            </p>
-        </a>
-
-        <a href="/Informacion/faq.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-question text-cura-accent"></i> Preguntas Frecuentes
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Respuestas a dudas comunes sobre seguridad, acceso y uso de la credencial.
-            </p>
-        </a>
-
-        <a href="/Informacion/recursos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-            <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
-                <i class="ph-bold ph-folder-open text-cura-accent"></i> Recursos Descargables
-            </h3>
-            <p class="text-xs md:text-sm text-cura-accentLight">
-                Acceso a PDFs, borradores de ley, esquemas y material oficial del proyecto.
-            </p>
-        </a>
-
-    </div>
-</div>
-
-        </div>
-    </section>
-
-  <section id="sumate" class="space-y-6 pt-10 border-t border-cura-accent/20 w-full max-w-5xl mx-auto">
-  <div class="max-w-2xl">
-    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-    <p class="text-sm text-cura-accentLight">
-      Para sumarte a la iniciativa, completá el formulario principal de ciudadanía digital de C.U.R.A.
-    </p>
-  </div>
-
-  <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-md max-w-4xl w-full">
-    <p class="text-sm text-cura-accentLight mb-4">
-      Centralizamos todas las adhesiones en un único formulario para asegurar mejor seguimiento,
-      trazabilidad y actualización de tus datos.
-    </p>
-
-    <div class="mt-4 w-full">
-      <a href="https://www.leycura.org/#sumate"
-         class="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10 w-full">
-        <span>Ir al formulario principal</span>
-        <svg xmlns="http://www.w3.org/2000/svg"
-             class="h-4 w-4 transition-transform group-hover:translate-x-1"
-             fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-
-  </main>
-
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark mt-auto">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="/index.html" class="hover:text-white">Volver al Inicio</a>
-        <a href="mailto:contacto@leycura.org" class="hover:text-white">Contacto</a>
-      </div>
-    </div>
-  </footer>
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  // --- 1. ANIMACIÓN TYPEWRITER RÁPIDA ---
-  const textElement = document.getElementById('typewriter-text');
-  
-  if (textElement) {
-    const fullText = textElement.innerText;
-    textElement.innerText = ''; // Limpiamos texto inicial
-    
-    let i = 0;
-    // Ajusta velocidad: menor número = más rápido.
-    // Para que sea "muy rápido" con tanto texto, imprimimos de a 3 caracteres cada 5ms.
-    const speed = 5; 
-
-    function typeWriter() {
-      if (i < fullText.length) {
-        // Escribimos varios caracteres a la vez para acelerar bloques grandes de texto
-        textElement.textContent += fullText.substring(i, i + 3);
-        i += 3;
-        setTimeout(typeWriter, speed);
-      } else {
-        // Al finalizar, quitamos el cursor parpadeante (opcional)
-        textElement.classList.remove('cursor-blink');
-      }
-    }
-    
-    // Iniciar con un pequeño delay para asegurar renderizado
-    setTimeout(typeWriter, 300);
-  }
-
-  // --- 2. SCROLL SUAVE (SMOOTH SCROLL) ---
-  function smoothScrollTo(element, duration = 1700, offset = 100) {
-    if (!element) return;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      window.scrollTo(0, startY + distance * ease);
-      if (timeElapsed < duration) requestAnimationFrame(animation);
-    }
-    requestAnimationFrame(animation);
-  }
-
-  const scrollLinks = document.querySelectorAll('a[href^="#"]');
-  scrollLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-          const targetId = this.getAttribute('href');
-          if (targetId && targetId !== '#') {
-              const targetElement = document.querySelector(targetId);
-              if (targetElement) {
-                  e.preventDefault();
-                  smoothScrollTo(targetElement);
-              }
-          }
-      });
-  });
-}); // <-- cierre de DOMContentLoaded
-</script>
-
-
 </body>
 </html>
-

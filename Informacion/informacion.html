@@ -96,7 +96,7 @@
   </header>
 
   <!-- Contenido Principal -->
-  <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
+    <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
     
     <section>
         <h1 class="text-3xl font-bold text-white mb-6 text-center md:text-left">Información sobre el Proyecto</h1>
@@ -105,105 +105,108 @@
             <a href="documentos/Resumen_Ejecutivo.pdf" 
                download="Resumen_Ejecutivo_Ley_CURA.pdf"
                class="group relative inline-flex items-center gap-3 px-6 py-3 bg-white hover:bg-gray-100 text-cura-primary font-bold text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/50 hover:-translate-y-1 ring-2 ring-transparent hover:ring-cura-accent/50">
-                
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
-                
                 <span>Descargar Resumen Ejecutivo (PDF)</span>
-                
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-cura-primary opacity-50 group-hover:opacity-100 group-hover:translate-y-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
             </a>
         </div>
 
-      <!-- Grid Principal -->
         <div class="grid md:grid-cols-12 gap-8 items-start">
             
-            <!-- 
-               COLUMNA IZQUIERDA: BIOGRAFÍA 
-               - order-2: En celular va SEGUNDO (abajo).
-               - md:order-1: En PC va PRIMERO (izquierda).
-               - md:sticky md:top-24: Se pega al scroll SOLO en PC.
-               - self-start: Evita que el sticky se rompa si el contenedor flex crece.
-            -->
+            <div class="md:col-span-7 lg:col-span-8 order-1 md:order-2">
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <a href="/Informacion/objetivos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="ph-bold ph-target text-cura-accent"></i> Objetivos del Sistema
+                        </h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Propósitos centrales: simplificar el acceso, reducir errores y unificar historias clínicas.</p>
+                    </a>
+                    
+                    <a href="/Informacion/fundamentos.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="ph-bold ph-scales text-cura-accent"></i> Fundamentos de la Ley
+                        </h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Por qué la salud digital unificada es necesaria y cómo soluciona problemas actuales.</p>
+                    </a>
+
+                    <a href="/Informacion/financiamiento.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="ph-bold ph-bank text-cura-accent"></i> Financiamiento
+                        </h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Detalles del modelo económico y la viabilidad del sistema a largo plazo.</p>
+                    </a>
+
+                    <a href="/Informacion/implementacion-tecnica.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="ph-bold ph-cpu text-cura-accent"></i> Implementación Técnica
+                        </h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Arquitectura, APIs, blockchain, encriptación y componentes tecnológicos.</p>
+                    </a>
+
+                    <a href="/Informacion/beneficios.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="ph-bold ph-hand-heart text-cura-accent"></i> Beneficios
+                        </h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Ventajas para pacientes y profesionales: reducción de errores y atención humana.</p>
+                    </a>
+
+                    <a href="/Informacion/seg-priv.html" class="block bg-cura-card rounded-xl border border-cura-accent/40 p-5 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        <h3 class="text-base font-bold text-white mb-2 flex items-center gap-2">
+                            <i class="ph-bold ph-shield-check text-cura-accent"></i> Seguridad y Privacidad
+                        </h3>
+                        <p class="text-xs md:text-sm text-cura-accentLight">Cifrado extremo a extremo, tokenización y controles de acceso por niveles.</p>
+                    </a>
+
+                    </div>
+            </div>
+
             <div class="md:col-span-5 lg:col-span-4 order-2 md:order-1 md:sticky md:top-24 self-start">
                 <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-lg flex flex-col items-center text-center">
                     
-                    <!-- Foto Circular -->
                     <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-cura-accent mb-4 shadow-md bg-white">
                         <img src="/ID01-41316202/profile.png" alt="Franco Agustin Paganini" class="w-full h-full object-cover">
                     </div>
                     
-                    <!-- Nombre -->
                     <h2 class="text-xl font-bold text-white mb-3">Franco A. Paganini</h2>
                     
-                    <!-- Botón LinkedIn -->
                     <a href="https://linkedin.com/in/franco-paganini" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077b5] hover:bg-[#005e93] text-white text-sm font-semibold rounded-md transition-colors w-full justify-center mb-4">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                        LinkedIn
+                        <i class="ph-fill ph-linkedin-logo"></i> LinkedIn
                     </a>
 
-                    <!-- Línea Separadora -->
                     <div class="w-full border-t border-white/20 my-2"></div>
 
-                    <!-- Texto Biografía -->
-       
-    <div class="md:col-span-5 lg:col-span-4 order-2 md:order-1 md:sticky md:top-24 self-start">
-        <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-lg flex flex-col items-center text-center">
-            
-            <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-cura-accent mb-4 shadow-md bg-white">
-                <img src="/ID01-41316202/profile.png" alt="Franco Agustin Paganini" class="w-full h-full object-cover">
-            </div>
-            
-            <h2 class="text-xl font-bold text-white mb-3">Franco A. Paganini</h2>
-            
-            <a href="https://linkedin.com/in/franco-paganini" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077b5] hover:bg-[#005e93] text-white text-sm font-semibold rounded-md transition-colors w-full justify-center mb-4">
-                <i class="ph-fill ph-linkedin-logo"></i> LinkedIn
-            </a>
-
-            <div class="w-full border-t border-white/20 my-2"></div>
-
-            <div class="text-sm text-cura-accentLight text-left mt-3 space-y-4 leading-relaxed">
-                <div class="flex gap-3">
-                    <i class="ph-bold ph-medal text-cura-accent shrink-0 text-xl"></i>
-                    <p>
-                        <strong>Franco Agustín Paganini</strong> es <strong>Especialista en Gestión de Salud Digital</strong> (ADEN Business School / George Washington University) y profesional de tecnologías de la información con una sólida trayectoria en el sector público.
-                    </p>
-                </div>
-
-                <div class="flex gap-3">
-                    <i class="ph-bold ph-graduation-cap text-cura-accent shrink-0 text-xl"></i>
-                    <p>
-                        Su formación combina la arquitectura técnica con la estrategia sanitaria. Cursó estudios en la <strong>Licenciatura en Sistemas (Universidad Nacional de Luján)</strong>, lo que le brindó los fundamentos lógicos para el diseño de infraestructuras complejas, y cuenta con más de diez años de experiencia en soporte y soluciones tecnológicas. Ha complementado este perfil con certificaciones internacionales de la <strong>OPS/OMS</strong> en Sistemas de Información y el estándar de interoperabilidad <strong>HL7 FHIR</strong>, además de especializaciones en Derecho Presupuestario y Técnica Normativa.
-                    </p>
-                </div>
-
-                <div class="flex gap-3">
-                    <i class="ph-bold ph-scroll text-cura-accent shrink-0 text-xl"></i>
-                    <p>
-                        Es el autor intelectual e impulsor de la <strong>Ley C.U.R.A.</strong>, una iniciativa de infraestructura crítica diseñada para modernizar el Estado. Su trabajo se centra en transformar la gestión pública mediante herramientas concretas que aumenten la calidad, la eficiencia del gasto y la transparencia del sistema sanitario, garantizando la trazabilidad plena en todo el país.
-                    </p>
-                </div>
-
-                <div class="flex gap-3">
-                    <i class="ph-bold ph-user-focus text-cura-accent shrink-0 text-xl"></i>
-                    <p>
-                        <strong>La motivación detrás de la Ley:</strong> El proyecto no nace en un escritorio, sino de la experiencia personal. Franco vivió en primera persona la fragmentación del sistema: historias clínicas dispersas, diagnósticos inconexos y la burocracia de los trámites repetidos. Ese recorrido lo llevó a transformar la frustración de paciente en una propuesta técnica y operativa con una sola meta: <strong>que ninguna persona vuelva a atravesar las barreras de un sistema desconectado.</strong>
-                    </p>
-                </div>
-
-                <div class="flex gap-3">
-                    <i class="ph-bold ph-strategy text-cura-accent shrink-0 text-xl"></i>
-                    <p>
-                        Con una visión centrada en el ciudadano y un compromiso real con la modernización, Franco impulsa hoy la Ley C.U.R.A. como el cambio estructural necesario para el futuro de la salud en Argentina.
-                    </p>
+                    <div class="text-sm text-cura-accentLight text-left mt-3 space-y-4 leading-relaxed">
+                        <div class="flex gap-3">
+                            <i class="ph-bold ph-medal text-cura-accent shrink-0 text-xl"></i>
+                            <p><strong>Franco Agustín Paganini</strong> es <strong>Especialista en Gestión de Salud Digital</strong> (ADEN Business School / George Washington University) y profesional de tecnologías de la información con una sólida trayectoria en el sector público.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <i class="ph-bold ph-graduation-cap text-cura-accent shrink-0 text-xl"></i>
+                            <p>Su formación combina la arquitectura técnica con la estrategia sanitaria. Cursó estudios en la <strong>Licenciatura en Sistemas (Universidad Nacional de Luján)</strong>, lo que le brindó los fundamentos lógicos para el diseño de infraestructuras complejas, y cuenta con más de diez años de experiencia en soporte y soluciones tecnológicas. Ha complementado este perfil con certificaciones internacionales de la <strong>OPS/OMS</strong> en Sistemas de Información y el estándar de interoperabilidad <strong>HL7 FHIR</strong>, además de especializaciones en Derecho Presupuestario y Técnica Normativa.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <i class="ph-bold ph-scroll text-cura-accent shrink-0 text-xl"></i>
+                            <p>Es el autor intelectual e impulsor de la <strong>Ley C.U.R.A.</strong>, una iniciativa de infraestructura crítica diseñada para modernizar el Estado. Su trabajo se centra en transformar la gestión pública mediante herramientas concretas que aumenten la calidad, la eficiencia del gasto y la transparencia del sistema sanitario, garantizando la trazabilidad plena en todo el país.</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <i class="ph-bold ph-user-focus text-cura-accent shrink-0 text-xl"></i>
+                            <p><strong>La motivación detrás de la Ley:</strong> El proyecto no nace en un escritorio, sino de la experiencia personal. Franco vivió en primera persona la fragmentación del sistema: historias clínicas dispersas, diagnósticos inconexos y la burocracia de los trámites repetidos. Ese recorrido lo llevó a transformar la frustración de paciente en una propuesta técnica y operativa con una sola meta: <strong>que ninguna persona vuelva a atravesar las barreras de un sistema desconectado.</strong></p>
+                        </div>
+                        <div class="flex gap-3">
+                            <i class="ph-bold ph-strategy text-cura-accent shrink-0 text-xl"></i>
+                            <p>Con una visión centrada en el ciudadano y un compromiso real con la modernización, Franco impulsa hoy la Ley C.U.R.A. como el cambio estructural necesario para el futuro de la salud en Argentina.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
-    </div>
-</div>
+    </section>
+  </main>
 
 
             <!-- 

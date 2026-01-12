@@ -1291,6 +1291,17 @@ document.addEventListener('DOMContentLoaded', function () {
     width: 24rem !important;
     height: 40rem !important;
   }
+  
+  /* Ocultar el "Powered by Dify" */
+  [class*="powered-by"], 
+  div[class*="style_poweredBy"],
+  .dify-chatbot-powered-by {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+  }
 </style>
 
 </body>

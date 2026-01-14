@@ -1319,38 +1319,41 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
  window.difyChatbotConfig = {
   token: 'u6ZRgC965S5ppUAP',
-  inputs: {
-    // You can define the inputs from the Start node here
-    // key is the variable name
-    // e.g.
-    // name: "NAME"
-  },
-  systemVariables: {
-    // user_id: 'YOU CAN DEFINE USER ID HERE',
-    // conversation_id: 'YOU CAN DEFINE CONVERSATION ID HERE, IT MUST BE A VALID UUID',
-  },
-  userVariables: {
-    // avatar_url: 'YOU CAN DEFINE USER AVATAR URL HERE',
-    // name: 'YOU CAN DEFINE USER NAME HERE',
-  },
+  // Forzamos el título en la configuración del cliente
+  title: 'Asistente Virtual sobre la ley C.U.R.A.',
+  containerProps: {
+      title: 'Asistente Virtual sobre la ley C.U.R.A.'
+  }
  }
 </script>
+
 <script
  src="https://udify.app/embed.min.js"
  id="u6ZRgC965S5ppUAP"
  defer>
 </script>
+
 <style>
+  /* Fix para el botón del chat */
   #dify-chatbot-bubble-button {
-    /* Color azul oficial C.U.R.A. */
-    background-color: #004E85 !important;
+    background-color: #004E85 !important; /* Azul C.U.R.A. */
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 999999 !important;
   }
+
+  /* Fix para la ventana del chat: evita que se quede arriba al scrollear */
   #dify-chatbot-bubble-window {
     width: 24rem !important;
     height: 40rem !important;
+    position: fixed !important;
+    bottom: 90px !important; /* Se mantiene arriba del botón */
+    right: 20px !important;
+    z-index: 999999 !important;
   }
-  
-  /* Ocultar el "Powered by Dify" */
+
+  /* Ocultar el pie de página "Powered by Dify" */
   [class*="powered-by"], 
   div[class*="style_poweredBy"],
   .dify-chatbot-powered-by {

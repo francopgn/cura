@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest">
   <title>Participación Ciudadana | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,26 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #004E85; }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
-
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen text-white">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -64,74 +46,105 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Participación Ciudadana</span>
+      <span class="text-white font-semibold">Participación Ciudadana</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Control Social Activo
       </h1>
+      <p class="text-cura-accentLight max-w-2xl text-lg">
+        El ciudadano como auditor de su propia salud, garantizando la transparencia y la protección de sus derechos digitales.
+      </p>
+    </div>
 
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-user-focus text-cura-accent text-2xl"></i>
+          1. Ciudadano Soberano de sus Datos
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La Ley C.U.R.A. redefine la relación entre el paciente y el sistema sanitario. Mediante el sistema de identidad única <strong>CURA-ID</strong> y la <strong>Credencial Única de Salud (C.U.S.)</strong>, cada persona garantiza la portabilidad de su historial y tiene la potestad legal de auditar quién, cuándo y para qué accede a sus registros clínicos.
+        </p>
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">El ciudadano como auditor de su propia salud.</p>
-        <div class="flex gap-4">
-          <a href="/Informacion/preguntas-frecuentes" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Preguntas Frecuentes
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-device-mobile text-cura-accent text-2xl"></i>
+          2. Acceso Multiplataforma y Ubicuidad
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Los ciudadanos pueden consultar su información clínica completa, recetas digitales y gestión federal de turnos en tiempo real. Este acceso se garantiza a través de un <strong>Portal Web oficial</strong> dedicado o mediante la integración total con la plataforma <strong>Mi Argentina</strong>, asegurando que la salud esté siempre disponible.
+        </p>
       </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-shield-checkered text-cura-accent text-2xl"></i>
+          3. Panel de Transparencia (Blockchain)
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El núcleo del control social es el <strong>Panel de Transparencia</strong>, donde el ciudadano visualiza el registro inmutable generado por la capa de <strong>Blockchain</strong>. Cada acceso genera una notificación instantánea y un registro permanente que no puede ser borrado ni alterado, permitiendo una fiscalización directa.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-megaphone text-cura-accent text-2xl"></i>
+          4. Canal Federal de Reclamos
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Se establece un mecanismo ágil para denunciar accesos no autorizados o irregularidades. Estas alertas activan automáticamente protocolos de auditoría técnica por parte de la <strong>AAIP</strong> y la <strong>Autoridad de Aplicación</strong>, garantizando una respuesta efectiva y protección en plazos perentorios.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-chart-pie text-cura-accent text-2xl"></i>
+          5. Rendición de Cuentas (Datos Abiertos)
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          En sintonía con el <strong>Consejo de Mayo</strong>, el sistema publica de forma proactiva la ejecución del fondo <strong>FIISD</strong>, las métricas de ahorro operativo y los resultados de auditorías de ciberseguridad. Esta información permite que la sociedad civil supervise el impacto real de la modernización sanitaria.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-hand-eye text-cura-accent text-2xl"></i>
+          6. Defensa contra el Uso Comercial
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La participación ciudadana es el primer escudo contra el uso indebido. El marco legal empodera al ciudadano para denunciar intentos de perfilamiento o venta de datos, activando las <strong>sanciones gravísimas e inhabilitaciones permanentes</strong> previstas para proteger la confianza pública.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <p class="text-cura-accentLight text-sm italic">El ciudadano como auditor de su propia salud.</p>
+      <a href="/Informacion/faq.html" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Preguntas Frecuentes
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
-    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
+    <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `<strong>1. El Ciudadano como Soberano de sus Datos:</strong> La Ley C.U.R.A. redefine la relación entre el paciente y el sistema sanitario. Mediante el sistema de identidad única <strong>CURA-ID</strong> y la <strong>Credencial Única de Salud (C.U.S.)</strong>, cada persona garantiza la portabilidad de su historial y tiene la potestad legal de auditar quién, cuándo y para qué accede a sus registros clínicos.<br><br><strong>2. Acceso Multiplataforma y Ubicuidad:</strong> Los ciudadanos pueden consultar su información clínica completa, recetas digitales y gestión federal de turnos en tiempo real. Este acceso se garantiza a través de un <strong>Portal Web oficial</strong> dedicado o mediante la integración total con la plataforma <strong>Mi Argentina</strong>, asegurando que la salud esté siempre disponible de forma segura y accesible.<br><br><strong>3. Panel de Transparencia y Auditoría Blockchain:</strong> El núcleo del control social es el <strong>Panel de Transparencia</strong>, donde el ciudadano visualiza el registro inmutable generado por la capa de <strong>Blockchain</strong>. Cada acceso a sus datos genera una notificación instantánea y un registro permanente que no puede ser borrado ni alterado, permitiendo una fiscalización ciudadana directa y sin intermediarios.<br><br><strong>4. Canal Federal de Reclamos y Alerta Temprana:</strong> Se establece un mecanismo ágil para denunciar accesos no autorizados, irregularidades o fallas en la prestación. Estas alertas activan automáticamente protocolos de auditoría técnica por parte de la <strong>AAIP</strong> y la <strong>Autoridad de Aplicación</strong>, garantizando una respuesta efectiva y la protección de los derechos digitales en plazos perentorios.<br><br><strong>5. Rendición de Cuentas y Datos Abiertos:</strong> En sintonía con los principios de transparencia del <strong>Consejo de Mayo</strong>, el sistema publica de forma proactiva la ejecución del fondo <strong>FIISD</strong>, las métricas de ahorro operativo y los resultados de las auditorías de ciberseguridad. Esta información, en formatos abiertos y anonimizados, permite que la sociedad civil supervise el impacto real de la modernización sanitaria.<br><br><strong>6. Defensa contra el Uso Comercial y Perfilamiento:</strong> La participación ciudadana es el primer escudo contra el uso indebido de la información. El marco legal empodera al ciudadano para denunciar cualquier intento de perfilamiento o venta de datos con fines comerciales o políticos, activando las <strong>sanciones gravísimas e inhabilitaciones permanentes</strong> previstas para proteger la confianza pública.`;
-
-      let i = 0;
-      const speed = 5; 
-
-      function typeWriter() {
-        if (i < textToType.length) {
-          if (textToType.charAt(i) === '<') {
-            let endTag = textToType.indexOf('>', i);
-            if (endTag !== -1) {
-              i = endTag + 1;
-            }
-          } else {
-            i++;
-          }
-          textElement.innerHTML = textToType.substring(0, i);
-          setTimeout(typeWriter, speed);
-        } else {
-          textElement.classList.remove('cursor-blink');
-        }
-      }
-
-      setTimeout(typeWriter, 500);
-    });
-  </script>
 </body>
 </html>

@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest">
   <title>Etapas de Implementación | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,26 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #004E85; }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
-
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen text-white">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -64,74 +46,115 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Etapas de Implementación</span>
+      <span class="text-white font-semibold">Etapas de Implementación</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Implementación por Hitos
       </h1>
-
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
+        <p class="text-sm md:text-base leading-relaxed text-white/90">
+            El despliegue de C.U.R.A. se basa en un modelo de <strong>"Hitos de Salida"</strong> y no en fechas calendario rígidas. No se avanzará a una nueva fase hasta que la anterior esté tecnológicamente estabilizada, descartando el modelo de implementación simultánea ("Big Bang").
+        </p>
       </div>
+    </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">Hitos de salida: estabilidad antes que velocidad.</p>
-        <div class="flex gap-4">
-          <a href="/Informacion/participacion" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Participación Ciudadana
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+    <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-cura-accent before:via-cura-accent/30 before:to-transparent">
+      
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+          <i class="ph-bold ph-gear"></i>
+        </div>
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-white">Fase 0: Cimientos y Estandarización</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 1-6</span>
+          </div>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            ● Despliegue de la infraestructura central (Bus de Interoperabilidad) y publicación de las Guías de Implementación Técnicas (IGs).<br>
+            ● Homologación de catálogos (SNOMED CT) y adecuación normativa nacional.<br>
+            ● <strong>Sin impacto operativo:</strong> Los prestadores siguen operando como siempre mientras adecuan sus interfaces técnicas de forma transparente.
+          </p>
         </div>
       </div>
+
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+          <i class="ph-bold ph-test-tube"></i>
+        </div>
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-white">Fase 1: Sandbox Regulatorio</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 6-18</span>
+          </div>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            ● <strong>Selección Estratégica:</strong> Jurisdicciones piloto basadas en madurez tecnológica y consenso político.<br>
+            ● <strong>Respeto al Legado:</strong> Coexistencia con sistemas actuales; no se exige migración inmediata de datos históricos.<br>
+            ● <strong>Régimen de "Puerto Seguro":</strong> Amnistía técnica para instituciones con planes de trabajo activos, priorizando el acompañamiento educativo.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+          <i class="ph-bold ph-map-trifold"></i>
+        </div>
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-white">Fase 2: Expansión Regional</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 18-36</span>
+          </div>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            ● Despliegue progresivo por regiones geográficas (NOA, NEA, Centro, Cuyo, Patagonia).<br>
+            ● Se habilita la <strong>portabilidad interjurisdiccional plena</strong>, permitiendo atención federal con historial completo al instante.
+          </p>
+        </div>
+      </div>
+
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+          <i class="ph-bold ph-check-circle"></i>
+        </div>
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-white">Fase 3: Régimen Definitivo</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MES 36+</span>
+          </div>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            ● Plena vigencia nacional en todos los subsectores.<br>
+            ● <strong>Distinción de Faltas:</strong> Diferenciación entre errores de buena fe y actos de dolo.<br>
+            ● <strong>Castigo al Fraude:</strong> Multas severas e inhabilitación permanente para uso comercial no autorizado o robo de identidad.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <p class="text-cura-accentLight text-sm italic">Hitos de salida: estabilidad antes que velocidad.</p>
+      <a href="/Informacion/participacion" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Participación Ciudadana
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
-    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
+    <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `El despliegue de C.U.R.A. se basa en un modelo de <strong>"Hitos de Salida"</strong> y no en fechas calendario rígidas. No se avanzará a una nueva fase hasta que la anterior esté tecnológicamente estabilizada, descartando el modelo de implementación simultánea ("Big Bang").<br><br><strong>Fase 0: Cimientos y Estandarización (Meses 1-6)</strong><br>● Despliegue de la infraestructura central (Bus de Interoperabilidad) y publicación de las Guías de Implementación Técnicas (IGs).<br>● Homologación de catálogos (SNOMED CT) y adecuación normativa nacional.<br>● <strong>Sin impacto operativo:</strong> Los prestadores siguen operando como siempre mientras adecuan sus interfaces técnicas de forma transparente.<br><br><strong>Fase 1: "Sandbox Regulatorio" y Coexistencia (Meses 6-18)</strong><br>● <strong>Selección Estratégica:</strong> Se elegirán las primeras jurisdicciones basándose en su madurez tecnológica y consenso político (adhesión voluntaria), asegurando un entorno de prueba de bajo riesgo.<br>● <strong>Respeto al Legado:</strong> Se garantiza la coexistencia con los sistemas actuales. No se exige la migración inmediata de datos históricos, sino la interoperabilidad de los nuevos registros.<br>● <strong>Régimen de "Puerto Seguro":</strong> Durante esta etapa rige una amnistía técnica; las instituciones con planes de trabajo activos no serán sancionadas por fallas de interoperabilidad, priorizando el acompañamiento educativo.<br><br><strong>Fase 2: Expansión Regional (Meses 18-36)</strong><br>● Una vez estabilizado el piloto, se inicia el despliegue progresivo por regiones geográficas (NOA, NEA, Centro, Cuyo, Patagonia).<br>● Se habilita la <strong>portabilidad interjurisdiccional plena</strong>, permitiendo que un paciente sea atendido en cualquier punto del país con su historial completo al instante.<br><br><strong>Fase 3: Régimen Definitivo y Sanciones Diferenciadas (Mes 36+)</strong><br>● Plena vigencia del sistema nacional en todos los subsectores.<br>● <strong>Distinción de Faltas:</strong> La ley distingue taxativamente entre errores operativos de buena fe y actos de dolo o malicia.<br>● <strong>Castigo al Fraude:</strong> Para casos de uso comercial no autorizado o robo de identidad, se establecen multas atadas a la facturación e inhabilitación permanente de licencias, protegiendo la integridad del sistema.`;
-
-      let i = 0;
-      const speed = 5; 
-
-      function typeWriter() {
-        if (i < textToType.length) {
-          if (textToType.charAt(i) === '<') {
-            let endTag = textToType.indexOf('>', i);
-            if (endTag !== -1) {
-              i = endTag + 1;
-            }
-          } else {
-            i++;
-          }
-          textElement.innerHTML = textToType.substring(0, i);
-          setTimeout(typeWriter, speed);
-        } else {
-          textElement.classList.remove('cursor-blink');
-        }
-      }
-
-      setTimeout(typeWriter, 500);
-    });
-  </script>
 </body>
 </html>

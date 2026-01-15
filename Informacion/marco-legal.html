@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest">
   <title>Marco Legal | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,26 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #004E85; }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
-
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -64,74 +46,115 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Marco Legal</span>
+      <span class="text-white font-semibold">Marco Legal</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+    <div class="mb-12 text-center md:text-left">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Marco Legal
       </h1>
+      <p class="text-cura-accentLight max-w-2xl text-lg">
+        La base jurídica para una seguridad digital definitiva y la soberanía de los datos de salud.
+      </p>
+    </div>
 
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-gavel text-cura-accent text-2xl"></i>
+          1. Declaración de Orden Público
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La Ley C.U.R.A. se establece como una norma de <strong>Orden Público</strong> en todo lo referente a la portabilidad de datos, interoperabilidad y estándares de ciberseguridad. Esto garantiza que el derecho del ciudadano a poseer su historia clínica digital es superior a cualquier normativa local o institucional, siendo de aplicación obligatoria en todo el territorio nacional de conformidad con la Constitución Nacional.
+        </p>
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">Hacia una seguridad jurídica digital definitiva.</p>
-        <div class="flex gap-4">
-          <a href="/Informacion/alcance" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Alcance Federal
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-scales text-cura-accent text-2xl"></i>
+          2. Ejecución de la Ley 27.706
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El sistema constituye el mecanismo técnico y operativo oficial para dar cumplimiento efectivo a la Ley Nacional de Historia Clínica Electrónica (27.706). C.U.R.A. transforma la "voluntad digital" de legislaciones previas en un estándar técnico vinculante, unificando el <strong>Sistema Único de Registro de Historias Clínicas Electrónicas (S.U.R.H.C.E.)</strong>.
+        </p>
       </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-handshake text-cura-accent text-2xl"></i>
+          3. Federalismo de Concertación
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          En sintonía con el <strong>Pacto de Mayo</strong>, el proyecto se apoya en la institucionalidad del <strong>Consejo de Mayo</strong> como catalizador del federalismo moderno. Bajo el principio de <strong>Federalismo de Concertación</strong>, se invita a las provincias a adherir voluntariamente para alcanzar el equilibrio fiscal y la modernización administrativa, respetando sus autonomías pero unificando la "autopista digital" sanitaria.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
+          4. Soberanía Sanitaria Digital
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El marco legal impone la <strong>Residencia Obligatoria de Datos</strong> en territorio argentino. La infraestructura técnica debe ser provista de forma exclusiva por <strong>ARSAT</strong>, blindando la información sensible de los ciudadanos contra jurisdicciones extranjeras y garantizando que la soberanía tecnológica sea una política de Estado innegociable.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-cube text-cura-accent text-2xl"></i>
+          5. Inmutabilidad y Respaldo Jurídico
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Se otorga validez legal absoluta a los registros digitales integrados. Mediante el uso de <strong>Blockchain y Firma Digital</strong>, cada acto médico cuenta con un respaldo documental inalterable. Esto protege tanto al paciente como al profesional, eliminando la precariedad de los registros físicos o sistemas analógicos fácilmente adulterables.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-shield-checkered text-cura-accent text-2xl"></i>
+          6. Protección de Datos Personales
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La ley refuerza los preceptos de la <strong>Ley 25.326</strong>, incorporando el principio de <strong>Privacidad por Diseño</strong>. Queda prohibido el uso de la información clínica para fines comerciales o políticos, estableciendo sanciones gravísimas y responsabilidad civil y penal para cualquier actor que vulnere la confidencialidad de los datos sanitarios.
+        </p>
+      </div>
+
+      <div class="md:col-span-2 bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-1">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+          <i class="ph-bold ph-chart-line-up text-cura-accent text-3xl"></i>
+          7. Máxima Eficiencia y Transparencia
+        </h3>
+        <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
+          El marco legal obliga a la <strong>Autoridad de Aplicación</strong> a publicar auditorías trimestrales de ejecución presupuestaria y métricas de ahorro operativo. La ley garantiza que el sistema sea autosostenible mediante la reinversión del <strong>100% de los ahorros</strong> generados por la despapelización y la eliminación de fraudes operativos en el sector público.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <p class="text-cura-accentLight text-sm italic">Hacia una seguridad jurídica digital definitiva.</p>
+      <a href="/Informacion/alcance" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Alcance Federal
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
-    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
+    <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `<strong>1. Declaración de Orden Público:</strong> La Ley C.U.R.A. se establece como una norma de <strong>Orden Público</strong> en todo lo referente a la portabilidad de datos, interoperabilidad y estándares de ciberseguridad. Esto garantiza que el derecho del ciudadano a poseer su historia clínica digital es superior a cualquier normativa local o institucional, siendo de aplicación obligatoria en todo el territorio nacional de conformidad con la Constitución Nacional.<br><br><strong>2. Ejecución Operativa de la Ley 27.706:</strong> El sistema constituye el mecanismo técnico y operativo oficial para dar cumplimiento efectivo a la Ley Nacional de Historia Clínica Electrónica (27.706). C.U.R.A. transforma la "voluntad digital" de legislaciones previas en un estándar técnico vinculante, unificando el <strong>Sistema Único de Registro de Historias Clínicas Electrónicas (S.U.R.H.C.E.)</strong>.<br><br><strong>3. Federalismo de Concertación y Pacto de Mayo:</strong> En sintonía con el <strong>Pacto de Mayo</strong>, el proyecto se apoya en la institucionalidad del <strong>Consejo de Mayo</strong> como catalizador del federalismo moderno. Bajo el principio de <strong>Federalismo de Concertación</strong>, se invita a las provincias a adherir voluntariamente para alcanzar el equilibrio fiscal y la modernización administrativa, respetando sus autonomías pero unificando la "autopista digital" sanitaria.<br><br><strong>4. Soberanía Sanitaria Digital y Residencia de Datos:</strong> El marco legal impone la <strong>Residencia Obligatoria de Datos</strong> en territorio argentino. La infraestructura técnica debe ser provista de forma exclusiva por <strong>ARSAT</strong>, blindando la información sensible de los ciudadanos contra jurisdicciones extranjeras y garantizando que la soberanía tecnológica sea una política de Estado innegociable.<br><br><strong>5. Inmutabilidad y Respaldo Jurídico:</strong> Se otorga validez legal absoluta a los registros digitales integrados. Mediante el uso de <strong>Blockchain y Firma Digital</strong>, cada acto médico cuenta con un respaldo documental inalterable. Esto protege tanto al paciente como al profesional, eliminando la precariedad de los registros físicos o sistemas analógicos fácilmente adulterables.<br><br><strong>6. Protección Integral de Datos Personales:</strong> La ley refuerza los preceptos de la <strong>Ley 25.326</strong>, incorporando el principio de <strong>Privacidad por Diseño</strong>. Queda prohibido el uso de la información clínica para fines comerciales o políticos, estableciendo sanciones gravísimas y responsabilidad civil y penal para cualquier actor que vulnere la confidencialidad de los datos sanitarios.<br><br><strong>7. Máxima Eficiencia y Transparencia:</strong> El marco legal obliga a la <strong>Autoridad de Aplicación</strong> a publicar auditorías trimestrales de ejecución presupuestaria y métricas de ahorro operativo. La ley garantiza que el sistema sea autosostenible mediante la reinversión del <strong>100% de los ahorros</strong> generados por la despapelización y la eliminación de fraudes operativos en el sector público.`;
-
-      let i = 0;
-      const speed = 5; 
-
-      function typeWriter() {
-        if (i < textToType.length) {
-          if (textToType.charAt(i) === '<') {
-            let endTag = textToType.indexOf('>', i);
-            if (endTag !== -1) {
-              i = endTag + 1;
-            }
-          } else {
-            i++;
-          }
-          textElement.innerHTML = textToType.substring(0, i);
-          setTimeout(typeWriter, speed);
-        } else {
-          textElement.classList.remove('cursor-blink');
-        }
-      }
-
-      setTimeout(typeWriter, 500);
-    });
-  </script>
 </body>
 </html>

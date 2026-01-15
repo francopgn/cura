@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest">
   <title>Alcance Federal | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,25 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #004E85; }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -63,76 +46,105 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-
-
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Alcance Federal y Gobernanza</span>
+      <span class="text-white font-semibold">Alcance Federal y Gobernanza</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Alcance y Gobernanza
       </h1>
+      <p class="text-cura-accentLight max-w-2xl">
+        Federalismo moderno, gestión transparente y soberanía de datos en todo el territorio nacional.
+      </p>
+    </div>
 
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-handshake text-cura-accent text-2xl"></i>
+          1. Federalismo de Concertación
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La Ley C.U.R.A. se implementa bajo el principio de <strong>Federalismo de Concertación</strong>, alineado con los objetivos estratégicos del <strong>Pacto de Mayo</strong>. No es una imposición centralista, sino un acuerdo nacional donde la Nación provee la autopista tecnológica y las provincias conservan la gestión de su salud local, trabajando coordinadamente bajo la supervisión del <strong>Consejo de Mayo</strong>.
+        </p>
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">Federalismo moderno y gestión transparente.</p>
-        <div class="flex gap-4">
-      <a href="/Informacion/interoperabilidad" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Interoperabilidad
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-briefcase text-cura-accent text-2xl"></i>
+          2. Autoridad de Aplicación
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La conducción estratégica está a cargo de una <strong>Autoridad de Aplicación</strong> nacional, asistida por una <strong>Unidad Ejecutora</strong> técnica compuesta por especialistas de Salud, <strong>ARSAT</strong> e Innovación Pública. Esta estructura opera bajo el principio de <strong>Costo Cero</strong>, utilizando recursos humanos y tecnológicos preexistentes del Estado para evitar la creación de burocracia innecesaria.
+        </p>
       </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-check-square-offset text-cura-accent text-2xl"></i>
+          3. Integración Obligatoria
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El sistema es de cumplimiento obligatorio para organismos nacionales como el <strong>PAMI</strong>, Obras Sociales Nacionales y Entidades de Medicina Prepaga. Para las provincias, la adhesión se realiza mediante convenios federales que les permiten acceder a la infraestructura de <strong>C.U.R.A.</strong> como un "Software Público", eliminando costos de desarrollo y mantenimiento jurisdiccional.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-database text-cura-accent text-2xl"></i>
+          4. Titularidad de los Datos
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El marco de gobernanza garantiza que, aunque la plataforma sea nacional, cada provincia mantiene la <strong>Titularidad Jurídica</strong> de los registros médicos generados en su territorio. La Nación actúa como el custodio tecnológico y garante de la ciberseguridad, pero la soberanía sobre la gestión del dato permanece en la jurisdicción de origen.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-users-three text-cura-accent text-2xl"></i>
+          5. Consejo Federal (COFESAD)
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Se jerarquiza la participación federal a través del <strong>COFESAD</strong>, donde los representantes de todas las jurisdicciones tienen voz y voto en la definición de los estándares de interoperabilidad. Esto asegura que el sistema evolucione respondiendo a las realidades geográficas y sanitarias de cada rincón del país.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-eye text-cura-accent text-2xl"></i>
+          6. Gobernanza Transparente
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Incluye mecanismos de <strong>Transparencia Activa</strong>, con informes de gestión trimestrales y auditorías públicas. El sistema permite el control social, donde ciudadanos y organismos de control pueden verificar en tiempo real el cumplimiento de las metas de eficiencia presupuestaria y los estándares de seguridad establecidos por la ley.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <p class="text-cura-accentLight text-sm italic">Federalismo moderno y gestión transparente.</p>
+      <a href="/Informacion/interoperabilidad" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Interoperabilidad
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `<strong>1. Federalismo de Concertación y el Consejo de Mayo:</strong> La Ley C.U.R.A. se implementa bajo el principio de <strong>Federalismo de Concertación</strong>, alineado con los objetivos estratégicos del <strong>Pacto de Mayo</strong>. No es una imposición centralista, sino un acuerdo nacional donde la Nación provee la autopista tecnológica y las provincias conservan la gestión de su salud local, trabajando coordinadamente bajo la supervisión del <strong>Consejo de Mayo</strong>.<br><br><strong>2. Autoridad de Aplicación y Unidad Ejecutora:</strong> La conducción estratégica está a cargo de una <strong>Autoridad de Aplicación</strong> nacional, asistida por una <strong>Unidad Ejecutora</strong> técnica compuesta por especialistas de Salud, <strong>ARSAT</strong> e Innovación Pública. Esta estructura opera bajo el principio de <strong>Costo Cero</strong>, utilizando recursos humanos y tecnológicos preexistentes del Estado para evitar la creación de burocracia innecesaria.<br><br><strong>3. Integración Obligatoria y Adhesión Provincial:</strong> El sistema es de cumplimiento obligatorio para organismos nacionales como el <strong>PAMI</strong>, Obras Sociales Nacionales y Entidades de Medicina Prepaga. Para las provincias, la adhesión se realiza mediante convenios federales que les permiten acceder a la infraestructura de <strong>C.U.R.A.</strong> como un "Software Público", eliminando costos de desarrollo y mantenimiento jurisdiccional.<br><br><strong>4. Titularidad Jurisdiccional de los Datos:</strong> El marco de gobernanza garantiza que, aunque la plataforma sea nacional, cada provincia mantiene la <strong>Titularidad Jurídica</strong> de los registros médicos generados en su territorio. La Nación actúa como el custodio tecnológico y garante de la ciberseguridad, pero la soberanía sobre la gestión del dato permanece en la jurisdicción de origen.<br><br><strong>5. Consejo Federal de Salud Digital (COFESAD):</strong> Se jerarquiza la participación federal a través del <strong>COFESAD</strong>, donde los representantes de todas las jurisdicciones tienen voz y voto en la definición de los estándares de interoperabilidad. Esto asegura que el sistema evolucione respondiendo a las realidades geográficas y sanitarias de cada rincón del país.<br><br><strong>6. Gobernanza Transparente y Auditoría:</strong> La gobernanza incluye mecanismos de <strong>Transparencia Activa</strong>, con informes de gestión trimestrales y auditorías públicas. El sistema permite el control social, donde ciudadanos y organismos de control pueden verificar en tiempo real el cumplimiento de las metas de eficiencia presupuestaria y los estándares de seguridad establecidos por la ley.`;
-
-      let i = 0;
-      const speed = 5; 
-
-      function typeWriter() {
-        if (i < textToType.length) {
-          if (textToType.charAt(i) === '<') {
-            let endTag = textToType.indexOf('>', i);
-            if (endTag !== -1) {
-              i = endTag + 1;
-            }
-          } else {
-            i++;
-          }
-          textElement.innerHTML = textToType.substring(0, i);
-          setTimeout(typeWriter, speed);
-        } else {
-          textElement.classList.remove('cursor-blink');
-        }
-      }
-
-      setTimeout(typeWriter, 500);
-    });
-  </script>
 </body>
 </html>

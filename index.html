@@ -225,97 +225,86 @@
 </header>
 
 
-  <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
-
-    <section class="grid md:grid-cols-2 gap-10 items-center">
-      
-      <div>
-        <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">
-          LEY C.U.R.A.
-        </p>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow">
-          Diseñando el futuro de la Salud Pública Argentina
-        </h1>
-        <p class="text-sm md:text-base text-cura-accentLight mb-6">
-          Vos podés ser parte de la mayor transformación de la historia del sistema de Salud Digital Argentino.
-        </p>
-
- <div class="flex flex-col gap-3">
-  <div class="flex gap-3">
-    <button id="btn-sumate" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
-      QUIERO SUMARME
-    </button>
-    <button id="btn-info" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
-      Obtén más información
-    </button>
-  </div>
-
-<a href="/Informacion/documentos/Resumen_Ejecutivo.pdf" target="_blank" 
-   class="group relative inline-flex items-center justify-center overflow-hidden bg-cura-accent px-8 py-4 rounded-xl text-white font-bold shadow-lg transition-all duration-300 hover:bg-cura-accent/90 hover:shadow-cura-accent/20">
-  
-  <div class="relative flex flex-col items-center transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
+<main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
+  <section class="grid md:grid-cols-2 gap-10 items-center">
     
-    <span class="flex items-center gap-2 py-1">
-      <i class="ph-bold ph-file-pdf text-xl"></i>
-      Ver Resumen Ejecutivo
-    </span>
-    
-    <span class="absolute top-full flex items-center gap-2 py-1 whitespace-nowrap text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-      Última actualización: 14/01/2026
-    </span>
-    
-  </div>
-</a>
+    <div class="flex flex-col justify-center">
+      <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">
+        LEY C.U.R.A.
+      </p>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow">
+        Diseñando el futuro de la Salud Pública Argentina
+      </h1>
+      <p class="text-sm md:text-base text-cura-accentLight mb-6">
+        Vos podés ser parte de la mayor transformación de la historia del sistema de Salud Digital Argentino.
+      </p>
 
-        <p class="mt-6 text-[11px] text-cura-accentLight">
+      <div class="flex flex-col gap-3">
+        <div class="flex gap-3">
+          <button id="btn-sumate" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
+            QUIERO SUMARME
+          </button>
+          <button id="btn-info" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
+            Obtén más información
+          </button>
+        </div>
+
+        <a href="/Informacion/documentos/Resumen_Ejecutivo.pdf" target="_blank" 
+           class="group relative inline-flex items-center justify-center overflow-hidden bg-cura-accent h-[58px] rounded-xl text-white font-bold shadow-lg transition-all duration-300 hover:bg-cura-accent/90 hover:shadow-cura-accent/20">
+          
+          <div class="relative flex flex-col items-center transition-transform duration-500 ease-in-out group-hover:-translate-y-full w-full">
+            <span class="flex items-center justify-center gap-2 h-[58px] w-full flex-shrink-0">
+              <i class="ph-bold ph-file-pdf text-xl"></i>
+              Ver Resumen Ejecutivo
+            </span>
+            <span class="flex items-center justify-center gap-2 h-[58px] w-full flex-shrink-0 text-xs md:text-sm whitespace-nowrap opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              Última actualización: 14/01/2026
+            </span>
+          </div>
+        </a>
+
+        <p class="mt-4 text-[11px] text-cura-accentLight leading-tight">
           Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
         </p>
       </div>
-
-      <div class="relative w-full flex justify-center items-center perspective-container">
-        <div class="absolute inset-0 bg-cura-accent/40 blur-3xl rounded-full -z-10 transform scale-90"></div>
-        
-        <div class="card-container animate-float">
-          <div id="credencial-giratoria" class="card-inner">
-            
-            <div class="card-face card-front">
-              <img src="credencial-frente-base.png" alt="Credencial Frente" class="card-bg-img">
-              <div class="card-data-layer">
-                 <div class="pos-nombre-front" id="cred-nombre-front"></div>
-                 <div class="pos-dni-front" id="cred-dni-front"></div>
-                 <div class="pos-sangre" id="cred-sangre"></div>
-                 
-                 <div class="data-block block-alergias" id="cred-alergias"></div>
-                 <div class="data-block block-operaciones" id="cred-operaciones"></div>
-                 <div class="data-block block-fecha-nac" id="cred-fecha-nac"></div>
-                 
-                 <div class="data-block block-medicamentos" id="cred-medicamentos"></div>
-                 <div class="data-block block-domicilio" id="cred-domicilio"></div>
-                 
-                 <div class="data-block block-antecedentes" id="cred-antecedentes"></div>
-                 <div class="data-block block-contactos" id="cred-contactos"></div>
-                <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
-              </div>
+    </div> <div class="relative w-full flex justify-center items-center perspective-container">
+      <div class="absolute inset-0 bg-cura-accent/40 blur-3xl rounded-full -z-10 transform scale-90"></div>
+      
+      <div class="card-container animate-float">
+        <div id="credencial-giratoria" class="card-inner">
+          <div class="card-face card-front">
+            <img src="credencial-frente-base.png" alt="Credencial Frente" class="card-bg-img">
+            <div class="card-data-layer">
+               <div class="pos-nombre-front" id="cred-nombre-front"></div>
+               <div class="pos-dni-front" id="cred-dni-front"></div>
+               <div class="pos-sangre" id="cred-sangre"></div>
+               <div class="data-block block-alergias" id="cred-alergias"></div>
+               <div class="data-block block-operaciones" id="cred-operaciones"></div>
+               <div class="data-block block-fecha-nac" id="cred-fecha-nac"></div>
+               <div class="data-block block-medicamentos" id="cred-medicamentos"></div>
+               <div class="data-block block-domicilio" id="cred-domicilio"></div>
+               <div class="data-block block-antecedentes" id="cred-antecedentes"></div>
+               <div class="data-block block-contactos" id="cred-contactos"></div>
+               <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
             </div>
-
-            <div class="card-face card-back">
-              <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
-              <div class="card-data-layer">
-                  <div class="pos-nombre-back" id="cred-nombre-back"></div>
-                  <div class="pos-dni-back" id="cred-dni-back"></div>
-                  <div class="pos-id-number" id="cred-id-number"></div>
-                <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
-              </div>
+          </div>
+          <div class="card-face card-back">
+            <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
+            <div class="card-data-layer">
+                <div class="pos-nombre-back" id="cred-nombre-back"></div>
+                <div class="pos-dni-back" id="cred-dni-back"></div>
+                <div class="pos-id-number" id="cred-id-number"></div>
+              <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
             </div>
-
           </div>
         </div>
-
-        <p class="absolute -bottom-10 text-center text-[11px] text-cura-accentLight animate-pulse opacity-80">
-          (Hacé click en la credencial para girarla)
-        </p>
       </div>
-    </section>
+
+      <p class="absolute -bottom-10 text-center text-[11px] text-cura-accentLight animate-pulse opacity-80">
+        (Hacé click en la credencial para girarla)
+      </p>
+    </div>
+  </section>
 
 <section id="informacion" class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-8">
     

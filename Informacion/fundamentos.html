@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<link rel="manifest" href="site.webmanifest">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest">
   <title>Fundamentos | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,28 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body {
-      background-color: #004E85;
-    }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
-
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -66,83 +46,95 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Fundamentos de la Ley</span>
+      <span class="text-white font-semibold">Fundamentos de la Ley</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
-        Fundamentos
+    <div class="mb-12 text-center md:text-left">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+        Fundamentos Políticos y Técnicos
       </h1>
+      <p class="text-cura-accentLight max-w-2xl">
+        Los pilares estructurales que sostienen la mayor transformación del sistema sanitario argentino.
+      </p>
+    </div>
 
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
+          Fin de la Fragmentación
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Respuesta estructural a las "islas de datos". Establece una <strong>red sanitaria federal única</strong> donde el historial clínico pertenece al ciudadano y no a la institución.
+        </p>
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">Hacia una salud más justa, eficiente y humana.</p>
-        <div class="flex gap-4">
-          <a href="/Informacion/financiamiento" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Financiamiento
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-handshake text-cura-accent text-2xl"></i>
+          Federalismo de Concertación
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          En sintonía con el <strong>Pacto de Mayo</strong>. Una herramienta que permite a las provincias modernizarse y alcanzar el equilibrio fiscal sin perder su autonomía jurisdiccional.
+        </p>
       </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-chart-line-up text-cura-accent text-2xl"></i>
+          Eficiencia Macroeconómica
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Austeridad inteligente: elimina el <strong>gasto improductivo</strong> (estudios duplicados y burocracia física) para reasignar recursos hacia insumos críticos.
+        </p>
+      </div>
+
+      <i class="ph ph-shield-check"></i>
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-globe-hemisphere-west text-cura-accent text-2xl"></i>
+          Soberanía y Privacidad
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Toda la infraestructura se mantiene bajo jurisdicción nacional con <strong>Privacidad por Diseño</strong> y criptografía inmutable de última generación.
+        </p>
+      </div>
+
+      <div class="md:col-span-2 bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-1">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+          <i class="ph-bold ph-brain text-cura-accent text-3xl"></i>
+          Salud Mental y Teleconsulta Federal
+        </h3>
+        <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
+          Protocolos de confidencialidad reforzada que eliminan las listas de espera mediante la <strong>federalización de la oferta profesional</strong>. Optimiza recursos reservando la presencialidad para casos críticos y adultos mayores, uniendo lo físico con lo psíquico de forma segura.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <p class="text-cura-accentLight text-sm italic">Hacia una salud más justa, eficiente y humana.</p>
+      <a href="/Informacion/financiamiento" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Financiamiento
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
-    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
+    <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `<strong>1. El Fin de la Fragmentación Sanitaria:</strong> La Ley C.U.R.A. surge como la respuesta estructural al sistema de salud más fragmentado de la región. Actualmente, la información clínica está dispersa en miles de "islas de datos" que no se comunican entre sí. Esta ley establece una <strong>red sanitaria federal única e interoperable</strong>, garantizando que el historial clínico no pertenezca a la institución, sino al ciudadano.<br><br><strong>2. Federalismo de Concertación y el Pacto de Mayo:</strong> En sintonía con el <strong>Pacto de Mayo</strong>, el proyecto se apoya en la institucionalidad del <strong>Consejo de Mayo</strong>. No es una imposición centralista, sino una herramienta de <strong>Federalismo de Concertación</strong> que permite a las provincias modernizar su infraestructura, alcanzar el equilibrio fiscal y mejorar la calidad prestacional sin perder su autonomía jurisdiccional.<br><br><strong>3. Eficiencia Fiscal y Equilibrio Macroeconómico:</strong> La digitalización total no es solo una mejora tecnológica, es una política de austeridad inteligente. Al eliminar el <strong>gasto sanitario improductivo</strong> (duplicación de estudios, recetas manuales y burocracia física), se proyecta una reducción del gasto público real, permitiendo reasignar recursos hacia insumos críticos y equipamiento de alta complejidad.<br><br><strong>4. Interoperabilidad como Cuestión de Estado:</strong> La ley eleva los estándares internacionales <strong>HL7 FHIR y SNOMED CT</strong> a nivel de <strong>Orden Público</strong>. La capacidad de que los sistemas "hablen el mismo idioma" deja de ser una opción técnica para convertirse en una obligación legal, garantizando que un diagnóstico sea legible y accionable en cualquier punto del territorio nacional.<br><br><strong>5. Soberanía Sanitaria y Privacidad por Diseño:</strong> Bajo el principio de <strong>Soberanía Sanitaria Digital</strong>, toda la infraestructura y el procesamiento de datos críticos se mantienen bajo jurisdicción nacional. Se implementan mecanismos de <strong>Privacidad por Diseño</strong>, asegurando que el acceso a la información esté estrictamente auditado, sea inmutable y esté protegido por criptografía de última generación.<br><br><strong>6. Humanización de la Atención mediante Tecnología:</strong> Al devolverle tiempo al médico —eliminando la carga administrativa— y seguridad al paciente —evitando errores por falta de antecedentes—, la tecnología de C.U.R.A. actúa como un puente hacia una atención más humana, digna y transparente.<br><br><strong>7. Salud Mental y Estrategia Nacional de Acceso:</strong> La ley integra la salud mental en la Historia Clínica Única con <strong>protocolos de confidencialidad reforzada</strong> y encriptación superior. Para resolver la saturación del sistema, implementa un modelo de <strong>Asignación Eficiente de Recursos</strong>: se reserva la atención presencial para adultos mayores y personas sin conectividad, mientras que para el paciente digital se prioriza la <strong>Teleconsulta Federal</strong>. Esto elimina las listas de espera locales mediante la federalización de la oferta profesional y la validez nacional de la matrícula remota, garantizando un abordaje holístico, inmediato y seguro que une lo físico con lo psíquico.`;
-
-let i = 0;
-    const speed = 1; // Intervalo mínimo
-    const charsPerTick = 2; // <--- AJUSTA ESTO: Cuantos más caracteres, más rápido irá
-
-    function typeWriter() {
-      if (i < textToType.length) {
-        // En lugar de avanzar de a 1, avanzamos de a 'charsPerTick'
-        i += charsPerTick;
-
-        // Si caemos dentro de una etiqueta HTML, buscamos el final para no romper el renderizado
-        let currentText = textToType.substring(0, i);
-        let lastOpenTag = currentText.lastIndexOf('<');
-        let lastCloseTag = currentText.lastIndexOf('>');
-
-        if (lastOpenTag > lastCloseTag) {
-          // Si estamos a mitad de una etiqueta, saltamos hasta el final de la misma
-          let endTag = textToType.indexOf('>', i);
-          if (endTag !== -1) {
-            i = endTag + 1;
-          }
-        }
-
-        textElement.innerHTML = textToType.substring(0, i);
-        setTimeout(typeWriter, speed);
-      } else {
-        textElement.classList.remove('cursor-blink');
-      }
-    }
-
-    setTimeout(typeWriter, 500);
-  });
-</script>
 </body>
 </html>

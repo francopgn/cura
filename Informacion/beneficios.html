@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest">
   <title>Beneficios | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,26 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #004E85; }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
-
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -64,74 +46,126 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
-  
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Beneficios del Sistema</span>
+      <span class="text-white font-semibold">Beneficios e Impacto</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Beneficios e Impacto
       </h1>
+      <p class="text-cura-accentLight max-w-2xl">
+        Un ecosistema diseñado para empoderar al ciudadano, potenciar al profesional y optimizar los recursos de la Nación.
+      </p>
+    </div>
 
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
-      </div>
-
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">Hacia una atención más segura, eficiente y humana.</p>
-        <div class="flex gap-4">
-          <a href="/Informacion/seg-priv" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Seguridad y Privacidad
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
+    <div class="mb-10">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+            <i class="ph-bold ph-user-circle text-cura-accent"></i> 1. Para el Paciente: Empoderamiento y Acceso Universal
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-identification-card text-cura-accent"></i> Propiedad de los Datos</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">El ciudadano recupera el control de su Historia Clínica mediante la <strong>Credencial Única de Salud (C.U.S.)</strong>, garantizando portabilidad absoluta: sus datos lo acompañan donde sea que se atienda.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-calendar-check text-cura-accent"></i> Gestión de Turnos</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Se eliminan las listas de espera locales mediante una <strong>Red Federal de Turnos</strong> unificada, que permite gestionar citas de manera ágil, optimizando las agendas de todo el país en tiempo real.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-headset text-cura-accent"></i> Teleconsulta Federal</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Implementación de atención inmediata para pacientes digitales, reservando los turnos presenciales exclusivamente para adultos mayores y sectores vulnerables.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-first-aid text-cura-accent"></i> Seguridad en Emergencias</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Acceso instantáneo a información vital (alergias, antecedentes) mediante el <strong>QR Dinámico</strong>, permitiendo una respuesta precisa cuando el paciente no puede comunicarse.</p>
+            </div>
         </div>
-      </div>
+    </div>
+
+    <div class="mb-10">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+            <i class="ph-bold ph-stethoscope text-cura-accent"></i> 2. Para los Profesionales: Tecnología al Servicio del Cuidado
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cpu text-cura-accent"></i> Asistencia con IA</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Acceso a herramientas de <strong>Inteligencia Artificial para soporte en diagnóstico</strong>. El sistema actúa como una "segunda opinión" científica, manteniendo siempre la responsabilidad final en el médico.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-file-x text-cura-accent"></i> Desburocratización Total</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Eliminación de la carga administrativa y del uso de papel, permitiendo que el profesional dedique el <strong>100% de su tiempo a la atención clínica</strong> y al vínculo humano.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-folder-user text-cura-accent"></i> Precisión y Antecedentes</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Consulta inmediata de estudios realizados en cualquier jurisdicción, reduciendo drásticamente el error médico por falta de información o fragmentación de datos.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-certificate text-cura-accent"></i> Matrícula Federal</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Acceso gratuito al <strong>Sistema Federal de Capacitación Digital</strong> y validez nacional de la matrícula para brindar telemedicina de forma segura.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-10">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+            <i class="ph-bold ph-buildings text-cura-accent"></i> 3. Para el Sistema de Salud: Eficiencia y Soberanía
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-hand-coins text-cura-accent"></i> Reinversión de Ahorros</h3>
+                <p class="text-xs text-cura-accentLight leading-relaxed">Los ahorros generados por la eliminación de estudios duplicados son reinvertidos íntegramente en infraestructura pública y mejora de recursos humanos.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-activity text-cura-accent"></i> Vigilancia Epidemiológica</h3>
+                <p class="text-xs text-cura-accentLight leading-relaxed">Uso de algoritmos soberanos para detectar patrones o brotes en tiempo real, permitiendo optimizar la distribución de medicamentos e insumos.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-map-pin text-cura-accent"></i> Equidad Territorial</h3>
+                <p class="text-xs text-cura-accentLight leading-relaxed">Asegura que un ciudadano en una zona remota acceda al mismo estándar de calidad y especialistas que en los grandes centros urbanos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-10">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+            <i class="ph-bold ph-shield-checkered text-cura-accent"></i> 4. Transparencia y Seguridad Ciudadana
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-fingerprint text-cura-accent"></i> Panel de Auditoría</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">El ciudadano puede monitorear en tiempo real qué profesional o institución consultó sus datos, asegurando un control total sobre su privacidad.</p>
+            </div>
+            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cube text-cura-accent"></i> Inmutabilidad Blockchain</h3>
+                <p class="text-sm text-cura-accentLight leading-relaxed">Registro de auditoría inalterable que protege la integridad y veracidad de la historia clínica durante toda la vida del paciente.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <p class="text-cura-accentLight text-sm italic">Hacia una atención más segura, eficiente y humana.</p>
+      <a href="/Informacion/seg-priv" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Seguridad y Privacidad
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
-    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
+    <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `<strong>1. Para el Paciente: Empoderamiento y Acceso Universal</strong><br>- <strong>Propiedad Efectiva de los Datos:</strong> El ciudadano recupera el control de su Historia Clínica mediante la <strong>Credencial Única de Salud (C.U.S.)</strong>, garantizando portabilidad absoluta: sus datos lo acompañan donde sea que se atienda.<br>- <strong>Gestión Inteligente de Turnos:</strong> Se eliminan las listas de espera locales mediante una <strong>Red Federal de Turnos</strong> unificada, que permite solicitar y gestionar citas de manera ágil, optimizando las agendas de todo el país en tiempo real.<br>- <strong>Salud Mental e Integración Digital:</strong> Implementación de la <strong>Teleconsulta Federal</strong> para pacientes digitales, garantizando atención inmediata por profesionales de toda la red nacional y reservando los turnos presenciales exclusivamente para adultos mayores y sectores vulnerables.<br>- <strong>Seguridad en Emergencias:</strong> Acceso instantáneo a información vital (alergias, antecedentes, grupo sanguíneo) mediante el <strong>QR Dinámico</strong>, permitiendo una respuesta médica precisa cuando el paciente no puede comunicarse.<br><br><strong>2. Para los Profesionales: Tecnología al Servicio del Cuidado</strong><br>- <strong>Asistencia Diagnóstica con IA:</strong> Acceso a herramientas de <strong>Inteligencia Artificial para soporte en diagnóstico general y análisis de imágenes</strong>. El sistema actúa como una "segunda opinión" científica de alta precisión, garantizando siempre que el profesional médico tenga la última palabra y la responsabilidad final sobre la decisión clínica.<br>- <strong>Desburocratización Total:</strong> Eliminación de la carga administrativa y del uso de papel, permitiendo que el profesional dedique el <strong>100% de su tiempo a la atención clínica</strong> y al vínculo humano con el paciente.<br>- <strong>Precisión y Antecedentes:</strong> Consulta inmediata de estudios previos y antecedentes realizados en cualquier jurisdicción, reduciendo drásticamente el error médico por falta de información o fragmentación de datos.<br>- <strong>Capacitación y Matrícula Federal:</strong> Acceso gratuito al <strong>Sistema Federal de Capacitación Digital</strong> y validez nacional de la matrícula para brindar servicios de telemedicina de forma segura dentro del ecosistema C.U.R.A.<br><br><strong>3. Para el Sistema de Salud: Eficiencia y Soberanía</strong><br>- <strong>Reinversión Total de Ahorros:</strong> Los ahorros generados por la eliminación de estudios duplicados y fraudes operativos son auditados y reinvertidos íntegramente en infraestructura pública, ciberseguridad y mejora de recursos humanos.<br>- <strong>Vigilancia Epidemiológica Proactiva:</strong> Uso de algoritmos soberanos para detectar patrones sanitarios o brotes en tiempo real, permitiendo al Estado anticiparse a crisis y optimizar la distribución de medicamentos e insumos.<br>- <strong>Equidad Territorial:</strong> Reducción de la brecha sanitaria, asegurando que un ciudadano en una zona remota acceda al mismo estándar de calidad y especialistas que en los grandes centros urbanos.<br><br><strong>4. Transparencia y Seguridad Ciudadana</strong><br>- <strong>Panel de Auditoría del Paciente:</strong> El ciudadano puede monitorear en tiempo real qué profesional o institución consultó sus datos, asegurando un control total sobre su privacidad y el uso de su información.<br>- <strong>Inmutabilidad por Blockchain:</strong> Registro de auditoría inalterable que protege la integridad y veracidad de la historia clínica durante toda la vida del paciente.`;
-
-      let i = 0;
-      const speed = 5; 
-
-      function typeWriter() {
-        if (i < textToType.length) {
-          if (textToType.charAt(i) === '<') {
-            let endTag = textToType.indexOf('>', i);
-            if (endTag !== -1) {
-              i = endTag + 1;
-            }
-          } else {
-            i++;
-          }
-          textElement.innerHTML = textToType.substring(0, i);
-          setTimeout(typeWriter, speed);
-        } else {
-          textElement.classList.remove('cursor-blink');
-        }
-      }
-
-      setTimeout(typeWriter, 500);
-    });
-  </script>
 </body>
 </html>

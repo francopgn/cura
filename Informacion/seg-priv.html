@@ -2,16 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="manifest" href="site.webmanifest">
   <title>Seguridad y Privacidad | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,26 +33,8 @@
       }
     }
   </script>
-
-  <style>
-    body { background-color: #004E85; }
-    .cursor-blink::after {
-      content: '|';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-  </style>
 </head>
-<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark">
-
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen text-white">
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -64,74 +46,117 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
-      <span class="text-white">Seguridad y Privacidad</span>
+      <span class="text-white font-semibold">Seguridad y Privacidad</span>
     </nav>
 
-    <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
+    <div class="mb-12">
+      <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Seguridad de Datos
       </h1>
+      <p class="text-cura-accentLight max-w-2xl text-lg">
+        Privacidad por diseño y soberanía tecnológica para blindar la información médica de todos los argentinos.
+      </p>
+    </div>
 
-      <div class="prose prose-invert max-w-none">
-        <p id="typewriter-text" class="whitespace-pre-wrap text-sm md:text-base text-white leading-relaxed cursor-blink"></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-shield-check text-cura-accent text-2xl"></i>
+          1. Privacidad por Diseño
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El sistema se rige por el principio de <strong>Privacidad por Diseño</strong>, garantizando que la seguridad sea la base de la arquitectura. Bajo el concepto de <strong>Soberanía Sanitaria Digital</strong>, todos los datos se alojan exclusivamente en territorio nacional bajo la infraestructura crítica de <strong>ARSAT</strong>, quedando terminantemente prohibido el almacenamiento en servidores extranjeros.
+        </p>
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-        <p class="text-cura-accentLight text-sm italic">Privacidad por diseño y soberanía tecnológica.</p>
-        <div class="flex gap-4">
-          <a href="/Informacion/marco-legal" class="flex items-center gap-2 text-sm font-semibold hover:text-cura-accent transition">
-            Siguiente: Marco Legal
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-          </a>
-        </div>
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-cube text-cura-accent text-2xl"></i>
+          2. Inmutabilidad por Blockchain
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          C.U.R.A. implementa una capa de <strong>Blockchain</strong> para el registro de auditoría. Cada consulta, acceso o modificación de un dato médico genera un "hash" inalterable con sello de tiempo. Esto asegura que nadie pueda borrar o modificar los registros de quién accedió a la información, garantizando una <strong>Trazabilidad Forense</strong> inalterable por 10 años.
+        </p>
       </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-lock-key text-cura-accent text-2xl"></i>
+          3. Acceso Segmentado
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          El código QR de la Credencial Única de Salud (C.U.S.) actúa como una llave inteligente. El sistema valida la identidad y el rol de quien realiza el escaneo (médico, farmacéutico o personal de emergencia) y entrega únicamente los datos pertinentes para ese perfil, garantizando el principio de minimización de datos.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-fingerprint text-cura-accent text-2xl"></i>
+          4. Cifrado y Ciberdefensa
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Toda la información se transmite bajo estándares de <strong>Cifrado de Extremo a Extremo</strong>. La red nacional está monitoreada 24/7 por el <strong>CSIRT-C.U.R.A.</strong>, un equipo especializado en ciberseguridad que actúa proactivamente contra amenazas externas y protege la integridad de la infraestructura crítica del Estado.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-eye text-cura-accent text-2xl"></i>
+          5. Panel de Transparencia
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          Se restituye al ciudadano el control total sobre su privacidad. A través de un <strong>Panel de Auditoría en Tiempo Real</strong>, cada persona puede verificar qué profesional o institución consultó su Historia Clínica, recibiendo notificaciones instantáneas y pudiendo reportar cualquier acceso no autorizado de forma inmediata.
+        </p>
+      </div>
+
+      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+          <i class="ph-bold ph-handshake text-cura-accent text-2xl"></i>
+          6. Uso Ético de Datos
+        </h3>
+        <p class="text-sm text-cura-accentLight leading-relaxed">
+          La ley prohíbe taxativamente el uso de datos sanitarios para fines comerciales o políticos. La información solo puede ser utilizada para el cuidado directo del paciente o para fines estadísticos bajo protocolos de <strong>Anonimización Irreversible</strong>, donde la identidad queda blindada mediante algoritmos matemáticos.
+        </p>
+      </div>
+
+      <div class="md:col-span-2 bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-1 text-white">
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+          <i class="ph-bold ph-bank text-cura-accent text-3xl"></i>
+          7. Auditoría Federal y Sanciones Gravísimas
+        </h3>
+        <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
+          La seguridad es auditada periódicamente por la <strong>SIGEN, AGN, ONTI y la AAIP</strong>. Cualquier intento de acceso indebido o manipulación de datos es considerado una falta gravísima, con sanciones penales y administrativas estrictas, asegurando que la confianza pública sea el activo más protegido del sistema.
+        </p>
+      </div>
+
+    </div>
+
+    
+
+    <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <p class="text-cura-accentLight text-sm italic">Privacidad por diseño y soberanía tecnológica.</p>
+      <a href="/Informacion/marco-legal" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+        Siguiente: Marco Legal
+        <i class="ph-bold ph-arrow-right"></i>
+      </a>
     </div>
   </main>
 
-  <footer class="py-12 border-t border-white/10 text-center">
-    <p class="text-sm text-white/40">Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
+  <footer class="py-12 border-t border-white/10 text-center mt-auto">
+    <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const textElement = document.getElementById('typewriter-text');
-      
-      const textToType = `<strong>1. Privacidad por Diseño y Soberanía Tecnológica:</strong> El sistema se rige por el principio de <strong>Privacidad por Diseño</strong>, garantizando que la seguridad sea la base de la arquitectura. Bajo el concepto de <strong>Soberanía Sanitaria Digital</strong>, todos los datos se alojan exclusivamente en territorio nacional bajo la infraestructura crítica de <strong>ARSAT</strong>, quedando terminantemente prohibido el almacenamiento en servidores extranjeros.<br><br><strong>2. Inmutabilidad mediante Blockchain Gubernamental:</strong> C.U.R.A. implementa una capa de <strong>Blockchain</strong> para el registro de auditoría. Cada consulta, acceso o modificación de un dato médico genera un "hash" inalterable con sello de tiempo. Esto asegura que nadie pueda borrar o modificar los registros de quién accedió a la información, garantizando una <strong>Trazabilidad Forense</strong> inalterable por 10 años.<br><br><strong>3. Acceso Segmentado por Perfil de Usuario:</strong> El código QR de la Credencial Única de Salud (C.U.S.) actúa como una llave de acceso inteligente. La información revelada no es fija; el sistema valida la identidad y el rol de quien realiza el escaneo (médico, farmacéutico o personal de emergencia) y entrega únicamente los datos pertinentes para ese perfil, garantizando el principio de minimización de datos.<br><br><strong>4. Cifrado de Grado Militar y Ciberdefensa Activa:</strong> Toda la información se almacena y transmite bajo estándares de <strong>Cifrado de Extremo a Extremo</strong>. La red nacional está monitoreada 24/7 por el <strong>CSIRT-C.U.R.A.</strong>, un equipo especializado en ciberseguridad que actúa proactivamente contra amenazas externas y protege la integridad de la infraestructura crítica del Estado.<br><br><strong>5. Panel de Transparencia y Control Ciudadano:</strong> Se restituye al ciudadano el control total sobre su privacidad. A través de un <strong>Panel de Auditoría en Tiempo Real</strong>, cada persona puede verificar qué profesional o institución consultó su Historia Clínica, recibiendo notificaciones instantáneas y pudiendo reportar cualquier acceso no autorizado de forma inmediata.<br><br><strong>6. Uso Ético y Prohibición de Comercialización:</strong> La ley prohíbe taxativamente el uso de datos sanitarios para fines comerciales o políticos. La información solo puede ser utilizada para el cuidado directo del paciente o para fines estadísticos bajo protocolos de <strong>Anonimización Irreversible</strong>, donde la identidad del ciudadano queda blindada mediante algoritmos matemáticos.<br><br><strong>7. Auditoría Federal y Sanciones Gravísimas:</strong> La seguridad es auditada periódicamente por la <strong>SIGEN, AGN, ONTI y la AAIP</strong>. Cualquier intento de acceso indebido o manipulación de datos es considerado una falta gravísima, con sanciones penales y administrativas estrictas, asegurando que la confianza pública sea el activo más protegido del sistema.`;
-
-      let i = 0;
-      const speed = 5; 
-
-      function typeWriter() {
-        if (i < textToType.length) {
-          if (textToType.charAt(i) === '<') {
-            let endTag = textToType.indexOf('>', i);
-            if (endTag !== -1) {
-              i = endTag + 1;
-            }
-          } else {
-            i++;
-          }
-          textElement.innerHTML = textToType.substring(0, i);
-          setTimeout(typeWriter, speed);
-        } else {
-          textElement.classList.remove('cursor-blink');
-        }
-      }
-
-      setTimeout(typeWriter, 500);
-    });
-  </script>
 </body>
 </html>

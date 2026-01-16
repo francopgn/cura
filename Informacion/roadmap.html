@@ -33,6 +33,7 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen text-white">
 
@@ -55,99 +56,101 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
-    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight" data-aos="fade-down">
       <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
       <span class="text-white font-semibold">Etapas de Implementación</span>
     </nav>
 
-    <div class="mb-12">
+    <div class="mb-12" data-aos="fade-up">
       <h1 class="text-3xl md:text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Implementación por Hitos
       </h1>
       <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
         <p class="text-sm md:text-base leading-relaxed text-white/90">
-            El despliegue de C.U.R.A. se basa en un modelo de <strong>"Hitos de Salida"</strong> y no en fechas calendario rígidas. No se avanzará a una nueva fase hasta que la anterior esté tecnológicamente estabilizada, descartando el modelo de implementación simultánea ("Big Bang").
+            El despliegue de C.U.R.A. se basa en un modelo de <strong>"Hitos de Salida"</strong> y no en fechas calendario rígidas. No se avanzará a una nueva fase hasta que la anterior esté tecnológicamente estabilizada.
         </p>
       </div>
     </div>
 
     <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-cura-accent before:via-cura-accent/30 before:to-transparent">
       
-      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active" data-aos="fade-right">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-gear"></i>
         </div>
-        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-bold text-white">Fase 0: Cimientos y Estandarización</h3>
             <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 1-6</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            ● Despliegue de la infraestructura central (Bus de Interoperabilidad) y publicación de las Guías de Implementación Técnicas (IGs).<br>
+            ● Despliegue de la infraestructura central y Guías de Implementación.<br>
             ● Homologación de catálogos (SNOMED CT) y adecuación normativa nacional.<br>
-            ● <strong>Sin impacto operativo:</strong> Los prestadores siguen operando como siempre mientras adecuan sus interfaces técnicas de forma transparente.
+            ● <strong>Sin impacto operativo:</strong> Los prestadores operan como siempre mientras adecuan sus interfaces.
           </p>
         </div>
       </div>
 
-      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-left">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-test-tube"></i>
         </div>
-        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-bold text-white">Fase 1: Sandbox Regulatorio</h3>
             <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 6-18</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            ● <strong>Selección Estratégica:</strong> Jurisdicciones piloto basadas en madurez tecnológica y consenso político.<br>
-            ● <strong>Respeto al Legado:</strong> Coexistencia con sistemas actuales; no se exige migración inmediata de datos históricos.<br>
-            ● <strong>Régimen de "Puerto Seguro":</strong> Amnistía técnica para instituciones con planes de trabajo activos, priorizando el acompañamiento educativo.
+            ● <strong>Selección Estratégica:</strong> Jurisdicciones piloto basadas en madurez tecnológica.<br>
+            ● <strong>Respeto al Legado:</strong> Coexistencia con sistemas actuales; sin migraciones forzadas.<br>
+            ● <strong>Régimen de Puerto Seguro:</strong> Acompañamiento educativo y amnistía técnica.
           </p>
         </div>
       </div>
 
-      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-right">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-map-trifold"></i>
         </div>
-        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-bold text-white">Fase 2: Expansión Regional</h3>
             <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 18-36</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
             ● Despliegue progresivo por regiones geográficas (NOA, NEA, Centro, Cuyo, Patagonia).<br>
-            ● Se habilita la <strong>portabilidad interjurisdiccional plena</strong>, permitiendo atención federal con historial completo al instante.
+            ● Se habilita la <strong>portabilidad interjurisdiccional plena</strong> para atención federal.
           </p>
         </div>
       </div>
 
-      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-left">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-check-circle"></i>
         </div>
-        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl">
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-bold text-white">Fase 3: Régimen Definitivo</h3>
             <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MES 36+</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
             ● Plena vigencia nacional en todos los subsectores.<br>
-            ● <strong>Distinción de Faltas:</strong> Diferenciación entre errores de buena fe y actos de dolo.<br>
-            ● <strong>Castigo al Fraude:</strong> Multas severas e inhabilitación permanente para uso comercial no autorizado o robo de identidad.
+            ● <strong>Distinción de Faltas:</strong> Diferenciación entre errores de fe y actos de dolo.<br>
+            ● <strong>Castigo al Fraude:</strong> Multas severas por uso comercial o robo de identidad.
           </p>
         </div>
       </div>
 
     </div>
 
+    
+
     <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-      <p class="text-cura-accentLight text-sm italic">Hitos de salida: estabilidad antes que velocidad.</p>
-      <a href="/Informacion/participacion" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+      <p class="text-cura-accentLight text-sm italic" data-aos="fade-in">Hitos de salida: estabilidad antes que velocidad.</p>
+      <a href="/Informacion/participacion" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition group">
         Siguiente: Participación Ciudadana
-        <i class="ph-bold ph-arrow-right"></i>
+        <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
       </a>
     </div>
   </main>
@@ -155,19 +158,36 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+
+    // Inicializar AOS con sincronización
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        anchorPlacement: 'top-bottom'
+      });
+
+      // Sincronizar AOS con Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>

@@ -123,13 +123,24 @@
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
       z-index: 1000;
     }
-    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; transition: 0.2s; }
     .nav-btn.active { color: var(--accent); }
     .center-btn { 
       width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-size: 28px; font-weight: bold; margin-top: -40px;
       box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+      cursor: pointer;
+    }
+
+    /* Modal Estilo Premium */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.6); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 30px;
+      padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
   </style>
 </head>
@@ -148,7 +159,6 @@
       </div>
 
       <a href="credencial.html" class="credencial-wallet">
-       
         <div class="flex justify-between items-end">
           <div>
             <p class="text-[10px] uppercase tracking-widest opacity-60 mb-1">CREDENCIAL DIGITAL</p>
@@ -190,13 +200,46 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-btn active"><i class="ph-bold ph-house-line"></i></button>
-      <button class="nav-btn"><i class="ph-bold ph-chats-circle"></i></button>
+      <button class="nav-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='chats.html'"><i class="ph-bold ph-chats-circle"></i></button>
       <div class="center-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-btn"><i class="ph-bold ph-heartbeat"></i></button>
-      <button class="nav-btn"><i class="ph-bold ph-user-circle"></i></button>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
-  </body>
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Ayuda</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body" class="text-sm text-gray-600 leading-relaxed mb-6"></div>
+      <button onclick="cerrarModal()" class="w-full py-3 bg-cura-blue text-white font-bold rounded-2xl">Entendido</button>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalAyuda() {
+      const modal = document.getElementById('modal-container');
+      const body = document.getElementById('modal-body');
+      body.innerHTML = `
+        <div class="flex gap-3 mb-4">
+          <i class="ph ph-heartbeat text-2xl text-cura-accent"></i>
+          <p><strong>Ecosistema Federal:</strong> Esta aplicación unifica tu salud pública y privada bajo la Ley C.U.R.A.</p>
+        </div>
+        <div class="flex gap-3">
+          <i class="ph ph-fingerprint text-2xl text-cura-accent"></i>
+          <p><strong>Identidad Segura:</strong> Tu credencial y QR son personales. Úsalos para que los médicos accedan a tu historial.</p>
+        </div>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-container').style.display = "none";
+    }
+  </script>
+
+</body>
 </html>

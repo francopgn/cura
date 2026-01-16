@@ -198,5 +198,17 @@
   }
   requestAnimationFrame(raf);
 </script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 800,
+      once: true,
+      // Si usas Lenis u otro scroll suave, a veces necesitas refrescar AOS
+      offset: 50 
+    });
+  });
+</script>
 </body>
 </html>

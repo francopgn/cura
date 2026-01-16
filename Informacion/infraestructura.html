@@ -33,6 +33,7 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
@@ -55,13 +56,13 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
-    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight" data-aos="fade-down">
       <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
       <span class="text-white font-semibold">Infraestructura Nacional</span>
     </nav>
 
-    <div class="mb-12">
+    <div class="mb-12" data-aos="fade-up">
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Infraestructura Nacional
       </h1>
@@ -72,53 +73,61 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-hard-drives text-cura-accent text-2xl"></i>
-          1. Nodos Soberanos de ARSAT
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          La infraestructura física reside en el corazón tecnológico de la Nación. Se utilizan los centros de datos de <strong>ARSAT</strong> (nodos de Benavídez y Bariloche) para garantizar que la información sensible nunca salga de jurisdicción argentina, cumpliendo con los máximos estándares de <strong>Seguridad de Grado Nacional</strong>.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-hard-drives text-cura-accent text-2xl"></i>
+            1. Nodos Soberanos de ARSAT
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La infraestructura física reside en el corazón tecnológico de la Nación. Se utilizan los centros de datos de <strong>ARSAT</strong> para garantizar que la información sensible nunca salga de jurisdicción argentina.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-shield-checkered text-cura-accent text-2xl"></i>
-          2. Alta Disponibilidad y Redundancia
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          El sistema está diseñado con una arquitectura de <strong>Alta Disponibilidad (Tier III+)</strong>. Esto significa que existen múltiples respaldos activos: si un nodo falla, el sistema conmuta automáticamente al siguiente sin pérdida de servicio, asegurando que el acceso a la historia clínica sea posible las 24 horas, los 365 días del año.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-shield-checkered text-cura-accent text-2xl"></i>
+            2. Alta Disponibilidad y Redundancia
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Diseñado con una arquitectura de <strong>Alta Disponibilidad (Tier III+)</strong>. Existen múltiples respaldos activos: si un nodo falla, el sistema conmuta automáticamente al siguiente sin pérdida de servicio.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-cube text-cura-accent text-2xl"></i>
-          3. Blockchain para la Integridad de Datos
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Se integra una capa de <strong>Blockchain Gubernamental</strong> para blindar los registros. Cada vez que se genera una transacción médica, se crea un registro inmutable. Esto garantiza que nadie pueda alterar el historial de accesos o la información del paciente, otorgando seguridad jurídica y técnica absoluta.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-cube text-cura-accent text-2xl"></i>
+            3. Blockchain para la Integridad de Datos
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Capa de <strong>Blockchain Gubernamental</strong> para blindar los registros. Cada transacción médica genera un registro inmutable, impidiendo alteraciones y otorgando seguridad jurídica absoluta.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-broadcast text-cura-accent text-2xl"></i>
-          4. Conectividad Federal (REFEFO)
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          El sistema aprovecha la <strong>Red Federal de Fibra Óptica (REFEFO)</strong> para llegar a cada rincón del país. En zonas remotas, la conectividad se garantiza mediante los <strong>satélites ARSAT</strong>, asegurando que la salud digital sea un derecho federal efectivo y no solo un beneficio para las grandes ciudades.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="400">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-broadcast text-cura-accent text-2xl"></i>
+            4. Conectividad Federal (REFEFO)
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Aprovecha la <strong>Red Federal de Fibra Óptica (REFEFO)</strong> y los <strong>satélites ARSAT</strong> para zonas remotas, asegurando que la salud digital sea un derecho federal efectivo en todo el país.
+          </p>
+        </div>
       </div>
 
     </div>
 
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-      <p class="text-cura-accentLight text-sm italic">Resiliencia, soberanía y disponibilidad continua.</p>
-      <a href="/Informacion/roadmap.html" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+      <p class="text-cura-accentLight text-sm italic" data-aos="fade-left">Resiliencia, soberanía y disponibilidad continua.</p>
+      <a href="/Informacion/roadmap.html" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition group">
         Siguiente: Implementación por Etapas
-        <i class="ph-bold ph-arrow-right"></i>
+        <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
       </a>
     </div>
   </main>
@@ -126,19 +135,36 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+
+    // Inicializar AOS con sincronización
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        anchorPlacement: 'top-bottom'
+      });
+
+      // Sincronizar AOS con Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>

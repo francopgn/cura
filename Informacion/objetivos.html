@@ -2,14 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest">
   <title>Objetivos | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -26,26 +20,16 @@
               accentLight: '#59D2FF'   
             }
           },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
     }
   </script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init({
-    duration: 800, // Duración de la animación
-    once: true,    // Que solo pase una vez al bajar
-  });
-</script>
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
- <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
       <div class="flex items-center gap-2">
         <img src="/Informacion/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
@@ -55,9 +39,10 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
-        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1">
+          <span class="font-bold text-lg">←</span> Volver
+        </a>
+        <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold">Sumarme</a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
     </div>
@@ -65,7 +50,7 @@
 
   <main class="max-w-5xl mx-auto px-6 py-12">
     <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
-      <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
+      <a href="/Informacion/informacion" class="hover:underline">Información</a>
       <span>/</span>
       <span class="text-white font-semibold">Objetivos del Sistema</span>
     </nav>
@@ -77,115 +62,93 @@
       <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
         <h2 class="text-cura-accentLight font-bold uppercase tracking-wider text-xs mb-3">Introducción: La Infraestructura del Siglo XXI</h2>
         <p class="text-sm md:text-base leading-relaxed text-white/90">
-            El Proyecto de Ley C.U.R.A. no es solo una plataforma tecnológica; es la infraestructura crítica que transforma la salud argentina en un ecosistema digital de alta eficiencia, soberano y centrado en la persona. Se establece como el mecanismo de ejecución operativa de la Ley 27.706, transformando la "voluntad digital" en un estándar de Orden Público.
+            El Proyecto de Ley C.U.R.A. no es solo una plataforma tecnológica; es la infraestructura crítica que transforma la salud argentina en un ecosistema digital de alta eficiencia, soberano y centrado en la persona.
         </p>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
       
-<div data-aos="fade-up" data-aos-delay="100">
-  
-  <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20">
-    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-      <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
-      1. Soberanía Sanitaria Digital
-    </h3>
-    <p class="text-sm text-cura-accentLight leading-relaxed">
-      Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.
-    </p>
-  </div>
+      <div data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-globe text-cura-accent text-2xl"></i> 1. Soberanía Sanitaria Digital
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">Garantizar que toda la infraestructura tecnológica y los datos sanitarios residan en territorio nacional.</p>
+        </div>
+      </div>
 
-</div>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-user-focus text-cura-accent text-2xl"></i> 2. Empoderamiento y Propiedad
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">Restituir al ciudadano la propiedad efectiva de su historial médico a través de la C.U.S.</p>
+        </div>
+      </div>
 
-     <div data-aos="fade-up" data-aos-delay="200">
-  <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/10">
-    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-      <i class="ph-bold ph-user-focus text-cura-accent text-2xl"></i>
-      2. Empoderamiento y Propiedad
-    </h3>
-    <p class="text-sm text-cura-accentLight leading-relaxed">
-      Restituir al ciudadano la propiedad efectiva de su historial médico. A través de la Credencial Única de Salud (C.U.S.), el paciente garantiza la portabilidad total de sus datos: su información lo acompaña, sin importar si se atiende en el sector público, privado o de seguridad social.
-    </p>
-  </div>
-</div>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i> 3. Interoperabilidad Universal
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">Eliminar los silos de información mediante el uso de estándares internacionales obligatorios.</p>
+        </div>
+      </div>
 
-<div data-aos="fade-up" data-aos-delay="300">
-  <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/10">
-    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-      <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
-      3. Interoperabilidad Universal
-    </h3>
-    <p class="text-sm text-cura-accentLight leading-relaxed">
-      Eliminar los "silos de información". El sistema impone el uso de estándares internacionales (HL7 FHIR y SNOMED CT) como norma de cumplimiento obligatorio para todos los subsectores, permitiendo que diferentes sistemas de salud hablen el mismo idioma por primera vez.
-    </p>
-  </div>
-</div>
+      <div data-aos="fade-up" data-aos-delay="400">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-chart-bar text-cura-accent text-2xl"></i> 4. Eficiencia Actuarial
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">Optimizar el gasto prestacional eliminando redundancias, proyectando un ahorro del 30%.</p>
+        </div>
+      </div>
 
-<div data-aos="fade-up" data-aos-delay="400">
-  <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/10">
-    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-      <i class="ph-bold ph-chart-bar text-cura-accent text-2xl"></i>
-      4. Eficiencia Actuarial
-    </h3>
-    <p class="text-sm text-cura-accentLight leading-relaxed">
-      Optimizar el gasto prestacional mediante la eliminación de la redundancia. Al evitar la duplicación de estudios, combatir el fraude de identidad y digitalizar la burocracia, se proyecta un ahorro directo de hasta el 30% del gasto en salud.
-    </p>
-  </div>
-</div>
+      <div data-aos="fade-up" data-aos-delay="500">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-brain text-cura-accent text-2xl"></i> 5. Medicina Predictiva (IA)
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">Transicionar a una medicina basada en datos con IA ética para soporte diagnóstico.</p>
+        </div>
+      </div>
 
-<div data-aos="fade-up" data-aos-delay="500">
-  <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/10">
-    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-      <i class="ph-bold ph-brain text-cura-accent text-2xl"></i>
-      5. Medicina Predictiva (IA)
-    </h3>
-    <p class="text-sm text-cura-accentLight leading-relaxed">
-      Transicionar de una medicina reactiva a una medicina basada en datos. Utilizar la Inteligencia Artificial de manera ética para el soporte diagnóstico, la vigilancia epidemiológica en tiempo real y la prevención personalizada.
-    </p>
-  </div>
-</div>
-
-<div data-aos="fade-up" data-aos-delay="600">
-  <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/10">
-    <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-      <i class="ph-bold ph-rocket-launch text-cura-accent text-2xl"></i>
-      6. Liderazgo Global
-    </h3>
-    <p class="text-sm text-cura-accentLight leading-relaxed">
-      Posicionar a la República Argentina como un referente regional en Salud Digital. El país se transforma en un Hub Global de Interoperabilidad, capaz de exportar conocimiento, tecnología y modelos de gestión sanitaria moderna.
-    </p>
-  </div>
-</div>
-
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div data-aos="fade-up" data-aos-delay="600">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-rocket-launch text-cura-accent text-2xl"></i> 6. Liderazgo Global
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">Posicionar a la Argentina como un referente regional y Hub Global de Interoperabilidad.</p>
+        </div>
+      </div>
+    </div> <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16" data-aos="fade-up">
         <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4 text-center">
             <i class="ph-bold ph-warning-circle text-cura-accent text-2xl mb-2"></i>
             <h4 class="text-xs font-bold uppercase mb-1">Error Cero</h4>
-            <p class="text-[10px] text-cura-accentLight">Reducción de errores médicos por falta de antecedentes.</p>
+            <p class="text-[10px] text-cura-accentLight">Reducción de errores médicos.</p>
         </div>
         <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4 text-center">
             <i class="ph-bold ph-file-x text-cura-accent text-2xl mb-2"></i>
             <h4 class="text-xs font-bold uppercase mb-1">Desburocratización</h4>
-            <p class="text-[10px] text-cura-accentLight">Eliminación total del papel en órdenes y recetas.</p>
+            <p class="text-[10px] text-cura-accentLight">Eliminación total del papel.</p>
         </div>
         <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4 text-center">
             <i class="ph-bold ph-map-pin-line text-cura-accent text-2xl mb-2"></i>
             <h4 class="text-xs font-bold uppercase mb-1">Continuidad</h4>
-            <p class="text-[10px] text-cura-accentLight">Acceso federal a información crítica ante emergencias.</p>
+            <p class="text-[10px] text-cura-accentLight">Acceso federal en emergencias.</p>
         </div>
         <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4 text-center">
             <i class="ph-bold ph-magnifying-glass text-cura-accent text-2xl mb-2"></i>
             <h4 class="text-xs font-bold uppercase mb-1">Transparencia</h4>
-            <p class="text-[10px] text-cura-accentLight">Auditoría en tiempo real para evitar malversaciones.</p>
+            <p class="text-[10px] text-cura-accentLight">Auditoría en tiempo real.</p>
         </div>
     </div>
 
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
       <p class="text-cura-accentLight text-sm italic">Hacia una soberanía sanitaria digital plena.</p>
       <a href="/Informacion/fundamentos" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
-        Siguiente: Fundamentos
-        <i class="ph-bold ph-arrow-right"></i>
+        Siguiente: Fundamentos <i class="ph-bold ph-arrow-right"></i>
       </a>
     </div>
   </main>
@@ -193,31 +156,33 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    AOS.init({
-      duration: 800,
-      once: true,
-      // Si usas Lenis u otro scroll suave, a veces necesitas refrescar AOS
-      offset: 50 
+  <script>
+    // Inicializar Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
     });
-  });
-</script>
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Inicializar AOS
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50 
+      });
+      // Sincronizar AOS con Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>

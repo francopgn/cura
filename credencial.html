@@ -5,296 +5,229 @@
   <title>Credencial - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow-soft);
+    /* --- TARJETA QR PREMIUM --- */
+    .qr-card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 35px;
+      padding: 30px 20px;
       text-align: center;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
       margin-bottom: 20px;
     }
 
-    /* --- QR BOX --- */
-    .qr-container {
-      background: #f8fafc;
-      border-radius: 24px;
-      padding: 24px;
-      border: 1px solid var(--border-soft);
-      margin-bottom: 20px;
+    .qr-wrapper {
+      background: white;
+      padding: 15px;
+      border-radius: 25px;
+      display: inline-block;
+      margin-bottom: 15px;
+      box-shadow: 0 10px 20px rgba(0, 194, 255, 0.2);
     }
+    .qr-img { width: 180px; height: 180px; }
 
-    .qr-img {
-      width: 200px;
-      height: 200px;
-      border-radius: 16px;
-      margin-bottom: 12px;
-      mix-blend-mode: multiply; 
-    }
-
-    .cura-id {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-gray);
-      letter-spacing: 1px;
-      margin-bottom: 20px;
-    }
-
-    .token-label {
-      font-size: 14px;
-      font-weight: 800;
-      color: var(--blue-header);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    #token {
-      font-size: 48px;
+    .token-display {
+      font-size: 56px;
       font-weight: 900;
-      color: var(--text-dark);
-      margin: 5px 0;
-      letter-spacing: 4px;
+      letter-spacing: 6px;
+      color: var(--accent);
+      margin: 10px 0;
+      text-shadow: 0 0 20px rgba(0, 194, 255, 0.4);
     }
 
-    /* --- PROGRESS BAR --- */
-    .progress-wrapper {
-      width: 100%;
-      height: 8px;
-      background: #e2e8f0;
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 15px 0 8px;
-    }
+    /* --- TIMER PROGRESS --- */
+    .timer-container { width: 80%; margin: 0 auto 10px; }
+    .progress-bg { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent); transition: width 1s linear; }
 
-    .progress-fill {
-      width: 100%;
-      height: 100%;
-      background: var(--blue-main);
-      transition: width 1s linear;
-    }
-
-    #time-remaining {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-gray);
-    }
-
-    /* --- ALERTA SEGURIDAD --- */
-    .security-alert {
-      background: #fff7ed;
-      border: 1px solid #fed7aa;
+    /* --- ALERTA --- */
+    .alert-box {
+      background: rgba(255, 165, 0, 0.1);
+      border: 1px solid rgba(255, 165, 0, 0.2);
       border-radius: 20px;
-      padding: 16px;
+      padding: 15px;
       display: flex;
       gap: 12px;
       align-items: center;
-      text-align: left;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
-    .alert-icon { font-size: 24px; flex-shrink: 0; color: #f97316; }
-    .alert-text { font-size: 12px; color: #9a3412; line-height: 1.4; font-weight: 500; }
-
-    .btn-primary {
+    /* --- BOTÓN DESCARGA --- */
+    .btn-download {
       width: 100%;
-      padding: 16px;
-      border-radius: 20px;
-      border: none;
-      background: var(--blue-main);
-      color: #fff;
-      font-size: 15px;
+      background: var(--cura-blue);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 18px;
+      border-radius: 22px;
       font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
     }
-
-    /* --- MODAL AYUDA (Premium) --- */
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
-      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
-    }
-    .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
-    }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
+    .btn-download:active { transform: scale(0.96); background: #005fa3; }
 
     /* --- BOTTOM BAR --- */
     .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px;
+      box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+    }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Credencial C.U.R.A.</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Credencial Digital</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="card">
-        <div class="qr-container">
+    <main>
+      <div class="qr-card">
+        <div class="qr-wrapper">
           <img id="qrImg" src="qr_menu.png" class="qr-img" alt="QR Code">
-          <div class="cura-id">CURAID-41316202</div>
+        </div>
+        <div class="text-[10px] tracking-[3px] uppercase opacity-50 mb-4">CURAID-41316202</div>
 
-          <div class="token-label">Token de Seguridad</div>
-          <div id="token">0000</div>
+        <p class="text-xs font-bold text-cura-accent uppercase tracking-widest mb-1">Token de Seguridad</p>
+        <div id="token" class="token-display">0000</div>
 
-          <div class="progress-wrapper">
+        <div class="timer-container">
+          <div class="progress-bg">
             <div class="progress-fill" id="progress"></div>
           </div>
-          <div id="time-remaining">Expira en 05:00 min</div>
+          <p id="time-remaining" class="text-[10px] mt-2 opacity-60 font-semibold uppercase tracking-tighter">Expira en 05:00 min</p>
         </div>
-
-        <div class="security-alert">
-          <div class="alert-icon"><i class="ph-fill ph-warning-circle"></i></div>
-          <div class="alert-text">
-            Mostrá este código solo a profesionales de salud o farmacias autorizadas para validar tu identidad federal.
-          </div>
-        </div>
-
-        <button class="btn-primary" onclick="alert('Descargando credencial PDF...')">
-          <i class="ph ph-download-simple"></i> Descargar Credencial Offline
-        </button>
       </div>
+
+      <div class="alert-box">
+        <i class="ph-fill ph-shield-check text-2xl text-orange-400"></i>
+        <p class="text-[11px] leading-relaxed opacity-90">
+          Uso exclusivo para profesionales de salud o farmacias autorizadas por la <strong>Ley C.U.R.A.</strong>
+        </p>
+      </div>
+
+      <button class="btn-download" onclick="alert('Descargando...')">
+        <i class="ph-bold ph-file-pdf"></i> Descargar Offline (PDF)
+      </button>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='chats.html'"><i class="ph-bold ph-chats-circle"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn active"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Credencial</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-4 text-sm text-gray-600">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
 
   <script>
-    const duration = 300; // 5 minutos
+    const duration = 300; 
     let remaining = duration;
 
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Credencial";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-key help-icon"></i>
-          <p><strong>Token Dinámico:</strong> El número de 4 dígitos cambia cada 5 minutos por seguridad. Asegurate de mostrar el código vigente al profesional.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-key text-xl text-blue-600"></i>
+          <p><strong>Token Dinámico:</strong> Cambia cada 5 minutos para evitar fraudes.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-qr-code help-icon"></i>
-          <p><strong>Uso Federal:</strong> Este código permite que médicos y farmacias de todo el país validen tu identidad y accedan a tus recetas o historia clínica autorizada.</p>
-        </div>
-        <div class="help-item">
-          <i class="ph ph-shield-check help-icon"></i>
-          <p><strong>Seguridad:</strong> El QR y el Token son personales. Según la Ley C.U.R.A., nadie puede obligarte a mostrar este código fuera de un contexto de atención sanitaria.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-qr-code text-xl text-blue-600"></i>
+          <p><strong>Uso Federal:</strong> Válido en cualquier hospital o farmacia del país.</p>
         </div>
       `;
       modal.style.display = "flex";
@@ -310,21 +243,13 @@
     function actualizarTimer() {
       const timeEl = document.getElementById("time-remaining");
       const progressEl = document.getElementById("progress");
-
       const min = String(Math.floor(remaining / 60)).padStart(2, "0");
       const sec = String(remaining % 60).padStart(2, "0");
-
       if (timeEl) timeEl.textContent = `Expira en ${min}:${sec} min`;
-
       const pct = (remaining / duration) * 100;
       if (progressEl) progressEl.style.width = pct + "%";
-
       remaining--;
-
-      if (remaining < 0) {
-        generarToken();
-        remaining = duration;
-      }
+      if (remaining < 0) { generarToken(); remaining = duration; }
     }
 
     generarToken();

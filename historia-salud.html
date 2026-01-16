@@ -5,117 +5,172 @@
   <title>Historia de Salud - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --red-status: #ef4444;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
-    /* --- ESTABILIDAD DE PANTALLA --- */
-    html { overflow-y: scroll; scrollbar-width: none; }
-    ::-webkit-scrollbar { display: none; }
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
 
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
+    .app-shell {
+      width: 100%;
+      max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
+      display: flex;
+      flex-direction: column;
+    }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px); margin: 20px auto 10px; height: 60px;
-      border-radius: 999px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 16px; box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2); z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer; }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
+    .back-btn {
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
+    }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
+    /* --- TABS PREMIUM --- */
+    .tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 5px;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      margin-bottom: 25px;
+    }
+    .tab {
+      flex: 1; padding: 12px 5px; text-align: center; font-size: 11px;
+      font-weight: 700; cursor: pointer; border-radius: 15px;
+      color: rgba(255, 255, 255, 0.5); transition: all 0.3s;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tab.active {
+      background: var(--accent);
+      color: var(--bg-dark);
+      box-shadow: 0 4px 15px rgba(0, 194, 255, 0.3);
+    }
 
-    /* --- TABS --- */
-    .tabs { display: flex; background: #e2e8f0; padding: 4px; border-radius: 16px; margin-bottom: 20px; }
-    .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 12px; color: var(--text-gray); transition: all 0.2s; }
-    .tab.active { background: #fff; color: var(--blue-header); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-
-    .section-label { font-size: 17px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
-    .hint { font-size: 13px; color: var(--text-gray); margin-bottom: 16px; line-height: 1.4; }
-
-    /* --- CHIPS Y ELEMENTOS --- */
-    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-    .chip { font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 10px; background: #e2e8f0; color: #475569; }
-    .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
-    .chip-red { background: #fee2e2; color: #991b1b; }
-
-    .btn-privacidad { width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--blue-soft); background: #f0f7ff; color: var(--blue-header); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; margin-bottom: 20px; }
-    .btn-primary { width: 100%; padding: 16px; border-radius: 20px; border: none; background: linear-gradient(135deg, var(--blue-main), #005fa3); color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2); }
-
-    .timeline { padding-left: 10px; border-left: 2px solid #e2e8f0; margin-left: 10px; }
-    .timeline-item { position: relative; padding-bottom: 20px; padding-left: 20px; }
-    .timeline-item::before { content: ''; position: absolute; left: -27px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 3px solid var(--blue-main); }
-    .timeline-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
-    .timeline-sub { font-size: 12px; color: var(--text-gray); margin-bottom: 4px; }
-    .timeline-text { font-size: 13px; color: var(--text-dark); line-height: 1.4; }
-
-    .doc-card { background: #f8fafc; border-radius: 20px; padding: 16px; border: 1px solid var(--border-soft); margin-bottom: 12px; }
-    .mini-btn { flex: 1; padding: 8px; border-radius: 10px; border: 1px solid var(--border-soft); background: #fff; font-size: 11px; font-weight: 600; cursor: pointer; }
-
+    /* --- CARDS --- */
     .view-panel { display: none; }
-    .view-panel.active { display: block; }
+    .view-panel.active { display: block; animation: fadeIn 0.4s ease-out; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- MODAL PREMIUM DINÁMICO --- */
+    .main-card {
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 32px;
+      padding: 24px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    }
+
+    .section-label {
+      font-size: 13px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--accent); margin-bottom: 8px; display: block;
+    }
+
+    /* --- TIMELINE PREMIUM --- */
+    .timeline { border-left: 2px solid var(--glass-border); margin-left: 10px; padding-left: 20px; }
+    .timeline-item { position: relative; padding-bottom: 25px; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -27px; top: 5px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--bg-dark); border: 2px solid var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* --- CHIPS --- */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .chip { font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); }
+    .chip-blue { background: rgba(0, 194, 255, 0.1); color: var(--accent); border-color: rgba(0, 194, 255, 0.2); }
+    .chip-red { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.2); }
+
+    /* --- BOTONES --- */
+    .btn-privacidad {
+      width: 100%; padding: 14px; border-radius: 18px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.03); color: white; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 25px;
+    }
+    .btn-primary {
+      width: 100%; padding: 18px; border-radius: 22px; border: none;
+      background: var(--accent); color: var(--bg-dark); font-size: 15px; font-weight: 800;
+      box-shadow: 0 10px 25px rgba(0, 194, 255, 0.3); transition: transform 0.2s;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* --- DOC CARDS --- */
+    .doc-card {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 16px; margin-bottom: 12px;
+    }
+
+    /* --- BOTTOM BAR --- */
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+    }
+
+    /* MODAL */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.5); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
     }
     .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
-
-    /* --- NAV --- */
-    .bottom-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000; }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Historia de Salud</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Historia de Salud</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
+    <main>
       <div class="tabs">
         <div class="tab active" data-view="resumen">Resumen</div>
         <div class="tab" data-view="cronologia">Cronología</div>
@@ -123,83 +178,90 @@
         <div class="tab" data-view="accesos">Accesos</div>
       </div>
 
-      <div class="card">
+      <div class="main-card">
         <section id="view-resumen" class="view-panel active">
-          <h2 class="section-label">Información esencial</h2>
-          <p class="hint">Datos críticos para atención inmediata según Ley C.U.R.A.</p>
+          <label class="section-label">Información esencial</label>
+          <p class="text-xs opacity-60 mb-4">Datos críticos para atención inmediata según Ley C.U.R.A.</p>
+          
           <div class="chip-row">
             <span class="chip chip-blue">Grupo: 0+</span>
             <span class="chip chip-red">Alergia: Penicilina</span>
           </div>
+
           <button class="btn-privacidad" onclick="abrirModalPrivacidad()">
-            <i class="ph ph-lock-key"></i> Configurar privacidad
+            <i class="ph-bold ph-lock-key"></i> Configurar privacidad
           </button>
-          <h2 class="section-label">Últimos eventos</h2>
-          <div class="timeline">
+
+          <label class="section-label">Últimos eventos</label>
+          <div class="timeline mt-4">
             <div class="timeline-item">
-              <div class="timeline-title">12/04/2025 · Consulta</div>
-              <div class="timeline-sub">Hospital General · Dr. González</div>
-              <div class="timeline-text">Dolor torácico inespecífico. Se indican estudios.</div>
+              <div class="text-sm font-bold">12/04/2025 · Consulta</div>
+              <div class="text-[11px] opacity-60">Hospital General · Dr. González</div>
+              <div class="text-xs mt-2 leading-relaxed">Dolor torácico inespecífico. Se indican estudios.</div>
             </div>
           </div>
-          <button class="btn-primary" onclick="location.href='historia-clinica-completa.html'">Ver Historia Completa</button>
+          
+          <button class="btn-primary mt-4" onclick="location.href='historia-clinica-completa.html'">Ver Historia Completa</button>
         </section>
 
         <section id="view-cronologia" class="view-panel">
-          <h2 class="section-label">Línea de tiempo federal</h2>
-          <div class="timeline" style="margin-top: 10px;">
+          <label class="section-label">Línea de tiempo federal</label>
+          <div class="timeline mt-6">
             <div class="timeline-item">
-              <div class="timeline-title">12/04/2025 · Cardiología</div>
-              <div class="timeline-text">ECG sin cambios agudos. Control programado.</div>
+              <div class="text-sm font-bold">12/04/2025 · Cardiología</div>
+              <div class="text-xs mt-1 opacity-70">ECG sin cambios agudos. Control programado.</div>
             </div>
             <div class="timeline-item">
-              <div class="timeline-title">18/02/2025 · Salud Mental</div>
-              <div class="timeline-text">Registro clasificado. Acceso restringido 🔒</div>
+              <div class="text-sm font-bold">18/02/2025 · Salud Mental</div>
+              <div class="text-xs mt-1 opacity-70">Registro clasificado. Acceso restringido 🔒</div>
             </div>
           </div>
         </section>
 
         <section id="view-documentos" class="view-panel">
-          <h2 class="section-label">Estudios e Imágenes</h2>
-          <div class="doc-card">
-            <div class="text-sm font-bold text-slate-800">ECG - 12 derivaciones</div>
-            <div class="text-xs text-slate-500 mb-3">12/04/2025 · Hospital General</div>
+          <label class="section-label">Estudios e Imágenes</label>
+          <div class="doc-card mt-4">
+            <div class="text-sm font-extrabold mb-1">ECG - 12 derivaciones</div>
+            <div class="text-[11px] opacity-60 mb-4">12/04/2025 · Hospital General</div>
             <div class="flex gap-2">
-              <button class="mini-btn">Ver</button>
-              <button class="mini-btn">Compartir</button>
+              <button class="flex-1 py-2 bg-white/10 rounded-xl text-[11px] font-bold">VER</button>
+              <button class="flex-1 py-2 bg-white/10 rounded-xl text-[11px] font-bold">COMPARTIR</button>
             </div>
           </div>
         </section>
 
         <section id="view-accesos" class="view-panel">
-          <h2 class="section-label">Registro Blockchain</h2>
-          <p class="hint">Auditoría inmutable de quién consultó tus datos.</p>
-          <div class="doc-card" style="border-left: 4px solid #10b981;">
-            <div class="text-sm font-bold text-slate-800">Dr. Juan González</div>
-            <div class="text-xs text-slate-500">12/04/2025 · 09:45hs · Hospital General</div>
+          <label class="section-label">Registro Blockchain</label>
+          <p class="text-xs opacity-60 mb-6">Auditoría inmutable de quién consultó tus datos.</p>
+          
+          <div class="doc-card" style="border-left: 3px solid #10b981;">
+            <div class="text-sm font-bold">Dr. Juan González</div>
+            <div class="text-[11px] opacity-60">12/04/2025 · 09:45hs · Hospital General</div>
           </div>
         </section>
       </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Título</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="modal-title" class="text-xl font-extrabold">Título</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body"></div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -223,17 +285,19 @@
       const body = document.getElementById('modal-body');
       title.innerText = "Ayuda: Mi Historia";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-info help-icon"></i>
-          <p><strong>Resumen:</strong> Muestra tus alergias y datos críticos. Es lo primero que ve un médico en emergencias.</p>
-        </div>
-        <div class="help-item">
-          <i class="ph ph-file-text help-icon"></i>
-          <p><strong>Documentos:</strong> Aquí puedes descargar tus estudios realizados en cualquier hospital del país.</p>
-        </div>
-        <div class="help-item">
-          <i class="ph ph-blockchain help-icon"></i>
-          <p><strong>Blockchain:</strong> Mira quién accedió a tus datos. Cada acceso es inmutable y seguro.</p>
+        <div class="space-y-5">
+          <div class="flex gap-4">
+            <i class="ph-bold ph-info help-icon"></i>
+            <p class="text-sm text-gray-600"><strong>Resumen:</strong> Muestra tus alergias y datos críticos. Es lo primero que ve un médico en emergencias.</p>
+          </div>
+          <div class="flex gap-4">
+            <i class="ph-bold ph-file-text help-icon"></i>
+            <p class="text-sm text-gray-600"><strong>Documentos:</strong> Aquí puedes descargar tus estudios realizados en cualquier hospital del país.</p>
+          </div>
+          <div class="flex gap-4">
+            <i class="ph-bold ph-shield-check help-icon"></i>
+            <p class="text-sm text-gray-600"><strong>Blockchain:</strong> Mira quién accedió a tus datos. Cada acceso es inmutable y seguro.</p>
+          </div>
         </div>
       `;
       modal.style.display = "flex";
@@ -246,16 +310,18 @@
       const body = document.getElementById('modal-body');
       title.innerText = "Privacidad C.U.R.A.";
       body.innerHTML = `
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-sm font-semibold">Ocultar Salud Mental</span>
-          <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+        <div class="space-y-4">
+          <div class="flex justify-between items-center p-3 bg-gray-50 rounded-2xl">
+            <span class="text-sm font-bold">Ocultar Salud Mental</span>
+            <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+          </div>
+          <div class="flex justify-between items-center p-3 bg-gray-50 rounded-2xl">
+            <span class="text-sm font-bold">Ocultar Datos Sensibles</span>
+            <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+          </div>
+          <p class="text-[11px] text-gray-400 italic">Según el Art. 27, estos datos solo se liberan en emergencias críticas ante riesgo de vida.</p>
+          <button class="btn-primary w-full !text-white !bg-blue-900" onclick="cerrarModal()">Guardar Cambios</button>
         </div>
-        <div class="flex justify-between items-center mb-6">
-          <span class="text-sm font-semibold">Ocultar Datos Sensibles</span>
-          <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
-        </div>
-        <p class="text-xs text-slate-400 italic mb-4">Según el Art. 27, estos datos solo se liberan en emergencias críticas.</p>
-        <button class="btn-primary w-full" onclick="cerrarModal()">Guardar Cambios</button>
       `;
       modal.style.display = "flex";
     }

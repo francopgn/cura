@@ -31,7 +31,6 @@
       font-family: 'Inter', sans-serif;
     }
 
-    /* Contenedor tipo iPhone */
     .app-shell {
       width: 100%;
       max-width: 414px;
@@ -41,7 +40,6 @@
       flex-direction: column;
     }
 
-    /* Header */
     .header-bar {
       display: flex;
       justify-content: space-between;
@@ -52,7 +50,6 @@
 
     .header-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
 
-    /* Credencial Estilo Wallet */
     .credencial-wallet {
       background: linear-gradient(135deg, #004E85 0%, #065D9B 100%);
       border-radius: 28px;
@@ -72,9 +69,6 @@
       background: rgba(0, 194, 255, 0.1); filter: blur(40px); border-radius: 50%;
     }
 
-    .cred-chip { width: 40px; height: 30px; background: rgba(255,255,255,0.1); border-radius: 6px; margin-bottom: 20px; }
-    
-    /* Grid de Menú */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -111,7 +105,6 @@
 
     .menu-text { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
 
-    /* Bottom Bar Premium */
     .bottom-bar {
       position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
       width: 85%; max-width: 350px;
@@ -135,13 +128,14 @@
 
     /* Modal Estilo Premium */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.6); backdrop-filter: blur(10px);
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
     }
     .modal {
-      background: #ffffff; width: 100%; max-width: 360px; border-radius: 30px;
-      padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -210,12 +204,19 @@
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="flex justify-between items-center mb-5">
-        <h3 id="modal-title" class="text-xl font-extrabold">Ayuda</h3>
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="modal-title" class="text-xl font-extrabold">Bienvenido a C.U.R.A.</h3>
         <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="text-sm text-gray-600 leading-relaxed mb-6"></div>
-      <button onclick="cerrarModal()" class="w-full py-3 bg-cura-blue text-white font-bold rounded-2xl">Entendido</button>
+      
+      <div id="modal-body" class="space-y-5">
+        </div>
+
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
     </div>
   </div>
 
@@ -223,14 +224,19 @@
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
       const body = document.getElementById('modal-body');
+      
       body.innerHTML = `
-        <div class="flex gap-3 mb-4">
-          <i class="ph ph-heartbeat text-2xl text-cura-accent"></i>
-          <p><strong>Ecosistema Federal:</strong> Esta aplicación unifica tu salud pública y privada bajo la Ley C.U.R.A.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-heartbeat help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Ecosistema de Salud:</strong> Esta sección unifica toda tu información médica federal bajo la Ley C.U.R.A.</p>
         </div>
-        <div class="flex gap-3">
-          <i class="ph ph-fingerprint text-2xl text-cura-accent"></i>
-          <p><strong>Identidad Segura:</strong> Tu credencial y QR son personales. Úsalos para que los médicos accedan a tu historial.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-fingerprint help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Identidad Federal:</strong> Tu credencial digital y QR permiten que cualquier prestador autorizado del país acceda a tu información de forma segura.</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-grid-four help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Herramientas:</strong> Gestiona turnos, recetas y recordatorios de medicación. Toda tu historia clínica está ahora en un solo lugar.</p>
         </div>
       `;
       modal.style.display = "flex";

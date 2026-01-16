@@ -33,6 +33,7 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
@@ -55,13 +56,13 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
-    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight" data-aos="fade-down">
       <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
       <span class="text-white font-semibold">Financiamiento Sostenible</span>
     </nav>
 
-    <div class="mb-12">
+    <div class="mb-12" data-aos="fade-up">
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Financiamiento
       </h1>
@@ -72,73 +73,85 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-scales text-cura-accent text-2xl"></i>
-          1. Principio de Máxima Eficiencia y Neutralidad Fiscal
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          El sistema se rige por el principio de <strong>Neutralidad Fiscal</strong>, lo que significa que no se crean nuevos impuestos ni cargas obligatorias. La sostenibilidad se garantiza mediante la creación del <strong>Fondo de Inversión Inicial para la Salud Digital (FIISD)</strong>, priorizando la reasignación estratégica de recursos preexistentes sobre la generación de nueva erogación.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-scales text-cura-accent text-2xl"></i>
+            1. Principio de Máxima Eficiencia y Neutralidad Fiscal
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            El sistema se rige por el principio de <strong>Neutralidad Fiscal</strong>, lo que significa que no se crean nuevos impuestos ni cargas obligatorias. La sostenibilidad se garantiza mediante la creación del <strong>FIISD</strong>, priorizando la reasignación estratégica de recursos preexistentes.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-arrows-merge text-cura-accent text-2xl"></i>
-          2. Reasignación Estratégica y Optimización
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Se reasignará no menos del <strong>20% de las partidas presupuestarias</strong> de "Servicios Informáticos" y programas de salud digital dispersos (SNVS, Ley 27.553) al sistema unificado. El desarrollo utiliza obligatoriamente la infraestructura soberana de <strong>ARSAT</strong> (REFEFO y satélites) y la capacidad técnica de la <strong>Secretaría de Innovación Pública</strong>, eliminando costos de servidores y licencias externas.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-arrows-merge text-cura-accent text-2xl"></i>
+            2. Reasignación Estratégica y Optimización
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Se reasignará no menos del <strong>20% de las partidas presupuestarias</strong> de servicios informáticos. El desarrollo utiliza la infraestructura soberana de <strong>ARSAT</strong>, eliminando costos de servidores y licencias externas.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-chart-line-up text-cura-accent text-2xl"></i>
-          3. Auditoría de Ahorro y Reinversión Total
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Los ahorros operativos anuales generados por la eliminación de recetas en papel, la reducción de fraudes en el <strong>PAMI</strong> y la desaparición de estudios duplicados serán cuantificados por la <strong>SIGEN</strong>. Dichos excedentes no irán a rentas generales, sino que serán <strong>auditados y reinvertidos en un 100%</strong> en el mantenimiento de la red nacional, ciberseguridad y fortalecimiento de hospitales públicos.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-chart-line-up text-cura-accent text-2xl"></i>
+            3. Auditoría de Ahorro y Reinversión Total
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Los ahorros por la eliminación de recetas en papel y reducción de fraudes serán cuantificados por la <strong>SIGEN</strong>. Estos excedentes serán <strong>reinvertidos en un 100%</strong> en ciberseguridad y hospitales públicos.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-hand-coins text-cura-accent text-2xl"></i>
-          4. Régimen de Padrinazgo Tecnológico y Mecenazgo
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Se crea un marco para que empresas privadas financien la modernización y conectividad de establecimientos de salud públicos. Los <strong>"Padrinos Tecnológicos"</strong> obtienen beneficios fiscales (deducción en Ganancias), reconocimiento institucional y el sello de <strong>"Empresa Protectora de la Salud Pública"</strong>, permitiendo la inversión privada directa sin comprometer la soberanía de los datos.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="400">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-hand-coins text-cura-accent text-2xl"></i>
+            4. Régimen de Padrinazgo Tecnológico y Mecenazgo
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Las empresas privadas pueden financiar la modernización de hospitales a cambio de beneficios fiscales, bajo el sello de <strong>"Empresa Protectora de la Salud Pública"</strong>, permitiendo inversión privada sin comprometer datos.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-brain text-cura-accent text-2xl"></i>
-          5. Alianzas Estratégicas e I+D (Dividendo de IA)
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          La ley habilita acuerdos con tecnológicas globales para el entrenamiento de algoritmos utilizando <strong>datasets anonimizados</strong>. A cambio, el Estado Argentino obtiene licenciamiento gratuito y perpetuo de las herramientas de <strong>Inteligencia Artificial</strong> resultantes para su uso en el sistema público, garantizando acceso soberano a la medicina predictiva.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="500">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-brain text-cura-accent text-2xl"></i>
+            5. Alianzas Estratégicas e I+D (Dividendo de IA)
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Alianzas con tecnológicas para entrenamiento de algoritmos con <strong>datasets anonimizados</strong>. A cambio, el Estado obtiene licenciamiento gratuito y perpetuo de las herramientas de IA resultantes.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
-          6. Financiamiento Internacional y Proyección Global
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Se autoriza la captación de créditos específicos (BID/Banco Mundial) para modernización estatal y se faculta a la autoridad para <strong>exportar servicios de asistencia técnica y consultoría</strong>, posicionando a la Argentina como un Hub Global de interoperabilidad capaz de generar divisas para el propio sistema.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="600">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
+            6. Financiamiento Internacional y Proyección Global
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Se autoriza la captación de créditos (BID/Banco Mundial) y se faculta la <strong>exportación de asistencia técnica</strong>, posicionando a la Argentina como un Hub Global capaz de generar divisas.
+          </p>
+        </div>
       </div>
 
     </div>
 
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-      <p class="text-cura-accentLight text-sm italic">Neutralidad fiscal y eficiencia operativa.</p>
-      <a href="/Informacion/implementacion-tecnica" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+      <p class="text-cura-accentLight text-sm italic" data-aos="fade-left">Neutralidad fiscal y eficiencia operativa.</p>
+      <a href="/Informacion/implementacion-tecnica" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition group">
         Siguiente: Implementación Técnica
-        <i class="ph-bold ph-arrow-right"></i>
+        <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
       </a>
     </div>
   </main>
@@ -146,20 +159,36 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+
+    // Inicializar AOS con sincronización
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        anchorPlacement: 'top-bottom'
+      });
+
+      // Sincronizar AOS con Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>
-    

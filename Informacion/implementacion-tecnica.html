@@ -33,6 +33,7 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
@@ -55,13 +56,13 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
-    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight" data-aos="fade-down">
       <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
       <span class="text-white font-semibold">Implementación Técnica</span>
     </nav>
 
-    <div class="mb-12">
+    <div class="mb-12" data-aos="fade-up">
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Implementación Técnica
       </h1>
@@ -72,83 +73,97 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-cloud-arrow-up text-cura-accent text-2xl"></i>
-          1. Arquitectura de "Hardware Cero"
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          El sistema opera bajo un modelo de <strong>Cliente Liviano (Thin Client)</strong>, permitiendo que cualquier hospital funcione con total capacidad desde un navegador web estándar. Esto elimina servidores locales costosos, centralizando el procesamiento en la <strong>Cloud Sanitaria Nacional (Cloud-H)</strong> alojada en los nodos soberanos de <strong>ARSAT</strong>.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-cloud-arrow-up text-cura-accent text-2xl"></i>
+            1. Arquitectura de "Hardware Cero"
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            El sistema opera bajo un modelo de <strong>Cliente Liviano (Thin Client)</strong>, permitiendo que cualquier hospital funcione desde un navegador. Elimina servidores locales, centralizando el procesamiento en la <strong>Cloud-H</strong> de <strong>ARSAT</strong>.
+          </p>
+        </div>
       </div>
 
-<div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-  <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-    <i class="ph-bold ph-fingerprint text-cura-accent text-2xl"></i>
-    2. Inmutabilidad y Audit Trail
-  </h3>
-  <p class="text-sm text-cura-accentLight leading-relaxed">
-    C.U.R.A. implementa un sistema de <strong>Audit Trail (Pista de Auditoría)</strong> inmutable bajo la norma FDA 21 CFR Parte 11. Cada acceso o modificación genera un hash criptográfico que garantiza la integridad absoluta del dato. Esto impide alteraciones retroactivas, permitiendo auditorías forenses con validez legal absoluta por un periodo de 10 años.
-  </p>
-</div>
-
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-cpu text-cura-accent text-2xl"></i>
-          3. Inteligencia Artificial Soberana
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Se implementan módulos de <strong>IA Predictiva</strong> entrenados localmente con datos anonimizados. Esta tecnología asiste en el soporte de diagnóstico clínico y actúa como un motor de <strong>Vigilancia Epidemiológica Proactiva</strong>, detectando patrones o brotes en tiempo real para el beneficio público estatal.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-fingerprint text-cura-accent text-2xl"></i>
+            2. Inmutabilidad y Audit Trail
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Implementa un <strong>Audit Trail</strong> bajo norma FDA 21 CFR Parte 11. Cada modificación genera un hash criptográfico inmutable, permitiendo auditorías forenses con validez legal por 10 años.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
-          4. Interoperabilidad Universal
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          El sistema eleva a estándar obligatorio los protocolos internacionales <strong>HL7 FHIR y SNOMED CT</strong>. Mediante una arquitectura de <strong>APIs de Alta Velocidad</strong>, funciona como un bus de datos federal que conecta sistemas preexistentes de provincias, obras sociales y laboratorios.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-cpu text-cura-accent text-2xl"></i>
+            3. Inteligencia Artificial Soberana
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Módulos de <strong>IA Predictiva</strong> entrenados localmente con datos anonimizados. Actúa como motor de <strong>Vigilancia Epidemiológica Proactiva</strong> para el beneficio público estatal.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-qr-code text-cura-accent text-2xl"></i>
-          5. Tokenización y Seguridad
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          La identidad del paciente se protege mediante <strong>Tokenización y QR Dinámico</strong>. Los datos sensibles se encriptan de extremo a extremo, y cada ciudadano dispone de un <strong>Panel de Transparencia</strong> para auditar quién accedió a su información, con capacidad de revocar permisos instantáneamente.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="400">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
+            4. Interoperabilidad Universal
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Eleva a estándar obligatorio los protocolos <strong>HL7 FHIR y SNOMED CT</strong>. Mediante <strong>APIs de Alta Velocidad</strong>, conecta sistemas de provincias, obras sociales y laboratorios.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-wifi-slash text-cura-accent text-2xl"></i>
-          6. Resiliencia y Modo Offline
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Garantiza continuidad mediante un <strong>Módulo de Resiliencia</strong> para zonas con conectividad intermitente. Permite la atención y carga de datos sin internet; una vez restablecido el vínculo, el sistema realiza una sincronización segura y automática con la historia clínica nacional.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="500">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-qr-code text-cura-accent text-2xl"></i>
+            5. Tokenización y Seguridad
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Protección mediante <strong>Tokenización y QR Dinámico</strong>. El ciudadano dispone de un <strong>Panel de Transparencia</strong> para auditar y revocar permisos de acceso instantáneamente.
+          </p>
+        </div>
       </div>
 
-      <div class="md:col-span-2 bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-1">
-        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
-          <i class="ph-bold ph-shield-checkered text-cura-accent text-3xl"></i>
-          7. Ciberdefensa Activa y CSIRT-C.U.R.A.
-        </h3>
-        <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
-          La infraestructura crítica está protegida 24/7 por el <strong>CSIRT-C.U.R.A.</strong>, un equipo especializado en ciberseguridad sanitaria. Se aplican protocolos de defensa proactiva contra amenazas externas y encriptación de grado militar, asegurando que la información médica de los argentinos sea el activo mejor custodiado de la Nación.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="600">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-wifi-slash text-cura-accent text-2xl"></i>
+            6. Resiliencia y Modo Offline
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            <strong>Módulo de Resiliencia</strong> para zonas con conectividad intermitente. Permite la carga offline y sincronización automática segura con la historia clínica nacional al detectar conexión.
+          </p>
+        </div>
+      </div>
+
+      <div class="md:col-span-2" data-aos="zoom-in" data-aos-delay="700">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-2 hover:shadow-cura-accent/10">
+          <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+            <i class="ph-bold ph-shield-checkered text-cura-accent text-3xl"></i>
+            7. Ciberdefensa Activa y CSIRT-C.U.R.A.
+          </h3>
+          <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
+            Infraestructura protegida 24/7 por el <strong>CSIRT-C.U.R.A.</strong> especializado en salud. Se aplican protocolos de defensa proactiva y encriptación de grado militar para custodiar el activo más valioso de la Nación.
+          </p>
+        </div>
       </div>
 
     </div>
 
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-      <p class="text-cura-accentLight text-sm italic">Arquitectura nacional, soberana e inmutable.</p>
-      <a href="/Informacion/beneficios" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+      <p class="text-cura-accentLight text-sm italic" data-aos="fade-left">Arquitectura nacional, soberana e inmutable.</p>
+      <a href="/Informacion/beneficios" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition group">
         Siguiente: Beneficios
-        <i class="ph-bold ph-arrow-right"></i>
+        <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
       </a>
     </div>
   </main>
@@ -156,19 +171,36 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+
+    // Inicializar AOS con sincronización
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        anchorPlacement: 'top-bottom'
+      });
+
+      // Refresca AOS en cada frame de scroll de Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>

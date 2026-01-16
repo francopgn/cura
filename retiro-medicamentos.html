@@ -5,112 +5,72 @@
   <title>Retiro de Medicamentos - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --green-status: #10b981;
-      --red-status: #ef4444;
-    }
-
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
+    /* --- CONTENEDOR SUPERIOR --- */
+    .top-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       border-radius: 28px;
       padding: 24px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
-    .section-label {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 4px;
-    }
-
-    .hint {
-      font-size: 14px;
-      color: var(--text-gray);
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-
-    /* --- BOTONES Y TARJETAS --- */
     .btn-farmacias {
       width: 100%;
       padding: 16px;
       border-radius: 20px;
       border: none;
-      background: linear-gradient(135deg, var(--blue-main), #005fa3);
+      background: linear-gradient(135deg, var(--cura-blue), #002d4d);
       color: #fff;
       font-size: 15px;
       font-weight: 700;
@@ -119,97 +79,100 @@
       justify-content: center;
       gap: 10px;
       cursor: pointer;
-      box-shadow: 0 10px 20px rgba(31, 111, 229, 0.2);
-      margin-bottom: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
       transition: transform 0.2s;
     }
     .btn-farmacias:active { transform: scale(0.98); }
 
+    /* --- LISTA DE RETIRO --- */
     .pickup-list { display: flex; flex-direction: column; gap: 16px; }
+
     .rx-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       border-radius: 24px;
-      background: #f8fafc;
-      border: 1px solid var(--border-soft);
-      padding: 18px;
+      padding: 20px;
+      transition: all 0.3s ease;
     }
 
-    .rx-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .rx-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
-    .rx-dose {
-      font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px;
-      background: var(--blue-soft); color: var(--blue-header);
+    .rx-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .rx-name { font-size: 18px; font-weight: 800; color: white; }
+    .rx-dose { 
+        font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
+        background: var(--accent); color: var(--bg-dark);
     }
 
-    .rx-meta { font-size: 13px; color: var(--text-gray); line-height: 1.5; margin-bottom: 12px; }
+    .rx-meta { font-size: 13px; opacity: 0.8; line-height: 1.5; margin-bottom: 15px; }
+    
     .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
     .chip {
-      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
-      background: #e2e8f0; color: #475569;
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px;
+      background: rgba(255,255,255,0.1); color: white;
     }
-    .chip-green { background: #dcfce7; color: #166534; }
-    .chip-blue { background: #dbeafe; color: #1e40af; }
-    .chip-red { background: #fee2e2; color: #991b1b; }
+    .chip-green { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
+    .chip-blue { background: rgba(0, 194, 255, 0.1); color: var(--accent); border: 1px solid rgba(0, 194, 255, 0.2); }
+    .chip-red { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
 
-    .actions { display: flex; flex-direction: column; gap: 8px; }
+    .actions { display: flex; flex-direction: column; gap: 10px; }
     .btn-primary {
       width: 100%; padding: 14px; border-radius: 16px; border: none;
-      background: var(--blue-main); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer;
+      background: var(--accent); color: var(--bg-dark); font-size: 14px; font-weight: 800; cursor: pointer;
     }
     .btn-secondary {
-      width: 100%; padding: 12px; border-radius: 16px; border: 1px solid var(--border-soft);
-      background: transparent; color: var(--text-dark); font-size: 13px; font-weight: 600; cursor: pointer;
+      width: 100%; padding: 12px; border-radius: 16px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05); color: white; font-size: 13px; font-weight: 600; cursor: pointer;
     }
 
-    /* --- MODAL AYUDA (Premium) --- */
+    /* --- BOTTOM BAR --- */
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px;
+      box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+      cursor: pointer;
+    }
+
+    /* --- MODAL --- */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
     }
     .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
-
-    /* --- BARRA INFERIOR --- */
-    .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
-    }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Retiro de Medicamentos</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Retiro de Medicamentos</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="card">
+    <main>
+      <div class="top-section">
         <button class="btn-farmacias" onclick="location.href='farmacias.html'">
           <i class="ph-bold ph-map-pin"></i>
           Ver farmacias cercanas
         </button>
-        <h2 class="section-label">Disponibles</h2>
-        <p class="hint">Recetas electrónicas habilitadas para retiro inmediato mediante tu CURA-ID.</p>
+        <h2 class="text-xl font-bold mb-1">Disponibles</h2>
+        <p class="text-sm opacity-60 leading-relaxed">Recetas electrónicas habilitadas para retiro inmediato mediante tu CURA-ID.</p>
       </div>
 
       <div class="pickup-list">
@@ -261,7 +224,7 @@
           </div>
         </article>
 
-        <article class="rx-card" style="opacity: 0.7;">
+        <article class="rx-card" style="opacity: 0.6;">
           <div class="rx-header">
             <div class="rx-name">Amoxicilina</div>
             <div class="rx-dose">875 mg</div>
@@ -276,23 +239,26 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='retiro-medicamentos.html'"><i class="ph-bold ph-package"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Retiro</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-5">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -300,21 +266,19 @@
   <script>
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Retiro";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-identification-card help-icon"></i>
-          <p><strong>CURA-ID:</strong> Pulsa en "Retirar" para generar la credencial digital que debes presentar en la farmacia.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-identification-card help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>CURA-ID:</strong> Pulsa en "Retirar" para generar la credencial digital que debes presentar en la farmacia.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-calendar-x help-icon"></i>
-          <p><strong>Vencimiento:</strong> Controla la fecha límite de retiro. Una vez vencida, deberás solicitar una renovación.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-calendar-x help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Vencimiento:</strong> Controla la fecha límite de retiro. Una vez vencida, deberás solicitar una renovación.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-package help-icon"></i>
-          <p><strong>Parciales:</strong> Si la farmacia no tiene stock completo, puedes retirar una parte y el sistema registrará el saldo pendiente.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-package help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Parciales:</strong> Si la farmacia no tiene stock completo, puedes retirar una parte y el sistema registrará el saldo pendiente.</p>
         </div>
       `;
       modal.style.display = "flex";

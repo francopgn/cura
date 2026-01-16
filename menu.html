@@ -5,243 +5,217 @@
   <title>Salud - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --cred-bg-start: #a6ccee;
-      --cred-bg-end: #cce5ff;
-      --btn-ver-bg: #e3f0ff;
-      --btn-ver-text: #005fa3;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --icon-circle-start: #dbeafe;
-      --icon-circle-end: #bfdbfe;
-      --menu-text-blue: #0d2b52; 
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
-
-    /* --- FIX 1: EVITAR SALTOS DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px; 
-      border-radius: 999px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
+    }
+
+    .header-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+
+    .credencial-wallet {
+      background: linear-gradient(135deg, #004E85 0%, #065D9B 100%);
+      border-radius: 28px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.2s;
+    }
+    .credencial-wallet:active { transform: scale(0.97); }
+    .credencial-wallet::after {
+      content: ''; position: absolute; top: -50%; right: -20%; width: 150px; height: 150px;
+      background: rgba(0, 194, 255, 0.1); filter: blur(40px); border-radius: 50%;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .menu-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .menu-item:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
+
+    .icon-box {
+      width: 48px; height: 48px;
+      background: rgba(0, 194, 255, 0.15);
+      color: var(--accent);
+      border-radius: 14px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px; 
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-    }
-    .header-left-spacer { width: 36px; height: 36px; } 
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-    .greeting-text { font-size: 28px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
-    .greeting-sub { font-size: 16px; color: var(--text-gray); margin-bottom: 24px; }
-
-    /* --- CREDENCIAL --- */
-    .credencial-card-light {
-        display: block;
-        text-decoration: none;
-        width: 100%;
-        background: linear-gradient(135deg, var(--cred-bg-start), var(--cred-bg-end));
-        border-radius: 24px;
-        padding: 24px 20px;
-        box-shadow: var(--shadow-soft);
-        margin-bottom: 30px;
-        position: relative;
-    }
-    .credencial-card-light:active { transform: scale(0.98); }
-    .cred-title-light { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 20px; }
-    .cred-layout { display: flex; justify-content: space-between; align-items: flex-start; }
-    .cred-left-info { display: flex; align-items: center; gap: 15px; }
-    .avatar-placeholder {
-        width: 60px; height: 60px; background-color: #d1e3f3; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .avatar-placeholder svg { width: 40px; height: 40px; fill: #a0b4c8; }
-    .user-data-light h3 { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-    .user-data-light p { font-size: 14px; color: var(--text-gray); }
-    .cred-right-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .qr-box-light {
-        background: rgba(255,255,255,0.6); padding: 5px; border-radius: 12px;
-        width: 70px; height: 70px; display: flex; align-items: center; justify-content: center;
-    }
-    .qr-box-light img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .btn-ver-light {
-        background-color: var(--btn-ver-bg); color: var(--btn-ver-text);
-        padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; border: none;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 15px;
     }
 
-    /* --- GRID --- */
-    .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .menu-item {
-      background: var(--card-white); border-radius: 24px; padding: 15px 5px;
-      display: flex; flex-direction: column; align-items: center; text-decoration: none;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
+    .menu-text { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
+
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      z-index: 1000;
     }
-    .icon-circle {
-      width: 80px; height: 80px;
-      background: linear-gradient(135deg, var(--icon-circle-start), var(--icon-circle-end));
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
-    }
-    .icon-circle img { width: 40px; height: 40px; object-fit: contain; }
-    .menu-text {
-      font-size: 11px; font-weight: 800; color: var(--menu-text-blue);
-      text-align: center; line-height: 1.2; height: 2.4em; display: flex;
-      align-items: center; justify-content: center;
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; transition: 0.2s; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px;
+      box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+      cursor: pointer;
     }
 
-    /* --- MODAL AYUDA (Premium) --- */
+    /* Modal Estilo Premium */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
     }
     .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
-
-    /* --- BOTTOM BAR --- */
-    .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
-    }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <div class="header-left-spacer"></div>
-      <div class="header-title">Salud</div>
-      <div style="color:white; cursor:pointer; width:36px; text-align:right;">🔔</div>
+      <div class="header-title">C.U.R.A. Salud</div>
+      <i class="ph-bold ph-bell text-2xl text-cura-accent"></i>
     </header>
 
-    <main class="main-content">
-      <h1 class="greeting-text">Hola, Franco 👋</h1>
-      <p class="greeting-sub">¿Qué necesitas hoy?</p>
+    <main>
+      <div class="mb-6">
+        <h1 class="text-3xl font-extrabold">Hola, Franco</h1>
+        <p class="text-muted text-sm opacity-60">Tu historial está al día</p>
+      </div>
 
-      <a href="credencial.html" class="credencial-card-light">
-        <div class="cred-title-light">Credencial Digital</div>
-        <div class="cred-layout">
-            <div class="cred-left-info">
-                <div class="avatar-placeholder">
-                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </div>
-                <div class="user-data-light">
-                    <h3>Franco Paganini</h3>
-                    <p>CURAID-01-41316202</p>
-                </div>
-            </div>
-            <div class="cred-right-actions">
-                <div class="qr-box-light">
-                    <img src="qr_menu.png" alt="QR Código" />
-                </div>
-                <button class="btn-ver-light">Ver credencial</button>
-            </div>
+      <a href="credencial.html" class="credencial-wallet">
+        <div class="flex justify-between items-end">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest opacity-60 mb-1">CREDENCIAL DIGITAL</p>
+            <h3 class="text-xl font-bold">Franco Paganini</h3>
+            <p class="text-xs opacity-80">CURAID-01-41316202</p>
+          </div>
+          <div class="bg-white p-1 rounded-lg">
+            <img src="qr_menu.png" alt="QR" class="w-12 h-12">
+          </div>
         </div>
       </a>
 
       <div class="menu-grid">
         <a href="prescripciones.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-prescripciones (2).png" alt="Icon"></div>
-          <span class="menu-text">Prescripciones</span>
+          <div class="icon-box"><i class="ph-bold ph-pill"></i></div>
+          <span class="menu-text">Recetas<br>Digitales</span>
         </a>
         <a href="retiro-medicamentos.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-retiro-medicamentos (2).png" alt="Icon"></div>
-          <span class="menu-text">Retiro de Medicamentos</span>
+          <div class="icon-box"><i class="ph-bold ph-package"></i></div>
+          <span class="menu-text">Retiro de<br>Medicamentos</span>
         </a>
         <a href="solicitar-turno.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-turnos (2).png" alt="Icon"></div>
-          <span class="menu-text">Turnos</span>
+          <div class="icon-box"><i class="ph-bold ph-calendar-check"></i></div>
+          <span class="menu-text">Gestionar<br>Turnos</span>
         </a>
         <a href="historia-salud.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-historia-clinica.png" alt="Icon"></div>
-          <span class="menu-text">Historia Clínica</span>
+          <div class="icon-box"><i class="ph-bold ph-clipboard-text"></i></div>
+          <span class="menu-text">Historia<br>Clínica</span>
         </a>
         <a href="recordatorios.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-recordatorios (2).png" alt="Icon"></div>
-          <span class="menu-text">Recordatorios</span>
+          <div class="icon-box"><i class="ph-bold ph-clock-clockwise"></i></div>
+          <span class="menu-text">Alertas y<br>Recordatorios</span>
         </a>
         <a href="cartilla.html" class="menu-item">
-          <div class="icon-circle"><img src="icon-mapa.png" alt="Icon"></div>
-          <span class="menu-text">Cartilla</span>
+          <div class="icon-box"><i class="ph-bold ph-map-trifold"></i></div>
+          <span class="menu-text">Cartilla<br>Médica</span>
         </a>
       </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='chats.html'"><i class="ph-bold ph-chats-circle"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="modal-title" class="text-xl font-extrabold">Bienvenido a C.U.R.A.</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      
+      <div id="modal-body" class="space-y-5">
+        </div>
+
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -249,27 +223,29 @@
   <script>
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Bienvenido a C.U.R.A.";
+      
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-heartbeat help-icon"></i>
-          <p><strong>Ecosistema de Salud:</strong> Esta sección unifica toda tu información médica federal bajo la Ley C.U.R.A.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-heartbeat help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Ecosistema de Salud:</strong> Esta sección unifica toda tu información médica federal bajo la Ley C.U.R.A.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-fingerprint help-icon"></i>
-          <p><strong>Identidad Federal:</strong> Tu credencial digital y QR permiten que cualquier prestador autorizado del país acceda a tu información de forma segura.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-fingerprint help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Identidad Federal:</strong> Tu credencial digital y QR permiten que cualquier prestador autorizado del país acceda a tu información de forma segura.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-grid-four help-icon"></i>
-          <p><strong>Herramientas:</strong> Gestiona turnos, recetas y recordatorios de medicación. Toda tu historia clínica está ahora en un solo lugar.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-grid-four help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Herramientas:</strong> Gestiona turnos, recetas y recordatorios de medicación. Toda tu historia clínica está ahora en un solo lugar.</p>
         </div>
       `;
       modal.style.display = "flex";
     }
 
-    function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
+    function cerrarModal() {
+      document.getElementById('modal-container').style.display = "none";
+    }
   </script>
+
 </body>
 </html>

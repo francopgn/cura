@@ -5,214 +5,198 @@
   <title>Documentos y Estudios - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --red-status: #ef4444;
-    }
-
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
-    }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
-
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
-    }
-
-    .section-label {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 8px;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
 
     /* --- FILTROS --- */
-    .filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-    .input-text, .select-field {
-      width: 100%; padding: 14px; border-radius: 16px; border: 1px solid var(--border-soft);
-      font-size: 14px; outline: none; background: #f8fafc; color: var(--text-dark);
+    .filter-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 24px;
+      margin-bottom: 25px;
     }
-    .filter-row { display: flex; gap: 10px; }
-    .filter-row .select-field { flex: 1; }
 
-    .toggle-row { display: flex; align-items: center; gap: 12px; margin-top: 4px; }
+    .section-label {
+      font-size: 13px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--accent); margin-bottom: 12px; display: block;
+    }
+
+    .input-text, .select-field {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--glass-border);
+      color: white; padding: 14px 16px; border-radius: 18px;
+      font-size: 14px; outline: none; width: 100%; margin-bottom: 12px;
+    }
+    select option { background: var(--bg-dark); color: white; }
+
+    /* --- TOGGLE --- */
+    .toggle-row {
+      display: flex; align-items: center; gap: 12px;
+      padding-top: 15px; border-top: 1px solid var(--glass-border);
+    }
     .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
     .slider {
-      position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1;
+      position: absolute; cursor: pointer; inset: 0;
+      background-color: rgba(255,255,255,0.2);
       border-radius: 999px; transition: 0.3s;
     }
     .slider::before {
-      content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px;
-      background-color: #fff; border-radius: 50%; transition: 0.3s;
+      content: ""; position: absolute; height: 18px; width: 18px;
+      left: 3px; top: 3px; background-color: #fff; border-radius: 50%; transition: 0.3s;
     }
-    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider { background-color: var(--accent); }
     .toggle input:checked + .slider::before { transform: translateX(20px); }
-    .toggle-text { font-size: 12px; color: var(--text-gray); line-height: 1.3; }
 
-    /* --- LISTA DE DOCUMENTOS --- */
+    /* --- DOC LIST --- */
     .group-label {
-      font-size: 12px; font-weight: 700; color: var(--text-gray);
-      text-transform: uppercase; letter-spacing: 0.5px; margin: 10px 0 10px 10px;
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--accent); margin: 0 0 15px 10px; opacity: 0.8;
     }
 
-    .doc-list { display: flex; flex-direction: column; gap: 12px; }
     .doc-card {
-      display: flex; gap: 12px; padding: 16px; border-radius: 24px;
-      background: #f8fafc; border: 1px solid var(--border-soft); align-items: center;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 18px;
+      display: flex; gap: 14px; align-items: center;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
     }
-    .thumb {
-      width: 48px; height: 48px; border-radius: 14px; background: var(--blue-soft);
-      display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
-    }
-    .doc-main { flex: 1; min-width: 0; }
-    .doc-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
-    .doc-meta { font-size: 11px; color: var(--text-gray); margin-bottom: 6px; }
+    .doc-card:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
 
-    .doc-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-    .tag {
-      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
-      background: #e2e8f0; color: #475569;
+    .thumb {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: rgba(0, 194, 255, 0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
     }
-    .tag-blue { background: var(--blue-soft); color: var(--blue-header); }
-    .tag-red { background: #fee2e2; color: #991b1b; }
+    
+    .doc-main { flex: 1; min-width: 0; }
+    .doc-name { font-size: 15px; font-weight: 800; color: white; margin-bottom: 2px; }
+    .doc-meta { font-size: 11px; color: white; opacity: 0.5; margin-bottom: 8px; }
+
+    .doc-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag {
+      font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.08); text-transform: uppercase;
+    }
+    .tag-blue { background: rgba(0, 194, 255, 0.2); color: var(--accent); }
+    .tag-red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
     .doc-actions { display: flex; flex-direction: column; gap: 6px; }
     .mini-btn {
-      padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border-soft);
-      background: #fff; font-size: 11px; font-weight: 700; color: var(--text-dark);
-      cursor: pointer; white-space: nowrap;
+      padding: 8px 14px; border-radius: 10px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05); font-size: 10px; font-weight: 800; color: white;
+      text-transform: uppercase;
     }
-    .mini-btn.primary { background: var(--blue-main); color: #fff; border: none; }
+    .mini-btn.primary { background: var(--accent); color: var(--bg-dark); border: none; }
 
-    .muted-footer { font-size: 11px; color: var(--text-gray); text-align: center; margin-top: 20px; line-height: 1.4; }
-
-    /* --- MODAL AYUDA (Premium) --- */
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
-      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    .muted-footer { 
+      font-size: 11px; color: white; opacity: 0.4; text-align: center; 
+      margin-top: 30px; padding: 0 20px; line-height: 1.5; 
     }
-    .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
-    }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
 
     /* --- BOTTOM BAR --- */
     .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4); cursor: pointer;
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+    }
+    .help-icon { color: var(--cura-blue); font-size: 24px; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Documentos y Estudios</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Documentos y Estudios</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="card">
-        <h2 class="section-label">Buscador</h2>
-        <div class="filters">
+    <main>
+      <div class="filter-card">
+        <label class="section-label">Buscador</label>
+        <div class="space-y-3">
           <input type="text" id="buscadorDocs" class="input-text" placeholder="Buscar laboratorio, ECG, Rx..." oninput="filtrarDocs()">
-          <div class="filter-row">
-            <select id="filtroTipoDoc" class="select-field" onchange="filtrarDocs()">
-              <option value="todos">Todos los tipos</option>
-              <option value="laboratorio">Laboratorio</option>
-              <option value="imagen">Imágenes</option>
-              <option value="receta">Recetas</option>
-              <option value="certificado">Certificados</option>
-            </select>
-          </div>
+          <select id="filtroTipoDoc" class="select-field" onchange="filtrarDocs()">
+            <option value="todos">Todos los tipos</option>
+            <option value="laboratorio">Laboratorio</option>
+            <option value="imagen">Imágenes</option>
+            <option value="receta">Recetas</option>
+            <option value="certificado">Certificados</option>
+          </select>
         </div>
 
         <div class="toggle-row">
@@ -220,116 +204,117 @@
             <input type="checkbox" id="toggleDocsSensibles" checked onchange="filtrarDocs()">
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">Incluir documentos de salud mental y datos sensibles.</span>
+          <span class="text-[11px] opacity-70 leading-tight ml-1">Incluir documentos de salud mental y datos sensibles.</span>
         </div>
       </div>
 
-      <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
-        <div class="group-label">Recientes</div>
-        <div class="doc-list" id="docList">
-          
-          <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="ecg cardiologia hospital general 2024">
-            <div class="thumb">🫀</div>
-            <div class="doc-main">
-              <div class="doc-name">ECG · 12 derivaciones</div>
-              <div class="doc-meta">12/04/2024 · Hospital General</div>
-              <div class="doc-tags">
-                <span class="tag tag-blue">Imagen / Señal</span>
-                <span class="tag">Cardiología</span>
-              </div>
+      <div class="group-label">Recientes</div>
+      <div class="doc-list" id="docList">
+        
+        <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="ecg cardiologia hospital general 2024">
+          <div class="thumb">🫀</div>
+          <div class="doc-main">
+            <div class="doc-name">ECG · 12 derivaciones</div>
+            <div class="doc-meta">12/04/2024 · Hospital General</div>
+            <div class="doc-tags">
+              <span class="tag tag-blue">Imagen / Señal</span>
+              <span class="tag">Cardiología</span>
             </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Descargar</button>
-            </div>
-          </article>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">Descargar</button>
+          </div>
+        </article>
 
-          <article class="doc-card" data-tipo="laboratorio" data-sensible="no" data-texto="laboratorio sangre glucemia analisis">
-            <div class="thumb">🧪</div>
-            <div class="doc-main">
-              <div class="doc-name">Informe de Laboratorio</div>
-              <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
-              <div class="doc-tags">
-                <span class="tag tag-blue">Bioquímica</span>
-                <span class="tag">Diabetes</span>
-              </div>
+        <article class="doc-card" data-tipo="laboratorio" data-sensible="no" data-texto="laboratorio sangre glucemia analisis">
+          <div class="thumb">🧪</div>
+          <div class="doc-main">
+            <div class="doc-name">Informe de Laboratorio</div>
+            <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
+            <div class="doc-tags">
+              <span class="tag tag-blue">Bioquímica</span>
+              <span class="tag">Diabetes</span>
             </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">PDF</button>
-            </div>
-          </article>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">PDF</button>
+          </div>
+        </article>
 
-          <article class="doc-card" data-tipo="informe" data-sensible="si" data-texto="salud mental crisis angustia informe psicologia">
-            <div class="thumb">🧠</div>
-            <div class="doc-main">
-              <div class="doc-name">Informe Salud Mental</div>
-              <div class="doc-meta">18/02/2024 · Hospital General</div>
-              <div class="doc-tags">
-                <span class="tag tag-red">Sensible 🔒</span>
-                <span class="tag">Psiquiatría</span>
-              </div>
+        <article class="doc-card" data-tipo="imagen" data-sensible="si" data-texto="salud mental crisis angustia informe psicologia">
+          <div class="thumb">🧠</div>
+          <div class="doc-main">
+            <div class="doc-name">Informe Salud Mental</div>
+            <div class="doc-meta">18/02/2024 · Hospital General</div>
+            <div class="doc-tags">
+              <span class="tag tag-red">Sensible 🔒</span>
+              <span class="tag">Psiquiatría</span>
             </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-            </div>
-          </article>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+          </div>
+        </article>
 
-          <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="rx radiografia torax imagen pulmones">
-            <div class="thumb">🩻</div>
-            <div class="doc-main">
-              <div class="doc-name">Rx de Tórax</div>
-              <div class="doc-meta">10/01/2024 · Diagnóstico Norte</div>
-              <div class="doc-tags">
-                <span class="tag tag-blue">Radiología</span>
-              </div>
+        <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="rx radiografia torax imagen pulmones">
+          <div class="thumb">🩻</div>
+          <div class="doc-main">
+            <div class="doc-name">Rx de Tórax</div>
+            <div class="doc-meta">10/01/2024 · Diagnóstico Norte</div>
+            <div class="doc-tags">
+              <span class="tag tag-blue">Radiología</span>
             </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">DICOM</button>
-            </div>
-          </article>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">DICOM</button>
+          </div>
+        </article>
 
-          <article class="doc-card" data-tipo="receta" data-sensible="no" data-texto="receta metformina losartan cronica">
-            <div class="thumb">💊</div>
-            <div class="doc-main">
-              <div class="doc-name">Receta Crónica</div>
-              <div class="doc-meta">05/12/2023 · Consultorio Externo</div>
-              <div class="doc-tags">
-                <span class="tag">Electrónica</span>
-              </div>
+        <article class="doc-card" data-tipo="receta" data-sensible="no" data-texto="receta metformina losartan cronica">
+          <div class="thumb">💊</div>
+          <div class="doc-main">
+            <div class="doc-name">Receta Crónica</div>
+            <div class="doc-meta">05/12/2023 · Consultorio Externo</div>
+            <div class="doc-tags">
+              <span class="tag">Electrónica</span>
             </div>
-            <div class="doc-actions">
-              <button class="mini-btn primary">Ver</button>
-              <button class="mini-btn">Farmacia</button>
-            </div>
-          </article>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">Farmacia</button>
+          </div>
+        </article>
 
-        </div>
-        <p class="muted-footer">
-          Documentos generados bajo Ley C.U.R.A. con validez federal e interoperabilidad inmediata.
-        </p>
       </div>
+      <p class="muted-footer">
+        Documentos generados bajo Ley C.U.R.A. con validez federal e interoperabilidad inmediata.
+      </p>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Documentos</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-5 text-sm text-gray-600 leading-relaxed">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -337,21 +322,19 @@
   <script>
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Documentos";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-file-pdf help-icon"></i>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-file-pdf help-icon text-blue-600"></i>
           <p><strong>Validez Federal:</strong> Todos los documentos generados en el sistema C.U.R.A. son oficiales y válidos en cualquier centro de salud del país.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-microscope help-icon"></i>
-          <p><strong>Estudios:</strong> Puedes visualizar informes de laboratorio e imágenes radiológicas (DICOM) sin necesidad de llevar papeles físicos al médico.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-microscope help-icon text-blue-600"></i>
+          <p><strong>Estudios:</strong> Puedes visualizar informes de laboratorio e imágenes radiológicas (DICOM) sin necesidad de llevar papeles físicos.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-lock help-icon"></i>
-          <p><strong>Privacidad:</strong> Los documentos sensibles están encriptados. Usa el interruptor de la página para decidir cuándo visualizarlos en tu lista.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-lock help-icon text-blue-600"></i>
+          <p><strong>Privacidad:</strong> Los documentos sensibles están encriptados. Usa el interruptor para decidir cuándo visualizarlos en tu lista.</p>
         </div>
       `;
       modal.style.display = "flex";

@@ -2,166 +2,140 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Registro de Auditoría - C.U.R.A.</title>
+  <title>Transparencia - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --red-status: #ef4444;
-      --green-status: #10b981;
-    }
-
-    /* --- ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll;
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
+    }
+    .back-btn {
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
+    }
+
+    /* --- BLOCKCHAIN STATUS --- */
+    .blockchain-status {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 24px;
+      padding: 18px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      gap: 15px;
+      margin-bottom: 25px;
     }
+    .bc-icon { color: #10b981; font-size: 28px; }
+    .bc-text { font-size: 12px; opacity: 0.9; line-height: 1.4; font-weight: 500; }
 
-    .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
-    }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
-
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
-      border-radius: 28px;
-      padding: 24px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 16px;
-    }
-
-    .section-label {
-      font-size: 12px; font-weight: 800; color: var(--blue-main);
-      text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 16px; display: block;
-    }
-
-    /* --- INFO BOX --- */
-    .blockchain-status {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px; background: #f0fdf4; border: 1px solid #dcfce7;
-      border-radius: 20px; margin-bottom: 20px;
-    }
-    .bc-icon { color: var(--green-status); font-size: 24px; }
-    .bc-text { font-size: 12px; color: #166534; font-weight: 500; line-height: 1.4; }
-
-    /* --- LOG ITEM --- */
+    /* --- LOG ITEM PREMIUM --- */
     .log-item {
-      padding: 16px;
-      background: #f8fafc;
-      border-radius: 20px;
-      border: 1px solid var(--border-soft);
-      margin-bottom: 12px;
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 16px;
       position: relative;
+      transition: 0.3s;
     }
+    .log-item:active { transform: scale(0.98); background: rgba(255,255,255,0.1); }
 
-    .log-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 8px;
-    }
-
-    .log-date { font-size: 12px; font-weight: 700; color: var(--text-gray); }
-    .log-prof { font-size: 14px; font-weight: 700; color: var(--text-dark); }
-    .log-inst { font-size: 12px; color: var(--text-gray); margin-bottom: 8px; }
+    .log-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .log-date { font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; }
+    .log-prof { font-size: 16px; font-weight: 800; color: white; }
+    .log-inst { font-size: 12px; opacity: 0.6; margin-bottom: 12px; }
 
     .log-reason {
-      font-size: 12px; color: var(--text-dark);
-      background: #fff; padding: 8px 12px; border-radius: 12px;
-      border: 1px solid var(--border-soft); display: inline-block;
+      font-size: 12px; background: rgba(255,255,255,0.05); padding: 10px 14px;
+      border-radius: 14px; border: 1px solid var(--glass-border); display: inline-block;
+      width: 100%; color: rgba(255,255,255,0.8);
     }
 
     .log-hash {
-      font-family: monospace; font-size: 10px; color: #94a3b8;
-      margin-top: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-family: 'Courier New', monospace; font-size: 9px; color: rgba(255,255,255,0.3);
+      margin-top: 12px; display: block; overflow: hidden; text-overflow: ellipsis;
     }
 
     /* --- BADGES --- */
     .badge-emergency {
-      background: #fee2e2; color: #991b1b;
-      font-size: 10px; font-weight: 800; padding: 4px 8px;
-      border-radius: 6px; text-transform: uppercase;
+      background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2);
+      font-size: 9px; font-weight: 900; padding: 4px 10px; border-radius: 8px;
     }
     .badge-normal {
-      background: var(--blue-soft); color: var(--blue-header);
-      font-size: 10px; font-weight: 800; padding: 4px 8px;
-      border-radius: 6px; text-transform: uppercase;
+      background: rgba(0, 194, 255, 0.1); color: var(--accent); border: 1px solid rgba(0, 194, 255, 0.2);
+      font-size: 9px; font-weight: 900; padding: 4px 10px; border-radius: 8px;
     }
+
+    .emergency-border { border-left: 4px solid #ef4444 !important; box-shadow: inset 10px 0 20px rgba(239, 68, 68, 0.05); }
 
     /* --- BOTTOM BAR --- */
     .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    
-    .center-question-btn { 
-      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
-      border: 5px solid var(--main-bg); display: flex; align-items: center; 
-      justify-content: center; color: white; font-size: 32px; 
-      font-weight: 600; 
-      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+      cursor: pointer;
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
   </style>
 </head>
@@ -169,79 +143,115 @@
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Transparencia</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Transparencia</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      
-      <div class="card">
-        <span class="section-label">Registro Federal Inmutable</span>
-        <div class="blockchain-status">
-          <i class="ph-fill ph-shield-check bc-icon"></i>
-          <p class="bc-text">
-            Toda consulta a tus datos está protegida por criptografía y es inalterable bajo el Plan Nacional de Trazabilidad.
-          </p>
-        </div>
-
-        <div class="log-item">
-          <div class="log-header">
-            <div>
-              <div class="log-date">9 ENE 2026 · 10:15hs</div>
-              <div class="log-prof">Dr. Juan González</div>
-            </div>
-            <span class="badge-normal">Consulta</span>
-          </div>
-          <div class="log-inst">Hospital General de Agudos</div>
-          <div class="log-reason">Motivo: Control Clínico Programado</div>
-          <div class="log-hash">Hash: 0x8f2a...c3e9 (Validado por ARSAT)</div>
-        </div>
-
-        <div class="log-item" style="border-left: 4px solid var(--red-status);">
-          <div class="log-header">
-            <div>
-              <div class="log-date">18 DIC 2025 · 22:45hs</div>
-              <div class="log-prof">Guardia Médica Nocturna</div>
-            </div>
-            <span class="badge-emergency">Break-Glass</span>
-          </div>
-          <div class="log-inst">Hospital Municipal Local</div>
-          <div class="log-reason">Motivo: Emergencia (Acceso sin consentimiento previo)</div>
-          <div class="log-hash">Hash: 0x11b5...7a2d (Auditado por AAIP)</div>
-        </div>
-
-        <div class="log-item">
-          <div class="log-header">
-            <div>
-              <div class="log-date">05 DIC 2025 · 09:30hs</div>
-              <div class="log-prof">Farmacia "La Salud"</div>
-            </div>
-            <span class="badge-normal">Dispensación</span>
-          </div>
-          <div class="log-inst">Validación de Receta Electrónica</div>
-          <div class="log-reason">Motivo: Retiro de Metformina 850mg</div>
-          <div class="log-hash">Hash: 0x4d91...b11f (Sincronizado con PAI)</div>
-        </div>
-
+    <main>
+      <div class="mb-6 px-1">
+        <h1 class="text-2xl font-extrabold mb-1">Registro de Auditoría</h1>
+        <p class="text-xs opacity-50 font-semibold tracking-wider uppercase">Trazabilidad Federal Inmutable</p>
       </div>
 
-      <div style="padding: 0 10px; text-align: center;">
-        <p style="font-size: 11px; color: var(--text-gray);">
-          Si detectas un acceso no autorizado, podés iniciar una denuncia formal ante la Autoridad de Aplicación desde el Módulo Nacional de Seguridad.
+      <div class="blockchain-status">
+        <i class="ph-fill ph-shield-check bc-icon"></i>
+        <p class="bc-text">
+          Toda consulta a tus datos está protegida por criptografía y es inalterable bajo el Plan Nacional de Trazabilidad.
         </p>
       </div>
 
+      <div class="log-item">
+        <div class="log-header">
+          <div>
+            <div class="log-date">9 ENE 2026 · 10:15hs</div>
+            <div class="log-prof">Dr. Juan González</div>
+          </div>
+          <span class="badge-normal">Consulta</span>
+        </div>
+        <div class="log-inst">Hospital General de Agudos</div>
+        <div class="log-reason">Motivo: Control Clínico Programado</div>
+        <span class="log-hash">Hash: 0x8f2a...c3e9 (Validado por ARSAT)</span>
+      </div>
+
+      <div class="log-item emergency-border">
+        <div class="log-header">
+          <div>
+            <div class="log-date">18 DIC 2025 · 22:45hs</div>
+            <div class="log-prof">Guardia Médica Nocturna</div>
+          </div>
+          <span class="badge-emergency">Break-Glass</span>
+        </div>
+        <div class="log-inst">Hospital Municipal Local</div>
+        <div class="log-reason" style="border-color: rgba(239, 68, 68, 0.3);">Motivo: Emergencia (Acceso sin consentimiento previo)</div>
+        <span class="log-hash">Hash: 0x11b5...7a2d (Auditado por AAIP)</span>
+      </div>
+
+      <div class="log-item">
+        <div class="log-header">
+          <div>
+            <div class="log-date">05 DIC 2025 · 09:30hs</div>
+            <div class="log-prof">Farmacia "La Salud"</div>
+          </div>
+          <span class="badge-normal">Dispensación</span>
+        </div>
+        <div class="log-inst">Validación de Receta Electrónica</div>
+        <div class="log-reason">Motivo: Retiro de Metformina 850mg</div>
+        <span class="log-hash">Hash: 0x4d91...b11f (Sincronizado con PAI)</span>
+      </div>
+
+      <div class="px-4 py-6 text-center">
+        <p class="text-[10px] opacity-40 leading-relaxed italic">
+          Si detectas un acceso no autorizado, podés iniciar una denuncia formal ante la Autoridad de Aplicación desde el Módulo Nacional de Seguridad.
+        </p>
+      </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn active" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn active" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
+
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold text-slate-800">Ayuda: Auditoría</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x text-slate-800"></i></button>
+      </div>
+      <div id="modal-body" class="space-y-5 text-sm text-slate-600 leading-relaxed">
+        <div class="flex gap-4">
+          <i class="ph-bold ph-blockchain text-2xl text-blue-600"></i>
+          <p><strong>Blockchain:</strong> Cada acceso genera un sello digital único que nadie puede borrar ni modificar.</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-warning-octagon text-2xl text-red-600"></i>
+          <p><strong>Break-Glass:</strong> Es un acceso de emergencia. Los médicos pueden activarlo en situaciones críticas donde tu vida corra peligro y no puedas dar el consentimiento.</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-scales text-2xl text-blue-600"></i>
+          <p><strong>Tus Derechos:</strong> Este registro es tu herramienta legal para controlar la privacidad de tu salud bajo la Ley C.U.R.A.</p>
+        </div>
+      </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalAyuda() {
+      document.getElementById('modal-container').style.display = "flex";
+    }
+    function cerrarModal() {
+      document.getElementById('modal-container').style.display = "none";
+    }
+  </script>
 
 </body>
 </html>

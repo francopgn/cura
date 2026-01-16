@@ -5,175 +5,155 @@
   <title>Detalle de Registro - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --red-status: #ef4444;
-    }
-
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; /* Reserva espacio para el scroll siempre */
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', -apple-system, sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; /* Unificado con el resto de la app */
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
+    /* --- CARDS --- */
     .card {
-      background: var(--card-white);
+      background: var(--glass);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid var(--glass-border);
       border-radius: 28px;
       padding: 24px;
-      box-shadow: var(--shadow-soft);
       margin-bottom: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
 
     .section-label {
-      font-size: 12px;
-      font-weight: 800;
-      color: var(--blue-header);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 12px;
-      display: block;
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px; display: block;
     }
 
     .info-box {
-      background: #f8fafc;
+      background: rgba(255, 255, 255, 0.03);
       border-radius: 20px;
       padding: 16px;
-      border: 1px solid var(--border-soft);
-      margin-bottom: 16px;
+      border: 1px solid var(--glass-border);
     }
 
-    .info-title { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
-    .info-text { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
+    .info-title { font-size: 14px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+    .info-text { font-size: 13px; color: white; opacity: 0.9; line-height: 1.5; }
 
-    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .meta-item { font-size: 12px; color: var(--text-gray); background: #f1f5f9; padding: 4px 10px; border-radius: 8px; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .meta-item { font-size: 11px; font-weight: 600; color: white; background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 10px; }
 
-    .btn-outline {
-      width: 100%; padding: 16px; border-radius: 18px; border: 1.5px solid var(--blue-soft);
-      background: #ffffff; color: var(--blue-main); font-size: 14px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; gap: 12px;
-      margin-bottom: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-      transition: all 0.2s;
-    }
-    .btn-outline:active { transform: scale(0.98); background: #f0f7ff; }
-
-    .btn-primary {
-      width: 100%; padding: 18px; border-radius: 20px; border: none;
-      background: var(--blue-main); color: #fff; font-size: 15px; font-weight: 700;
-      cursor: pointer; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2); margin-top: 10px;
-    }
-
-    .toggle-row { display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff5f5; border-radius: 18px; border: 1px solid #fee2e2; }
+    /* --- TOGGLE --- */
+    .toggle-row { display: flex; align-items: center; gap: 12px; padding: 16px; background: rgba(239, 68, 68, 0.1); border-radius: 20px; border: 1px solid rgba(239, 68, 68, 0.2); }
     .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1; border-radius: 999px; transition: 0.3s; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background-color: rgba(255,255,255,0.2); border-radius: 999px; transition: 0.3s; }
     .slider::before { content: ""; position: absolute; height: 18px; width: 18px; left: 3px; top: 3px; background-color: #fff; border-radius: 50%; transition: 0.3s; }
-    .toggle input:checked + .slider { background-color: var(--red-status); }
+    .toggle input:checked + .slider { background-color: #ef4444; }
     .toggle input:checked + .slider::before { transform: translateX(20px); }
-    .toggle-text { font-size: 12px; font-weight: 600; color: #991b1b; }
+    .toggle-text { font-size: 12px; font-weight: 700; color: #f87171; }
 
-    /* --- BOTTOM BAR (COPIA EXACTA) --- */
+    /* --- BOTONES --- */
+    .btn-outline {
+      width: 100%; padding: 16px; border-radius: 20px; border: 1px solid var(--glass-border);
+      background: var(--glass); color: white; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-bottom: 12px; transition: all 0.2s;
+    }
+    .btn-outline:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
+
+    .btn-primary {
+      width: 100%; padding: 18px; border-radius: 22px; border: none;
+      background: var(--accent); color: var(--bg-dark); font-size: 15px; font-weight: 800;
+      box-shadow: 0 10px 25px rgba(0, 194, 255, 0.3); transition: all 0.2s;
+    }
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* --- BOTTOM BAR --- */
     .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    
-    .center-question-btn { 
-      width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; 
-      border: 5px solid var(--main-bg); display: flex; align-items: center; 
-      justify-content: center; color: white; font-size: 32px; 
-      font-weight: 600; 
-      margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); 
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
     }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+    }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Detalle del Registro</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Detalle del Registro</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      
+    <main>
       <div class="card">
         <span class="section-label">Registro Clínico</span>
-        <h2 style="font-size: 18px; color: var(--text-dark); margin-bottom: 10px;">
-          Consulta Ambulatoria · <span id="fecha-actual"></span>
+        <h2 class="text-xl font-extrabold mb-2">
+          Consulta Ambulatoria · <span id="fecha-actual" class="text-accent"></span>
         </h2>
-        
         <div class="meta-row">
           <span class="meta-item">Hospital General</span>
           <span class="meta-item">Dr. Juan González</span>
@@ -183,7 +163,7 @@
 
       <div class="card">
         <span class="section-label">Motivo de consulta</span>
-        <div class="info-box" style="background: #fff; border-left: 4px solid var(--blue-main);">
+        <div class="info-box" style="border-left: 4px solid var(--accent);">
           <p class="info-text">
             Paciente consulta por dolor en el pecho de 3 días de evolución, localizado en hemitórax izquierdo, que aumenta con el movimiento y la palpación.
           </p>
@@ -201,7 +181,7 @@
       <div class="card">
         <span class="section-label">Estudios solicitados</span>
         <div class="info-box">
-          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.8;">
+          <ul class="text-sm space-y-2 opacity-90 pl-4 list-disc">
             <li>ECG de 12 derivaciones.</li>
             <li>Laboratorio: glucemia, perfil lipídico, troponinas según protocolo.</li>
             <li><strong>Control clínico:</strong> en 7 días o antes si empeoran los síntomas.</li>
@@ -211,20 +191,20 @@
 
       <div class="card">
         <span class="section-label">Medicaciones indicadas</span>
-        <div class="info-box" style="background: #eff6ff;">
-          <ul style="font-size: 13px; color: var(--text-dark); padding-left: 18px; line-height: 1.8;">
+        <div class="info-box" style="background: rgba(0, 194, 255, 0.05);">
+          <ul class="text-sm space-y-2 opacity-90 pl-4 list-disc">
             <li><strong>Ibuprofeno 400 mg:</strong> cada 8 hs por 5 días.</li>
             <li><strong>Metformina 850 mg:</strong> continuar esquema previo.</li>
             <li><strong>Losartán 50 mg:</strong> continuar esquema previo.</li>
           </ul>
         </div>
-        <p style="font-size: 11px; color: var(--text-gray); text-align: center;">
+        <p class="text-[10px] opacity-40 text-center mt-4">
           Vinculado a tus recetas electrónicas interoperables C.U.R.A.
         </p>
       </div>
 
       <div class="card">
-        <span class="section-label">Datos Sensibles</span>
+        <span class="section-label">Privacidad</span>
         <div class="toggle-row">
           <label class="toggle">
             <input type="checkbox" id="toggleDetalle" checked>
@@ -232,52 +212,77 @@
           </label>
           <span class="toggle-text">Mostrar detalle protegido</span>
         </div>
-        <div id="boxSensible" class="info-box" style="margin-top: 15px; border-style: dashed;">
-          <p class="info-text" style="font-style: italic;">
+        <div id="boxSensible" class="info-box mt-4 border-dashed border-red-500/30">
+          <p class="info-text italic opacity-70">
             Antecedentes de crisis de angustia en seguimiento. Visible solo a profesionales autorizados.
           </p>
         </div>
       </div>
 
-      <div class="card" style="background: transparent; box-shadow: none; padding: 0;">
+      <div class="space-y-3 mb-10 px-2">
         <button class="btn-outline" onclick="alert('Descargando Registro FHIR...')">
-          <i class="ph-bold ph-download-simple"></i>
-          Descargar Registro FHIR
+          <i class="ph-bold ph-download-simple"></i> Descargar Registro FHIR
         </button>
-        
         <button class="btn-outline" onclick="alert('Generando enlace de acceso temporal...')">
-          <i class="ph-bold ph-link"></i>
-          Compartir Acceso Temporal
+          <i class="ph-bold ph-link"></i> Compartir Acceso Temporal
         </button>
-        
         <button class="btn-primary" onclick="history.back()">Volver a la Historia</button>
       </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="location.href='asistente.html'">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn active" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
+  </div>
+
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold text-slate-800">Ayuda: Registros</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x text-slate-800"></i></button>
+      </div>
+      <div id="modal-body" class="space-y-4 text-sm text-slate-600 leading-relaxed">
+        <div class="flex gap-4">
+          <i class="ph-bold ph-file-text text-2xl text-blue-600"></i>
+          <p><strong>Detalle Clínico:</strong> Aquí puedes ver las notas exactas que el profesional cargó en el sistema nacional.</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-lock-key text-2xl text-blue-600"></i>
+          <p><strong>Datos Protegidos:</strong> El interruptor rojo te permite ocultar temporalmente la información sensible de la pantalla.</p>
+        </div>
+      </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // FECHA ACTUAL
       const hoy = new Date();
       const opciones = { day: '2-digit', month: '2-digit', year: 'numeric' };
       const fechaElem = document.getElementById("fecha-actual");
       if (fechaElem) fechaElem.textContent = hoy.toLocaleDateString('es-AR', opciones);
 
-      // TOGGLE SENSIBLE
       const toggle = document.getElementById("toggleDetalle");
       const box = document.getElementById("boxSensible");
       toggle.addEventListener("change", () => {
         box.style.display = toggle.checked ? "block" : "none";
       });
     });
+
+    function abrirModalAyuda() {
+      document.getElementById('modal-container').style.display = "flex";
+    }
+    function cerrarModal() {
+      document.getElementById('modal-container').style.display = "none";
+    }
   </script>
 </body>
 </html>

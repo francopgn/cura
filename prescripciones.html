@@ -5,270 +5,176 @@
   <title>Prescripciones - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    /* --- FIX 1: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
+    /* --- FILTROS Y CONTENEDOR SUPERIOR --- */
+    .filter-section {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       border-radius: 28px;
-      padding: 20px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
-    }
-
-    .section-label {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 4px;
-    }
-
-    .hint {
-      font-size: 14px;
-      color: var(--text-gray);
-      margin-bottom: 16px;
-    }
-
-    /* --- FILTROS --- */
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
+      padding: 24px;
+      margin-bottom: 25px;
     }
 
     .input-text, .select-field {
-      padding: 12px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--glass-border);
+      color: white;
+      padding: 12px 16px;
       border-radius: 16px;
-      border: 1px solid var(--border-soft);
       font-size: 14px;
       outline: none;
-      background: #f8fafc;
-      color: var(--text-dark);
       width: 100%;
+      margin-bottom: 10px;
     }
 
-    .select-field {
-      width: calc(50% - 5px);
-    }
+    .select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
+    /* --- TOGGLE PREMIUM --- */
     .toggle-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 0;
+      margin-top: 10px;
+      padding-top: 15px;
+      border-top: 1px solid var(--glass-border);
     }
-
-    .toggle {
-      position: relative;
-      width: 44px;
-      height: 24px;
-    }
-
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
-
     .slider {
-      position: absolute;
-      cursor: pointer;
-      inset: 0;
-      background-color: #cbd5e1;
-      border-radius: 999px;
-      transition: 0.3s;
+      position: absolute; cursor: pointer; inset: 0;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 999px; transition: 0.3s;
     }
-
     .slider::before {
-      content: "";
-      position: absolute;
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      top: 3px;
-      background-color: #fff;
-      border-radius: 50%;
-      transition: 0.3s;
+      content: ""; position: absolute; height: 18px; width: 18px;
+      left: 3px; top: 3px; background-color: #fff; border-radius: 50%; transition: 0.3s;
     }
-
-    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider { background-color: var(--accent); }
     .toggle input:checked + .slider::before { transform: translateX(20px); }
 
-    .toggle-text { font-size: 13px; color: var(--text-gray); line-height: 1.3; }
-
-    /* --- LISTA --- */
-    .prescription-list { display: flex; flex-direction: column; gap: 14px; }
-
+    /* --- TARJETAS DE RECETAS --- */
     .rx-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       border-radius: 24px;
-      background: #f8fafc;
-      border: 1px solid var(--border-soft);
-      padding: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
     }
+    .rx-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .rx-name { font-size: 18px; font-weight: 800; color: white; }
+    .rx-dose { font-size: 12px; font-weight: 700; background: var(--accent); color: var(--bg-dark); padding: 4px 12px; border-radius: 10px; }
+    
+    .rx-body { font-size: 14px; opacity: 0.8; line-height: 1.5; margin-bottom: 12px; }
+    .rx-meta { font-size: 12px; color: var(--accent); opacity: 0.7; margin-bottom: 15px; }
 
-    .rx-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
+    .chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.1); }
+    .chip-green { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+    .chip-red { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
-    .rx-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
-    .rx-dose {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 12px;
-      background: var(--blue-soft);
-      color: var(--blue-header);
-    }
-
-    .rx-body { font-size: 14px; color: var(--text-dark); line-height: 1.5; margin-bottom: 10px; }
-    .rx-meta { font-size: 12px; color: var(--text-gray); margin-bottom: 12px; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .chip {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 10px;
-      background: #e2e8f0;
-      color: #475569;
-    }
-    .chip-blue { background: #dbeafe; color: #1e40af; }
-    .chip-green { background: #dcfce7; color: #166534; }
-    .chip-red { background: #fee2e2; color: #991b1b; }
-
-    .mini-actions { display: flex; gap: 8px; }
+    .mini-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .mini-btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 14px;
-      border: 1px solid var(--border-soft);
-      background: #fff;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-dark);
-      cursor: pointer;
+      padding: 10px; border-radius: 14px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05); font-size: 12px; font-weight: 700; color: white;
     }
 
-    /* --- MODAL AYUDA (Premium) --- */
+    /* --- BOTTOM BAR --- */
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+    }
+
+    /* MODAL */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
     }
     .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
-
-    /* --- BARRA INFERIOR --- */
-    .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
-    }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Prescripciones</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Prescripciones</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="card">
-        <h2 class="section-label">Mis medicamentos</h2>
-        <p class="hint">Recetas electrónicas vinculadas a tu CURA-ID.</p>
+    <main>
+      <div class="filter-section">
+        <h2 class="text-xl font-bold mb-1">Mis medicamentos</h2>
+        <p class="text-sm opacity-60 mb-6">Recetas electrónicas vinculadas a tu CURA-ID.</p>
 
-        <div class="filters">
-          <input type="text" id="buscadorRx" class="input-text" placeholder="Buscar medicamento o profesional..." oninput="filtrarRx()">
+        <input type="text" id="buscadorRx" class="input-text" placeholder="Buscar medicamento o profesional..." oninput="filtrarRx()">
+        
+        <div class="select-grid">
           <select id="filtroEstado" class="select-field" onchange="filtrarRx()">
             <option value="todas">Estado: Todas</option>
             <option value="activa">Activas</option>
@@ -287,7 +193,7 @@
             <input type="checkbox" id="toggleSensiblesRx" checked onchange="filtrarRx()">
             <span class="slider"></span>
           </label>
-          <span class="toggle-text">Mostrar medicación de salud mental o datos sensibles.</span>
+          <span class="text-[11px] opacity-70 leading-tight">Mostrar medicación de salud mental o datos sensibles.</span>
         </div>
       </div>
 
@@ -298,9 +204,9 @@
             <div class="rx-dose">850 mg</div>
           </div>
           <div class="rx-body">1 comprimido con el desayuno y 1 con la cena.</div>
-          <div class="rx-meta">Dra. López · Renovada: 05/12/2025.</div>
+          <div class="rx-meta">Dra. López · Renovada: 05/12/2025</div>
           <div class="chip-row">
-            <span class="chip chip-blue">Diabetes tipo 2</span>
+            <span class="chip">Diabetes tipo 2</span>
             <span class="chip chip-green">Activa</span>
           </div>
           <div class="mini-actions">
@@ -315,7 +221,7 @@
             <div class="rx-dose">50 mg</div>
           </div>
           <div class="rx-body">1 comprimido por la mañana.</div>
-          <div class="rx-meta">Equipo Salud Mental · Inicio: 18/02/2025.</div>
+          <div class="rx-meta">Equipo Salud Mental · Inicio: 18/02/2025</div>
           <div class="chip-row">
             <span class="chip chip-red">Salud mental</span>
             <span class="chip">Dato sensible</span>
@@ -329,23 +235,26 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='prescripciones.html'"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Prescripciones</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-4">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -353,21 +262,19 @@
   <script>
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Prescripciones";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-pill help-icon"></i>
-          <p><strong>Mis Recetas:</strong> Aquí figuran todos los medicamentos recetados por profesionales habilitados en la red C.U.R.A.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-pill text-2xl text-blue-600"></i>
+          <p class="text-sm text-gray-600"><strong>Mis Recetas:</strong> Aquí figuran todos los medicamentos recetados por profesionales habilitados en la red C.U.R.A.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-shield-check help-icon"></i>
-          <p><strong>Privacidad:</strong> Puedes ocultar la medicación sensible usando el interruptor. Esto protege tu intimidad en la lista principal.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-shield-check text-2xl text-blue-600"></i>
+          <p class="text-sm text-gray-600"><strong>Privacidad:</strong> Puedes ocultar la medicación sensible usando el interruptor. Esto protege tu intimidad en la lista principal.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-qr-code help-icon"></i>
-          <p><strong>Uso:</strong> Presenta tu DNI o el código de la receta en cualquier farmacia adherida para retirar tu medicación.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-qr-code text-2xl text-blue-600"></i>
+          <p class="text-sm text-gray-600"><strong>Uso:</strong> Presenta tu DNI o el código de la receta en cualquier farmacia adherida para retirar tu medicación.</p>
         </div>
       `;
       modal.style.display = "flex";

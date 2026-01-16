@@ -5,78 +5,137 @@
   <title>Farmacias Cercanas - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --green-status: #16a34a;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
-    html { overflow-y: scroll; scrollbar-width: none; }
-    ::-webkit-scrollbar { display: none; }
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-    
-    body { background-color: var(--main-bg); display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden; }
-    .app-shell { width: 100%; max-width: 414px; display: flex; flex-direction: column; padding-bottom: 120px; }
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
 
+    .app-shell {
+      width: 100%;
+      max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header); width: calc(100% - 40px); margin: 20px auto 10px; 
-      height: 60px; border-radius: 999px; display: flex; align-items: center; padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2); justify-content: space-between; z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-    .back-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 22px; border: none; cursor: pointer; }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; }
+    .back-btn {
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
+    }
 
-    .main-content { padding: 10px 20px; }
-    .card { background: var(--card-white); border-radius: 28px; padding: 24px; box-shadow: var(--shadow-soft); margin-bottom: 20px; }
-    .section-label { font-size: 13px; font-weight: 800; color: var(--blue-header); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; display: block; }
+    /* --- TARJETA DE BÚSQUEDA --- */
+    .search-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
 
-    .pill-scroll-container { width: 100%; overflow-x: auto; display: flex; padding-bottom: 10px; }
+    .location-box {
+      background: rgba(0, 194, 255, 0.1);
+      border: 1px solid rgba(0, 194, 255, 0.2);
+      border-radius: 20px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .status-dot {
+      width: 10px; height: 10px; background: var(--accent); border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* --- PILLS --- */
+    .pill-scroll-container { width: 100%; overflow-x: auto; display: flex; padding-bottom: 5px; }
     .pill-scroll-container::-webkit-scrollbar { display: none; }
     .pill-wrapper { display: flex; gap: 10px; }
-    .pill { flex-shrink: 0; padding: 10px 18px; background: #fff; border: 1.5px solid var(--border-soft); border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--text-gray); cursor: pointer; }
-    .pill.active { background: var(--blue-main); color: #fff; border-color: var(--blue-main); box-shadow: 0 4px 10px rgba(31, 111, 229, 0.2); }
+    .pill {
+      flex-shrink: 0; padding: 10px 20px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--glass-border); border-radius: 999px;
+      font-size: 12px; font-weight: 600; color: white; cursor: pointer; transition: 0.3s;
+    }
+    .pill.active { background: var(--accent); color: var(--bg-dark); border-color: var(--accent); }
 
-    .pharmacy-card { border: 1px solid var(--border-soft); border-radius: 22px; padding: 18px; margin-bottom: 12px; }
-    .ph-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
+    /* --- FARMACIA CARD --- */
+    .pharmacy-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    .ph-name { font-size: 17px; font-weight: 800; color: white; }
     .status-badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; text-transform: uppercase; }
-    
-    .ph-actions { display: flex; gap: 10px; margin-top: 15px; }
-    .btn-ph { flex: 1; padding: 12px 0; border-radius: 14px; font-size: 11px; font-weight: 800; text-decoration: none; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; }
-    .btn-map { background: var(--blue-main); color: #fff; }
 
-    /* --- MODAL AYUDA --- */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000; }
-    .modal { background: #fff; width: 100%; max-width: 360px; border-radius: 35px; padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); position: relative; display: flex; flex-direction: column; }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
+    .btn-ph {
+      width: 100%; padding: 14px; border-radius: 16px; font-size: 13px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--accent); color: var(--bg-dark); margin-top: 15px;
+    }
 
     /* --- BOTTOM BAR --- */
-    .bottom-bar { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000; }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+    }
 
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
@@ -85,19 +144,20 @@
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Farmacias Cercanas</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Farmacias Cercanas</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="card">
-        <span class="section-label">Búsqueda Inteligente</span>
-        <div style="background: var(--blue-soft); border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-          <div style="width: 10px; height: 10px; background: var(--green-status); border-radius: 50%; box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);"></div>
+    <main>
+      <div class="search-card">
+        <p class="text-[10px] font-extrabold uppercase tracking-widest text-cura-accent mb-4">Búsqueda Inteligente</p>
+        
+        <div class="location-box">
+          <div class="status-dot"></div>
           <div>
-            <p id="loc-status" style="font-size: 13px; font-weight: 700; color: var(--text-dark);">Ubicación Actual</p>
-            <p id="loc-ciudad" style="font-size: 11px; color: var(--text-gray);">Detectando...</p>
+            <p id="loc-status" class="text-xs font-bold">Ubicación Actual</p>
+            <p id="loc-ciudad" class="text-[11px] opacity-70">Detectando...</p>
           </div>
         </div>
 
@@ -110,34 +170,36 @@
         </div>
       </div>
 
-      <div class="card">
-        <span class="section-label">Resultados</span>
-        <div id="resultsList">
-          <div style="text-align: center; padding: 20px;">
-            <div style="width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid var(--blue-main); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-          </div>
+      <p class="text-[10px] font-extrabold uppercase tracking-widest text-cura-accent mb-4 ml-2">Resultados</p>
+      
+      <div id="resultsList">
+        <div style="text-align: center; padding: 40px;">
+          <div style="width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
         </div>
       </div>
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Farmacias</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-5 text-sm text-gray-600 leading-relaxed">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -147,24 +209,21 @@
     let allPharmacies = [];
     let currentFilter = 'all';
 
-    // --- AYUDA CONTEXTUAL ---
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Farmacias";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-navigation-arrow help-icon"></i>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-navigation-arrow text-2xl text-blue-600"></i>
           <p><strong>Cercanía:</strong> Mostramos las farmacias en un radio de 5km de tu posición actual según la Ley C.U.R.A.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-clock help-icon"></i>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-clock text-2xl text-blue-600"></i>
           <p><strong>Estado:</strong> El indicador detecta si la farmacia está abierta ahora o si se encuentra de guardia las 24hs.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-map-pin help-icon"></i>
-          <p><strong>Navegación:</strong> Al pulsar "Llegar", se abrirá automáticamente el mapa nativo de tu dispositivo (Maps o iOS Maps).</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-map-pin text-2xl text-blue-600"></i>
+          <p><strong>Navegación:</strong> Al pulsar "Llegar", se abrirá automáticamente el mapa nativo de tu dispositivo.</p>
         </div>
       `;
       modal.style.display = "flex";
@@ -172,61 +231,55 @@
 
     function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
 
-    // --- CARGA DE DATOS ---
-    const cachedPh = localStorage.getItem('cura_ph_cache');
-    const cachedCity = localStorage.getItem('cura_city_cache');
-    if (cachedCity) document.getElementById("loc-ciudad").innerText = cachedCity;
-    if (cachedPh) {
-      allPharmacies = JSON.parse(cachedPh);
-      renderFiltered();
-    }
-
+    // --- LÓGICA DE GEOLOCALIZACIÓN Y CARGA ---
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
         
+        // Ciudad
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
           .then(res => res.json()).then(data => {
             const city = data.address.city || data.address.town || "Cerca tuyo";
-            const fullCity = city + ", " + (data.address.state || "Argentina");
-            document.getElementById("loc-ciudad").innerText = fullCity;
-            localStorage.setItem('cura_city_cache', fullCity);
+            document.getElementById("loc-ciudad").innerText = city + ", " + (data.address.state || "Argentina");
           });
 
+        // Farmacias (Overpass API)
         const query = `[out:json][timeout:15];node(around:5000,${lat},${lon})["amenity"="pharmacy"];out;`;
         fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`)
           .then(res => res.json()).then(data => {
-            if (data.elements && data.elements.length > 0) {
+            if (data.elements) {
               allPharmacies = data.elements.map(ph => ({
                 ...ph,
                 dist: getDist(lat, lon, ph.lat, ph.lon)
               })).sort((a,b) => a.dist - b.dist);
-              localStorage.setItem('cura_ph_cache', JSON.stringify(allPharmacies));
               renderFiltered();
             }
           });
-      }, null, { enableHighAccuracy: false });
+      });
     }
 
     function renderFiltered() {
-      if (!allPharmacies.length) return;
       let html = "";
       const now = new Date().getHours();
       let filtered = allPharmacies;
+
       if (currentFilter === 'open') filtered = allPharmacies.filter(f => (f.tags.opening_hours || "").includes("24/7") || (now >= 8 && now < 21));
       if (currentFilter === 'guardia') filtered = allPharmacies.filter(f => (f.tags.opening_hours || "").includes("24/7"));
 
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (filtered.length === 0) {
+        resultsList.innerHTML = `<p class="text-center opacity-40 text-sm py-10">No se encontraron farmacias con este filtro.</p>`;
+        return;
+      }
 
       filtered.forEach(ph => {
-        const h = (ph.tags.opening_hours || "").toLowerCase();
-        let status = (h.includes("24/7")) ? { label: "Guardia 24hs", class: "bg-amber-100 text-amber-700" } : 
-                     (now < 8 || now >= 21) ? { label: "Cerrado", class: "bg-red-100 text-red-700" } : 
-                     { label: "Abierto", class: "bg-green-100 text-green-700" };
+        const is24hs = (ph.tags.opening_hours || "").includes("24/7");
+        let status = is24hs ? { label: "Guardia 24hs", class: "bg-amber-500/20 text-amber-400" } : 
+                     (now < 8 || now >= 21) ? { label: "Cerrado", class: "bg-red-500/20 text-red-400" } : 
+                     { label: "Abierto", class: "bg-green-500/20 text-green-400" };
 
         const distStr = ph.dist ? (ph.dist > 1 ? ph.dist.toFixed(1)+'km' : (ph.dist*1000).toFixed(0)+'m') : '--';
-        const mapUrl = isIOS ? `http://maps.apple.com/?daddr=${ph.lat},${ph.lon}&dirflg=d` : `https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}`;
+        const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${ph.lat},${ph.lon}`;
 
         html += `
           <article class="pharmacy-card">
@@ -234,12 +287,10 @@
               <h3 class="ph-name">${ph.tags.name || "Farmacia"}</h3>
               <span class="status-badge ${status.class}">${status.label}</span>
             </div>
-            <p class="text-[13px] text-gray-500 mb-4">${ph.tags["addr:street"] || 'Dirección disponible'} · ${distStr}</p>
-            <div class="ph-actions">
-              <a href="${mapUrl}" target="_blank" class="btn-ph btn-map">
-                <i class="ph ph-navigation-arrow"></i> LLEGAR
-              </a>
-            </div>
+            <p class="text-xs opacity-60 mb-4">${ph.tags["addr:street"] || 'Dirección disponible'} · ${distStr}</p>
+            <a href="${mapUrl}" target="_blank" class="btn-ph">
+              <i class="ph-bold ph-navigation-arrow"></i> LLEGAR
+            </a>
           </article>`;
       });
       resultsList.innerHTML = html;

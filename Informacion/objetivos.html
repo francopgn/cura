@@ -171,6 +171,19 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+<script>
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
 
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+</script>
 </body>
 </html>

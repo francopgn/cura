@@ -5,221 +5,169 @@
   <title>Cartilla Federal - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --green-status: #10b981;
-    }
-
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 20px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-    
-    .section-header { margin-bottom: 20px; padding: 0 5px; }
-    .section-title { font-size: 26px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.5px; }
-    .section-subtitle { font-size: 14px; color: var(--text-gray); margin-top: 4px; }
+    .section-title { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
 
-    /* --- BUSCADOR --- */
-    .search-box {
-      background: var(--card-white);
-      border-radius: 20px;
+    /* --- BUSCADOR PREMIUM --- */
+    .search-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
       padding: 14px 20px;
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 20px;
-      box-shadow: var(--shadow-soft);
-      border: 1px solid var(--border-soft);
     }
-    .search-box input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 15px;
-      color: var(--text-dark);
-      background: transparent;
+    .search-card input {
+      background: transparent; border: none; outline: none;
+      color: white; width: 100%; font-size: 15px;
     }
+    .search-card input::placeholder { color: rgba(255,255,255,0.4); }
 
-    /* --- FILTROS RÁPIDOS --- */
+    /* --- FILTROS --- */
     .filters-scroll {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding: 5px 0 20px 0;
+      display: flex; gap: 10px; overflow-x: auto;
+      padding-bottom: 20px;
     }
     .filters-scroll::-webkit-scrollbar { display: none; }
     
     .filter-chip {
-      background: var(--card-white);
-      color: var(--text-dark);
-      padding: 10px 18px;
-      border-radius: 16px;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-soft);
-      cursor: pointer;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: white; padding: 10px 18px; border-radius: 16px;
+      font-size: 13px; font-weight: 600; white-space: nowrap; transition: 0.3s;
     }
     .filter-chip.active {
-      background: var(--blue-main);
-      color: white;
-      border-color: var(--blue-main);
+      background: var(--accent); color: var(--bg-dark); border-color: var(--accent);
     }
 
-    /* --- LISTA DE PRESTADORES --- */
+    /* --- PRESTADOR CARD --- */
     .prestador-card {
-      background: var(--card-white);
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       border-radius: 28px;
-      padding: 18px;
+      padding: 20px;
       margin-bottom: 16px;
-      display: flex;
-      gap: 16px;
-      box-shadow: var(--shadow-soft);
-      align-items: center;
-      border: 1px solid transparent;
-      transition: border-color 0.2s;
+      display: flex; gap: 16px; align-items: center;
+      transition: all 0.3s ease;
     }
-    .prestador-card:active { border-color: var(--blue-main); transform: scale(0.98); }
+    .prestador-card:active { transform: scale(0.97); background: rgba(255,255,255,0.1); }
     
     .prestador-img {
-      width: 64px; height: 64px; background: var(--blue-soft);
-      border-radius: 20px; display: flex; align-items: center;
-      justify-content: center; font-size: 28px; flex-shrink: 0;
+      width: 60px; height: 60px; background: rgba(0, 194, 255, 0.15);
+      border-radius: 18px; display: flex; align-items: center;
+      justify-content: center; font-size: 24px; flex-shrink: 0;
     }
 
-    .prestador-info { flex: 1; min-width: 0; }
-    .prestador-name { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 2px; }
-    .prestador-desc { font-size: 13px; color: var(--text-gray); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    
     .badge-interop {
-      display: inline-block; font-size: 10px; font-weight: 700;
-      background: #dcfce7; color: #166534; padding: 2px 8px;
-      border-radius: 6px; margin-top: 4px; text-transform: uppercase;
+      display: inline-block; font-size: 9px; font-weight: 800;
+      background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 3px 8px;
+      border-radius: 6px; margin-top: 5px; text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .prestador-meta { 
       display: flex; align-items: center; gap: 12px; 
-      margin-top: 10px; font-size: 12px; font-weight: 700;
-      color: var(--blue-main);
+      margin-top: 10px; font-size: 12px; font-weight: 700; color: var(--accent);
     }
 
-    /* --- MODAL AYUDA (Premium) --- */
+    /* --- BOTTOM BAR --- */
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+    }
+
+    /* --- MODAL --- */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
     }
     .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
-
-    /* --- BARRA INFERIOR --- */
-    .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
-    }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Cartilla Federal</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Cartilla Federal</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="section-header">
+    <main>
+      <div class="mb-6 px-1">
         <h1 class="section-title">Encontrá atención</h1>
-        <p class="section-subtitle">Red nacional interoperable · Ley C.U.R.A.</p>
+        <p class="text-sm opacity-60">Red nacional interoperable · Ley C.U.R.A.</p>
       </div>
 
-      <div class="search-box">
-        <i class="ph-bold ph-magnifying-glass" style="color: var(--text-gray); font-size: 20px;"></i>
+      <div class="search-card">
+        <i class="ph-bold ph-magnifying-glass opacity-50"></i>
         <input type="text" placeholder="Especialidad, nombre o centro...">
       </div>
 
@@ -233,63 +181,65 @@
 
       <div class="prestador-card" onclick="alert('Abriendo detalle de Institución')">
         <div class="prestador-img">🏥</div>
-        <div class="prestador-info">
-          <p class="prestador-name">Hospital de Alta Complejidad</p>
-          <p class="prestador-desc">Nodo Federal 001 · Público</p>
+        <div class="flex-1">
+          <p class="font-bold text-white">Hospital de Alta Complejidad</p>
+          <p class="text-xs opacity-60">Nodo Federal 001 · Público</p>
           <span class="badge-interop">Interoperabilidad Nivel 7</span>
           <div class="prestador-meta">
             <span>📍 1.2 km</span>
-            <span style="color: var(--green-status)">● Abierto ahora</span>
+            <span class="text-green-400">● Abierto ahora</span>
           </div>
         </div>
       </div>
 
       <div class="prestador-card" onclick="alert('Abriendo perfil profesional')">
         <div class="prestador-img">👨‍⚕️</div>
-        <div class="prestador-info">
-          <p class="prestador-name">Dr. Julián Martínez</p>
-          <p class="prestador-desc">Cardiología · Mat. Nac. 123456</p>
+        <div class="flex-1">
+          <p class="font-bold text-white">Dr. Julián Martínez</p>
+          <p class="text-xs opacity-60">Cardiología · Mat. Nac. 123456</p>
           <span class="badge-interop">Receta Digital Habilitada</span>
           <div class="prestador-meta">
             <span>📍 2.5 km</span>
-            <span>⭐ 4.9 (230 opiniones)</span>
+            <span class="text-amber-400">⭐ 4.9 (230 opiniones)</span>
           </div>
         </div>
       </div>
 
       <div class="prestador-card" onclick="alert('Abriendo servicios de laboratorio')">
         <div class="prestador-img">🧪</div>
-        <div class="prestador-info">
-          <p class="prestador-name">Laboratorio Bio-Salud</p>
-          <p class="prestador-desc">Análisis Clínicos · Red PAMI/IOMA</p>
+        <div class="flex-1">
+          <p class="font-bold text-white">Laboratorio Bio-Salud</p>
+          <p class="text-xs opacity-60">Análisis Clínicos · Red PAMI/IOMA</p>
           <span class="badge-interop">Resultados vía CURA-ID</span>
           <div class="prestador-meta">
             <span>📍 0.8 km</span>
-            <span style="color: var(--text-gray)">🕒 Cierra 18:00</span>
+            <span class="opacity-50">🕒 Cierra 18:00</span>
           </div>
         </div>
       </div>
-
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn active" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='cartilla.html'"><i class="ph-bold ph-map-trifold"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold text-slate-800">Ayuda: Cartilla</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-5 text-sm text-slate-600 leading-relaxed">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -297,21 +247,19 @@
   <script>
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Cartilla";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-globe help-icon"></i>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-globe text-2xl text-blue-600"></i>
           <p><strong>Red Interoperable:</strong> Los centros y profesionales aquí listados pueden acceder a tu historia clínica federal de forma segura si tú lo autorizas.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-stethoscope help-icon"></i>
-          <p><strong>Receta Digital:</strong> Los médicos con el sello de habilitación pueden emitir recetas digitales que se vinculan automáticamente a tu sección de Prescripciones.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-stethoscope text-2xl text-blue-600"></i>
+          <p><strong>Receta Digital:</strong> Los médicos con el sello de habilitación pueden emitir recetas digitales vinculadas a tu sección de Prescripciones.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-buildings help-icon"></i>
-          <p><strong>Niveles:</strong> El nivel de interoperabilidad indica la capacidad técnica del centro para compartir estudios e imágenes en tiempo real con el sistema C.U.R.A.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-buildings text-2xl text-blue-600"></i>
+          <p><strong>Niveles:</strong> Indica la capacidad técnica del centro para compartir estudios e imágenes en tiempo real con el sistema C.U.R.A.</p>
         </div>
       `;
       modal.style.display = "flex";

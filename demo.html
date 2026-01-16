@@ -5,16 +5,14 @@
   <title>Ley C.U.R.A. | Demos interactivos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Favicon y manifiesto (igual que index) -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
 
-  <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <!-- Tailwind + configuración de colores C.U.R.A. -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -37,6 +35,8 @@
     }
   </script>
 
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -51,18 +51,31 @@
       opacity: 0;
       transform: translateY(-4px);
     }
+
+    /* Ajuste para Lenis (smooth scroll) */
+    html.lenis {
+      height: auto;
+    }
+    .lenis.lenis-smooth {
+      scroll-behavior: auto;
+    }
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
   </style>
 </head>
-<body class="font-sans bg-cura-primary text-white overflow-x-hidden">
 
-  <!-- Banner superior -->
-  <div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
+
+  <div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4 z-50">
     <span id="top-banner-text">
      La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.
     </span>
   </div>
 
-  <!-- HEADER (copiado del index) -->
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
       <div class="flex items-center gap-2">
@@ -73,91 +86,112 @@
         </div>
       </div>
       <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-        <a href="/#inicio" class="text-cura-accentLight hover:text-white">Inicio</a>
-        <a href="/#informacion" class="text-cura-accentLight hover:text-white">Información</a>
-        <a href="/#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
+        <a href="/index.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+            <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
+        <a href="/#informacion" class="text-cura-accentLight hover:text-white transition-colors">Información</a>
+        <a href="/#contacto" class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
       </nav>
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL: DOS BOTONES DE DEMO -->
-  <main class="max-w-5xl mx-auto px-4 pt-10 pb-16">
-    <section class="bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-10 relative overflow-hidden">
+  <main class="flex-grow max-w-5xl mx-auto px-4 pt-10 pb-16 w-full">
+    <section 
+      data-aos="fade-up" 
+      class="bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-10 relative overflow-hidden"
+    >
       <div class="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-cura-accent/25 blur-2xl"></div>
 
       <div class="relative z-10 text-center space-y-6 md:space-y-8">
         <div class="space-y-2">
-          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide">
+          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide" data-aos="fade-down" data-aos-delay="200">
             DEMOS INTERACTIVOS
           </p>
-          <h1 class="text-2xl md:text-3xl font-extrabold text-white">
-            Probá cómo funcionaría la Credencial Única de Salud
+          <h1 class="text-2xl md:text-4xl font-extrabold text-white" data-aos="fade-down" data-aos-delay="300">
+            Probá cómo funcionaría la <br class="hidden md:block"> Credencial Única de Salud
           </h1>
-          <p class="text-sm md:text-base text-white/90 max-w-2xl mx-auto">
+          <p class="text-sm md:text-base text-white/90 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="400">
             Elegí una demostración: la experiencia ciudadana desde Mi Argentina o el escaneo
             de credenciales desde el rol de enfermería.
           </p>
         </div>
 
-        <div class="flex flex-col gap-4 md:gap-5 items-center">
-          <!-- Botón 1: Demo Mi Argentina -->
-          <a href="/menu.html"
-             class="group relative inline-flex items-center justify-center gap-2 px-8 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10 w-full md:w-auto">
-            <span>Ver demo ciudadana · <strong>Mi Argentina + Ley C.U.R.A.</strong></span>
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+        <div class="flex flex-col gap-4 md:gap-6 items-center py-4">
+          <div class="w-full md:w-auto" data-aos="zoom-in" data-aos-delay="500">
+            <a href="/menu.html"
+               class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-cura-accent hover:bg-cura-accentLight text-cura-primaryDark font-bold text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/40 hover:-translate-y-1 border border-white/20 w-full md:w-80">
+              <i class="ph-bold ph-user-circle text-xl"></i>
+              <span>Demo Ciudadana</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
 
-          <!-- Botón 2: Demo escaneo credencial (enfermero) -->
-          <a href="/random/demo-random.html"
-             class="group relative inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/95 hover:bg-white text-cura-primary font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-white/30 hover:-translate-y-0.5 border border-cura-accent/30 w-full md:w-auto">
-            <span>Ver demo escaneo de credencial · <strong>Rol Enfermero</strong></span>
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="h-4 w-4 transition-transform group-hover:translate-x-1"
-                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </a>
+          <div class="w-full md:w-auto" data-aos="zoom-in" data-aos-delay="600">
+            <a href="/random/demo-random.html"
+               class="group relative inline-flex items-center justify-center gap-3 px-8 py-4 bg-white/95 hover:bg-white text-cura-primary font-bold text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-white/20 hover:-translate-y-1 border border-cura-accent/30 w-full md:w-80">
+              <i class="ph-bold ph-first-aid-kit text-xl"></i>
+              <span>Rol Enfermería</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
+          </div>
         </div>
 
-        <p class="text-[11px] text-cura-accentLight max-w-xl mx-auto">
-          Estas demostraciones utilizan datos ficticios y tienen como único objetivo ilustrar
-          el funcionamiento potencial del Sistema C.U.R.A. dentro de plataformas como Mi Argentina.
+        <p class="text-[11px] text-cura-accentLight max-w-xl mx-auto italic" data-aos="fade-up" data-aos-delay="700">
+          * Estas demostraciones utilizan datos ficticios y tienen como único objetivo ilustrar
+          el funcionamiento potencial del Sistema C.U.R.A. dentro de plataformas digitales.
         </p>
       </div>
     </section>
   </main>
 
-  <!-- FOOTER (simplificado pero con los mismos colores) -->
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="/#informacion" class="hover:text-white">Información</a>
-        <a href="/demo-nivel2.html" target="_blank" class="hover:text-white">Demo Enfermero</a>
-        <a href="/#contacto" class="hover:text-white">Contacto</a>
+  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark mt-auto">
+    <div class="max-w-5xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-cura-accentLight">
+      <p>Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/#informacion" class="hover:text-white transition-colors">Información</a>
+        <a href="/#contacto" class="hover:text-white transition-colors">Contacto</a>
       </div>
     </div>
   </footer>
 
-  <!-- Script banner rotativo -->
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const bannerTextEl = document.getElementById('top-banner-text');
-      if (!bannerTextEl) return;
+    // 1. Inicializar Animaciones AOS
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 50,
+        easing: 'ease-out-back'
+      });
+    });
 
+    // 2. Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // 3. Script banner rotativo
+    const bannerTextEl = document.getElementById('top-banner-text');
+    if (bannerTextEl) {
       const bannerMessages = [
         'La ley se encuentra en revisión técnica y estará disponible próximamente en la web.',
-        'La ley será presentada por primera vez del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.'
+        'La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional (CAP).'
       ];
-
       let bannerIndex = 0;
-
       setInterval(() => {
         bannerTextEl.classList.add('banner-hidden');
         setTimeout(() => {
@@ -166,7 +200,7 @@
           bannerTextEl.classList.remove('banner-hidden');
         }, 350);
       }, 5000);
-    });
+    }
   </script>
 </body>
 </html>

@@ -33,8 +33,9 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen text-white">
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
@@ -55,13 +56,13 @@
   </header>
 
   <main class="max-w-5xl mx-auto px-6 py-12">
-    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight">
+    <nav class="mb-8 flex items-center gap-2 text-sm text-cura-accentLight" data-aos="fade-down">
       <a href="/Informacion/informacion" class="hover:underline text-cura-accentLight">Información</a>
       <span>/</span>
       <span class="text-white font-semibold">Interoperabilidad y Estándares</span>
     </nav>
 
-    <div class="mb-12">
+    <div class="mb-12" data-aos="fade-up">
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Interoperabilidad Universal
       </h1>
@@ -72,53 +73,63 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-chats text-cura-accent text-2xl"></i>
-          1. El Idioma Común de la Salud
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          La Ley C.U.R.A. termina con las "torres de Babel" informáticas en el sistema sanitario. Se establece el estándar internacional <strong>HL7 FHIR</strong> como el protocolo de intercambio obligatorio. Esto permite que el sistema de un hospital público en el NOA y el de una prepaga en Buenos Aires hablen exactamente el mismo idioma técnico, garantizando que los datos clínicos viajen sin fricciones entre diferentes plataformas.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-chats text-cura-accent text-2xl"></i>
+            1. El Idioma Común de la Salud
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La Ley C.U.R.A. termina con las "torres de Babel" informáticas. Se establece el estándar internacional <strong>HL7 FHIR</strong> como protocolo obligatorio, garantizando que los datos clínicos viajen sin fricciones entre diferentes plataformas de todo el país.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-tree-structure text-cura-accent text-2xl"></i>
-          2. Ontología Clínica con SNOMED CT
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          Para evitar errores de interpretación diagnóstica, se adopta <strong>SNOMED CT</strong> como la terminología clínica de referencia nacional. Esta ontología asegura que un diagnóstico médico sea codificado de forma unívoca en todo el país, facilitando la investigación científica, la vigilancia epidemiológica en tiempo real y la precisión absoluta en las recetas digitales.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-tree-structure text-cura-accent text-2xl"></i>
+            2. Ontología Clínica con SNOMED CT
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Se adopta <strong>SNOMED CT</strong> como terminología de referencia nacional. Esta ontología asegura que un diagnóstico sea codificado de forma unívoca, facilitando la investigación científica y la precisión absoluta en recetas digitales.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
-          3. Bus Federal de Datos y APIs
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          C.U.R.A. no busca reemplazar los sistemas locales preexistentes, sino integrarlos. Funciona como una gran autopista digital o <strong>Bus Federal</strong>. A través de APIs modernas y seguras, todos los prestadores (provincias, obras sociales, laboratorios) se conectan al nodo central para validar identidades y registrar prestaciones, logrando una interoperabilidad total sin necesidad de cambiar su software actual.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
+            3. Bus Federal de Datos y APIs
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            C.U.R.A. integra sistemas locales mediante un <strong>Bus Federal</strong>. A través de APIs modernas y seguras, todos los prestadores se conectan al nodo central para validar identidades sin necesidad de cambiar su software actual.
+          </p>
+        </div>
       </div>
 
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-microscope text-cura-accent text-2xl"></i>
-          4. Estandarización de Laboratorios (LOINC)
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-          La integración alcanza también a los medios de diagnóstico mediante el uso del estándar <strong>LOINC</strong>. Esto asegura que los resultados de laboratorio, valores de referencia y estudios de imágenes sean comparables, legibles y almacenables de forma estructurada, permitiendo que cualquier profesional autorizado pueda interpretar la evolución clínica con rigor técnico.
-        </p>
+      <div data-aos="fade-up" data-aos-delay="400">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-microscope text-cura-accent text-2xl"></i>
+            4. Estandarización de Laboratorios (LOINC)
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Uso del estándar <strong>LOINC</strong> para medios de diagnóstico. Asegura que resultados, valores de referencia y estudios de imágenes sean comparables y legibles por cualquier profesional autorizado en la red.
+          </p>
+        </div>
       </div>
 
     </div>
 
+    
+
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-      <p class="text-cura-accentLight text-sm italic">Sistemas que hablan el mismo idioma técnico.</p>
-      <a href="/Informacion/infraestructura" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+      <p class="text-cura-accentLight text-sm italic" data-aos="fade-left">Sistemas que hablan el mismo idioma técnico.</p>
+      <a href="/Informacion/infraestructura" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition group">
         Siguiente: Infraestructura Nacional
-        <i class="ph-bold ph-arrow-right"></i>
+        <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
       </a>
     </div>
   </main>
@@ -126,19 +137,36 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+
+    // Inicializar AOS con sincronización
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        anchorPlacement: 'top-bottom'
+      });
+
+      // Refresca AOS en cada frame de scroll de Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
@@ -61,7 +62,7 @@
       <span class="text-white font-semibold">Beneficios e Impacto</span>
     </nav>
 
-    <div class="mb-12">
+    <div class="mb-12" data-aos="fade-up">
       <h1 class="text-3xl md:text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Beneficios e Impacto
       </h1>
@@ -70,95 +71,121 @@
       </p>
     </div>
 
-    <div class="mb-10">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+    <div class="mb-14">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90" data-aos="fade-right">
             <i class="ph-bold ph-user-circle text-cura-accent"></i> 1. Para el Paciente: Empoderamiento y Acceso Universal
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-identification-card text-cura-accent"></i> Propiedad de los Datos</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">El ciudadano recupera el control de su Historia Clínica mediante la <strong>Credencial Única de Salud (C.U.S.)</strong>, garantizando portabilidad absoluta: sus datos lo acompañan donde sea que se atienda.</p>
+            <div data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-identification-card text-cura-accent"></i> Propiedad de los Datos</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">El ciudadano recupera el control de su Historia Clínica mediante la <strong>Credencial Única de Salud (C.U.S.)</strong>, garantizando portabilidad absoluta: sus datos lo acompañan donde sea que se atienda.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-calendar-check text-cura-accent"></i> Gestión de Turnos</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Se eliminan las listas de espera locales mediante una <strong>Red Federal de Turnos</strong> unificada, que permite gestionar citas de manera ágil, optimizando las agendas de todo el país en tiempo real.</p>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-calendar-check text-cura-accent"></i> Gestión de Turnos</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Se eliminan las listas de espera locales mediante una <strong>Red Federal de Turnos</strong> unificada, que permite gestionar citas de manera ágil, optimizando las agendas en tiempo real.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-headset text-cura-accent"></i> Teleconsulta Federal</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Implementación de atención inmediata para pacientes digitales, reservando los turnos presenciales exclusivamente para adultos mayores y sectores vulnerables.</p>
+            <div data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-headset text-cura-accent"></i> Teleconsulta Federal</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Implementación de atención inmediata para pacientes digitales, reservando los turnos presenciales exclusivamente para adultos mayores y sectores vulnerables.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-first-aid text-cura-accent"></i> Seguridad en Emergencias</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Acceso instantáneo a información vital (alergias, antecedentes) mediante el <strong>QR Dinámico</strong>, permitiendo una respuesta precisa cuando el paciente no puede comunicarse.</p>
+            <div data-aos="fade-up" data-aos-delay="400">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-first-aid text-cura-accent"></i> Seguridad en Emergencias</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Acceso instantáneo a información vital (alergias, antecedentes) mediante el <strong>QR Dinámico</strong>, permitiendo una respuesta precisa ante urgencias.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="mb-10">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+    <div class="mb-14">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90" data-aos="fade-right">
             <i class="ph-bold ph-stethoscope text-cura-accent"></i> 2. Para los Profesionales: Tecnología al Servicio del Cuidado
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cpu text-cura-accent"></i> Asistencia con IA</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Acceso a herramientas de <strong>Inteligencia Artificial para soporte en diagnóstico</strong>. El sistema actúa como una "segunda opinión" científica, manteniendo siempre la responsabilidad final en el médico.</p>
+            <div data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cpu text-cura-accent"></i> Asistencia con IA</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Acceso a herramientas de <strong>Inteligencia Artificial para soporte en diagnóstico</strong>. El sistema actúa como una "segunda opinión" científica de apoyo al médico.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-file-x text-cura-accent"></i> Desburocratización Total</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Eliminación de la carga administrativa y del uso de papel, permitiendo que el profesional dedique el <strong>100% de su tiempo a la atención clínica</strong> y al vínculo humano.</p>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-file-x text-cura-accent"></i> Desburocratización Total</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Eliminación de la carga administrativa y del uso de papel, permitiendo que el profesional dedique el <strong>100% de su tiempo a la atención clínica</strong>.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-folder-user text-cura-accent"></i> Precisión y Antecedentes</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Consulta inmediata de estudios realizados en cualquier jurisdicción, reduciendo drásticamente el error médico por falta de información o fragmentación de datos.</p>
+            <div data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-folder-user text-cura-accent"></i> Precisión y Antecedentes</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Consulta inmediata de estudios realizados en cualquier jurisdicción, reduciendo drásticamente el error médico por fragmentación de datos.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-certificate text-cura-accent"></i> Matrícula Federal</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Acceso gratuito al <strong>Sistema Federal de Capacitación Digital</strong> y validez nacional de la matrícula para brindar telemedicina de forma segura.</p>
+            <div data-aos="fade-up" data-aos-delay="400">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-certificate text-cura-accent"></i> Matrícula Federal</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Acceso gratuito al <strong>Sistema Federal de Capacitación Digital</strong> y validez nacional de la matrícula para brindar telemedicina segura.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="mb-10">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+    <div class="mb-14">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90" data-aos="fade-right">
             <i class="ph-bold ph-buildings text-cura-accent"></i> 3. Para el Sistema de Salud: Eficiencia y Soberanía
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-hand-coins text-cura-accent"></i> Reinversión de Ahorros</h3>
-                <p class="text-xs text-cura-accentLight leading-relaxed">Los ahorros generados por la eliminación de estudios duplicados son reinvertidos íntegramente en infraestructura pública y mejora de recursos humanos.</p>
+            <div data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-hand-coins text-cura-accent"></i> Reinversión de Ahorros</h3>
+                    <p class="text-xs text-cura-accentLight leading-relaxed">Los ahorros generados por la eliminación de estudios duplicados son reinvertidos íntegramente en infraestructura pública.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-activity text-cura-accent"></i> Vigilancia Epidemiológica</h3>
-                <p class="text-xs text-cura-accentLight leading-relaxed">Uso de algoritmos soberanos para detectar patrones o brotes en tiempo real, permitiendo optimizar la distribución de medicamentos e insumos.</p>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-activity text-cura-accent"></i> Vigilancia Epidemiológica</h3>
+                    <p class="text-xs text-cura-accentLight leading-relaxed">Uso de algoritmos soberanos para detectar patrones o brotes en tiempo real, optimizando la distribución de insumos.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-map-pin text-cura-accent"></i> Equidad Territorial</h3>
-                <p class="text-xs text-cura-accentLight leading-relaxed">Asegura que un ciudadano en una zona remota acceda al mismo estándar de calidad y especialistas que en los grandes centros urbanos.</p>
+            <div data-aos="fade-up" data-aos-delay="300">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-map-pin text-cura-accent"></i> Equidad Territorial</h3>
+                    <p class="text-xs text-cura-accentLight leading-relaxed">Asegura que un ciudadano en una zona remota acceda al mismo estándar de calidad y especialistas que en ciudades grandes.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="mb-10">
-        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90">
+    <div class="mb-14">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white/90" data-aos="fade-right">
             <i class="ph-bold ph-shield-checkered text-cura-accent"></i> 4. Transparencia y Seguridad Ciudadana
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-fingerprint text-cura-accent"></i> Panel de Auditoría</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">El ciudadano puede monitorear en tiempo real qué profesional o institución consultó sus datos, asegurando un control total sobre su privacidad.</p>
+            <div data-aos="fade-up" data-aos-delay="100">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-fingerprint text-cura-accent"></i> Panel de Auditoría</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">El ciudadano puede monitorear en tiempo real qué profesional consultó sus datos, asegurando un control total sobre su privacidad.</p>
+                </div>
             </div>
-            <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-                <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cube text-cura-accent"></i> Inmutabilidad Blockchain</h3>
-                <p class="text-sm text-cura-accentLight leading-relaxed">Registro de auditoría inalterable que protege la integridad y veracidad de la historia clínica durante toda la vida del paciente.</p>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+                    <h3 class="font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-cube text-cura-accent"></i> Inmutabilidad Blockchain</h3>
+                    <p class="text-sm text-cura-accentLight leading-relaxed">Registro de auditoría inalterable que protege la integridad y veracidad de la historia clínica de por vida.</p>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
       <p class="text-cura-accentLight text-sm italic">Hacia una atención más segura, eficiente y humana.</p>
-      <a href="/Informacion/seg-priv" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition">
+      <a href="/Informacion/seg-priv" class="flex items-center gap-2 text-sm font-semibold text-cura-accent hover:text-white transition group">
         Siguiente: Seguridad y Privacidad
-        <i class="ph-bold ph-arrow-right"></i>
+        <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
       </a>
     </div>
   </main>
@@ -166,19 +193,36 @@
   <footer class="py-12 border-t border-white/10 text-center mt-auto">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
 
-  function raf(time) {
-    lenis.raf(time);
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Inicializar Lenis (Scroll Suave)
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
     requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-</script>
+
+    // Inicializar AOS con sincronización
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50,
+        anchorPlacement: 'top-bottom'
+      });
+
+      // Refresca AOS en cada frame de scroll de Lenis
+      lenis.on('scroll', AOS.refresh);
+    });
+  </script>
 </body>
 </html>

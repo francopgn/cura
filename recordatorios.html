@@ -5,202 +5,165 @@
   <title>Recordatorios - C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
-      --main-bg: #f0f4f8; 
-      --blue-header: #005fa3; 
-      --blue-main: #1f6fe5;
-      --blue-soft: #e3f0ff;
-      --text-dark: #0d2b52;
-      --text-gray: #64748b;
-      --card-white: #ffffff;
-      --border-soft: #e5e7eb;
-      --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
-      --amber-soft: #fff7ed;
-      --amber-text: #9a3412;
-    }
-
-    /* --- FIX: ESTABILIDAD DE PANTALLA --- */
-    html {
-      overflow-y: scroll; 
-      scrollbar-width: none; 
-    }
-    ::-webkit-scrollbar { display: none; }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
     }
 
     body {
-      background-color: var(--main-bg);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      font-family: 'Inter', sans-serif;
       overflow-x: hidden;
     }
 
     .app-shell {
       width: 100%;
       max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
       display: flex;
       flex-direction: column;
-      padding-bottom: 120px; 
     }
 
-    /* --- HEADER SIMÉTRICO --- */
+    /* --- HEADER --- */
     .header-bar {
-      background-color: var(--blue-header);
-      width: calc(100% - 40px);
-      margin: 20px auto 10px; 
-      height: 60px;
-      border-radius: 999px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      box-shadow: 0 8px 20px rgba(0, 95, 163, 0.2);
-      z-index: 100;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
     }
-
     .back-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
-      display: flex; align-items: center; justify-content: center; color: #fff; 
-      font-size: 22px; border: none; cursor: pointer; text-decoration: none;
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
-    .header-title { color: #ffffff; font-size: 18px; font-weight: 700; }
-    .header-spacer { width: 36px; height: 36px; }
 
-    /* --- CONTENIDO --- */
-    .main-content { padding: 10px 20px; flex: 1; }
-
-    .card {
-      background: var(--card-white);
+    /* --- CONFIG CARD --- */
+    .config-card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
       border-radius: 28px;
       padding: 24px;
-      box-shadow: var(--shadow-soft);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .section-label {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 8px;
+      font-size: 13px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--accent); margin-bottom: 8px; display: block;
     }
 
-    .hint {
-      font-size: 13px;
-      color: var(--text-gray);
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-
-    /* --- TOGGLE --- */
-    .toggle-row { display: flex; align-items: center; gap: 15px; margin-top: 10px; }
+    /* --- TOGGLE PREMIUM --- */
+    .toggle-row { display: flex; align-items: center; gap: 15px; }
     .toggle { position: relative; width: 50px; height: 26px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
     .slider {
-      position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1;
+      position: absolute; cursor: pointer; inset: 0; background-color: rgba(255,255,255,0.2);
       border-radius: 999px; transition: 0.3s;
     }
     .slider::before {
       content: ""; position: absolute; height: 20px; width: 20px; left: 3px; top: 3px;
       background-color: #fff; border-radius: 50%; transition: 0.3s;
     }
-    .toggle input:checked + .slider { background-color: var(--blue-main); }
+    .toggle input:checked + .slider { background-color: var(--accent); }
     .toggle input:checked + .slider::before { transform: translateX(24px); }
-    .toggle-title { font-size: 15px; font-weight: 700; color: var(--text-dark); }
-    .toggle-sub { font-size: 12px; color: var(--text-gray); }
 
-    /* --- LISTA --- */
+    /* --- RECORDATORIO CARD --- */
     .rem-card {
-      border-radius: 24px; background: #f8fafc; border: 1px solid var(--border-soft);
-      padding: 20px; margin-bottom: 16px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
     }
-    .rem-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-    .rem-name { font-size: 16px; font-weight: 700; color: var(--text-dark); }
-    .dose-pill {
-      font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
-      background: var(--blue-soft); color: var(--blue-header);
-    }
-    .rem-meta { font-size: 13px; color: var(--text-gray); line-height: 1.5; margin-bottom: 12px; }
-    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-    .chip {
-      font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 8px;
-      background: #e2e8f0; color: #475569;
-    }
-    .chip-blue { background: var(--blue-soft); color: var(--blue-header); }
-    .chip-amber { background: var(--amber-soft); color: var(--amber-text); border: 1px solid #fed7aa; }
+    .disabled-ui { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
 
-    .mini-actions { display: flex; gap: 8px; }
+    .rem-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .rem-name { font-size: 18px; font-weight: 800; color: white; }
+    .dose-pill { font-size: 12px; font-weight: 700; background: var(--accent); color: var(--bg-dark); padding: 4px 12px; border-radius: 10px; }
+    
+    .rem-meta { font-size: 14px; opacity: 0.8; line-height: 1.5; margin-bottom: 15px; }
+    
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 15px; }
+    .chip { font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); }
+    .chip-blue { background: rgba(0, 194, 255, 0.1); color: var(--accent); }
+    .chip-amber { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border-color: rgba(251, 191, 36, 0.2); }
+
+    .mini-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .mini-btn {
-      flex: 1; padding: 10px; border-radius: 12px; border: 1px solid var(--border-soft);
-      background: #fff; font-size: 11px; font-weight: 700; color: var(--text-dark); cursor: pointer;
+      padding: 12px; border-radius: 14px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05); font-size: 12px; font-weight: 700; color: white;
     }
-    .mini-btn.success { border-color: #10b981; color: #059669; }
-    .disabled-ui { opacity: 0.5; filter: grayscale(1); pointer-events: none; }
+    .mini-btn.success { border-color: rgba(34, 197, 94, 0.4); color: #4ade80; background: rgba(34, 197, 94, 0.1); }
 
     .btn-primary-action {
-      width: 100%; padding: 16px; border-radius: 20px; border: none;
-      background: var(--blue-main); color: #fff; font-size: 15px; font-weight: 700;
-      cursor: pointer; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.2);
+      width: 100%; padding: 18px; border-radius: 22px; border: none;
+      background: var(--cura-blue); color: white; font-size: 15px; font-weight: 800;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); transition: transform 0.2s; margin-top: 10px;
     }
-
-    /* --- MODAL AYUDA (Premium) --- */
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(13, 43, 82, 0.4); backdrop-filter: blur(10px);
-      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
-    }
-    .modal {
-      background: #fff; width: 100%; max-width: 360px; border-radius: 35px;
-      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-      position: relative; display: flex; flex-direction: column;
-    }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 19px; font-weight: 800; color: var(--text-dark); }
-    .x-close-btn { background: #f1f5f9; border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); cursor: pointer; }
-    .modal-body { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
-    .help-item { margin-bottom: 14px; display: flex; gap: 12px; }
-    .help-icon { color: var(--blue-main); font-size: 22px; }
-    .modal-footer { display: flex; justify-content: flex-start; border-top: 1px solid #f1f5f9; padding-top: 15px; }
-    .modal-back-btn { background: none; border: none; color: var(--blue-main); font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
+    .btn-primary-action:active { transform: scale(0.97); }
 
     /* --- BOTTOM BAR --- */
     .bottom-bar {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); width: 90%;
-      max-width: 360px; background: #ffffff; border-radius: 35px; height: 70px;
-      display: flex; align-items: center; justify-content: space-between; padding: 0 25px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); z-index: 1000;
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
     }
-    .nav-icon-btn { background: none; border: none; padding: 10px; cursor: pointer; color: var(--text-gray); transition: all 0.2s; }
-    .nav-icon-btn.active { color: var(--blue-main); }
-    .nav-icon-btn i { font-size: 26px; }
-    .center-question-btn { width: 64px; height: 64px; background: var(--blue-main); border-radius: 50%; border: 5px solid var(--main-bg); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 600; margin-top: -35px; box-shadow: 0 8px 20px rgba(31, 111, 229, 0.3); cursor: pointer; }
-    .nav-icon-btn:active, .center-question-btn:active { transform: scale(0.9); }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px; box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+    }
+
+    /* MODAL */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+    }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
   <div class="app-shell">
     <header class="header-bar">
-      <button class="back-btn" onclick="history.back()"><i class="ph ph-caret-left"></i></button>
-      <div class="header-title">Recordatorios</div>
-      <div class="header-spacer"></div>
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Recordatorios</div>
+      <div style="width:40px"></div>
     </header>
 
-    <main class="main-content">
-      <div class="card">
-        <h2 class="section-label">Configuración</h2>
-        <p class="hint">Basado en tus recetas electrónicas de la Ley C.U.R.A.</p>
+    <main>
+      <div class="config-card">
+        <label class="section-label">Configuración</label>
+        <p class="text-xs opacity-60 mb-6">Basado en tus recetas electrónicas de la Ley C.U.R.A.</p>
         
         <div class="toggle-row">
           <label class="toggle">
@@ -208,8 +171,8 @@
             <span class="slider"></span>
           </label>
           <div>
-            <div class="toggle-title">Avisos en el celular</div>
-            <div class="toggle-sub">Recibir notificaciones de toma.</div>
+            <div class="text-[15px] font-bold">Avisos en el celular</div>
+            <div class="text-[11px] opacity-60">Recibir notificaciones de toma.</div>
           </div>
         </div>
       </div>
@@ -222,23 +185,26 @@
     </main>
 
     <nav class="bottom-bar">
-      <button class="nav-icon-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
-      <div class="center-question-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-icon-btn active" onclick="location.href='farmacias.html'"><i class="ph-bold ph-prescription"></i></button>
-      <button class="nav-icon-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno.html'"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='prescripciones.html'"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
 
   <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-top">
-        <h3 id="modal-title" class="modal-title">Ayuda</h3>
-        <button class="x-close-btn" onclick="cerrarModal()"><i class="ph ph-x"></i></button>
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Recordatorios</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="modal-body"></div>
-      <div class="modal-footer">
-        <button class="modal-back-btn" onclick="cerrarModal()"><i class="ph ph-arrow-left"></i> Volver</button>
+      <div id="modal-body" class="space-y-5">
+        </div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
       </div>
     </div>
   </div>
@@ -267,21 +233,19 @@
 
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
-      const title = document.getElementById('modal-title');
       const body = document.getElementById('modal-body');
-      title.innerText = "Ayuda: Recordatorios";
       body.innerHTML = `
-        <div class="help-item">
-          <i class="ph ph-arrows-clockwise help-icon"></i>
-          <p><strong>Sincronización:</strong> Los recordatorios se generan automáticamente a partir de tus recetas electrónicas vigentes en el sistema C.U.R.A.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-arrows-clockwise help-icon text-2xl"></i>
+          <p class="text-sm text-gray-600"><strong>Sincronización:</strong> Los recordatorios se generan automáticamente a partir de tus recetas electrónicas vigentes en el sistema C.U.R.A.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-bell-ringing help-icon"></i>
-          <p><strong>Avisos:</strong> El sistema calcula el horario exacto de tu próxima toma y te envía una notificación para evitar olvidos en tratamientos crónicos.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-bell-ringing help-icon text-2xl"></i>
+          <p class="text-sm text-gray-600"><strong>Avisos:</strong> El sistema calcula el horario exacto de tu próxima toma y te envía una notificación para evitar olvidos.</p>
         </div>
-        <div class="help-item">
-          <i class="ph ph-check-fat help-icon"></i>
-          <p><strong>Adherencia:</strong> Marcar como "Tomado" ayuda a tu médico a conocer tu nivel de adherencia al tratamiento en la próxima consulta.</p>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-check-fat help-icon text-2xl"></i>
+          <p class="text-sm text-gray-600"><strong>Adherencia:</strong> Marcar como "Tomado" ayuda a tu médico a conocer tu nivel de adherencia al tratamiento.</p>
         </div>
       `;
       modal.style.display = "flex";
@@ -317,10 +281,10 @@
       const container = document.getElementById("remList");
       container.innerHTML = "";
 
-      prescripciones.forEach((p, idx) => {
-        const card = document.createElement("article");
-        card.className = "rem-card";
-        card.innerHTML = `
+      prescripciones.forEach((p) => {
+        const article = document.createElement("article");
+        article.className = "rem-card";
+        article.innerHTML = `
           <div class="rem-head">
             <div class="rem-name">${p.nombre}</div>
             <div class="dose-pill">${p.dosis}</div>
@@ -338,7 +302,7 @@
             <button class="mini-btn" onclick="alert('Pospuesto 10 min')">Posponer</button>
           </div>
         `;
-        container.appendChild(card);
+        container.appendChild(article);
       });
     }
 

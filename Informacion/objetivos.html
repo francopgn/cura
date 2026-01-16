@@ -33,6 +33,15 @@
       }
     }
   </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800, // Duración de la animación
+    once: true,    // Que solo pase una vez al bajar
+  });
+</script>
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
@@ -75,15 +84,19 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
       
-      <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
-        <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-          <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
-          1. Soberanía Sanitaria Digital
-        </h3>
-        <p class="text-sm text-cura-accentLight leading-relaxed">
-            Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.
-        </p>
-      </div>
+    <div 
+  data-aos="fade-up" 
+  data-aos-delay="100" 
+  class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1"
+>
+  <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+    <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
+    1. Soberanía Sanitaria Digital
+  </h3>
+  <p class="text-sm text-cura-accentLight leading-relaxed">
+    Garantizar que toda la infraestructura tecnológica y los datos sanitarios de los argentinos residan y sean procesados en territorio nacional. C.U.R.A. establece que la información médica es un activo estratégico de la Nación, blindado contra dependencias externas.
+  </p>
+</div>
 
       <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
         <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">

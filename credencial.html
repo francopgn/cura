@@ -55,7 +55,7 @@
       justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
     }
 
-    /* --- TARJETA QR PREMIUM --- */
+    /* --- TARJETA QR --- */
     .qr-card {
       background: var(--glass);
       backdrop-filter: blur(15px);
@@ -74,25 +74,23 @@
       border-radius: 25px;
       display: inline-block;
       margin-bottom: 15px;
-      box-shadow: 0 10px 20px rgba(0, 194, 255, 0.2);
     }
-    .qr-img { width: 180px; height: 180px; }
+    .qr-img { width: 180px; height: 180px; mix-blend-mode: multiply; }
 
+    /* TOKEN SIN RESPLANDOR */
     .token-display {
       font-size: 56px;
       font-weight: 900;
       letter-spacing: 6px;
       color: var(--accent);
-      margin: 10px 0;
-      text-shadow: 0 0 20px rgba(0, 194, 255, 0.4);
+      margin: 5px 0;
+      /* Eliminado el text-shadow */
     }
 
-    /* --- TIMER PROGRESS --- */
     .timer-container { width: 80%; margin: 0 auto 10px; }
     .progress-bg { height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--accent); transition: width 1s linear; }
 
-    /* --- ALERTA --- */
     .alert-box {
       background: rgba(255, 165, 0, 0.1);
       border: 1px solid rgba(255, 165, 0, 0.2);
@@ -104,7 +102,6 @@
       margin-bottom: 25px;
     }
 
-    /* --- BOTÓN DESCARGA --- */
     .btn-download {
       width: 100%;
       background: var(--cura-blue);
@@ -118,7 +115,6 @@
       gap: 10px;
       transition: all 0.2s;
     }
-    .btn-download:active { transform: scale(0.96); background: #005fa3; }
 
     /* --- BOTTOM BAR --- */
     .bottom-bar {
@@ -136,6 +132,7 @@
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-size: 28px; font-weight: bold; margin-top: -40px;
       box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+      cursor: pointer;
     }
 
     /* MODAL */
@@ -147,6 +144,7 @@
       background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
       padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -179,18 +177,18 @@
       <div class="alert-box">
         <i class="ph-fill ph-shield-check text-2xl text-orange-400"></i>
         <p class="text-[11px] leading-relaxed opacity-90">
-          Uso exclusivo para profesionales de salud o farmacias autorizadas por la <strong>Ley C.U.R.A.</strong>
+          Mostrá este código solo a profesionales de salud o farmacias autorizadas para validar tu identidad federal.
         </p>
       </div>
 
-      <button class="btn-download" onclick="alert('Descargando...')">
-        <i class="ph-bold ph-file-pdf"></i> Descargar Offline (PDF)
+      <button class="btn-download" onclick="alert('Descargando credencial PDF...')">
+        <i class="ph-bold ph-file-pdf"></i> Descargar Credencial Offline
       </button>
     </main>
 
     <nav class="bottom-bar">
       <button class="nav-btn" onclick="location.href='menu.html'"><i class="ph-bold ph-house-line"></i></button>
-      <button class="nav-btn" onclick="location.href='chats.html'"><i class="ph-bold ph-chats-circle"></i></button>
+      <button class="nav-btn" onclick="location.href='turnos.html'"><i class="ph-bold ph-calendar-blank"></i></button>
       <div class="center-btn" onclick="abrirModalAyuda()">?</div>
       <button class="nav-btn" onclick="location.href='farmacias.html'"><i class="ph-bold ph-heartbeat"></i></button>
       <button class="nav-btn active"><i class="ph-bold ph-user-circle"></i></button>
@@ -203,10 +201,12 @@
         <h3 class="text-xl font-extrabold">Ayuda: Credencial</h3>
         <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
       </div>
-      <div id="modal-body" class="space-y-4 text-sm text-gray-600">
+      
+      <div id="modal-body" class="space-y-5">
         </div>
+
       <div class="mt-8 pt-5 border-t border-gray-100">
-        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
           <i class="ph-bold ph-arrow-left"></i> Volver
         </button>
       </div>
@@ -220,14 +220,25 @@
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
       const body = document.getElementById('modal-body');
+      
       body.innerHTML = `
         <div class="flex gap-4">
-          <i class="ph-bold ph-key text-xl text-blue-600"></i>
-          <p><strong>Token Dinámico:</strong> Cambia cada 5 minutos para evitar fraudes.</p>
+          <i class="ph-bold ph-key help-icon"></i>
+          <p class="text-sm text-gray-600">
+            <strong>Token Dinámico:</strong> El número de 4 dígitos cambia cada 5 minutos por seguridad. Asegurate de mostrar el código vigente al profesional.
+          </p>
         </div>
         <div class="flex gap-4">
-          <i class="ph-bold ph-qr-code text-xl text-blue-600"></i>
-          <p><strong>Uso Federal:</strong> Válido en cualquier hospital o farmacia del país.</p>
+          <i class="ph-bold ph-qr-code help-icon"></i>
+          <p class="text-sm text-gray-600">
+            <strong>Uso Federal:</strong> Este código permite que médicos y farmacias de todo el país validen tu identidad y accedan a tus recetas o historia clínica autorizada.
+          </p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-shield-check help-icon"></i>
+          <p class="text-sm text-gray-600">
+            <strong>Seguridad:</strong> El QR y el Token son personales. Según la Ley C.U.R.A., nadie puede obligarte a mostrar este código fuera de un contexto de atención sanitaria.
+          </p>
         </div>
       `;
       modal.style.display = "flex";
@@ -245,11 +256,16 @@
       const progressEl = document.getElementById("progress");
       const min = String(Math.floor(remaining / 60)).padStart(2, "0");
       const sec = String(remaining % 60).padStart(2, "0");
+      
       if (timeEl) timeEl.textContent = `Expira en ${min}:${sec} min`;
       const pct = (remaining / duration) * 100;
       if (progressEl) progressEl.style.width = pct + "%";
+
       remaining--;
-      if (remaining < 0) { generarToken(); remaining = duration; }
+      if (remaining < 0) {
+        generarToken();
+        remaining = duration;
+      }
     }
 
     generarToken();

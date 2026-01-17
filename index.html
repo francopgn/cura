@@ -1072,29 +1072,45 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 <script>
- window.difyChatbotConfig = {
-  token: 'g34M0LETdslNoHZK',
-  title: 'Asistente Virtual sobre la ley C.U.R.A.',
-  containerProps: { title: 'Asistente Virtual sobre la ley C.U.R.A.' }
- }
+  new CozeWebSDK.WebChatClient({
+    config: {
+      bot_id: '7596429833782214709',
+    },
+    componentProps: {
+      title: 'Asistente Ley C.U.R.A.', // Cambiado para que no diga "Coze"
+    },
+    auth: {
+      type: 'token',
+      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Pegá acá tu pat_... completo
+    },
+    ui: {
+      base: {
+        icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png', // Logo de tu proyecto
+        layout: 'mobile',
+      },
+      chatBox: {
+        isUserChatInfoShow: false, // ESTO QUITA EL "USER 1234"
+      },
+      footer: {
+        isShow: false, // QUITA LA MARCA DE AGUA
+      },
+      chatBotButton: {
+        style: {
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: '#004E85', // Tu azul institucional
+        },
+      },
+    },
+  });
 </script>
 
-<script src="https://udify.app/embed.min.js" id="g34M0LETdslNoHZK" defer></script>
-
 <style>
-  #dify-chatbot-bubble-button {
-    background-color: #004E85 !important;
-    position: fixed !important; bottom: 20px !important; right: 20px !important;
-    z-index: 999999 !important;
-  }
-  #dify-chatbot-bubble-window {
-    width: 24rem !important; height: 40rem !important;
-    position: fixed !important; bottom: 90px !important; right: 20px !important;
-    z-index: 999999 !important;
-  }
-  [class*="powered-by"], div[class*="style_poweredBy"], .dify-chatbot-powered-by {
-    display: none !important; visibility: hidden !important; opacity: 0 !important;
+  /* Para asegurar que nada tape el chat en tu web */
+  .coze-web-chat-client-container {
+    z-index: 1000000 !important;
   }
 </style>
 

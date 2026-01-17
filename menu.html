@@ -91,12 +91,13 @@
     }
 
 
-        .menu-item:active { 
-      transform: scale(0.96) translateY(2px);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: inset 0 4px 12px rgba(0,0,0,0.2);
-      border-color: rgba(255, 255, 255, 0.2);
+            /* Se aplica al tocar en el móvil o hacer clic */
+    .menu-item:active {
+      animation: tap-pulse 0.3s ease-out;
+      background: rgba(255, 255, 255, 0.15);
+      /* Eliminamos el transform: scale anterior porque ya lo hace la animación */
     }
+
 
     /* 2. Efecto del icono resaltando (Pégalo justo aquí) */
     .menu-item:active .icon-box {
@@ -151,6 +152,14 @@
       padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
     }
     .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
+
+    /* Definimos la animación de "pulso" */
+    @keyframes tap-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.92); }
+      100% { transform: scale(1); }
+    }
+
   </style>
 </head>
 <body>

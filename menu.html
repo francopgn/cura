@@ -61,9 +61,16 @@
       margin-bottom: 30px;
       text-decoration: none;
       display: block;
-      transition: transform 0.2s;
+      transition: all 0.3s ease;
+      touch-action: manipulation;
     }
-    .credencial-wallet:active { transform: scale(0.97); }
+    
+    /* Animación para la credencial al tocar */
+    .credencial-wallet.clicked {
+      animation: tap-pulse 0.3s ease-out;
+      filter: brightness(1.2);
+    }
+
     .credencial-wallet::after {
       content: ''; position: absolute; top: -50%; right: -20%; width: 150px; height: 150px;
       background: rgba(0, 194, 255, 0.1); filter: blur(40px); border-radius: 50%;
@@ -75,7 +82,7 @@
       gap: 16px;
     }
 
-        .menu-item {
+    .menu-item {
       background: var(--glass);
       border: 1px solid var(--glass-border);
       backdrop-filter: blur(12px);
@@ -84,27 +91,26 @@
       padding: 24px 16px;
       display: flex;
       flex-direction: column;
-      align-items: center; /* Cambiado de flex-start a center */
-      text-align: center;    /* Asegura que el texto de varias líneas se centre */
+      align-items: center; 
+      text-align: center;   
       text-decoration: none;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      touch-action: manipulation;
     }
 
-
-            /* Se aplica al tocar en el móvil o hacer clic */
-    .menu-item:active {
+    /* Clase activada por JS para ver la animación en móvil */
+    .menu-item.clicked {
       animation: tap-pulse 0.3s ease-out;
       background: rgba(255, 255, 255, 0.15);
-      /* Eliminamos el transform: scale anterior porque ya lo hace la animación */
+      border-color: var(--accent);
     }
 
-
-    /* 2. Efecto del icono resaltando (Pégalo justo aquí) */
-    .menu-item:active .icon-box {
+    /* El icono se inclina y brilla mientras la tarjeta está en clase .clicked */
+    .menu-item.clicked .icon-box {
       background: var(--accent);
       color: var(--bg-dark);
-      transform: scale(1.1) rotate(-5deg);
-      transition: all 0.2s ease;
+      transform: scale(1.1) rotate(-8deg);
+      transition: all 0.15s ease;
     }
 
     .icon-box {
@@ -117,6 +123,7 @@
       justify-content: center;
       font-size: 24px;
       margin-bottom: 15px;
+      transition: all 0.3s ease;
     }
 
     .menu-text { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
@@ -153,10 +160,9 @@
     }
     .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
 
-    /* Definimos la animación de "pulso" */
     @keyframes tap-pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(0.92); }
+      50% { transform: scale(0.94); }
       100% { transform: scale(1); }
     }
 
@@ -176,7 +182,7 @@
         <p class="text-muted text-sm opacity-60">Tu historial está al día</p>
       </div>
 
-                  <a href="credencial.html" class="credencial-wallet">
+      <a href="credencial.html" class="credencial-wallet" onclick="navegar(event, this.href)">
         <div class="flex justify-between items-center">
           <div>
             <p class="text-[10px] uppercase tracking-widest opacity-60 mb-1">CREDENCIAL DIGITAL</p>
@@ -190,30 +196,28 @@
         </div>
       </a>
 
-
-
       <div class="menu-grid">
-        <a href="prescripciones.html" class="menu-item">
+        <a href="prescripciones.html" class="menu-item" onclick="navegar(event, this.href)">
           <div class="icon-box"><i class="ph-bold ph-pill"></i></div>
           <span class="menu-text">Recetas<br>Digitales</span>
         </a>
-        <a href="retiro-medicamentos.html" class="menu-item">
+        <a href="retiro-medicamentos.html" class="menu-item" onclick="navegar(event, this.href)">
           <div class="icon-box"><i class="ph-bold ph-package"></i></div>
           <span class="menu-text">Retiro de<br>Medicamentos</span>
         </a>
-        <a href="solicitar-turno.html" class="menu-item">
+        <a href="solicitar-turno.html" class="menu-item" onclick="navegar(event, this.href)">
           <div class="icon-box"><i class="ph-bold ph-calendar-check"></i></div>
           <span class="menu-text">Gestionar<br>Turnos</span>
         </a>
-        <a href="historia-salud.html" class="menu-item">
+        <a href="historia-salud.html" class="menu-item" onclick="navegar(event, this.href)">
           <div class="icon-box"><i class="ph-bold ph-clipboard-text"></i></div>
           <span class="menu-text">Historia<br>Clínica</span>
         </a>
-        <a href="recordatorios.html" class="menu-item">
+        <a href="recordatorios.html" class="menu-item" onclick="navegar(event, this.href)">
           <div class="icon-box"><i class="ph-bold ph-clock-clockwise"></i></div>
           <span class="menu-text">Alertas y<br>Recordatorios</span>
         </a>
-        <a href="cartilla.html" class="menu-item">
+        <a href="cartilla.html" class="menu-item" onclick="navegar(event, this.href)">
           <div class="icon-box"><i class="ph-bold ph-map-trifold"></i></div>
           <span class="menu-text">Cartilla<br>Médica</span>
         </a>
@@ -248,6 +252,16 @@
   </div>
 
   <script>
+    function navegar(event, url) {
+      event.preventDefault();
+      const el = event.currentTarget;
+      el.classList.add('clicked');
+      
+      setTimeout(() => {
+        window.location.href = url;
+      }, 300);
+    }
+
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');
       const body = document.getElementById('modal-body');

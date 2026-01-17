@@ -1079,33 +1079,43 @@ document.addEventListener('DOMContentLoaded', function () {
       bot_id: '7596429833782214709',
     },
     componentProps: {
-      title: 'Asistente Ley C.U.R.A.', // Cambiado para que no diga "Coze"
+      title: 'Asistente Ley C.U.R.A.',
     },
     auth: {
       type: 'token',
-      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Pegá acá tu pat_... completo
+      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Pegá tu pat_... acá
+      onRefreshToken: function () {
+        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB'; // Pegá tu pat_... acá también
+      }
     },
     ui: {
       base: {
-        icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png', // Logo de tu proyecto
+        icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
         layout: 'mobile',
       },
       chatBox: {
-        isUserChatInfoShow: false, // ESTO QUITA EL "USER 1234"
+        isUserChatInfoShow: false, // Quita el "User 1234"
       },
       footer: {
-        isShow: false, // QUITA LA MARCA DE AGUA
+        isShow: false, // Quita el "Powered by"
       },
       chatBotButton: {
         style: {
           bottom: '20px',
           right: '20px',
-          backgroundColor: '#004E85', // Tu azul institucional
+          backgroundColor: '#004E85', // Tu azul de la web
         },
       },
     },
   });
 </script>
+
+<style>
+  /* Para evitar que se pise con otros elementos de tu página */
+  .coze-web-chat-client-container {
+    z-index: 1000000 !important;
+  }
+</style>
 
 <style>
   /* Para asegurar que nada tape el chat en tu web */

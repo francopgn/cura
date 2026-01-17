@@ -65,7 +65,6 @@
       touch-action: manipulation;
     }
     
-    /* Animación para la credencial al tocar */
     .credencial-wallet.clicked {
       animation: tap-pulse 0.3s ease-out;
       filter: brightness(1.2);
@@ -98,14 +97,12 @@
       touch-action: manipulation;
     }
 
-    /* Clase activada por JS para ver la animación en móvil */
     .menu-item.clicked {
       animation: tap-pulse 0.3s ease-out;
       background: rgba(255, 255, 255, 0.15);
       border-color: var(--accent);
     }
 
-    /* El icono se inclina y brilla mientras la tarjeta está en clase .clicked */
     .menu-item.clicked .icon-box {
       background: var(--accent);
       color: var(--bg-dark);
@@ -149,7 +146,6 @@
       cursor: pointer;
     }
 
-    /* Modal Estilo Premium */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
       display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
@@ -261,6 +257,13 @@
         window.location.href = url;
       }, 300);
     }
+
+    // Solución para limpiar el estado al volver atrás
+    window.onpageshow = function(event) {
+      document.querySelectorAll('.clicked').forEach(el => {
+        el.classList.remove('clicked');
+      });
+    };
 
     function abrirModalAyuda() {
       const modal = document.getElementById('modal-container');

@@ -98,6 +98,14 @@
       border-color: rgba(255, 255, 255, 0.2);
     }
 
+    /* 2. Efecto del icono resaltando (Pégalo justo aquí) */
+    .menu-item:active .icon-box {
+      background: var(--accent);
+      color: var(--bg-dark);
+      transform: scale(1.1) rotate(-5deg);
+      transition: all 0.2s ease;
+    }
+
     .icon-box {
       width: 48px; height: 48px;
       background: rgba(0, 194, 255, 0.15);

@@ -1070,52 +1070,70 @@ document.addEventListener('DOMContentLoaded', function () {
 
   poblarCredencial();
 });
+  
 </script>
 
+  <!-- SDK de Coze -->
+  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+  <!-- Inicialización del chatbot -->
+  <script>
+    window.onload = function () {
+      new CozeWebSDK.WebChatClient({
+        config: {
+          type: 'bot',
+          bot_id: '7596429833782214709',
+          isIframe: false,
+        },
 
-<script>
-  new CozeWebSDK.WebChatClient({
-    config: {
-      type: 'bot',
-      bot_id: '7596429833782214709',
-      isIframe: false,
-    },
-    auth: {
-      type: 'token',
-      token: 'cztei_093F6MWFMbPyMR1Nmj83kJwYjScB4km0r5AEC0tJnZHlrb0frEB5s6wR5GezJfVZG',
-      onRefreshToken: async () => 'cztei_093F6MWFMbPyMR1Nmj83kJwYjScB4km0r5AEC0tJnZHlrb0frEB5s6wR5GezJfVZG'
-    },
-    userInfo: {
-      id: 'user',
-      nickname: 'Usuario',
-    },
-    ui: {
-      base: {
-        icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
-        layout: 'mobile',
-        lang: 'es',
-        zIndex: 1000000
-      },
-      header: {
-        isShow: true,
-        isNeedClose: true,
-      },
-      footer: {
-        isShow: false, // ESTO QUITA LA MARCA DE AGUA
-      },
-      chatBot: {
-        title: 'Asistente Ley C.U.R.A.',
-        uploadable: false,
-        width: 390,
-      },
-      asstBtn: {
-        isNeed: true
-      }
-    },
-  });
-</script>
+        auth: {
+          type: 'token',
+          token: 'cztei_03JtqQqDwyjuYglFS07W6Uv3GBLNHY2xnKvsPsNtYjmTh7E9TPlxKx4jAwaZyjcaG',
+          onRefreshToken: async () => 'token'
+        },
+
+        userInfo: {
+          id: 'user',
+          url: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/coze-logo.png',
+          nickname: 'User',
+        },
+
+        ui: {
+          base: {
+            icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
+            layout: 'pc',
+            lang: 'en',
+            zIndex: 1000
+          },
+
+          header: {
+            isShow: true,
+            isNeedClose: true,
+          },
+
+          asstBtn: {
+            isNeed: true
+          },
+
+          footer: {
+            isShow: true,
+          },
+
+          chatBot: {
+            title: 'Asistente Virtual sobre Ley C.U.R.A.',
+            uploadable: false,
+            width: 390,
+            isNeedAudio: false,
+          },
+        },
+      });
+    };
+  </script>
+
+
+
+
+  
 
 <style>
   /* Forzamos el color azul institucional en el botón circular */

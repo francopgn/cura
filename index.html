@@ -1099,8 +1099,8 @@ auth: {
 
 
         userInfo: {
-          id: 'user',
-          url: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/coze-logo.png',
+          id: 'user_' + Math.random().toString(36).slice(2),
+          url: '/user_icon.png',
           nickname: 'User',
         },
 
@@ -1150,6 +1150,29 @@ auth: {
   div[class*="style_footer"], div[class*="style_poweredBy"] {
     display: none !important;
   }
+
+  /* Permitir scroll general */
+html, body {
+  height: 100%;
+  overflow: auto !important;
+}
+
+/* Forzar scroll dentro del chat */
+.coze-webchat,
+.coze-chat-wrapper,
+.coze-chat-body,
+.coze-chat-messages,
+#coze-webchat-container {
+  max-height: 100vh !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+}
+
+/* Evita que algún contenedor padre bloquee el scroll */
+body > div {
+  overflow: visible !important;
+}
+
 </style>
 
 

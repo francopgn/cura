@@ -5,21 +5,19 @@
   <title>Chat C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- SDK Coze estable -->
   <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/index.js"></script>
 
   <style>
     html, body {
       margin: 0;
-      padding: 0;
       height: 100%;
       overflow: hidden;
       background: #fff;
-      font-family: sans-serif;
     }
-
     #chat-root {
-      height: 100%;
       width: 100%;
+      height: 100%;
     }
   </style>
 </head>
@@ -28,10 +26,12 @@
 <div id="chat-root"></div>
 
 <script>
+  console.log("SDK:", window.CozeWebSDK);
+
   new CozeWebSDK.WebChatClient({
     config: {
-      type: 'bot',
-      bot_id: '7596429833782214709',
+      type: "bot",
+      bot_id: "7596429833782214709",
       isIframe: false,
     },
 
@@ -41,26 +41,22 @@
       onRefreshToken: async () => {
         const res = await fetch("/api/coze-token");
         const data = await res.json();
+        console.log("TOKEN:", data);
         return data.token;
       }
     },
 
     ui: {
-      asstBtn: { isNeed: false }, // ❌ no botón de Coze
+      asstBtn: { isNeed: false },
 
       chatBot: {
         el: document.getElementById("chat-root"),
-        title: 'Asistente Virtual C.U.R.A.',
+        title: "Asistente C.U.R.A.",
         uploadable: false,
       },
 
-      header: {
-        isShow: false,
-      },
-
-      footer: {
-        isShow: false,
-      }
+      header: { isShow: false },
+      footer: { isShow: false },
     },
   });
 </script>

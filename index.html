@@ -1082,16 +1082,12 @@ document.addEventListener('DOMContentLoaded', function () {
     componentProps: {
       title: 'Coze',
     },
-   auth: {
-  type: "token",
-  token: "",
-  onRefreshToken: async () => {
-    const res = await fetch("/api/coze-token");
-    const data = await res.json();
-    return data.token;
-  }
-},
-
+    auth: {
+      type: 'token',
+      token: 'pat_fIhtkGkVVA8byDdFEQ2d4EjevySK5Zv0GSHTcriAE1rhaG0MBTi3TwTtizyjPO7L',
+      onRefreshToken: function () {
+        return 'pat_fIhtkGkVVA8byDdFEQ2d4EjevySK5Zv0GSHTcriAE1rhaG0MBTi3TwTtizyjPO7L'
+      }
     }
   });
 </script>

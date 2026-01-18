@@ -72,7 +72,7 @@ new CozeWebSDK.WebChatClient({
     * @param footer.linkvars - The link copy and link address in the footer.
     */
     footer: {
-      isShow: true,
+      isShow: false,
       expressionText: 'Powered by ...',
     },
     /**
@@ -83,9 +83,10 @@ new CozeWebSDK.WebChatClient({
     * @param chatBot.el - Container for setting the placement of the chat box (Element).
     */
     chatBot: {
-      title: 'Coze Bot',
-      uploadable: true,
+         title: 'Asistente Virtual sobre Ley C.U.R.A.',
+      uploadable: false,
       width: 390,
+      isNeedAudio: false,
     },
   },
 });

@@ -1073,10 +1073,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
+<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.1.0-beta.0/index.js"></script>
 
-  <script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.1.0-beta.0/index.js"></script>
 <script>
-  new CozeWebSDK.WebChatClient({
+  const cozeChat = new CozeWebSDK.WebChatClient({
     config: {
       bot_id: '7596429833782214709',
     },
@@ -1085,32 +1085,42 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     auth: {
       type: 'token',
-      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB',
+      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Reemplazá por tu pat_...
       onRefreshToken: function () {
-        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB';
+        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB'; // Reemplazá por tu pat_...
       }
     },
     ui: {
       base: {
         icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
         layout: 'mobile',
-      },
-      chatBox: {
-        isUserChatInfoShow: false,
-      },
-      footer: {
-        isShow: false,
+        zIndex: 1000000,
       },
       chatBotButton: {
         style: {
           bottom: '20px',
           right: '20px',
-          backgroundColor: '#004E85', // Tu color azul
+          backgroundColor: '#004E85',
         },
+      },
+      footer: {
+        isShow: false,
       },
     },
   });
 </script>
+
+<style>
+  /* Forzamos que el contenedor sea visible */
+  .coze-web-chat-client-container {
+    display: block !important;
+    visibility: visible !important;
+    z-index: 2147483647 !important;
+  }
+</style>
+
+
+  
 
   
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 

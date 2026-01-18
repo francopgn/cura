@@ -20,11 +20,15 @@ new CozeWebSDK.WebChatClient({
   * @param token - When the type is set to 'token', you need to configure the PAT (Personal Access Token) or OAuth access key.
   * @param onRefreshToken - When the access key expires, a new key can be set as needed.
   */
-  auth: {
-    type: 'token',
-    token: 'pat_fIhtkGkVVA8byDdFEQ2d4EjevySK5Zv0GSHTcriAE1rhaG0MBTi3TwTtizyjPO7L',
-    onRefreshToken: async () => 'token'
-  },
+auth: {
+  type: "token",
+  token: "",
+  onRefreshToken: async () => {
+    const res = await fetch("/api/coze-token");
+    const data = await res.json();
+    return data.token;
+  }
+},
   /**
   * The userInfo parameter is used to set the display of agent user information in the chat box.
   * @param userInfo.id - ID of the agent user.
@@ -32,9 +36,9 @@ new CozeWebSDK.WebChatClient({
   * @param userInfo.nickname - Nickname of the agent user.
   */
   userInfo: {
-    id: 'user',
-    url: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/coze-logo.png',
-    nickname: 'User',
+          id: 'user_' + Math.random().toString(36).slice(2),
+          url: '/user_icon.png',
+          nickname: 'User',
   },
   ui: {
     /**
@@ -83,7 +87,7 @@ new CozeWebSDK.WebChatClient({
     * @param chatBot.el - Container for setting the placement of the chat box (Element).
     */
     chatBot: {
-         title: 'Asistente Virtual sobre Ley C.U.R.A.',
+         title: 'Asistente Virtual Ley C.U.R.A.',
       uploadable: false,
       width: 390,
       isNeedAudio: false,

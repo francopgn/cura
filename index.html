@@ -1146,32 +1146,50 @@ auth: {
   .coze-asst-btn {
     background-color: #004E85 !important;
   }
-  /* Ocultamos cualquier texto de "Powered by" residual */
-  div[class*="style_footer"], div[class*="style_poweredBy"] {
-    display: none !important;
-  }
 
-  /* Permitir scroll general */
+ /* ===== FIX TOTAL CHAT COZE ===== */
+
+/* Evitar scroll horizontal y problemas de viewport */
 html, body {
+  width: 100%;
   height: 100%;
-  overflow: auto !important;
+  overflow-x: hidden !important;
 }
 
-/* Forzar scroll dentro del chat */
-.coze-webchat,
+/* Contenedor principal del chat */
+#coze-webchat-container,
+.coze-webchat {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Área de mensajes */
 .coze-chat-wrapper,
 .coze-chat-body,
-.coze-chat-messages,
-#coze-webchat-container {
-  max-height: 100vh !important;
+.coze-chat-messages {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;   /* CLAVE para que funcione el scroll en flex */
   overflow-y: auto !important;
   overscroll-behavior: contain;
 }
 
-/* Evita que algún contenedor padre bloquee el scroll */
-body > div {
-  overflow: visible !important;
+/* Área inferior (input + sugerencias) */
+.coze-chat-footer,
+.coze-chat-input,
+.coze-suggest-questions {
+  flex-shrink: 0 !important;
 }
+
+/* Botón flotante fijo dentro del viewport */
+.coze-asst-btn {
+  position: fixed !important;
+  right: 12px !important;
+  bottom: 12px !important;
+  z-index: 2147483647 !important;
+}
+
 
 </style>
 

@@ -1,14 +1,11 @@
- Object.keys(localStorage).forEach(k => {
-    if (k.toLowerCase().includes('coze')) {
-      localStorage.removeItem(k);
-    }
-  });
+// 🔥 Limpiar cualquier sesión previa de Coze
+Object.keys(localStorage).forEach(k => {
+  if (k.toLowerCase().includes('coze')) localStorage.removeItem(k);
+});
 
-  Object.keys(sessionStorage).forEach(k => {
-    if (k.toLowerCase().includes('coze')) {
-      sessionStorage.removeItem(k);
-    }
-  });
+Object.keys(sessionStorage).forEach(k => {
+  if (k.toLowerCase().includes('coze')) sessionStorage.removeItem(k);
+});
 
 new CozeWebSDK.WebChatClient({
   /**

@@ -1073,55 +1073,24 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 <script>
   new CozeWebSDK.WebChatClient({
     config: {
-      type: 'bot',
       bot_id: '7596429833782214709',
-      isIframe: false,
+    },
+    componentProps: {
+      title: 'Coze',
     },
     auth: {
       type: 'token',
-      token: 'cztei_0vMwdNWhIrgQzZoJSsjelMYZiedrwpbJxxBLjOT5fLn9NlxOxtRItnYZT2dCHNivH',
-      onRefreshToken: async () => 'cztei_0vMwdNWhIrgQzZoJSsjelMYZiedrwpbJxxBLjOT5fLn9NlxOxtRItnYZT2dCHNivH'
-    },
-    userInfo: {
-      id: 'user',
-      nickname: 'Usuario',
-    },
-    ui: {
-      base: {
-        icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
-        layout: 'pc', // Cambiamos a PC para probar si abre correctamente la ventana
-        lang: 'en',
-        zIndex: 1000000
-      },
-      header: {
-        isShow: true,
-      },
-      footer: {
-        isShow: false,
-      },
-      chatBot: {
-        title: 'Asistente Ley C.U.R.A.',
-        width: 390,
-      },
-    },
+      token: 'cztei_093F6MWFMbPyMR1Nmj83kJwYjScB4km0r5AEC0tJnZHlrb0frEB5s6wR5GezJfVZG',
+      onRefreshToken: function () {
+        return 'cztei_093F6MWFMbPyMR1Nmj83kJwYjScB4km0r5AEC0tJnZHlrb0frEB5s6wR5GezJfVZG'
+      }
+    }
   });
 </script>
-
-<style>
-  /* Forzamos que el botón azul se vea correctamente */
-  .coze-asst-btn {
-    background-color: #004E85 !important;
-    border-radius: 50% !important;
-  }
-  /* Ocultamos marca de agua por CSS por si acaso */
-  div[class*="PoweredBy"], .coze-web-chat-footer {
-    display: none !important;
-  }
-</style>
 
 
   

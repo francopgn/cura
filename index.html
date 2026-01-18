@@ -43,42 +43,6 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
-/* --- FIX SCROLL CHAT COZE --- */
-
-/* No bloquear scroll de overlays */
-body {
-  overflow-x: hidden;
-}
-
-/* Contenedor del chat */
-.coze-webchat,
-.coze-chat-wrapper,
-.coze-chat-body,
-.coze-chat-messages {
-  overflow-y: auto !important;
-  overscroll-behavior: contain;
-}
-
-/* Evita que el mensaje inicial quede tapado */
-.coze-chat-messages {
-  padding-bottom: 90px !important;
-}
-
-/* Botón siempre arriba de todo */
-.coze-asst-btn {
-  z-index: 999999 !important;
-}
-
-
-
-
-
-
-
-
-
-
-  
 /* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }

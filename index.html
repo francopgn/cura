@@ -1073,10 +1073,11 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-<script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.1.0-beta.0/index.js"></script>
 
+ 
+  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 <script>
-  const cozeChat = new CozeWebSDK.WebChatClient({
+  new CozeWebSDK.WebChatClient({
     config: {
       bot_id: '7596429833782214709',
     },
@@ -1085,16 +1086,21 @@ document.addEventListener('DOMContentLoaded', function () {
     },
     auth: {
       type: 'token',
-      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Reemplazá por tu pat_...
+      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Pegá tu pat_... completo
       onRefreshToken: function () {
-        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB'; // Reemplazá por tu pat_...
+        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB'; // Pegá tu pat_... completo acá también
       }
     },
     ui: {
       base: {
         icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
         layout: 'mobile',
-        zIndex: 1000000,
+      },
+      chatBox: {
+        isUserChatInfoShow: false,
+      },
+      footer: {
+        isShow: false,
       },
       chatBotButton: {
         style: {
@@ -1103,24 +1109,20 @@ document.addEventListener('DOMContentLoaded', function () {
           backgroundColor: '#004E85',
         },
       },
-      footer: {
-        isShow: false,
-      },
     },
   });
 </script>
 
 <style>
-  /* Forzamos que el contenedor sea visible */
+  /* Esto corrige que el botón no se vea cuadrado o mal posicionado */
   .coze-web-chat-client-container {
-    display: block !important;
-    visibility: visible !important;
-    z-index: 2147483647 !important;
+    z-index: 1000000 !important;
+  }
+  /* Ocultar cualquier rastro de marca de agua residual si apareciera */
+  [class*="coze-logo"], [class*="powered-by"] {
+    display: none !important;
   }
 </style>
-
-
-  
 
   
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 

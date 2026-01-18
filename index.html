@@ -1073,104 +1073,54 @@ document.addEventListener('DOMContentLoaded', function () {
   
 </script>
 
-  <!-- SDK de Coze -->
+<!-- SDK Coze -->
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/index.js"></script>
 
+<script>
+window.onload = function () {
+  new CozeWebSDK.WebChatClient({
+    config: {
+      type: 'bot',
+      bot_id: '7596429833782214709',
+      isIframe: false,
+    },
 
-  <!-- Inicialización del chatbot -->
-  <script>
-    window.onload = function () {
-      new CozeWebSDK.WebChatClient({
-        config: {
-          type: 'bot',
-          bot_id: '7596429833782214709',
-          isIframe: false,
-        },
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      }
+    },
 
-auth: {
-  type: "token",
-  token: "",
-  onRefreshToken: async () => {
-    const res = await fetch("/api/coze-token");
-    const data = await res.json();
-    return data.token;
-  }
-},
+    ui: {
+      asstBtn: { isNeed: true },   // 👉 botón flotante ON
 
-
-
-        userInfo: {
-          id: 'user_' + Math.random().toString(36).slice(2),
-          url: '/user_icon.png',
-          nickname: 'User',
-        },
-
-        ui: {
-          base: {
-            icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
-            layout: 'pc',
-            lang: 'en',
-            zIndex: 1000
-          },
-
-          header: {
-            isShow: true,
-            isNeedClose: true,
-          },
-
-          asstBtn: {
-            isNeed: true
-          },
-
-          footer: {
-            isShow: true,
-          },
-
-          chatBot: {
-            title: 'Asistente Virtual sobre Ley C.U.R.A.',
-            uploadable: false,
-            width: 390,
-            isNeedAudio: false,
-          },
-        },
-      });
-    };
-  </script>
-
-
-
-
-  
+      chatBot: {
+        title: 'Asistente Virtual sobre Ley C.U.R.A.',
+        uploadable: false,
+        width: 390,
+      },
+    },
+  });
+};
+</script>
 
 <style>
-
-/* No romper el scroll general */
+/* No romper scroll de la página */
 html, body {
-  height: auto;
+  margin: 0;
   overflow-x: hidden;
 }
 
-/* Asegura que el botón flotante no quede fuera de pantalla en mobile */
-.coze-webchat-launcher,
-.coze-asst-btn {
+/* Forzar visibilidad del botón */
+.coze-asst-btn, .coze-webchat-launcher {
   right: 16px !important;
   bottom: 16px !important;
-  z-index: 9999 !important;
+  z-index: 2147483647 !important;
 }
-
-/* Permitir scroll interno del chat */
-.coze-webchat,
-.coze-chat-wrapper,
-.coze-chat-body,
-.coze-chat-messages {
-  overflow-y: auto !important;
-}
-
-/* Evita que las sugerencias tapen el primer mensaje */
-.coze-chat-messages {
-  padding-bottom: 80px !important;
-}
-
 </style>
 
 

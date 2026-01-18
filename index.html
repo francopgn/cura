@@ -1087,8 +1087,15 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
 auth: {
-  type: 'unauth'
+  type: "token",
+  token: "",
+  onRefreshToken: async () => {
+    const res = await fetch("/api/coze-token");
+    const data = await res.json();
+    return data.token;
+  }
 },
+
 
 
         userInfo: {

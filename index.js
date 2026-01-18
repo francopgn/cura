@@ -21,7 +21,7 @@ new CozeWebSDK.WebChatClient({
   config: {
     type: 'bot',
     bot_id: '7596429833782214709',
-    isIframe: false,
+    isIframe: true,
   },
   /**
   * The auth property is used to configure the authentication method.

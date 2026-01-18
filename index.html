@@ -43,6 +43,20 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
+
+  /* Esto evita que el scroll del chat "arrastre" al fondo de la página */
+.coze-web-chat-client-container {
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  pointer-events: auto !important;
+}
+
+/* Si usas la versión con burbuja flotante, asegúrate de que el iframe o contenedor sea scrollable */
+.coze-web-chat-client-container [class*="scroll"], 
+.coze-web-chat-client-container div {
+  -webkit-overflow-scrolling: touch !important;
+}
+  
 /* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
@@ -1076,23 +1090,33 @@ document.addEventListener('DOMContentLoaded', function () {
   
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
 <script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-    // Añadimos esta línea para evitar conflictos con elementos táctiles y otros componentes
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+  // Esta función le dice a Lenis que ignore el scroll si el mouse está sobre el chat
   prevent: (node) => {
-    // Esto detecta si el elemento clickeado o scrolleado pertenece al chatbot de Coze
     return node.closest('.coze-web-chat-client-container') || 
-           node.closest('#coze-chat-container'); 
+           node.id === 'coze-chat-container' ||
+           document.querySelector('.coze-web-chat-client-container')?.contains(node);
   }
-  });
+});
 
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
+// Forzamos la detención de la propagación del evento wheel
+window.addEventListener('wheel', (e) => {
+  const isChat = e.target.closest('.coze-web-chat-client-container');
+  if (isChat) {
+    e.stopPropagation(); // Evita que Lenis se entere del scroll
   }
+}, { passive: false });
+
+function raf(time) {
+  lenis.raf(time);
   requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+
 
   // Importante: refrescar AOS cuando Lenis haga scroll
   lenis.on('scroll', () => {

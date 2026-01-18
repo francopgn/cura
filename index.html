@@ -1073,56 +1073,57 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-
- 
-  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 <script>
   new CozeWebSDK.WebChatClient({
     config: {
+      type: 'bot',
       bot_id: '7596429833782214709',
-    },
-    componentProps: {
-      title: 'Asistente Ley C.U.R.A.',
+      isIframe: false,
     },
     auth: {
       type: 'token',
-      token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB', // Pegá tu pat_... completo
-      onRefreshToken: function () {
-        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB'; // Pegá tu pat_... completo acá también
-      }
+      token: 'cztei_0vMwdNWhIrgQzZoJSsjelMYZiedrwpbJxxBLjOT5fLn9NlxOxtRItnYZT2dCHNivH',
+      onRefreshToken: async () => 'cztei_0vMwdNWhIrgQzZoJSsjelMYZiedrwpbJxxBLjOT5fLn9NlxOxtRItnYZT2dCHNivH'
+    },
+    userInfo: {
+      id: 'user',
+      nickname: 'Usuario',
     },
     ui: {
       base: {
         icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
-        layout: 'mobile',
+        layout: 'mobile', // Cambiado a mobile para que flote mejor
+        lang: 'en',
+        zIndex: 1000000
       },
-      chatBox: {
-        isUserChatInfoShow: false,
+      header: {
+        isShow: true,
+        isNeedClose: true,
+      },
+      asstBtn: {
+        isNeed: true
       },
       footer: {
-        isShow: false,
+        isShow: false, // ESTO QUITA EL "POWERED BY"
       },
-      chatBotButton: {
-        style: {
-          bottom: '20px',
-          right: '20px',
-          backgroundColor: '#004E85',
-        },
+      chatBot: {
+        title: 'Asistente Ley C.U.R.A.',
+        uploadable: false,
+        width: 390,
       },
     },
   });
 </script>
 
 <style>
-  /* Esto corrige que el botón no se vea cuadrado o mal posicionado */
-  .coze-web-chat-client-container {
-    z-index: 1000000 !important;
-  }
-  /* Ocultar cualquier rastro de marca de agua residual si apareciera */
-  [class*="coze-logo"], [class*="powered-by"] {
-    display: none !important;
+  /* Forzamos el color azul de tu marca en el botón circular */
+  .coze-web-chat-client-container .coze-asst-btn {
+    background-color: #004E85 !important;
   }
 </style>
+ 
+
 
   
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 

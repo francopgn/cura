@@ -1093,23 +1093,18 @@ document.addEventListener('DOMContentLoaded', function () {
     ui: {
       base: {
         icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
-        layout: 'mobile', // Cambiado a mobile para que flote mejor
+        layout: 'pc', // Cambiamos a PC para probar si abre correctamente la ventana
         lang: 'en',
         zIndex: 1000000
       },
       header: {
         isShow: true,
-        isNeedClose: true,
-      },
-      asstBtn: {
-        isNeed: true
       },
       footer: {
-        isShow: false, // ESTO QUITA EL "POWERED BY"
+        isShow: false,
       },
       chatBot: {
         title: 'Asistente Ley C.U.R.A.',
-        uploadable: false,
         width: 390,
       },
     },
@@ -1117,12 +1112,16 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <style>
-  /* Forzamos el color azul de tu marca en el botón circular */
-  .coze-web-chat-client-container .coze-asst-btn {
+  /* Forzamos que el botón azul se vea correctamente */
+  .coze-asst-btn {
     background-color: #004E85 !important;
+    border-radius: 50% !important;
+  }
+  /* Ocultamos marca de agua por CSS por si acaso */
+  div[class*="PoweredBy"], .coze-web-chat-footer {
+    display: none !important;
   }
 </style>
- 
 
 
   

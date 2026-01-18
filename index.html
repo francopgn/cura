@@ -1074,22 +1074,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
+  <script src="https://lf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.1.0-beta.0/index.js"></script>
 <script>
   new CozeWebSDK.WebChatClient({
     config: {
       bot_id: '7596429833782214709',
     },
     componentProps: {
-      title: 'Coze',
+      title: 'Asistente Ley C.U.R.A.',
     },
     auth: {
       type: 'token',
       token: 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB',
       onRefreshToken: function () {
-        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB'
+        return 'pat_3OSZcoIfdxswvvLvvblKotMXfX4gIi6UkTaD9QbDaZaZJ8LppoWBGznpAepqBeJB';
       }
-    }
+    },
+    ui: {
+      base: {
+        icon: 'https://i.ibb.co/6R0D9Yx/logo-cura.png',
+        layout: 'mobile',
+      },
+      chatBox: {
+        isUserChatInfoShow: false,
+      },
+      footer: {
+        isShow: false,
+      },
+      chatBotButton: {
+        style: {
+          bottom: '20px',
+          right: '20px',
+          backgroundColor: '#004E85', // Tu color azul
+        },
+      },
+    },
   });
 </script>
 

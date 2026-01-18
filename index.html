@@ -1096,51 +1096,52 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 </script>
 
-<!-- BOTÓN -->
-<button id="openChat">💬</button>
-
-<!-- CONTENEDOR CHAT -->
-<div id="chatBox">
-  <iframe src="/chat.html" loading="lazy"></iframe>
-</div>
-
-<style>
-#openChat{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-  padding: 12px 14px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-}
-
-#chatBox{
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 390px;
-  height: 600px;
-  max-height: 80vh;
-  display: none;
-  z-index: 9999;
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-#chatBox iframe{
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-</style>
+<!-- SDK Coze -->
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 
 <script>
-document.getElementById("openChat").addEventListener("click", () => {
-  const box = document.getElementById("chatBox");
-  box.style.display = box.style.display === "block" ? "none" : "block";
+window.addEventListener("load", () => {
+  new CozeWebSDK.WebChatClient({
+    config: {
+      type: "bot",
+      bot_id: "7596429833782214709",
+      isIframe: false,
+    },
+
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      },
+    },
+
+    userInfo: {
+      id: "user_" + crypto.randomUUID(),
+      nickname: "User",
+    },
+
+    ui: {
+      base: {
+        layout: "pc",
+        zIndex: 9999,
+      },
+
+      asstBtn: { isNeed: true },
+
+      header: { isShow: true, isNeedClose: true },
+
+      footer: { isShow: false },
+
+      chatBot: {
+        title: "Asistente Virtual Ley C.U.R.A.",
+        width: 390,
+        uploadable: false,
+      },
+    },
+  });
 });
 </script>
 

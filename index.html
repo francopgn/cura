@@ -1074,55 +1074,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- SDK Coze -->
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/index.js"></script>
-
-<script>
-window.onload = function () {
-  new CozeWebSDK.WebChatClient({
-    config: {
-      type: 'bot',
-      bot_id: '7596429833782214709',
-      isIframe: false,
-    },
-
-    auth: {
-      type: "token",
-      token: "",
-      onRefreshToken: async () => {
-        const res = await fetch("/api/coze-token");
-        const data = await res.json();
-        return data.token;
-      }
-    },
-
-    ui: {
-      asstBtn: { isNeed: true },   // 👉 botón flotante ON
-
-      chatBot: {
-        title: 'Asistente Virtual sobre Ley C.U.R.A.',
-        uploadable: false,
-        width: 390,
-      },
-    },
-  });
-};
-</script>
-
-<style>
-/* No romper scroll de la página */
-html, body {
-  margin: 0;
-  overflow-x: hidden;
-}
-
-/* Forzar visibilidad del botón */
-.coze-asst-btn, .coze-webchat-launcher {
-  right: 16px !important;
-  bottom: 16px !important;
-  z-index: 2147483647 !important;
-}
-</style>
-
+<!-- Install SDK --> 
+  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script> 
+  <script src="./index.js"></script>
 
   
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 

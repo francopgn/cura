@@ -1073,24 +1073,105 @@ document.addEventListener('DOMContentLoaded', function () {
   
 </script>
 
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
-<script>
-  new CozeWebSDK.WebChatClient({
-    config: {
-      bot_id: '7596429833782214709',
-    },
-    componentProps: {
-      title: 'Coze',
-    },
-    auth: {
-      type: 'token',
-      token: 'pat_fIhtkGkVVA8byDdFEQ2d4EjevySK5Zv0GSHTcriAE1rhaG0MBTi3TwTtizyjPO7L',
-      onRefreshToken: function () {
-        return 'pat_fIhtkGkVVA8byDdFEQ2d4EjevySK5Zv0GSHTcriAE1rhaG0MBTi3TwTtizyjPO7L'
-      }
-    }
-  });
-</script>
+  <!-- SDK de Coze -->
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/index.js"></script>
+
+
+  <!-- Inicialización del chatbot -->
+  <script>
+    window.onload = function () {
+      new CozeWebSDK.WebChatClient({
+        config: {
+          type: 'bot',
+          bot_id: '7596429833782214709',
+          isIframe: false,
+        },
+
+auth: {
+  type: "token",
+  token: "",
+  onRefreshToken: async () => {
+    const res = await fetch("/api/coze-token");
+    const data = await res.json();
+    return data.token;
+  }
+},
+
+
+
+        userInfo: {
+          id: 'user_' + Math.random().toString(36).slice(2),
+          url: '/user_icon.png',
+          nickname: 'User',
+        },
+
+        ui: {
+          base: {
+            icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
+            layout: 'pc',
+            lang: 'en',
+            zIndex: 1000
+          },
+
+          header: {
+            isShow: true,
+            isNeedClose: true,
+          },
+
+          asstBtn: {
+            isNeed: true
+          },
+
+          footer: {
+            isShow: true,
+          },
+
+          chatBot: {
+            title: 'Asistente Virtual sobre Ley C.U.R.A.',
+            uploadable: false,
+            width: 390,
+            isNeedAudio: false,
+          },
+        },
+      });
+    };
+  </script>
+
+
+
+
+  
+
+<style>
+
+/* No romper el scroll general */
+html, body {
+  height: auto;
+  overflow-x: hidden;
+}
+
+/* Asegura que el botón flotante no quede fuera de pantalla en mobile */
+.coze-webchat-launcher,
+.coze-asst-btn {
+  right: 16px !important;
+  bottom: 16px !important;
+  z-index: 9999 !important;
+}
+
+/* Permitir scroll interno del chat */
+.coze-webchat,
+.coze-chat-wrapper,
+.coze-chat-body,
+.coze-chat-messages {
+  overflow-y: auto !important;
+}
+
+/* Evita que las sugerencias tapen el primer mensaje */
+.coze-chat-messages {
+  padding-bottom: 80px !important;
+}
+
+</style>
 
 
   

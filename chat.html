@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/index.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #fff;
+      font-family: sans-serif;
+    }
+
+    #chat-root {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div id="chat-root"></div>
+
+<script>
+  new CozeWebSDK.WebChatClient({
+    config: {
+      type: 'bot',
+      bot_id: '7596429833782214709',
+      isIframe: false,
+    },
+
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      }
+    },
+
+    ui: {
+      asstBtn: { isNeed: false }, // ❌ no botón de Coze
+
+      chatBot: {
+        el: document.getElementById("chat-root"),
+        title: 'Asistente Virtual C.U.R.A.',
+        uploadable: false,
+      },
+
+      header: {
+        isShow: false,
+      },
+
+      footer: {
+        isShow: false,
+      }
+    },
+  });
+</script>
+
+</body>
+</html>

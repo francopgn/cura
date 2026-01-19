@@ -43,16 +43,17 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
- html {
-scroll-behavior: smooth !important;
+  /* Mantenemos el scroll suave nativo por seguridad */
+  html {
+    scroll-behavior: auto !important;
   }
 
-  /* Esto ayuda a que el contenedor del chat no intente hacer scroll doble */
+  /* Evita interferencias de scroll en el contenedor del chat */
   #my-coze-chat {
     overflow: hidden !important;
   }
 
-  /* Aseguramos comportamiento nativo en el chat */
+  /* Capa de protección para el chat */
   .coze-web-chat-client-container {
     overscroll-behavior: contain !important;
     touch-action: auto !important;
@@ -221,7 +222,7 @@ scroll-behavior: smooth !important;
       </div>
     </a>
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-      <a href="#inicio" class="text-cura-accentLight hover:text-white">Inicio</a>
+      <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white">Inicio</a>
       <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white">Información</a>
       <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
       <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demostración</a>
@@ -695,6 +696,8 @@ scroll-behavior: smooth !important;
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -705,7 +708,32 @@ document.addEventListener('DOMContentLoaded', function () {
     offset: 100
   });
 
-  // --- BANNER SUPERIOR ROTATIVO (CADA 5s CON FADE + SLIDE) ---
+  // --- INICIALIZACIÓN LENIS (Scroll Pesado y Premium) ---
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Sincronizar AOS con Lenis
+  lenis.on('scroll', AOS.refresh);
+
+  // --- FIX PARA EL CHAT: Detiene interferencias de Lenis ---
+  const chatContainer = document.getElementById('my-coze-chat');
+  if (chatContainer) {
+    chatContainer.addEventListener('wheel', (e) => {
+      // Si el mouse está sobre el chat, frenamos el evento para que Lenis no lo vea
+      e.stopPropagation();
+    }, { passive: true });
+  }
+
+  // --- BANNER SUPERIOR ROTATIVO ---
   const bannerTextEl = document.getElementById('top-banner-text');
   if (bannerTextEl) {
     const bannerMessages = [
@@ -764,23 +792,21 @@ document.addEventListener('DOMContentLoaded', function () {
     provinciaSelect.addEventListener('change', cargarCiudades);
   }
 
-  // --- SCROLL SUAVE (Usando la funcionalidad nativa smooth) ---
+  // --- SCROLL SUAVE PARA BOTONES (Usando el motor de Lenis) ---
   const btnSumate = document.getElementById('btn-sumate');
-  const targetSumate = document.getElementById('sumate');
   const btnInfo = document.getElementById('btn-info');
-  const targetInfo = document.getElementById('informacion');
 
-  if (btnSumate && targetSumate) {
+  if (btnSumate) {
     btnSumate.addEventListener('click', e => { 
         e.preventDefault(); 
-        targetSumate.scrollIntoView({ behavior: 'smooth' });
+        lenis.scrollTo('#sumate', { offset: -80 });
     });
   }
 
-  if (btnInfo && targetInfo) {
+  if (btnInfo) {
     btnInfo.addEventListener('click', e => { 
         e.preventDefault(); 
-        targetInfo.scrollIntoView({ behavior: 'smooth' });
+        lenis.scrollTo('#informacion', { offset: -80 });
     });
   }
 
@@ -1095,53 +1121,6 @@ window.addEventListener("load", () => {
 </script>
 
 <div id="my-coze-chat"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js"></script>
-  <script>
-  // Configuración para replicar el efecto "pesado" anterior
-  SmoothScroll({
-    animationTime: 1200, // Tiempo de duración (más alto = más pesado)
-    stepSize: 80,       // Tamaño del paso en píxeles
-    accelerationDelta: 50, 
-    accelerationMax: 3,
-    pulseAlgorithm: true,
-    pulseScale: 4,
-    pulseIntensity: 1,
-    touchpadSupport: false // Importante dejarlo en false para no romper móviles
-  });
-</script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Función genérica para scroll suave
-  const haciaSeccion = (id) => {
-    const elemento = document.getElementById(id);
-    if (elemento) {
-      // Calculamos la posición restando un poco de margen arriba (80px) para que no quede pegado al borde
-      const yOffset = -80; 
-      const y = elemento.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
-  // Evento para el botón "Quiero Sumarme"
-  const btnSumate = document.getElementById('btn-sumate');
-  if (btnSumate) {
-    btnSumate.addEventListener('click', (e) => {
-      e.preventDefault();
-      haciaSeccion('sumate');
-    });
-  }
-
-  // Evento para el botón "Obtén más información"
-  const btnInfo = document.getElementById('btn-info');
-  if (btnInfo) {
-    btnInfo.addEventListener('click', (e) => {
-      e.preventDefault();
-      haciaSeccion('informacion');
-    });
-  }
-});
-</script>
 </body>
 </html>

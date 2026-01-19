@@ -43,9 +43,13 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
-  /* Scroll suave nativo para toda la página */
-  html {
+ html {
     scroll-behavior: smooth;
+  }
+
+  /* Esto ayuda a que el contenedor del chat no intente hacer scroll doble */
+  #my-coze-chat {
+    overflow: hidden !important;
   }
 
   /* Aseguramos comportamiento nativo en el chat */
@@ -1091,6 +1095,19 @@ window.addEventListener("load", () => {
 </script>
 
 <div id="my-coze-chat"></div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/smoothscroll/1.4.10/SmoothScroll.min.js"></script>
+  <script>
+  // Configuración para replicar el efecto "pesado" anterior
+  SmoothScroll({
+    animationTime: 1200, // Tiempo de duración (más alto = más pesado)
+    stepSize: 80,       // Tamaño del paso en píxeles
+    accelerationDelta: 50, 
+    accelerationMax: 3,
+    pulseAlgorithm: true,
+    pulseScale: 4,
+    pulseIntensity: 1,
+    touchpadSupport: false // Importante dejarlo en false para no romper móviles
+  });
+</script>
 </body>
 </html>

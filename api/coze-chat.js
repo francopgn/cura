@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     const response = await fetch('https://api.coze.com/open_api/v2/chat', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.COZE_PAT}`,
+        'Authorization': `Bearer ${process.env.COZE_TOKEN}`,
         'Content-Type': 'application/json',
         'Accept': '*/*'
       },

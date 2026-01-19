@@ -34,48 +34,52 @@
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.13/dist/lenis.css">
 
   <style>
-    /* Estilos base para Lenis */
+    /* Estilos originales de la Ley C.U.R.A. */
     html.lenis { height: auto; }
     .lenis-smooth { scroll-behavior: auto !important; }
-    .lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
     
-    /* Configuración de tus modales y 3D originales */
     .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
     .modal-backdrop.show { opacity: 1; }
     #top-banner-text { display: inline-block; transition: opacity 0.35s ease, transform 0.35s ease; }
     .banner-hidden { opacity: 0; transform: translateY(-4px); }
+
     .perspective-container { perspective: 1500px; }
     .card-container { position: relative; width: 100%; max-width: 450px; aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20; container-type: inline-size; }
     .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
     .card-inner.is-flipped { transform: rotateY(180deg); }
     .card-face { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 18px; overflow: hidden; transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); }
     .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-    .card-front { z-index: 2; }
     .card-back { transform: rotateY(180deg); }
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     .animate-float { animation: float 6s ease-in-out infinite; }
+
+    /* FIX DEFINITIVO PARA EL CHAT */
+    #my-coze-chat {
+      position: fixed;
+      z-index: 999999;
+    }
   </style>
 </head>
 
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden">
 
   <div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
-    <span id="top-banner-text">La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente.</span>
+    <span id="top-banner-text">La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.</span>
   </div>
 
   <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
       <a href="#inicio" class="flex items-center gap-2">
-        <img src="/logo.png" alt="Logo" class="h-16 w-auto" />
+        <img src="/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto" />
         <div class="leading-tight">
           <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
           <p class="text-sm font-bold">Transformación Digital Sanitaria Argentina</p>
         </div>
       </a>
       <nav class="hidden sm:flex items-center gap-4 text-sm font-medium">
-        <a href="#inicio" class="hover:text-cura-accent">Inicio</a>
-        <a href="#informacion" class="hover:text-cura-accent">Información</a>
-        <a href="#sumate" class="hover:text-cura-accent">Sumate</a>
+        <a href="#inicio" class="hover:text-cura-accentLight transition-colors">Inicio</a>
+        <a href="#informacion" class="hover:text-cura-accentLight transition-colors">Información</a>
+        <a href="#contacto" class="hover:text-cura-accentLight transition-colors">Contacto</a>
       </nav>
     </div>
   </header>
@@ -83,10 +87,10 @@
   <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
     <section class="grid md:grid-cols-2 gap-10 items-center">
       <div data-aos="fade-right">
-        <h1 class="text-3xl md:text-4xl font-extrabold mb-4">Diseñando el futuro de la Salud Pública Argentina</h1>
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">Diseñando el futuro de la Salud Pública Argentina</h1>
         <p class="text-cura-accentLight mb-6">Unificando el sistema mediante una Historia Clínica Digital Única.</p>
         <div class="flex gap-3">
-          <button id="btn-sumate" class="flex-1 px-4 py-2.5 rounded-full bg-white text-cura-primary font-bold hover:bg-cura-accentLight transition">QUIERO SUMARME</button>
+          <button id="btn-sumate" class="flex-1 px-4 py-2.5 rounded-full bg-white text-cura-primary font-bold shadow-sm hover:bg-cura-accentLight transition">QUIERO SUMARME</button>
           <button id="btn-info" class="flex-1 px-4 py-2.5 rounded-full border border-cura-accent text-cura-accentLight font-bold hover:bg-cura-accent hover:text-white transition">Más Información</button>
         </div>
       </div>
@@ -99,25 +103,24 @@
       </div>
     </section>
 
-    <section id="informacion" class="py-20 bg-cura-card rounded-2xl border border-cura-accent/40 p-8" data-aos="fade-up">
-      <h2 class="text-2xl font-bold mb-6 text-center">Tu salud, simplificada y segura</h2>
+    <section id="informacion" class="py-20" data-aos="fade-up">
       </section>
 
     <section id="sumate" class="py-20" data-aos="fade-up">
-      <h2 class="text-xl font-bold mb-4">Sumate a la iniciativa</h2>
-      <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-6">
-          </div>
-    </section>
+      </section>
   </main>
+
+  <div id="my-coze-chat" data-lenis-prevent></div>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
 
   <script>
     // 1. Inicializar AOS
     AOS.init({ duration: 800, once: true });
 
-    // 2. Inicializar Lenis (Scroll Pesado)
+    // 2. Inicializar Lenis (Efecto Pesado)
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -130,23 +133,27 @@
     }
     requestAnimationFrame(raf);
 
-    // 3. Scroll suave de botones hacia secciones usando Lenis
-    document.getElementById('btn-sumate').onclick = () => lenis.scrollTo('#sumate', { offset: -80 });
-    document.getElementById('btn-info').onclick = () => lenis.scrollTo('#informacion', { offset: -80 });
+    // 3. Scroll Suave de los botones con Lenis
+    document.getElementById('btn-sumate').onclick = (e) => {
+      e.preventDefault();
+      lenis.scrollTo('#sumate', { offset: -80 });
+    };
+
+    document.getElementById('btn-info').onclick = (e) => {
+      e.preventDefault();
+      lenis.scrollTo('#informacion', { offset: -80 });
+    };
 
     // 4. Giro de credencial
     const card = document.getElementById('credencial-giratoria');
     if (card) card.onclick = () => card.classList.toggle('is-flipped');
-  </script>
 
-  <div id="my-coze-chat"></div>
-  <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.6/libs/oversea/index.js"></script>
-  <script>
+    // 5. Configuración de Coze Chat (Sin Iframe para evitar Error 502)
     new CozeWebSDK.WebChatClient({
       config: {
         bot_id: '7596429833782214709',
         el: document.getElementById('my-coze-chat'),
-        isIframe: true, // Esto replica el comportamiento de Dify y evita conflictos de scroll
+        isIframe: false, // Volvemos a false para evitar el Bad Gateway
       },
       auth: {
         type: "token",
@@ -159,7 +166,11 @@
       },
       ui: {
         base: { zIndex: 999999 },
-        chatBot: { title: 'Asistente Ley C.U.R.A.', width: 390 }
+        chatBot: { 
+          title: 'Asistente Ley C.U.R.A.', 
+          width: 390,
+          uploadable: false
+        }
       }
     });
   </script>

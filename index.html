@@ -1136,9 +1136,8 @@ lenis.on('scroll', () => {
 <div id="my-coze-chat" data-lenis-prevent>
   <!-- SDK Coze -->
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
-
 <script>
-  window.addEventListener("load", () => {
+   window.addEventListener("load", () => {
   const chatDiv = document.getElementById('my-coze-chat');
   
   if (chatDiv) {
@@ -1150,6 +1149,9 @@ lenis.on('scroll', () => {
       lenis.start(); // Devuelve el scroll a la web
     });
   }
+</script>
+<script>
+ 
 window.addEventListener("load", () => {
   new CozeWebSDK.WebChatClient({
     config: {

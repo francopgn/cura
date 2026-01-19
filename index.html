@@ -1088,68 +1088,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
   
-<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-<script>
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  smoothWheel: true,
-  // 1. Simplificamos la prevención apuntando directamente al ID de tu contenedor
-  prevent: (node) => {
-    return node.closest('#my-coze-chat') || node.closest('.coze-web-chat-client-container');
-  }
-});
-
-// 2. Corregimos el listener: usamos 'wheel' con capture en true para interceptar antes que Lenis
-window.addEventListener('wheel', (e) => {
-  // Verificamos si el scroll ocurre dentro del contenedor del chat
-  const chatContainer = document.getElementById('my-coze-chat');
-  if (chatContainer && chatContainer.contains(e.target)) {
-    e.stopPropagation(); 
-  }
-}, { passive: false, capture: true }); // 'capture: true' es clave aquí
-
-// 3. Hacemos lo mismo para el tacto (móviles)
-window.addEventListener('touchmove', (e) => {
-  const chatContainer = document.getElementById('my-coze-chat');
-  if (chatContainer && chatContainer.contains(e.target)) {
-    e.stopPropagation();
-  }
-}, { passive: false, capture: true });
-
-function raf(time) {
-  lenis.raf(time);
-  requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
-
-// Refrescar AOS cuando Lenis haga scroll
-lenis.on('scroll', () => {
-  if (typeof AOS !== 'undefined') {
-    AOS.refresh();
-  }
-});
-</script>
 
 
-
-<div id="my-coze-chat" data-lenis-prevent>
   <!-- SDK Coze -->
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
-<script>
-   window.addEventListener("load", () => {
-  const chatDiv = document.getElementById('my-coze-chat');
-  
-  if (chatDiv) {
-    chatDiv.addEventListener('mouseenter', () => {
-      lenis.stop(); // Detiene el scroll pesado de la web
-    });
-
-    chatDiv.addEventListener('mouseleave', () => {
-      lenis.start(); // Devuelve el scroll a la web
-    });
-  }
-</script>
 <script>
  
 window.addEventListener("load", () => {
@@ -1197,7 +1139,7 @@ window.addEventListener("load", () => {
   });
 });
 </script>
-</div>
+
   
 </body>
 </html>

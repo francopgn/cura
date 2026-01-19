@@ -697,34 +697,9 @@
     </div>
   </div>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+
   
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  // --- INICIALIZACIÓN AOS ---
-  AOS.init({
-    duration: 800,
-    once: true,
-    offset: 100
-  });
-
-  // --- INICIALIZACIÓN LENIS (Scroll Suave) ---
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-
-  // Sincronizar AOS con Lenis
-  lenis.on('scroll', AOS.refresh);
 
   // --- BANNER SUPERIOR ROTATIVO (CADA 5s CON FADE + SLIDE) ---
   const bannerTextEl = document.getElementById('top-banner-text');
@@ -796,30 +771,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const navInfoLinks = document.querySelectorAll('a[href="#informacion"]');
   const navContactoLinks = document.querySelectorAll('a[href="#contacto"]');
 
-  function smoothScrollTo(element, offset = 100) {
-    if (!element) return;
-    lenis.scrollTo(element, { offset: -offset });
-  }
-
-  if (btnSumate && targetSumate) {
-    btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
-  }
-
-  if (btnInfo && targetInfo) {
-    btnInfo.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo, 100); });
-  }
-
-  navInicioLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); });
-  });
-
-  navInfoLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo, 100); });
-  });
-
-  navContactoLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto); });
-  });
 
 
 // --- FORMULARIO CONTACTO ---

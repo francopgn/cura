@@ -43,38 +43,32 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
+  /* Scroll suave nativo para toda la página */
+  html {
+    scroll-behavior: smooth;
+  }
 
-  /* Esto evita que el scroll del chat "arrastre" al fondo de la página */
-.coze-web-chat-client-container {
-  overscroll-behavior: contain !important;
-  touch-action: pan-y !important;
-  pointer-events: auto !important;
-}
-
-/* Si usas la versión con burbuja flotante, asegúrate de que el iframe o contenedor sea scrollable */
-.coze-web-chat-client-container [class*="scroll"], 
-.coze-web-chat-client-container div {
-  -webkit-overflow-scrolling: touch !important;
-}
+  /* Aseguramos comportamiento nativo en el chat */
+  .coze-web-chat-client-container {
+    overscroll-behavior: contain !important;
+    touch-action: auto !important;
+    pointer-events: auto !important;
+  }
   
-/* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
   
-  /* Banner rotativo (fade + slide) */
-#top-banner-text {
-  display: inline-block;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
+  #top-banner-text {
+    display: inline-block;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
 
-.banner-hidden {
-  opacity: 0;
-  transform: translateY(-4px);
-}
+  .banner-hidden {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 
-/* ----POPUP----  */ 
-  
-.modal-card {
+  .modal-card {
       transform: scale(0.9) translateY(10px);
       opacity: 0;
       transition: transform 0.25s ease, opacity 0.25s ease;
@@ -112,13 +106,11 @@
   .animate-float { animation: float 6s ease-in-out infinite; }
   .card-container:hover .animate-float { animation-play-state: paused; }
 
-  /* --- CAPA DE DATOS --- */
   .card-data-layer {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     z-index: 10; pointer-events: none; color: white;
   }
 
-  /* ====== POSICIONES CALIBRADAS ====== */
   .pos-nombre-front {
     position: absolute; left: 3.50%; top: 15%; width: 55%;
     font-family: 'Vazirmatn', sans-serif; font-weight: 700;
@@ -225,7 +217,7 @@
       </div>
     </a>
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-      <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white">Inicio</a>
+      <a href="#inicio" class="text-cura-accentLight hover:text-white">Inicio</a>
       <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white">Información</a>
       <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
       <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demostración</a>
@@ -697,9 +689,17 @@
     </div>
   </div>
 
-
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  // --- INICIALIZACIÓN AOS ---
+  AOS.init({
+    duration: 800,
+    once: true,
+    offset: 100
+  });
 
   // --- BANNER SUPERIOR ROTATIVO (CADA 5s CON FADE + SLIDE) ---
   const bannerTextEl = document.getElementById('top-banner-text');
@@ -760,18 +760,25 @@
     provinciaSelect.addEventListener('change', cargarCiudades);
   }
 
-  // --- SCROLL SUAVE Y BOTONES HERO ---
+  // --- SCROLL SUAVE (Usando la funcionalidad nativa smooth) ---
   const btnSumate = document.getElementById('btn-sumate');
   const targetSumate = document.getElementById('sumate');
   const btnInfo = document.getElementById('btn-info');
   const targetInfo = document.getElementById('informacion');
-  const targetContacto = document.getElementById('contacto');
 
-  const navInicioLinks = document.querySelectorAll('a[href="#inicio"]');
-  const navInfoLinks = document.querySelectorAll('a[href="#informacion"]');
-  const navContactoLinks = document.querySelectorAll('a[href="#contacto"]');
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', e => { 
+        e.preventDefault(); 
+        targetSumate.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 
-
+  if (btnInfo && targetInfo) {
+    btnInfo.addEventListener('click', e => { 
+        e.preventDefault(); 
+        targetInfo.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
 
 // --- FORMULARIO CONTACTO ---
 const formContact = document.getElementById('contact-form');
@@ -960,11 +967,9 @@ if (newsletterForm && newsletterModal && newsletterOkBtn) {
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  // Funcionalidad de giro
   const card = document.getElementById('credencial-giratoria');
   if (card) { card.addEventListener('click', function() { this.classList.toggle('is-flipped'); }); }
 
-  // --- LOGICA CREDENCIAL ---
   const nombres = ["Franco", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena", "Martín", "Julia"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero", "Sosa", "Torres"];
   const localidadesCoherentes = {
@@ -1035,22 +1040,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   poblarCredencial();
 });
-  
 </script>
 
-  
-
-
-  <!-- SDK Coze -->
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 <script>
- 
 window.addEventListener("load", () => {
   new CozeWebSDK.WebChatClient({
     config: {
       type: "bot",
       bot_id: "7596429833782214709",
-      el: document.getElementById('my-coze-chat'), // Apuntar al div con prevent
+      el: document.getElementById('my-coze-chat'),
       isIframe: false,
     },
 
@@ -1091,6 +1090,7 @@ window.addEventListener("load", () => {
 });
 </script>
 
-  
+<div id="my-coze-chat"></div>
+
 </body>
 </html>

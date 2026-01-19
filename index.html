@@ -1094,21 +1094,28 @@ const lenis = new Lenis({
   duration: 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
-  // Esta función le dice a Lenis que ignore el scroll si el mouse está sobre el chat
+  // 1. Simplificamos la prevención apuntando directamente al ID de tu contenedor
   prevent: (node) => {
-    return node.closest('.coze-web-chat-client-container') || 
-           node.id === 'coze-chat-container' ||
-           document.querySelector('.coze-web-chat-client-container')?.contains(node);
+    return node.closest('#my-coze-chat') || node.closest('.coze-web-chat-client-container');
   }
 });
 
-// Forzamos la detención de la propagación del evento wheel
+// 2. Corregimos el listener: usamos 'wheel' con capture en true para interceptar antes que Lenis
 window.addEventListener('wheel', (e) => {
-  const isChat = e.target.closest('.coze-web-chat-client-container');
-  if (isChat) {
-    e.stopPropagation(); // Evita que Lenis se entere del scroll
+  // Verificamos si el scroll ocurre dentro del contenedor del chat
+  const chatContainer = document.getElementById('my-coze-chat');
+  if (chatContainer && chatContainer.contains(e.target)) {
+    e.stopPropagation(); 
   }
-}, { passive: false });
+}, { passive: false, capture: true }); // 'capture: true' es clave aquí
+
+// 3. Hacemos lo mismo para el tacto (móviles)
+window.addEventListener('touchmove', (e) => {
+  const chatContainer = document.getElementById('my-coze-chat');
+  if (chatContainer && chatContainer.contains(e.target)) {
+    e.stopPropagation();
+  }
+}, { passive: false, capture: true });
 
 function raf(time) {
   lenis.raf(time);
@@ -1116,14 +1123,12 @@ function raf(time) {
 }
 requestAnimationFrame(raf);
 
-
-
-  // Importante: refrescar AOS cuando Lenis haga scroll
-  lenis.on('scroll', () => {
-    if (typeof AOS !== 'undefined') {
-      AOS.refresh();
-    }
-  });
+// Refrescar AOS cuando Lenis haga scroll
+lenis.on('scroll', () => {
+  if (typeof AOS !== 'undefined') {
+    AOS.refresh();
+  }
+});
 </script>
 
 

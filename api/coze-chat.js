@@ -1,8 +1,6 @@
 // api/coze-chat.js
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method Not Allowed' });
 
   const { message } = req.body;
 
@@ -10,7 +8,7 @@ export default async function handler(req, res) {
     const response = await fetch('https://api.coze.com/open_api/v2/chat', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.COZE_PAT}`, // Usamos variable de entorno
+        'Authorization': `Bearer ${process.env.COZE_PAT}`,
         'Content-Type': 'application/json',
         'Accept': '*/*'
       },
@@ -24,13 +22,21 @@ export default async function handler(req, res) {
 
     const data = await response.json();
     
-    // Extraemos el mensaje de tipo 'answer'
+    // ESTO ES PARA DEBUGEAR: Mirá los logs en el dashboard de Vercel
+    console.log("Respuesta completa de Coze:", JSON.stringify(data));
+
+    if (data.code !== 0) {
+      return res.status(200).json({ reply: `Error de Coze: ${data.msg} (Código: ${data.code})` });
+    }
+
     const botReply = data.messages?.find(m => m.type === 'answer');
 
     res.status(200).json({ 
-      reply: botReply ? botReply.content : "No pudimos procesar la consulta en este momento." 
+      reply: botReply ? botReply.content : "Coze conectó pero no envió una respuesta de tipo 'answer'. Revisá si el bot tiene habilitada la salida de texto." 
     });
+
   } catch (error) {
+    console.error("Error en la función API:", error);
     res.status(500).json({ error: 'Error de comunicación con el asistente' });
   }
 }

@@ -44,7 +44,7 @@
 
 <style>
  html {
-    scroll-behavior: smooth;
+scroll-behavior: smooth !important;
   }
 
   /* Esto ayuda a que el contenedor del chat no intente hacer scroll doble */
@@ -1110,29 +1110,35 @@ window.addEventListener("load", () => {
   });
 </script>
 
-  <script>
+<script>
 document.addEventListener('DOMContentLoaded', function () {
-  // 1. Referencias a los botones
-  const btnSumate = document.getElementById('btn-sumate');
-  const btnInfo = document.getElementById('btn-info');
-  
-  // 2. Referencias a las secciones (IDs del HTML)
-  const targetSumate = document.getElementById('sumate');
-  const targetInfo = document.getElementById('informacion');
+  // Función genérica para scroll suave
+  const haciaSeccion = (id) => {
+    const elemento = document.getElementById(id);
+    if (elemento) {
+      // Calculamos la posición restando un poco de margen arriba (80px) para que no quede pegado al borde
+      const yOffset = -80; 
+      const y = elemento.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
-  // 3. Función de scroll para el botón "Quiero Sumarme"
-  if (btnSumate && targetSumate) {
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  // Evento para el botón "Quiero Sumarme"
+  const btnSumate = document.getElementById('btn-sumate');
+  if (btnSumate) {
     btnSumate.addEventListener('click', (e) => {
       e.preventDefault();
-      targetSumate.scrollIntoView({ behavior: 'smooth' });
+      haciaSeccion('sumate');
     });
   }
 
-  // 4. Función de scroll para el botón "Obtén más información"
-  if (btnInfo && targetInfo) {
+  // Evento para el botón "Obtén más información"
+  const btnInfo = document.getElementById('btn-info');
+  if (btnInfo) {
     btnInfo.addEventListener('click', (e) => {
       e.preventDefault();
-      targetInfo.scrollIntoView({ behavior: 'smooth' });
+      haciaSeccion('informacion');
     });
   }
 });

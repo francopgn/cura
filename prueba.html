@@ -5,53 +5,73 @@
   <title>Ley C.U.R.A. | Diseñando el futuro de la Salud Pública Argentina</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
   <style>
-    /* Estilos para el contenedor del Chat */
-    .chat-section {
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    /* Contenedor para que el chat ocupe espacio físico en la web */
+    .chat-wrapper {
       width: 100%;
-      max-width: 900px;
-      margin: 50px auto;
+      max-width: 1000px;
+      margin: 60px auto;
       padding: 0 20px;
     }
 
-    #my-coze-chat {
+    .chat-container-card {
       width: 100%;
-      height: 600px; /* Altura fija para que el chat tenga su propio scroll */
-      border-radius: 16px;
-      overflow: hidden;
+      height: 700px; /* Altura fija necesaria para que el scroll funcione */
+      background: #fdfdfd;
+      border-radius: 24px;
       border: 1px solid #e2e8f0;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-      /* Importante para el scroll en PC */
-      touch-action: auto !important;
-      overscroll-behavior: contain !important;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+      position: relative;
     }
 
-    /* Forzar que el contenido inyectado respete el scroll */
-    .coze-web-chat-client-container {
-      overscroll-behavior: contain !important;
+    #my-coze-chat {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    /* Estilo para que Lenis ignore este contenedor por atributo */
+    [data-lenis-prevent] {
+      overscroll-behavior: contain;
     }
   </style>
 </head>
 <body>
 
-  <section class="chat-section" data-aos="fade-up">
-    <h2 style="text-align: center; margin-bottom: 20px;">Asistente Virtual Ley C.U.R.A.</h2>
-    <div id="my-coze-chat" data-lenis-prevent></div>
+  <div style="height: 50vh; display: flex; align-items: center; justify-content: center;">
+    <h1>Contenido de la Ley C.U.R.A.</h1>
+  </div>
+
+  <section class="chat-wrapper" data-aos="fade-up">
+    <div style="text-align: center; margin-bottom: 25px;">
+      <h2 style="font-size: 2rem; color: #1a202c;">Asistente Virtual</h2>
+      <p style="color: #64748b;">Consulta detalles sobre el proyecto de ley y el sistema de salud.</p>
+    </div>
+    
+    <div class="chat-container-card">
+      <div id="my-coze-chat" data-lenis-prevent></div>
+    </div>
   </section>
 
+  <div style="height: 100vh;"></div>
+
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  
   <script>
     // 1. Inicializar Lenis
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      // Intentar prevenir desde la config
-      prevent: (node) => node.closest('#my-coze-chat') || node.closest('[data-lenis-prevent]')
+      smoothWheel: true
     });
 
     function raf(time) {
@@ -60,25 +80,19 @@
     }
     requestAnimationFrame(raf);
 
-    // 2. EL FIX DEFINITIVO PARA PC (Fase de Captura)
-    // Esto intercepta el scroll del mouse ANTES de que Lenis lo bloquee
+    // 2. Fix de Scroll: Detener Lenis cuando el mouse entra al chat
     const chatElement = document.getElementById('my-coze-chat');
     
-    window.addEventListener('wheel', (e) => {
-      if (e.target.closest('#my-coze-chat')) {
-        e.stopPropagation(); // Corta el evento para que no llegue a Lenis
-      }
-    }, { capture: true, passive: false });
+    chatElement.addEventListener('mouseenter', () => {
+      lenis.stop(); // Detiene el scroll de la página
+    });
 
-    window.addEventListener('touchmove', (e) => {
-      if (e.target.closest('#my-coze-chat')) {
-        e.stopPropagation();
-      }
-    }, { capture: true, passive: false });
+    chatElement.addEventListener('mouseleave', () => {
+      lenis.start(); // Reactiva el scroll de la página
+    });
 
     // Inicializar AOS
     AOS.init();
-    lenis.on('scroll', AOS.refresh);
   </script>
 
   <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
@@ -94,7 +108,7 @@
         },
         auth: {
           type: "token",
-          token: "", // Tu token si es necesario
+          token: "",
           onRefreshToken: async () => {
             const res = await fetch("/api/coze-token");
             const data = await res.json();
@@ -104,13 +118,17 @@
         ui: {
           base: {
             layout: "pc",
-            zIndex: 1000,
+            zIndex: 100,
+            height: "100%"
           },
-          asstBtn: { isNeed: false }, // Falso para que no sea burbuja, sino integrado
-          header: { isShow: true, title: "Consultas Ley C.U.R.A." },
+          asstBtn: { isNeed: false }, // Desactiva la burbuja flotante
+          header: { 
+            isShow: true, 
+            title: "Consultas Ley C.U.R.A." 
+          },
           footer: { isShow: false },
           chatBot: {
-            width: "100%", 
+            width: "100%",
             uploadable: false,
           },
         },

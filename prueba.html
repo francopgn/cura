@@ -757,18 +757,32 @@ document.addEventListener('DOMContentLoaded', function () {
   const content = document.getElementById('chat-content');
 
   const toggleChat = () => windowChat.classList.toggle('hidden');
-
-  const addMsg = (text, isUser = false) => {
-    const div = document.createElement('div');
-    div.className = isUser 
-      ? "bg-cura-primary text-white p-3 rounded-2xl rounded-tr-none ml-12 shadow-sm" 
-      : "bg-white border border-cura-accent/20 text-cura-primaryDark p-3 rounded-2xl rounded-tl-none mr-12 shadow-sm";
-    div.textContent = text;
-    content.appendChild(div);
-    content.scrollTop = content.scrollHeight;
+  
+const formatMarkdown = (text) => {
+  return text
+    // Convierte **texto** en <strong>texto</strong>
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>')
+    // Convierte los saltos de línea en etiquetas <br>
+    .replace(/\n/g, '<br>')
+    // Convierte los puntos de lista (* ) en viñetas
+    .replace(/^\* /gm, '• ');
+};
+  
+const addMsg = (text, isUser = false) => {
+  const div = document.createElement('div');
+  div.className = isUser 
+    ? "bg-cura-primary text-white p-3 rounded-2xl rounded-tr-none ml-12 shadow-sm" 
+    : "bg-white border border-cura-accent/20 text-cura-primaryDark p-3 rounded-2xl rounded-tl-none mr-12 shadow-sm leading-relaxed";
+  
+  // CAMBIO CLAVE AQUÍ:
+  div.innerHTML = formatMarkdown(text); 
+  
+  content.appendChild(div);
+  content.scrollTop = content.scrollHeight;
   };
 
   const handleSend = async () => {
+    
     const msg = input.value.trim();
     if (!msg) return;
 

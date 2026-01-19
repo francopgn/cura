@@ -1131,7 +1131,18 @@ lenis.on('scroll', () => {
 });
 </script>
 
+window.addEventListener("load", () => {
+  const chatDiv = document.getElementById('my-coze-chat');
+  
+  if (chatDiv) {
+    chatDiv.addEventListener('mouseenter', () => {
+      lenis.stop(); // Detiene el scroll pesado de la web
+    });
 
+    chatDiv.addEventListener('mouseleave', () => {
+      lenis.start(); // Devuelve el scroll a la web
+    });
+  }
 
 <div id="my-coze-chat" data-lenis-prevent>
   <!-- SDK Coze -->

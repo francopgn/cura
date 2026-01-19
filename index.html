@@ -1109,5 +1109,33 @@ window.addEventListener("load", () => {
     touchpadSupport: false // Importante dejarlo en false para no romper móviles
   });
 </script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  // 1. Referencias a los botones
+  const btnSumate = document.getElementById('btn-sumate');
+  const btnInfo = document.getElementById('btn-info');
+  
+  // 2. Referencias a las secciones (IDs del HTML)
+  const targetSumate = document.getElementById('sumate');
+  const targetInfo = document.getElementById('informacion');
+
+  // 3. Función de scroll para el botón "Quiero Sumarme"
+  if (btnSumate && targetSumate) {
+    btnSumate.addEventListener('click', (e) => {
+      e.preventDefault();
+      targetSumate.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // 4. Función de scroll para el botón "Obtén más información"
+  if (btnInfo && targetInfo) {
+    btnInfo.addEventListener('click', (e) => {
+      e.preventDefault();
+      targetInfo.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+});
+</script>
 </body>
 </html>

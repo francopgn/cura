@@ -1094,5 +1094,64 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 </script>
 
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/oversea/index.js"></script>
+
+<script>
+  window.onload = function () {
+    new CozeWebSDK.WebChatClient({
+      config: {
+        type: 'bot',
+        bot_id: '7596429833782214709',
+        isIframe: false,
+      },
+      auth: {
+        type: "token",
+        token: "",
+        onRefreshToken: async () => {
+          try {
+            const res = await fetch("/api/coze-token");
+            const data = await res.json();
+            return data.token;
+          } catch (error) {
+            console.error("Error cargando el token:", error);
+          }
+        }
+      },
+      userInfo: {
+        id: 'user_' + Math.random().toString(36).slice(2),
+        nickname: 'Ciudadano',
+      },
+      ui: {
+        base: {
+          layout: 'pc',
+          lang: 'es', // Cambiado a español
+          zIndex: 999999, // Prioridad máxima para que no quede oculto
+        },
+        header: {
+          isShow: true,
+          title: 'Asistente Ley C.U.R.A.'
+        },
+        asstBtn: {
+          isNeed: true // Esto activa el círculo/burbuja
+        },
+        footer: {
+          isShow: true,
+        },
+        chatBot: {
+          title: 'Asistente Virtual Ley C.U.R.A.',
+          uploadable: false,
+          width: 390,
+        },
+      },
+    });
+  };
+</script>
+
+
+
+  
 </body>
+
+
+  
 </html>

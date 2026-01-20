@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         bot_id: '7596429833782214709',
         user: 'usuario_web_cura',
-        query: `Responde de forma detallada y completa basándote en el documento: ${message}`,
+        query: `Lee todo el documento de la ley cura que tienes como conocimiento y con eso responde de la manera mas detallada y extensa posible , no te puedes olvidar ningun detalle y debes ser lo más preciso posible: ${message}`,
         conversation_id: conversation_id || "",
         stream: false
       })

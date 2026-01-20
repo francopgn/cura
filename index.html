@@ -1097,55 +1097,104 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 
-window.onload = function () {
-  // 1. LIMPIEZA PROFUNDA: Borra específicamente las llaves de Coze
-  // Coze guarda el estado en llaves que contienen la palabra 'coze' o 'flow-platform'
-  Object.keys(localStorage).forEach(key => {
-    if (key.toLowerCase().includes('coze') || key.toLowerCase().includes('flow')) {
-      localStorage.removeItem(key);
-    }
-  });
-  
-  sessionStorage.clear(); // Limpiamos también la sesión
+// 2. INICIALIZACIÓN DEL CHATBOT DE COZE
 
-  // 2. INICIALIZACIÓN CON ID ÚNICO TEMPORAL
-  new CozeWebSDK.WebChatClient({
-    config: {
-      type: 'bot',
-      bot_id: '7596429833782214709',
-      isIframe: false,
-    },
-    auth: {
-      type: "token",
-      token: "", 
-      onRefreshToken: async () => {
-        const res = await fetch("/api/coze-token");
-        const data = await res.json();
-        return data.token;
-      }
-    },
-    userInfo: {
-      // Usamos el timestamp exacto para que Coze crea que es un ciudadano nuevo siempre
-      id: 'cura_user_' + Date.now() + Math.random().toString(36).slice(2, 7),
-      nickname: 'Ciudadano',
-    },
-    ui: {
-      base: {
-        layout: 'pc',
-        lang: 'es',
-        zIndex: 999999,
-      },
-      asstBtn: {
-        isNeed: true
-      },
-      chatBot: {
-        title: 'Asistente Ley C.U.R.A.',
-        width: 390,
-      },
-    },
-  });
+window.onload = function () {
+
+new CozeWebSDK.WebChatClient({
+
+config: {
+
+type: 'bot',
+
+bot_id: '7596429833782214709',
+
+isIframe: false,
+
+},
+
+auth: {
+
+type: "token",
+
+token: "", // Se llena dinámicamente
+
+onRefreshToken: async () => {
+
+const res = await fetch("/api/coze-token");
+
+const data = await res.json();
+
+return data.token;
+
+}
+
+},
+
+userInfo: {
+
+id: 'user_' + Math.random().toString(36).slice(2),
+
+url: '/user_icon.png',
+
+nickname: 'User',
+
+},
+
+ui: {
+
+base: {
+
+icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
+
+layout: 'pc',
+
+lang: 'es', // Cambiado a español
+
+zIndex: 999999,
+
+},
+
+header: {
+
+isShow: true,
+
+isNeedClose: true,
+
+},
+
+asstBtn: {
+
+isNeed: true
+
+},
+
+footer: {
+
+isShow: true,
+
+expressionText: 'Asistente Oficial Ley C.U.R.A.',
+
+},
+
+chatBot: {
+
+title: 'Asistente Ley C.U.R.A.',
+
+uploadable: false,
+
+width: 390,
+
+},
+
+},
+
+});
+
 };
+
 </script>
+
 
   
 </body>

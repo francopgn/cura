@@ -2,20 +2,12 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="C.U.R.A." />
-<link rel="manifest" href="/site.webmanifest" />
-  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
   <title>Ley C.U.R.A. | Diseñando el futuro de la Salud Pública Argentina</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -32,9 +24,7 @@
               accentLight: '#59D2FF'   
             }
           },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
     }
@@ -43,92 +33,71 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
-/* --- ESTILOS BASE Y 3D --- */
-  .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
-  .modal-backdrop.show { opacity: 1; }
+  /* --- ESTILOS DE TRANSICIÓN Y BLUR --- */
+  #main-layout {
+    transition: filter 0.3s ease, transform 0.3s ease;
+    will-change: filter;
+  }
   
-#top-banner-text { display: inline-block; transition: opacity 0.35s ease, transform 0.35s ease; }
-.banner-hidden { opacity: 0; transform: translateY(-4px); }
+  .is-blurred {
+    filter: blur(8px);
+    pointer-events: none; /* Bloquea interacción con la web */
+    user-select: none;
+  }
 
-.perspective-container { perspective: 1500px; }
-.card-container {
-    position: relative; width: 100%; max-width: 450px;
-    aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20;
-    container-type: inline-size;
-}
-.card-inner {
-    position: relative; width: 100%; height: 100%; text-align: center;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform-style: preserve-3d; cursor: pointer;
-}
-.card-inner.is-flipped { transform: rotateY(180deg); }
-.card-face {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    backface-visibility: hidden; border-radius: 18px; overflow: hidden;
-    transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
-}
-.card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
-.card-front { z-index: 2; transform: rotateY(0deg); }
-.card-back { z-index: 1; transform: rotateY(180deg); }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-.animate-float { animation: float 6s ease-in-out infinite; }
-
-/* --- CAPA DE DATOS --- */
-.card-data-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; color: white; }
-.pos-nombre-front { position: absolute; left: 3.50%; top: 15%; width: 55%; font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left; }
-.pos-dni-front { position: absolute; left: 3.50%; top: 21.06%; font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; }
-.pos-sangre { position: absolute; left: 94.88%; top: 8.5%; transform: translate(-50%, -50%); width: 12%; height: 18%; font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw; display: flex; justify-content: center; align-items: center; }
-
-/* --- EFECTO BLUR Y CHAT --- */
-.main-content-wrapper { transition: filter 0.4s ease, transform 0.4s ease; }
-.content-blur { filter: blur(10px); pointer-events: none; transform: scale(0.98); }
-
-/* Aseguramos que el chat siempre se vea */
-.coze-web-chat-window, .coze-web-chat-window-container {
+  /* Asegura que el chat de Coze se vea nítido */
+  .coze-web-chat-window-container {
     filter: none !important;
-}
+  }
+
+  /* --- ESTILOS ORIGINALES (CREDENTIAL & 3D) --- */
+  .perspective-container { perspective: 1500px; }
+  .card-container { position: relative; width: 100%; max-width: 450px; aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20; container-type: inline-size; }
+  .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+  .card-inner.is-flipped { transform: rotateY(180deg); }
+  .card-face { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 18px; overflow: hidden; transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); }
+  .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  .card-front { z-index: 2; transform: rotateY(0deg); }
+  .card-back { z-index: 1; transform: rotateY(180deg); }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  .animate-float { animation: float 6s ease-in-out infinite; }
 </style>
 </head>
 
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden">
 
-<div id="page-wrapper" class="main-content-wrapper">
-    <div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
-      <span id="top-banner-text">La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.</span>
+<div id="main-layout">
+  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="#inicio" class="flex items-center gap-2">
+        <img src="/logo.png" alt="Logo" class="h-16 w-auto" />
+        <div class="leading-tight">
+          <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
+          <p class="text-sm font-bold">Transformación Digital Sanitaria Argentina</p>
+        </div>
+      </a>
     </div>
+  </header>
 
-    <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-      <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-        <a href="#inicio" class="flex items-center gap-2">
-          <img src="/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain" />
-          <div class="leading-tight">
-            <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
-            <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
-          </div>
-        </a>
+  <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
+    <section class="grid md:grid-cols-2 gap-10 items-center">
+      <div data-aos="fade-right">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-4">Diseñando el futuro de la Salud Pública Argentina</h1>
+        <div class="flex gap-3">
+          <button id="btn-sumate" class="flex-1 px-4 py-2.5 rounded-full bg-white text-cura-primary font-bold">QUIERO SUMARME</button>
+          <button id="btn-info" class="flex-1 px-4 py-2.5 rounded-full border border-cura-accent text-cura-accentLight font-bold">Información</button>
+        </div>
       </div>
-    </header>
-
-    <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
-      <section class="grid md:grid-cols-2 gap-10 items-center">
-        <div data-aos="fade-right">
-          <h1 class="text-3xl md:text-4xl font-extrabold mb-4">Diseñando el futuro de la Salud Pública Argentina</h1>
-          <p class="text-cura-accentLight mb-6">Vos podés ser parte de la mayor transformación de la historia sanitaria.</p>
-          <div class="flex gap-3">
-            <button id="btn-sumate" class="flex-1 px-4 py-2.5 rounded-full bg-white text-cura-primary font-bold">QUIERO SUMARME</button>
-            <button id="btn-info" class="flex-1 px-4 py-2.5 rounded-full border border-cura-accent text-cura-accentLight">Más información</button>
-          </div>
-        </div>
-        
-        <div class="card-container animate-float" data-aos="zoom-in">
-          <div id="credencial-giratoria" class="card-inner">
-            <div class="card-face card-front"><img src="credencial-frente-base.png" class="card-bg-img"><div class="card-data-layer"><div class="pos-nombre-front" id="cred-nombre-front"></div><div class="pos-dni-front" id="cred-dni-front"></div><div class="pos-sangre" id="cred-sangre"></div></div></div>
-            <div class="card-face card-back"><img src="credencial-dorso-base.png" class="card-bg-img"></div>
-          </div>
-        </div>
-      </section>
       
-      </main>
+      <div class="card-container animate-float" data-aos="zoom-in">
+        <div id="credencial-giratoria" class="card-inner">
+          <div class="card-face card-front"><img src="credencial-frente-base.png" class="card-bg-img"></div>
+          <div class="card-face card-back"><img src="credencial-dorso-base.png" class="card-bg-img"></div>
+        </div>
+      </div>
+    </section>
+
+    </main>
 </div>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -136,77 +105,88 @@
 <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 
 <script>
-let lenis; // Variable global
+// --- GLOBAL LENIS ---
+let lenisInstance;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Iniciar AOS
-    AOS.init({ duration: 800, once: true });
+  // 1. Inicializar AOS
+  AOS.init({ duration: 800, once: true });
 
-    // 2. Iniciar Lenis
-    lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true
-    });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  // 2. Inicializar Lenis
+  lenisInstance = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
+
+  function raf(time) {
+    lenisInstance.raf(time);
     requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
 
-    // 3. Giro Credencial
-    const card = document.getElementById('credencial-giratoria');
-    if(card) card.onclick = () => card.classList.toggle('is-flipped');
+  // 3. Giro de Credencial
+  const card = document.getElementById('credencial-giratoria');
+  if(card) card.onclick = () => card.classList.toggle('is-flipped');
 
-    // 4. Iniciar Coze
-    const cozeClient = new CozeWebSDK.WebChatClient({
-      config: {
-        type: 'bot',
-        bot_id: '7596429833782214709',
-        isIframe: false,
-      },
-      auth: {
-        type: "token",
-        token: "",
-        onRefreshToken: async () => {
-          const res = await fetch("/api/coze-token");
-          const data = await res.json();
-          return data.token;
-        }
-      },
-      userInfo: { id: 'user_' + Date.now(), nickname: 'Ciudadano' },
-      ui: {
-        base: { layout: 'pc', lang: 'es', zIndex: 999999 },
-        asstBtn: { isNeed: true },
-        footer: { isShow: false },
-        chatBot: { title: 'Asistente Ley C.U.R.A.', uploadable: false, width: 390 }
-      },
-    });
+  // 4. Inicializar Coze
+  new CozeWebSDK.WebChatClient({
+    config: {
+      type: 'bot',
+      bot_id: '7596429833782214709',
+      isIframe: false,
+    },
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      }
+    },
+    userInfo: { id: 'user_' + Date.now(), nickname: 'Ciudadano' },
+    ui: {
+      base: { layout: 'pc', lang: 'es', zIndex: 999999 },
+      asstBtn: { isNeed: true },
+      footer: { isShow: false },
+      chatBot: { title: 'Asistente Ley C.U.R.A.', uploadable: false, width: 390 }
+    },
+  });
 
-    // 5. Lógica de Bloqueo, Blur y Scroll Interno
-    const pageWrapper = document.getElementById('page-wrapper');
-    
-    const handleChatState = () => {
-        // Buscamos la ventana de Coze en el DOM
-        const chatWindow = document.querySelector('.coze-web-chat-window-pc');
-        const isHidden = !chatWindow || chatWindow.classList.contains('coze-web-chat-window-hidden');
+  // 5. LÓGICA DE DETECCIÓN, BLUR Y BLOQUEO
+  const layout = document.getElementById('main-layout');
 
-        if (!isHidden && chatWindow) {
-            // CHAT ABIERTO
-            if (lenis) lenis.stop();
-            pageWrapper.classList.add('content-blur');
-            chatWindow.setAttribute('data-lenis-prevent', 'true');
-        } else {
-            // CHAT CERRADO
-            if (lenis) lenis.start();
-            pageWrapper.classList.remove('content-blur');
-        }
-    };
+  const updateChatState = () => {
+    // Buscamos si la ventana de chat está visible en el DOM
+    const chatWin = document.querySelector('.coze-web-chat-window-pc');
+    const isVisible = chatWin && !chatWin.classList.contains('coze-web-chat-window-hidden');
 
-    // Observamos cambios en el body para detectar apertura de Coze
-    const observer = new MutationObserver(handleChatState);
-    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+    if (isVisible) {
+      if (lenisInstance) lenisInstance.stop();
+      layout.classList.add('is-blurred');
+      chatWin.setAttribute('data-lenis-prevent', 'true');
+    } else {
+      if (lenisInstance) lenisInstance.start();
+      layout.classList.remove('is-blurred');
+    }
+  };
 
-    // Click listener para reaccionar rápido
-    document.addEventListener('click', () => setTimeout(handleChatState, 100));
+  // Observador para detectar cambios de clase en el body (cuando Coze abre la ventana)
+  const observer = new MutationObserver((mutations) => {
+    updateChatState();
+  });
+
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true, 
+    attributes: true 
+  });
+
+  // Fallback para asegurar respuesta rápida al click
+  document.addEventListener('click', () => setTimeout(updateChatState, 150));
 });
 </script>
+
 </body>
 </html>

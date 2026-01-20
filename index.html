@@ -43,6 +43,23 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
+  /* Clase para desenfocar el contenido de la web */
+.main-blur {
+  filter: blur(8px);
+  pointer-events: none; /* Evita clicks accidentales fuera del chat */
+  transition: filter 0.3s ease;
+}
+
+/* Aseguramos que el contenedor de Coze sea inmune al blur */
+.coze-chat-portal {
+  filter: none !important;
+  pointer-events: auto !important;
+}
+
+/* Estilo para el scroll interno del chat (si Coze usa clases estándar) */
+.coze-chat-window-container [class*="chat-scroll"] {
+  overscroll-behavior: contain;
+}
 /* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
   .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
   .modal-backdrop.show { opacity: 1; }
@@ -1100,97 +1117,84 @@ document.addEventListener('DOMContentLoaded', function () {
 // 2. INICIALIZACIÓN DEL CHATBOT DE COZE
 
 window.onload = function () {
+  const mainContent = document.querySelector('main');
+  const headerContent = document.querySelector('header');
+  const footerContent = document.querySelector('footer');
+  const elementsToBlur = [mainContent, headerContent, footerContent];
 
-new CozeWebSDK.WebChatClient({
+  const client = new CozeWebSDK.WebChatClient({
+    config: {
+      type: 'bot',
+      bot_id: '7596429833782214709',
+      isIframe: false,
+    },
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      }
+    },
+    userInfo: {
+      id: 'user_' + Math.random().toString(36).slice(2),
+      url: '/user_icon.png',
+      nickname: 'User',
+    },
+    ui: {
+      base: {
+        icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
+        layout: 'pc',
+        lang: 'es',
+        zIndex: 999999,
+      },
+      header: { isShow: true, isNeedClose: true },
+      asstBtn: { isNeed: true },
+      footer: { isShow: true, expressionText: 'Asistente Oficial Ley C.U.R.A.' },
+      chatBot: { title: 'Asistente Ley C.U.R.A.', uploadable: false, width: 390 },
+    },
+  });
 
-config: {
+  // --- LÓGICA DE BLOQUEO Y BLUR ---
 
-type: 'bot',
+  // Función para detectar si la ventana de chat está visible
+  const handleChatState = () => {
+    // Coze inyecta un div con esta clase para la ventana
+    const chatWindow = document.querySelector('.coze-web-chat-window');
+    
+    if (chatWindow && !chatWindow.classList.contains('coze-web-chat-window-hidden')) {
+      // CHAT ABIERTO
+      lenis.stop(); // Detenemos Lenis
+      elementsToBlur.forEach(el => el && el.classList.add('main-blur'));
+      
+      // Forzamos el prevent de Lenis dinámicamente
+      chatWindow.setAttribute('data-lenis-prevent', '');
+    } else {
+      // CHAT CERRADO
+      lenis.start(); // Reanudamos Lenis
+      elementsToBlur.forEach(el => el && el.classList.remove('main-blur'));
+    }
+  };
 
-bot_id: '7596429833782214709',
+  // Observador para detectar cambios en el DOM (cuando Coze abre la ventana)
+  const observer = new MutationObserver((mutations) => {
+    handleChatState();
+  });
 
-isIframe: false,
+  // Empezamos a observar el body para ver cuando Coze inyecta o cambia clases
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true, 
+    attributes: true, 
+    attributeFilter: ['class'] 
+  });
 
-},
-
-auth: {
-
-type: "token",
-
-token: "", // Se llena dinámicamente
-
-onRefreshToken: async () => {
-
-const res = await fetch("/api/coze-token");
-
-const data = await res.json();
-
-return data.token;
-
-}
-
-},
-
-userInfo: {
-
-id: 'user_' + Math.random().toString(36).slice(2),
-
-url: '/user_icon.png',
-
-nickname: 'User',
-
-},
-
-ui: {
-
-base: {
-
-icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
-
-layout: 'pc',
-
-lang: 'es', // Cambiado a español
-
-zIndex: 999999,
-
-},
-
-header: {
-
-isShow: true,
-
-isNeedClose: true,
-
-},
-
-asstBtn: {
-
-isNeed: true
-
-},
-
-footer: {
-
-isShow: true,
-
-expressionText: 'Asistente Oficial Ley C.U.R.A.',
-
-},
-
-chatBot: {
-
-title: 'Asistente Ley C.U.R.A.',
-
-uploadable: false,
-
-width: 390,
-
-},
-
-},
-
-});
-
+  // También escuchamos clicks globales para reaccionar rápido al botón de cerrar o abrir
+  document.addEventListener('click', () => {
+    // Pequeño delay para dejar que el SDK de Coze cambie sus clases primero
+    setTimeout(handleChatState, 50);
+  });
 };
 
 </script>

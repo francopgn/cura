@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+    <style>
+        #embedded-coze-chat {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tu contenido existente -->
+    
+    <!-- El chat embebido aparecerá aquí -->
+    <div id="embedded-coze-chat"></div>
+    
+    <script>
+        window.onload = function() {
+            const cozeClient = new CozeWebSDK.WebChatClient({
+                config: {
+                    bot_id: '7596429833782214709',
+                    container: '#embedded-coze-chat',
+                    position: 'embedded',
+                    auto_open: true
+                },
+                auth: {
+                    type: "token",
+                    token: "",
+                    onRefreshToken: async () => {
+                        const res = await fetch("/api/coze-token");
+                        const data = await res.json();
+                        return data.token;
+                    }
+                },
+                userInfo: { id: 'user_' + Date.now(), nickname: 'Ciudadano' },
+                ui: {
+                    base: { lang: 'es' },
+                    asstBtn: { isNeed: false },
+                    chatBot: { title: 'Asistente Ley C.U.R.A.' }
+                }
+            });
+        };
+    </script>
+</body>
+</html>

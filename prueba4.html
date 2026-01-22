@@ -112,12 +112,15 @@
                         layout: 'standard'
                     },
                     // **IMPORTANTE**: Si no tienes autenticación token, usa este enfoque:
-                    auth: {
-                        type: "none"  // Cambia a "none" si no usas token
-                        // O si necesitas token:
-                        // type: "token",
-                        // token: "tu_token_aqui"
-                    },
+            auth: {
+  type: "token",
+  token: "",
+  onRefreshToken: async () => {
+    const res = await fetch("/api/coze-token");
+    const data = await res.json();
+    return data.token;
+  }
+},
                     userInfo: { 
                         id: 'user_' + Math.random().toString(36).substr(2, 9),
                         nickname: 'Visitante'

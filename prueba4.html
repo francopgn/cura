@@ -1,49 +1,179 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat embebido Coze</title>
     <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
     <style>
-        #embedded-coze-chat {
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .page-content {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        
+        #coze-chat-embedded {
             width: 100%;
-            height: 500px;
-            border: none;
+            height: 600px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f5f5f5;
+        }
+        
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: #fee;
+            border: 1px solid #f99;
             border-radius: 8px;
-            margin: 20px 0;
+            padding: 15px;
+            margin: 10px 0;
+            color: #c00;
         }
     </style>
 </head>
 <body>
-    <!-- Tu contenido existente -->
-    
-    <!-- El chat embebido aparecerá aquí -->
-    <div id="embedded-coze-chat"></div>
-    
+    <div class="container">
+        <div class="page-content">
+            <h1>Asistente Virtual Ley C.U.R.A.</h1>
+            <p>Chatea directamente con nuestro asistente para consultas sobre la Ley C.U.R.A.</p>
+            <p>El chat está completamente integrado en esta página:</p>
+            
+            <!-- Estado de carga -->
+            <div id="chat-loading" class="loading">
+                <div class="spinner"></div>
+                <p>Cargando asistente virtual...</p>
+            </div>
+            
+            <!-- Mensaje de error (oculto inicialmente) -->
+            <div id="chat-error" class="error-message" style="display: none;">
+                Error al cargar el chat. Por favor, recarga la página.
+            </div>
+        </div>
+        
+        <!-- Contenedor para el chat -->
+        <div id="coze-chat-embedded"></div>
+    </div>
+
     <script>
-        window.onload = function() {
-            const cozeClient = new CozeWebSDK.WebChatClient({
-                config: {
-                    bot_id: '7596429833782214709',
-                    container: '#embedded-coze-chat',
-                    position: 'embedded',
-                    auto_open: true
-                },
-                auth: {
-                    type: "token",
-                    token: "",
-                    onRefreshToken: async () => {
-                        const res = await fetch("/api/coze-token");
-                        const data = await res.json();
-                        return data.token;
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Inicializando Coze Chat embebido...');
+            
+            try {
+                const cozeClient = new CozeWebSDK.WebChatClient({
+                    config: {
+                        bot_id: '7596429833782214709',
+                        container: '#coze-chat-embedded',
+                        isIframe: false,
+                        position: 'embedded',
+                        auto_open: true,
+                        enableTool: true,
+                        layout: 'standard'
+                    },
+                    // **IMPORTANTE**: Si no tienes autenticación token, usa este enfoque:
+                    auth: {
+                        type: "none"  // Cambia a "none" si no usas token
+                        // O si necesitas token:
+                        // type: "token",
+                        // token: "tu_token_aqui"
+                    },
+                    userInfo: { 
+                        id: 'user_' + Math.random().toString(36).substr(2, 9),
+                        nickname: 'Visitante'
+                    },
+                    ui: {
+                        base: { 
+                            layout: 'pc', 
+                            lang: 'es',
+                            zIndex: 1000
+                        },
+                        asstBtn: { 
+                            isNeed: false
+                        },
+                        footer: { 
+                            isShow: false 
+                        },
+                        chatBot: { 
+                            title: '🤖 Asistente Ley C.U.R.A.', 
+                            width: '100%',
+                            height: '100%',
+                            showCloseButton: false,
+                            showHeader: true,
+                            background: '#ffffff',
+                            border: 'none'
+                        }
+                    },
+                    // Event listeners para depuración
+                    events: {
+                        onLoad: function() {
+                            console.log('✅ Chat cargado correctamente');
+                            document.getElementById('chat-loading').style.display = 'none';
+                        },
+                        onError: function(error) {
+                            console.error('❌ Error en Coze Chat:', error);
+                            document.getElementById('chat-loading').style.display = 'none';
+                            document.getElementById('chat-error').style.display = 'block';
+                        },
+                        onMessage: function(message) {
+                            console.log('💬 Mensaje recibido:', message);
+                        }
                     }
-                },
-                userInfo: { id: 'user_' + Date.now(), nickname: 'Ciudadano' },
-                ui: {
-                    base: { lang: 'es' },
-                    asstBtn: { isNeed: false },
-                    chatBot: { title: 'Asistente Ley C.U.R.A.' }
-                }
-            });
-        };
+                });
+                
+                // También puedes intentar forzar la visualización después de un tiempo
+                setTimeout(function() {
+                    if (cozeClient && cozeClient.show) {
+                        cozeClient.show();
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error al inicializar Coze:', error);
+                document.getElementById('chat-loading').style.display = 'none';
+                document.getElementById('chat-error').style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>

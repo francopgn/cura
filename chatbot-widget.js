@@ -1,4 +1,3 @@
-// chatbot-widget.js — LeyCura UI + API DeepSeek/Pinecone
 (function () {
   "use strict";
 
@@ -20,7 +19,7 @@
     injectStyles() {
       const css = `
       .leycura-chat-btn {
-        position: fixed;
+        position: fixed !important;
         bottom: 20px;
         right: 20px;
         width: 60px;
@@ -28,23 +27,23 @@
         border-radius: 50%;
         background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
         border: none;
-        color: white;
+        color: #fff;
         font-size: 26px;
         cursor: pointer;
         box-shadow: 0 4px 20px rgba(79,70,229,.35);
-        z-index: 9999;
+        z-index: 2147483647;
       }
 
       .leycura-chat-window {
-        position: fixed;
+        position: fixed !important;
         bottom: 90px;
         right: 20px;
         width: 380px;
         height: 500px;
-        background: #fff;
+        background: #ffffff;
         border-radius: 14px;
         box-shadow: 0 10px 40px rgba(0,0,0,.18);
-        z-index: 9998;
+        z-index: 2147483646;
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -52,28 +51,31 @@
         opacity: 0;
         visibility: hidden;
         transition: .25s;
+        pointer-events: none;
       }
 
       .leycura-chat-window.open {
         transform: translateY(0);
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
       }
 
       .leycura-chat-header {
         background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-        color: white;
+        color: #fff;
         padding: 14px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         font-weight: 600;
+        flex-shrink: 0;
       }
 
       .leycura-chat-close {
         background: rgba(255,255,255,.25);
         border: none;
-        color: white;
+        color: #fff;
         width: 28px;
         height: 28px;
         border-radius: 50%;
@@ -86,6 +88,9 @@
         padding: 14px;
         overflow-y: auto;
         background: #F8FAFC;
+        color: #111827;
+        font-family: system-ui, sans-serif;
+        font-size: 14px;
       }
 
       .leycura-message {
@@ -95,19 +100,19 @@
         border-radius: 16px;
         line-height: 1.4;
         word-wrap: break-word;
-        font-size: 14px;
       }
 
       .leycura-message.user {
         background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-        color: white;
+        color: #ffffff;
         margin-left: auto;
         border-bottom-right-radius: 4px;
       }
 
       .leycura-message.bot {
-        background: white;
+        background: #ffffff;
         border: 1px solid #E5E7EB;
+        color: #111827;
         margin-right: auto;
         border-bottom-left-radius: 4px;
       }
@@ -117,6 +122,8 @@
         border-top: 1px solid #E5E7EB;
         display: flex;
         gap: 10px;
+        background: #ffffff;
+        flex-shrink: 0;
       }
 
       .leycura-chat-input {
@@ -126,16 +133,23 @@
         border-radius: 22px;
         font-size: 14px;
         outline: none;
+        color: #111827 !important;
+        background: #ffffff !important;
+      }
+
+      .leycura-chat-input::placeholder {
+        color: #6B7280;
       }
 
       .leycura-chat-send {
         background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-        color: white;
+        color: #ffffff;
         border: none;
         border-radius: 50%;
         width: 40px;
         height: 40px;
         cursor: pointer;
+        flex-shrink: 0;
       }
 
       @media (max-width: 480px) {
@@ -173,7 +187,7 @@
 
         <div class="leycura-chat-messages" id="leycuraMessages">
           <div class="leycura-message bot">
-            Hola, puedo responder preguntas sobre la <b>Ley Cura</b>.
+            Hola, puedo responder consultas sobre la <b>Ley Cura</b>.
           </div>
         </div>
 
@@ -192,16 +206,18 @@
     }
 
     bindEvents() {
-      this.button.onclick = () => this.toggleChat();
-      this.closeBtn.onclick = () => this.closeChat();
-      this.sendBtn.onclick = () => this.sendMessage();
-      this.inputEl.onkeypress = (e) => e.key === "Enter" && this.sendMessage();
+      this.button.addEventListener("click", () => this.toggleChat());
+      this.closeBtn.addEventListener("click", () => this.closeChat());
+      this.sendBtn.addEventListener("click", () => this.sendMessage());
+      this.inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") this.sendMessage();
+      });
     }
 
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);
-      if (this.isOpen) this.inputEl.focus();
+      if (this.isOpen) setTimeout(() => this.inputEl.focus(), 50);
     }
 
     closeChat() {
@@ -229,7 +245,7 @@
         if (data.reply) {
           this.addMessage(data.reply, "bot");
         } else {
-          this.addMessage("Error al procesar la consulta.", "bot");
+          this.addMessage("Error al procesar la respuesta.", "bot");
         }
       } catch (e) {
         console.error(e);

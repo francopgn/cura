@@ -2,5 +2,8 @@
   "private": true,
   "dependencies": {
     "@vercel/edge": "^0.1.2"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

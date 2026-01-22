@@ -1,10 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "@vercel/edge": "^0.1.2",
-    "@pinecone-database/pinecone": "^3.3.0"
-  },
-  "engines": {
-    "node": ">=18"
+    "@vercel/edge": "^0.1.2"
   }
 }

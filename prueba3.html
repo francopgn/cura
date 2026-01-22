@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat embebido Coze</title>
+    <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        #chat-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .page-content {
+            padding: 20px;
+            background: #f8f9fa;
+            min-height: 300px;
+        }
+        
+        .coze-embedded-chat {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenido de tu página -->
+    <div class="page-content">
+        <h1>Bienvenido a nuestro sitio</h1>
+        <p>Aquí tienes nuestro asistente virtual integrado directamente en la página:</p>
+    </div>
+    
+    <!-- Contenedor específico para el chat embebido -->
+    <div id="chat-container">
+        <div id="coze-embedded-chat" class="coze-embedded-chat"></div>
+    </div>
+    
+    <script>
+        // Esperar a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar Coze en modo embebido
+            const cozeClient = new CozeWebSDK.WebChatClient({
+                config: {
+                    type: 'bot',
+                    bot_id: '7596429833782214709',
+                    container: '#coze-embedded-chat', // Especificar el contenedor
+                    isIframe: false,
+                    position: 'embedded', // Modo embebido
+                    auto_open: true // Se abre automáticamente
+                },
+                auth: {
+                    type: "token",
+                    token: "",
+                    onRefreshToken: async () => {
+                        try {
+                            const res = await fetch("/api/coze-token");
+                            const data = await res.json();
+                            return data.token;
+                        } catch (error) {
+                            console.error("Error refreshing token:", error);
+                            return "";
+                        }
+                    }
+                },
+                userInfo: { 
+                    id: 'user_' + Date.now(), 
+                    nickname: 'Ciudadano' 
+                },
+                ui: {
+                    base: { 
+                        layout: 'pc', 
+                        lang: 'es', 
+                        zIndex: 1000 // Z-index más bajo para modo embebido
+                    },
+                    asstBtn: { 
+                        isNeed: false // No necesitamos botón de asistente en modo embebido
+                    },
+                    footer: { 
+                        isShow: false 
+                    },
+                    chatBot: { 
+                        title: 'Asistente Ley C.U.R.A.', 
+                        width: '100%', // Ancho completo del contenedor
+                        height: '100%', // Altura completa del contenedor
+                        showCloseButton: false, // Ocultar botón de cerrar
+                        showHeader: true // Mostrar header con título
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

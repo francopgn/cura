@@ -1093,57 +1093,83 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 </script>
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/oversea/index.js"></script>
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
 
 <script>
-  window.onload = function () {
-    new CozeWebSDK.WebChatClient({
-      config: {
-        type: 'bot',
-        bot_id: '7596429833782214709',
-        isIframe: false,
+window.onload = function () {
+  // 1. Limpiamos sesiones viejas para que empiece de cero
+  Object.keys(localStorage).forEach(key => {
+    if (key.includes('coze')) localStorage.removeItem(key);
+  });
+
+  // 2. Inicializamos el Cliente
+  const cozeClient = new CozeWebSDK.WebChatClient({
+    config: {
+      type: 'bot',
+      bot_id: '7596429833782214709',
+      isIframe: false,
+    },
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      }
+    },
+    userInfo: {
+      id: 'user_' + Date.now(),
+      nickname: 'Ciudadano',
+    },
+    ui: {
+      base: {
+        layout: 'pc',
+        lang: 'es',
+        zIndex: 999999, // Prioridad máxima
       },
-      auth: {
-        type: "token",
-        token: "",
-        onRefreshToken: async () => {
-          try {
-            const res = await fetch("/api/coze-token");
-            const data = await res.json();
-            return data.token;
-          } catch (e) {
-            console.error("Error al obtener el token:", e);
-          }
-        }
+      asstBtn: {
+        isNeed: true // ACTIVA LA BURBUJA
       },
-      userInfo: {
-        id: 'user_' + Math.random().toString(36).slice(2),
-        nickname: 'Ciudadano',
-      },
-      ui: {
-        base: {
-          layout: 'pc',
-          lang: 'es', // Idioma en español
-          zIndex: 999999, // Prioridad máxima para que no quede oculto
-        },
-        header: {
-          isShow: true,
-          isNeedClose: true,
-        },
-        asstBtn: {
-          isNeed: true // Esto activa la burbuja flotante
-        },
-        footer: {
-          isShow: false, // Limpia el pie de página
-        },
-        chatBot: {
-          title: 'Asistente Virtual Ley C.U.R.A.',
-          uploadable: false,
-          width: 390,
-        },
-      },
-    });
+      footer: { isShow: false },
+      chatBot: {
+        title: 'Asistente Ley C.U.R.A.',
+        uploadable: false,
+        width: 390,
+      }
+    }
+  });
+
+  // --- LÓGICA DE BLUR Y BLOQUEO DE SCROLL ---
+  const pageContent = document.querySelector('main'); // O el div que envuelve tu contenido
+  const headerContent = document.querySelector('header');
+
+  const handleChatVisibility = () => {
+    // Detectamos la ventana del chat en el código inyectado
+    const chatWindow = document.querySelector('.coze-web-chat-window-pc');
+    const isHidden = !chatWindow || chatWindow.classList.contains('coze-web-chat-window-hidden');
+
+    if (chatWindow && !isHidden) {
+      // CHAT ABIERTO: Detener Lenis y desenfocar
+      if (typeof lenis !== 'undefined') lenis.stop();
+      if (pageContent) pageContent.classList.add('main-content-blur');
+      if (headerContent) headerContent.classList.add('main-content-blur');
+      chatWindow.setAttribute('data-lenis-prevent', 'true');
+    } else {
+      // CHAT CERRADO: Reanudar Lenis y quitar blur
+      if (typeof lenis !== 'undefined') lenis.start();
+      if (pageContent) pageContent.classList.remove('main-content-blur');
+      if (headerContent) headerContent.classList.remove('main-content-blur');
+    }
   };
+
+  // Observamos cambios en el body para reaccionar al instante
+  const observer = new MutationObserver(handleChatVisibility);
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+
+  // Refuerzo: checkear al hacer click
+  document.addEventListener('click', () => setTimeout(handleChatVisibility, 100));
+};
 </script>
 </body>
 </html>

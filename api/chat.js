@@ -1,4 +1,4 @@
-// api/chat.js - VERSIÓN CON TU URL DE PINECONE
+// api/chat.js - USANDO OPENROUTER (GRATIS)
 export default async function handler(req, res) {
   console.log('=== /api/chat INICIADO ===');
   
@@ -8,7 +8,6 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   
   if (req.method === 'OPTIONS') {
-    console.log('OPTIONS request recibido');
     return res.status(200).end();
   }
   
@@ -23,30 +22,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Mensaje requerido' });
     }
     
-    console.log('📩 Pregunta recibida:', message.substring(0, 100));
+    console.log('📩 Pregunta:', message.substring(0, 100));
     
     // 1. Verificar variables de entorno
-    console.log('🔐 Verificando variables de entorno...');
-    
-    if (!process.env.PINECONE_API_KEY) {
-      console.error('❌ PINECONE_API_KEY no configurada');
-      return res.status(500).json({ error: 'PINECONE_API_KEY no configurada' });
+    if (!process.env.PINECONE_API_KEY || !process.env.OPENROUTER_API_KEY) {
+      throw new Error('Variables de entorno faltantes');
     }
     
-    if (!process.env.DEEPSEEK_API_KEY) {
-      console.error('❌ DEEPSEEK_API_KEY no configurada');
-      return res.status(500).json({ error: 'DEEPSEEK_API_KEY no configurada' });
-    }
-    
-    if (!process.env.OPENROUTER_API_KEY) {
-      console.error('❌ OPENROUTER_API_KEY no configurada');
-      return res.status(500).json({ error: 'OPENROUTER_API_KEY no configurada' });
-    }
-    
-    console.log('✅ Todas las variables configuradas');
-    
-    // 2. Obtener embedding de la pregunta
-    console.log('🔄 Obteniendo embedding de OpenRouter...');
+    // 2. Obtener embedding
+    console.log('🔄 Obteniendo embedding...');
     const embedResponse = await fetch('https://openrouter.ai/api/v1/embeddings', {
       method: 'POST',
       headers: {
@@ -63,30 +47,22 @@ export default async function handler(req, res) {
     
     if (!embedResponse.ok) {
       const errorText = await embedResponse.text();
-      console.error('❌ Error OpenRouter:', embedResponse.status, errorText.substring(0, 200));
-      return res.status(embedResponse.status).json({
-        error: 'Error obteniendo embedding',
-        details: errorText.substring(0, 200)
-      });
+      throw new Error(`OpenRouter embedding error: ${embedResponse.status}`);
     }
     
     const embedData = await embedResponse.json();
     const queryEmbedding = embedData.data[0].embedding;
-    console.log(`✅ Embedding obtenido (${queryEmbedding.length} dimensiones)`);
+    console.log('✅ Embedding obtenido');
     
-    // 3. Buscar en Pinecone usando TU URL
+    // 3. Buscar en Pinecone
     console.log('🔎 Buscando en Pinecone...');
-    
-    // TU URL ESPECÍFICA DE PINECONE
     const pineconeUrl = 'https://leycura-law-index-m0fkj60.svc.aped-4627-b74a.pinecone.io/query';
-    console.log(`URL Pinecone: ${pineconeUrl}`);
     
     const pineconeResponse = await fetch(pineconeUrl, {
       method: 'POST',
       headers: {
         'Api-Key': process.env.PINECONE_API_KEY,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         vector: queryEmbedding,
@@ -96,90 +72,63 @@ export default async function handler(req, res) {
       })
     });
     
-    console.log(`Status Pinecone: ${pineconeResponse.status}`);
-    
     if (!pineconeResponse.ok) {
-      const errorText = await pineconeResponse.text();
-      console.error('❌ Error Pinecone API:', errorText);
-      
-      // Si falla Pinecone, usar DeepSeek directamente
-      console.log('🔄 Usando fallback (sin Pinecone)...');
-      return await getFallbackResponse(message, res);
+      console.log('⚠️ Pinecone falló, usando respuesta sin contexto');
+      return await getResponseWithoutContext(message, res);
     }
     
     const pineconeData = await pineconeResponse.json();
-    console.log(`✅ Pinecone: ${pineconeData.matches?.length || 0} resultados encontrados`);
+    console.log(`✅ Pinecone: ${pineconeData.matches?.length || 0} resultados`);
     
     // 4. Construir contexto
     let context = '';
     if (pineconeData.matches && pineconeData.matches.length > 0) {
-      console.log('📊 Scores de los resultados:');
-      pineconeData.matches.forEach((match, i) => {
-        console.log(`  ${i + 1}. Score: ${match.score.toFixed(3)}`);
-      });
-      
-      const relevantChunks = pineconeData.matches
+      const chunks = pineconeData.matches
         .filter(match => match.score > 0.5)
-        .map(match => {
-          // Intentar obtener el texto de diferentes campos
-          return match.metadata?.text || 
-                 match.metadata?.full_text || 
-                 match.metadata?.content || 
-                 '';
-        })
+        .map(match => match.metadata?.text || '')
         .filter(text => text && text.trim() !== '');
       
-      if (relevantChunks.length > 0) {
-        context = relevantChunks.join('\n\n').substring(0, 3000);
-        console.log(`📚 Contexto extraído: ${context.length} caracteres`);
-      } else {
-        console.log('⚠️ No hay chunks con score > 0.5');
+      if (chunks.length > 0) {
+        context = chunks.join('\n\n').substring(0, 3000);
       }
-    } else {
-      console.log('⚠️ Pinecone no devolvió resultados');
     }
     
-    // 5. Preparar mensaje para DeepSeek
-    let systemPrompt;
+    // 5. Llamar a modelo GRATIS de OpenRouter
+    console.log('💬 Enviando a modelo OpenRouter (gratis)...');
     
-    if (context) {
-      systemPrompt = `Eres un asistente especializado exclusivamente en la "Ley Cura" de Argentina. 
-
-INSTRUCCIONES ESTRICTAS:
-1. Responde ÚNICAMENTE basándote en el siguiente contexto de la Ley Cura.
-2. Si la pregunta NO está relacionada con la Ley Cura o no encuentras la respuesta en el contexto, responde EXACTAMENTE: "No encuentro información específica sobre eso en la Ley Cura."
-3. Si preguntan sobre temas generales, políticos, o fuera de la ley, responde que solo puedes hablar de la Ley Cura.
-4. Mantén las respuestas concisas, claras y profesionales.
-5. Cuando sea relevante, menciona artículos o secciones específicas.
-
-CONTEXTO DE LA LEY CURA:
-${context}`;
-    } else {
-      systemPrompt = `Eres un asistente especializado exclusivamente en la "Ley Cura" de Argentina. 
-
-INSTRUCCIONES ESTRICTAS:
-1. Solo responde preguntas sobre la Ley Cura de Argentina.
-2. Si la pregunta NO está relacionada con la Ley Cura, responde EXACTAMENTE: "Solo puedo responder preguntas sobre la Ley Cura."
-3. Si no sabes algo específico de la ley, di: "No encuentro esa información específica en la Ley Cura."
-4. Sé conciso y profesional.`;
-    }
+    // Modelos GRATUITOS disponibles en OpenRouter:
+    // - 'google/gemma-7b-it:free'
+    // - 'mistralai/mistral-7b-instruct:free'
+    // - 'huggingfaceh4/zephyr-7b-beta:free'
+    // - 'openchat/openchat-7b:free'
     
-    // 6. Llamar a DeepSeek
-    console.log('💬 Enviando a DeepSeek...');
+    const model = 'google/gemma-7b-it:free'; // Modelo gratuito
     
-    const chatResponse = await fetch('https://api.deepseek.com/chat/completions', {
+    const systemPrompt = context
+      ? `Eres un asistente especializado en la "Ley Cura" de Argentina. 
+      Responde EXCLUSIVAMENTE basándote en el siguiente contexto.
+      Si la pregunta no está en el contexto, di: "No encuentro información específica sobre eso en la Ley Cura."
+      
+      CONTEXTO:
+      ${context}`
+      : `Eres un asistente de la Ley Cura de Argentina. 
+      Responde preguntas sobre esta ley. 
+      Si no sabes algo, di: "No encuentro información sobre eso en la Ley Cura."`;
+    
+    const chatResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://leycura.org',
+        'X-Title': 'Ley Cura Chatbot',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
-        stream: false,
         temperature: 0.1,
         max_tokens: 800
       })
@@ -187,87 +136,68 @@ INSTRUCCIONES ESTRICTAS:
     
     if (!chatResponse.ok) {
       const errorText = await chatResponse.text();
-      console.error('❌ Error DeepSeek:', chatResponse.status, errorText);
-      throw new Error(`DeepSeek error: ${chatResponse.status}`);
+      console.error('❌ OpenRouter chat error:', errorText);
+      throw new Error(`OpenRouter error: ${chatResponse.status}`);
     }
     
     const result = await chatResponse.json();
     const answer = result.choices[0].message.content;
     
-    console.log('✅ Respuesta generada exitosamente');
-    console.log('📝 Respuesta:', answer.substring(0, 150) + '...');
+    console.log('✅ Respuesta generada');
     
-    // 7. Devolver respuesta
     return res.status(200).json({
       answer: answer,
       sources: pineconeData.matches?.length || 0,
-      contextLength: context.length,
-      success: true,
-      debug: {
-        pineconeResults: pineconeData.matches?.length || 0,
-        contextUsed: context.length > 0
-      }
+      success: true
     });
     
   } catch (error) {
-    console.error('💥 ERROR CRÍTICO:', error.message);
-    console.error('Stack:', error.stack);
+    console.error('❌ ERROR:', error.message);
     
-    // Último fallback
     return res.status(200).json({
-      answer: `Lo siento, hubo un error técnico. Por favor, intenta con una pregunta más específica sobre la Ley Cura.\n\nError: ${error.message}`,
-      sources: 0,
+      answer: `Hola, soy el asistente de la Ley Cura. Actualmente hay un problema técnico con el servicio. Por favor, intenta con una pregunta específica sobre la ley.\n\n(Puedes preguntar sobre artículos, derechos, disposiciones, etc.)`,
       error: true,
       success: false
     });
   }
 }
 
-// Función de fallback si Pinecone falla
-async function getFallbackResponse(message, res) {
-  try {
-    const chatResponse = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { 
-            role: 'system', 
-            content: 'Eres un asistente especializado en la Ley Cura de Argentina. Responde preguntas sobre esta ley de manera concisa y profesional.' 
-          },
-          { role: 'user', content: message }
-        ],
-        stream: false,
-        temperature: 0.1,
-        max_tokens: 600
-      })
-    });
-    
-    if (!chatResponse.ok) {
-      throw new Error(`DeepSeek fallback error: ${chatResponse.status}`);
-    }
-    
-    const result = await chatResponse.json();
-    
-    return res.status(200).json({
-      answer: result.choices[0].message.content + '\n\n(Nota: Respuesta sin contexto específico del documento)',
-      sources: 0,
-      fallback: true,
-      success: true
-    });
-    
-  } catch (fallbackError) {
-    console.error('💥 Fallback también falló:', fallbackError);
-    
-    return res.status(500).json({
-      answer: 'Lo siento, el servicio no está disponible temporalmente. Por favor, intenta más tarde.',
-      sources: 0,
-      error: true,
-      success: false
-    });
+// Función de fallback
+async function getResponseWithoutContext(message, res) {
+  const model = 'google/gemma-7b-it:free';
+  
+  const chatResponse = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+      'HTTP-Referer': 'https://leycura.org',
+      'X-Title': 'Ley Cura Chatbot',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: model,
+      messages: [
+        { 
+          role: 'system', 
+          content: 'Eres un asistente de la Ley Cura de Argentina. Responde preguntas sobre esta ley de manera concisa.' 
+        },
+        { role: 'user', content: message }
+      ],
+      temperature: 0.1,
+      max_tokens: 600
+    })
+  });
+  
+  if (!chatResponse.ok) {
+    throw new Error('Fallback también falló');
   }
+  
+  const result = await chatResponse.json();
+  
+  return res.status(200).json({
+    answer: result.choices[0].message.content + '\n\n(Nota: Respuesta sin contexto específico del documento)',
+    sources: 0,
+    fallback: true,
+    success: true
+  });
 }

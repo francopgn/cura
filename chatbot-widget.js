@@ -242,11 +242,12 @@
 
         const data = await res.json();
 
-        if (data.reply) {
-          this.addMessage(data.reply, "bot");
-        } else {
-          this.addMessage("Error al procesar la respuesta.", "bot");
-        }
+       if (data.answer) {
+  this.addMessage(data.answer, "bot");
+} else {
+  this.addMessage("Error al procesar la respuesta.", "bot");
+}
+
       } catch (e) {
         console.error(e);
         this.addMessage("No se pudo conectar con el servidor.", "bot");

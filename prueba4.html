@@ -3,78 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Coze Embebido con Auth</title>
+    <title>Chat Coze Embebido - Render Fix</title>
     <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        #main-container {
             max-width: 1000px;
             margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
-        
-        .container {
             background: white;
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        #chat-container {
+        #chat-wrapper {
             width: 100%;
             height: 600px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #4a90e2;
             border-radius: 10px;
             overflow: hidden;
-            background: #fafafa;
+            margin-top: 20px;
             position: relative;
+            background: white;
         }
         
-        .auth-status {
+        #coze-chat-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .status-container {
             padding: 15px;
             margin: 15px 0;
             border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .loading { 
-            background: #e3f2fd; 
-            color: #1565c0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            height: 100%;
+            gap: 15px;
         }
         
-        .error { 
-            background: #ffebee; 
-            color: #c62828;
-        }
-        
-        .success { 
-            background: #e8f5e9; 
-            color: #2e7d32;
-        }
+        .status-loading { background: #e3f2fd; color: #1565c0; }
+        .status-success { background: #e8f5e9; color: #2e7d32; }
+        .status-error { background: #ffebee; color: #c62828; }
         
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid currentColor;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 10px;
         }
         
         @keyframes spin {
@@ -82,164 +70,158 @@
             100% { transform: rotate(360deg); }
         }
         
-        .debug-info {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #6c757d;
-            font-size: 14px;
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
         
         button {
             padding: 10px 20px;
-            background: #4285f4;
+            background: #4a90e2;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
+            font-size: 14px;
         }
         
         button:hover {
-            background: #3367d6;
+            background: #357ae8;
         }
         
-        button:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
+        #dom-check {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🤖 Asistente Virtual Ley C.U.R.A.</h1>
-            <p>Chat embebido con autenticación por token</p>
-        </div>
+    <div id="main-container">
+        <h1>🔧 Chat Coze - Debug de Renderizado</h1>
         
-        <!-- Estado de autenticación -->
-        <div id="auth-status" class="auth-status loading">
+        <div id="status" class="status-container status-loading">
             <div class="spinner"></div>
-            <p>Inicializando autenticación...</p>
+            <span>Inicializando...</span>
         </div>
         
-        <!-- Contenedor del chat -->
-        <div id="chat-container">
-            <div id="chat-placeholder" class="loading">
-                <div class="spinner"></div>
-                <p>Preparando chat...</p>
+        <div class="controls">
+            <button onclick="forceRender()">🔄 Forzar Render</button>
+            <button onclick="checkDOM()">🔍 Verificar DOM</button>
+            <button onclick="showChat()">👁️ Mostrar Chat</button>
+            <button onclick="hideChat()">👁️ Ocultar Chat</button>
+            <button onclick="reloadSDK()">📦 Recargar SDK</button>
+        </div>
+        
+        <!-- Contenedor PRINCIPAL del chat -->
+        <div id="chat-wrapper">
+            <div id="coze-container" style="width:100%; height:100%;">
+                <!-- El SDK inyectará el chat aquí -->
             </div>
         </div>
         
-        <!-- Botones de control -->
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="refreshChat()">🔄 Refrescar Chat</button>
-            <button onclick="showTokenInfo()">🔑 Ver Info Token</button>
-            <button onclick="testAuthEndpoint()">🧪 Probar Endpoint Auth</button>
-        </div>
-        
-        <!-- Info de debug -->
-        <div id="debug-info" class="debug-info" style="display: none;">
-            <h4>Información de Depuración:</h4>
-            <pre id="debug-content"></pre>
+        <div id="dom-check" style="display:none;">
+            <!-- Aquí se mostrará el estado del DOM -->
         </div>
     </div>
 
     <script>
-        // Configuración
-        const CONFIG = {
-            bot_id: '7596429833782214709',
-            authEndpoint: '/api/coze-token', // Tu endpoint para obtener tokens
-            userInfo: {
-                id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                nickname: 'Usuario Web'
-            }
-        };
-        
-        // Variables globales
         let cozeClient = null;
-        let currentToken = '';
+        let containerId = 'coze-' + Date.now();
         
-        // Función para obtener token del backend
-        async function getTokenFromBackend() {
+        // Función para actualizar estado
+        function updateStatus(message, type = 'loading') {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = `
+                <div class="spinner" style="${type !== 'loading' ? 'display:none;' : ''}"></div>
+                <span>${message}</span>
+            `;
+            statusEl.className = `status-container status-${type}`;
+        }
+        
+        // Función para verificar el DOM
+        function checkDOM() {
+            const container = document.getElementById(containerId) || document.getElementById('coze-container');
+            const domCheck = document.getElementById('dom-check');
+            
+            let html = '=== VERIFICACIÓN DOM ===\n\n';
+            
+            if (container) {
+                html += `✅ Contenedor encontrado: ${container.id}\n`;
+                html += `Dimensiones: ${container.offsetWidth}x${container.offsetHeight}px\n`;
+                html += `Hijos: ${container.children.length}\n\n`;
+                html += 'Contenido HTML:\n';
+                html += container.innerHTML.substring(0, 500) + '...';
+            } else {
+                html += '❌ Contenedor no encontrado\n';
+            }
+            
+            // Verificar si hay iframes
+            const iframes = document.querySelectorAll('iframe');
+            html += `\n\n=== IFRAMES (${iframes.length}) ===\n`;
+            iframes.forEach((iframe, i) => {
+                html += `Iframe ${i}: ${iframe.src ? iframe.src.substring(0, 50) + '...' : 'sin src'}\n`;
+            });
+            
+            domCheck.textContent = html;
+            domCheck.style.display = 'block';
+        }
+        
+        // Función para obtener token
+        async function getToken() {
             try {
-                updateStatus('Solicitando token al servidor...', 'loading');
-                
-                // Llamar a tu endpoint de autenticación
-                const response = await fetch(CONFIG.authEndpoint, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-                
+                const response = await fetch('/api/coze-token');
                 const data = await response.json();
-                
-                // Dependiendo de la estructura de tu respuesta
-                if (data.token) {
-                    currentToken = data.token;
-                    updateStatus('✅ Token obtenido correctamente', 'success');
-                    return currentToken;
-                } else if (data.access_token) {
-                    currentToken = data.access_token;
-                    updateStatus('✅ Token obtenido correctamente', 'success');
-                    return currentToken;
-                } else {
-                    throw new Error('Formato de respuesta inválido');
-                }
-                
+                return data.token || data.access_token;
             } catch (error) {
                 console.error('Error obteniendo token:', error);
-                updateStatus(`❌ Error: ${error.message}`, 'error');
-                throw error;
+                // Para pruebas, usar un token dummy (reemplaza con uno real)
+                return 'dummy_token_for_testing_' + Date.now();
             }
         }
         
-        // Función para inicializar el chat
+        // Función principal para inicializar el chat
         async function initializeChat() {
             try {
-                updateStatus('Inicializando chat Coze...', 'loading');
+                updateStatus('Obteniendo token...', 'loading');
+                const token = await getToken();
                 
-                // Asegurarnos de tener un contenedor limpio
-                const containerId = 'coze-embedded-chat-' + Date.now();
-                document.getElementById('chat-container').innerHTML = 
-                    `<div id="${containerId}" style="width:100%; height:100%;"></div>`;
+                // Crear contenedor limpio
+                const container = document.getElementById('coze-container');
+                container.innerHTML = `<div id="${containerId}" style="width:100%; height:100%;"></div>`;
                 
-                // Crear instancia del chat
+                updateStatus('Inicializando SDK...', 'loading');
+                
+                // OPCIÓN A: Usar WebChatClient
                 cozeClient = new CozeWebSDK.WebChatClient({
                     config: {
-                        type: 'bot',
-                        bot_id: CONFIG.bot_id,
+                        bot_id: '7596429833782214709',
                         container: `#${containerId}`,
-                        isIframe: false,
                         position: 'embedded',
                         auto_open: true,
+                        layout: 'standard',
                         enableTool: true,
-                        layout: 'standard'
+                        showCloseButton: false,
+                        isIframe: false // Probar tanto true como false
                     },
                     auth: {
                         type: "token",
-                        token: currentToken || '', // Token inicial
-                        onRefreshToken: async () => {
-                            console.log('🔄 Refrescando token...');
-                            try {
-                                const newToken = await getTokenFromBackend();
-                                updateStatus('Token refrescado automáticamente', 'success');
-                                return newToken;
-                            } catch (error) {
-                                updateStatus('Error refrescando token', 'error');
-                                throw error;
-                            }
-                        }
+                        token: token,
+                        onRefreshToken: getToken
                     },
-                    userInfo: CONFIG.userInfo,
+                    userInfo: {
+                        id: 'user_' + Math.random().toString(36).substr(2, 9),
+                        nickname: 'Usuario Web'
+                    },
                     ui: {
                         base: { 
                             layout: 'pc', 
@@ -247,124 +229,135 @@
                             zIndex: 1000
                         },
                         asstBtn: { 
-                            isNeed: false // Sin botón flotante en modo embebido
+                            isNeed: false 
                         },
                         footer: { 
                             isShow: false 
                         },
                         chatBot: { 
-                            title: '⚖️ Asistente Ley C.U.R.A.', 
+                            title: '🤖 Asistente Virtual',
                             width: '100%',
                             height: '100%',
-                            showCloseButton: false,
                             showHeader: true,
                             background: '#ffffff'
                         }
                     },
                     events: {
-                        onLoad: () => {
-                            console.log('✅ Chat completamente cargado');
-                            document.getElementById('chat-placeholder').style.display = 'none';
-                            updateStatus('✅ Chat listo para usar', 'success');
+                        onLoad: function() {
+                            console.log('✅ Evento onLoad disparado');
+                            updateStatus('Chat cargado correctamente', 'success');
+                            
+                            // Forzar visibilidad después de cargar
+                            setTimeout(() => {
+                                const chatContainer = document.querySelector(`#${containerId} iframe`);
+                                if (chatContainer) {
+                                    chatContainer.style.visibility = 'visible';
+                                    chatContainer.style.opacity = '1';
+                                }
+                                checkDOM(); // Verificar estado
+                            }, 500);
                         },
-                        onError: (error) => {
+                        onError: function(error) {
                             console.error('❌ Error en chat:', error);
-                            updateStatus(`Error en chat: ${error.message}`, 'error');
+                            updateStatus(`Error: ${error.message}`, 'error');
                         },
-                        onMessage: (msg) => {
-                            console.log('💬 Mensaje:', msg);
+                        onMessage: function(message) {
+                            console.log('Mensaje:', message);
                         }
                     }
                 });
                 
-                updateStatus('✅ Chat inicializado correctamente', 'success');
+                // Verificar después de 3 segundos
+                setTimeout(() => {
+                    const chatContainer = document.querySelector(`#${containerId}`);
+                    if (chatContainer && chatContainer.children.length === 0) {
+                        console.log('Contenedor vacío, probando método alternativo...');
+                        tryAlternativeMethod();
+                    }
+                }, 3000);
                 
             } catch (error) {
                 console.error('Error inicializando chat:', error);
-                updateStatus(`❌ Error: ${error.message}`, 'error');
-                document.getElementById('chat-placeholder').innerHTML = 
-                    `<div style="padding: 20px; text-align: center;">
-                        <h3>Error al cargar el chat</h3>
-                        <p>${error.message}</p>
-                        <button onclick="retryInitialization()">Reintentar</button>
-                    </div>`;
+                updateStatus(`Error: ${error.message}`, 'error');
+                
+                // Intentar método alternativo
+                tryAlternativeMethod();
             }
         }
         
-        // Función para actualizar el estado
-        function updateStatus(message, type) {
-            const statusEl = document.getElementById('auth-status');
-            statusEl.innerHTML = type === 'loading' ? 
-                `<div class="spinner"></div><p>${message}</p>` : 
-                `<p>${message}</p>`;
-            statusEl.className = `auth-status ${type}`;
+        // Método alternativo si WebChatClient no funciona
+        function tryAlternativeMethod() {
+            updateStatus('Probando método alternativo...', 'loading');
+            
+            // Limpiar contenedor
+            const container = document.getElementById('coze-container');
+            container.innerHTML = `<iframe 
+                id="coze-iframe"
+                src="about:blank"
+                style="width:100%; height:100%; border:none;"
+                allow="microphone"
+            ></iframe>`;
+            
+            // Crear iframe manualmente
+            const iframe = document.getElementById('coze-iframe');
+            iframe.src = `https://www.coze.com/embed/7596429833782214709`;
+            
+            iframe.onload = () => {
+                updateStatus('Iframe cargado manualmente', 'success');
+            };
+            
+            iframe.onerror = () => {
+                updateStatus('Error cargando iframe', 'error');
+            };
         }
         
-        // Función para refrescar el chat
-        async function refreshChat() {
-            if (cozeClient && cozeClient.destroy) {
-                cozeClient.destroy();
+        // Función para forzar renderizado
+        function forceRender() {
+            if (cozeClient && cozeClient.show) {
+                cozeClient.show();
+                updateStatus('Forzando visualización...', 'loading');
+                
+                // Aplicar estilos para asegurar visibilidad
+                const container = document.querySelector(`#${containerId}`);
+                if (container) {
+                    container.style.display = 'block';
+                    container.style.visibility = 'visible';
+                    container.style.opacity = '1';
+                    container.style.width = '100%';
+                    container.style.height = '100%';
+                }
+                
+                setTimeout(checkDOM, 500);
             }
-            await initializeChat();
         }
         
-        // Función para reintentar
-        async function retryInitialization() {
-            updateStatus('Reintentando...', 'loading');
-            await initializeChat();
+        // Función para mostrar/ocultar chat
+        function showChat() {
+            const wrapper = document.getElementById('chat-wrapper');
+            wrapper.style.display = 'block';
+            forceRender();
         }
         
-        // Función para probar el endpoint de auth
-        async function testAuthEndpoint() {
-            try {
-                updateStatus('Probando endpoint de autenticación...', 'loading');
-                const token = await getTokenFromBackend();
-                
-                document.getElementById('debug-info').style.display = 'block';
-                document.getElementById('debug-content').textContent = 
-                    `✅ Endpoint funcionando\nToken obtenido: ${token.substring(0, 50)}...`;
-                
-            } catch (error) {
-                document.getElementById('debug-info').style.display = 'block';
-                document.getElementById('debug-content').textContent = 
-                    `❌ Error: ${error.message}\n\nAsegúrate que:\n1. El endpoint /api/coze-token existe\n2. Devuelve un JSON con { "token": "tu_token" }\n3. No hay errores CORS`;
-            }
+        function hideChat() {
+            document.getElementById('chat-wrapper').style.display = 'none';
         }
         
-        // Función para mostrar info del token
-        function showTokenInfo() {
-            document.getElementById('debug-info').style.display = 'block';
-            document.getElementById('debug-content').textContent = 
-                `Token actual: ${currentToken ? currentToken.substring(0, 100) + '...' : 'No obtenido'}\n\n` +
-                `Bot ID: ${CONFIG.bot_id}\n` +
-                `User ID: ${CONFIG.userInfo.id}\n` +
-                `Endpoint: ${CONFIG.authEndpoint}`;
+        // Función para recargar SDK
+        function reloadSDK() {
+            updateStatus('Recargando...', 'loading');
+            location.reload();
         }
         
-        // Inicialización principal
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                // 1. Obtener token inicial
-                await getTokenFromBackend();
-                
-                // 2. Inicializar chat con el token
-                await initializeChat();
-                
-            } catch (error) {
-                console.error('Error en inicialización:', error);
-                updateStatus(`Error crítico: ${error.message}`, 'error');
-                
-                // Mostrar instrucciones de ayuda
-                document.getElementById('chat-placeholder').innerHTML = `
-                    <div style="padding: 30px; text-align: center;">
-                        <h3>⚠️ Configuración requerida</h3>
-                        <p>Necesitas configurar un endpoint en tu servidor que devuelva un token válido.</p>
-                        <p><strong>Endpoint requerido:</strong> ${CONFIG.authEndpoint}</p>
-                        <p><strong>Formato de respuesta:</strong> { "token": "tu_token_jwt" }</p>
-                        <button onclick="testAuthEndpoint()">Probar configuración</button>
-                    </div>
-                `;
-            }
+        // Inicializar cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pequeño delay para asegurar que el SDK está cargado
+            setTimeout(() => {
+                if (window.CozeWebSDK) {
+                    initializeChat();
+                } else {
+                    updateStatus('❌ SDK no cargado', 'error');
+                }
+            }, 100);
         });
     </script>
 </body>

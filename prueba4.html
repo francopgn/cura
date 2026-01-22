@@ -1,364 +1,93 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Coze Embebido - Render Fix</title>
-    <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+    <title>Chat Coze - Solución Iframe</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        
-        #main-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        #chat-wrapper {
+        #chat-frame {
             width: 100%;
             height: 600px;
-            border: 2px solid #4a90e2;
+            border: none;
             border-radius: 10px;
-            overflow: hidden;
-            margin-top: 20px;
-            position: relative;
-            background: white;
-        }
-        
-        #coze-chat-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .status-container {
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .status-loading { background: #e3f2fd; color: #1565c0; }
-        .status-success { background: #e8f5e9; color: #2e7d32; }
-        .status-error { background: #ffebee; color: #c62828; }
-        
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        button {
-            padding: 10px 20px;
-            background: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        button:hover {
-            background: #357ae8;
-        }
-        
-        #dom-check {
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-family: monospace;
-            font-size: 12px;
-            max-height: 200px;
-            overflow-y: auto;
-            white-space: pre-wrap;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
-    <div id="main-container">
-        <h1>🔧 Chat Coze - Debug de Renderizado</h1>
-        
-        <div id="status" class="status-container status-loading">
-            <div class="spinner"></div>
-            <span>Inicializando...</span>
-        </div>
-        
-        <div class="controls">
-            <button onclick="forceRender()">🔄 Forzar Render</button>
-            <button onclick="checkDOM()">🔍 Verificar DOM</button>
-            <button onclick="showChat()">👁️ Mostrar Chat</button>
-            <button onclick="hideChat()">👁️ Ocultar Chat</button>
-            <button onclick="reloadSDK()">📦 Recargar SDK</button>
-        </div>
-        
-        <!-- Contenedor PRINCIPAL del chat -->
-        <div id="chat-wrapper">
-            <div id="coze-container" style="width:100%; height:100%;">
-                <!-- El SDK inyectará el chat aquí -->
-            </div>
-        </div>
-        
-        <div id="dom-check" style="display:none;">
-            <!-- Aquí se mostrará el estado del DOM -->
-        </div>
-    </div>
-
+    <h1>Chat Coze via Iframe</h1>
+    
+    <!-- Este método es más confiable cuando el SDK tiene problemas -->
+    <iframe 
+        id="chat-frame"
+        src="about:blank"
+        allow="microphone; clipboard-write"
+    ></iframe>
+    
     <script>
-        let cozeClient = null;
-        let containerId = 'coze-' + Date.now();
-        
-        // Función para actualizar estado
-        function updateStatus(message, type = 'loading') {
-            const statusEl = document.getElementById('status');
-            statusEl.innerHTML = `
-                <div class="spinner" style="${type !== 'loading' ? 'display:none;' : ''}"></div>
-                <span>${message}</span>
-            `;
-            statusEl.className = `status-container status-${type}`;
-        }
-        
-        // Función para verificar el DOM
-        function checkDOM() {
-            const container = document.getElementById(containerId) || document.getElementById('coze-container');
-            const domCheck = document.getElementById('dom-check');
-            
-            let html = '=== VERIFICACIÓN DOM ===\n\n';
-            
-            if (container) {
-                html += `✅ Contenedor encontrado: ${container.id}\n`;
-                html += `Dimensiones: ${container.offsetWidth}x${container.offsetHeight}px\n`;
-                html += `Hijos: ${container.children.length}\n\n`;
-                html += 'Contenido HTML:\n';
-                html += container.innerHTML.substring(0, 500) + '...';
-            } else {
-                html += '❌ Contenedor no encontrado\n';
-            }
-            
-            // Verificar si hay iframes
-            const iframes = document.querySelectorAll('iframe');
-            html += `\n\n=== IFRAMES (${iframes.length}) ===\n`;
-            iframes.forEach((iframe, i) => {
-                html += `Iframe ${i}: ${iframe.src ? iframe.src.substring(0, 50) + '...' : 'sin src'}\n`;
-            });
-            
-            domCheck.textContent = html;
-            domCheck.style.display = 'block';
-        }
-        
-        // Función para obtener token
-        async function getToken() {
+        async function getCozeEmbedUrl() {
             try {
-                const response = await fetch('/api/coze-token');
-                const data = await response.json();
-                return data.token || data.access_token;
-            } catch (error) {
-                console.error('Error obteniendo token:', error);
-                // Para pruebas, usar un token dummy (reemplaza con uno real)
-                return 'dummy_token_for_testing_' + Date.now();
-            }
-        }
-        
-        // Función principal para inicializar el chat
-        async function initializeChat() {
-            try {
-                updateStatus('Obteniendo token...', 'loading');
-                const token = await getToken();
+                // Obtener token
+                const tokenRes = await fetch('/api/coze-token');
+                const tokenData = await tokenRes.json();
+                const token = tokenData.token || tokenData.access_token;
                 
-                // Crear contenedor limpio
-                const container = document.getElementById('coze-container');
-                container.innerHTML = `<div id="${containerId}" style="width:100%; height:100%;"></div>`;
-                
-                updateStatus('Inicializando SDK...', 'loading');
-                
-                // OPCIÓN A: Usar WebChatClient
-                cozeClient = new CozeWebSDK.WebChatClient({
-                    config: {
-                        bot_id: '7596429833782214709',
-                        container: `#${containerId}`,
-                        position: 'embedded',
-                        auto_open: true,
-                        layout: 'standard',
-                        enableTool: true,
-                        showCloseButton: false,
-                        isIframe: false // Probar tanto true como false
-                    },
-                    auth: {
-                        type: "token",
-                        token: token,
-                        onRefreshToken: getToken
-                    },
-                    userInfo: {
-                        id: 'user_' + Math.random().toString(36).substr(2, 9),
-                        nickname: 'Usuario Web'
-                    },
-                    ui: {
-                        base: { 
-                            layout: 'pc', 
-                            lang: 'es',
-                            zIndex: 1000
-                        },
-                        asstBtn: { 
-                            isNeed: false 
-                        },
-                        footer: { 
-                            isShow: false 
-                        },
-                        chatBot: { 
-                            title: '🤖 Asistente Virtual',
-                            width: '100%',
-                            height: '100%',
-                            showHeader: true,
-                            background: '#ffffff'
-                        }
-                    },
-                    events: {
-                        onLoad: function() {
-                            console.log('✅ Evento onLoad disparado');
-                            updateStatus('Chat cargado correctamente', 'success');
-                            
-                            // Forzar visibilidad después de cargar
-                            setTimeout(() => {
-                                const chatContainer = document.querySelector(`#${containerId} iframe`);
-                                if (chatContainer) {
-                                    chatContainer.style.visibility = 'visible';
-                                    chatContainer.style.opacity = '1';
-                                }
-                                checkDOM(); // Verificar estado
-                            }, 500);
-                        },
-                        onError: function(error) {
-                            console.error('❌ Error en chat:', error);
-                            updateStatus(`Error: ${error.message}`, 'error');
-                        },
-                        onMessage: function(message) {
-                            console.log('Mensaje:', message);
-                        }
-                    }
-                });
-                
-                // Verificar después de 3 segundos
-                setTimeout(() => {
-                    const chatContainer = document.querySelector(`#${containerId}`);
-                    if (chatContainer && chatContainer.children.length === 0) {
-                        console.log('Contenedor vacío, probando método alternativo...');
-                        tryAlternativeMethod();
-                    }
-                }, 3000);
+                // Construir URL con token
+                const botId = '7596429833782214709';
+                return `https://www.coze.com/embed/${botId}?token=${encodeURIComponent(token)}`;
                 
             } catch (error) {
-                console.error('Error inicializando chat:', error);
-                updateStatus(`Error: ${error.message}`, 'error');
-                
-                // Intentar método alternativo
-                tryAlternativeMethod();
+                console.error('Error:', error);
+                // URL sin token (puede no funcionar si requiere auth)
+                return 'https://www.coze.com/embed/7596429833782214709';
             }
         }
         
-        // Método alternativo si WebChatClient no funciona
-        function tryAlternativeMethod() {
-            updateStatus('Probando método alternativo...', 'loading');
+        async function loadChat() {
+            const iframe = document.getElementById('chat-frame');
+            const embedUrl = await getCozeEmbedUrl();
             
-            // Limpiar contenedor
-            const container = document.getElementById('coze-container');
-            container.innerHTML = `<iframe 
-                id="coze-iframe"
-                src="about:blank"
-                style="width:100%; height:100%; border:none;"
-                allow="microphone"
-            ></iframe>`;
+            console.log('Cargando:', embedUrl);
+            iframe.src = embedUrl;
             
-            // Crear iframe manualmente
-            const iframe = document.getElementById('coze-iframe');
-            iframe.src = `https://www.coze.com/embed/7596429833782214709`;
-            
+            // Verificar carga
             iframe.onload = () => {
-                updateStatus('Iframe cargado manualmente', 'success');
+                console.log('✅ Iframe cargado');
+                // Intentar comunicar con el iframe
+                try {
+                    iframe.contentWindow.postMessage({
+                        type: 'coze-init',
+                        token: 'from-parent'
+                    }, '*');
+                } catch (e) {}
             };
             
             iframe.onerror = () => {
-                updateStatus('Error cargando iframe', 'error');
+                console.error('❌ Error cargando iframe');
+                iframe.srcdoc = `
+                    <html>
+                        <body style="padding:20px; font-family:Arial;">
+                            <h3>Error cargando chat</h3>
+                            <p>URL intentada: ${embedUrl}</p>
+                            <p>Posibles soluciones:</p>
+                            <ol>
+                                <li>Verificar que el bot existe y es público</li>
+                                <li>Verificar permisos de autenticación</li>
+                                <li>Contactar al administrador</li>
+                            </ol>
+                        </body>
+                    </html>
+                `;
             };
         }
         
-        // Función para forzar renderizado
-        function forceRender() {
-            if (cozeClient && cozeClient.show) {
-                cozeClient.show();
-                updateStatus('Forzando visualización...', 'loading');
-                
-                // Aplicar estilos para asegurar visibilidad
-                const container = document.querySelector(`#${containerId}`);
-                if (container) {
-                    container.style.display = 'block';
-                    container.style.visibility = 'visible';
-                    container.style.opacity = '1';
-                    container.style.width = '100%';
-                    container.style.height = '100%';
-                }
-                
-                setTimeout(checkDOM, 500);
+        // Escuchar mensajes del iframe
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'coze-ready') {
+                console.log('Chat listo dentro del iframe');
             }
-        }
-        
-        // Función para mostrar/ocultar chat
-        function showChat() {
-            const wrapper = document.getElementById('chat-wrapper');
-            wrapper.style.display = 'block';
-            forceRender();
-        }
-        
-        function hideChat() {
-            document.getElementById('chat-wrapper').style.display = 'none';
-        }
-        
-        // Función para recargar SDK
-        function reloadSDK() {
-            updateStatus('Recargando...', 'loading');
-            location.reload();
-        }
-        
-        // Inicializar cuando el DOM esté listo
-        document.addEventListener('DOMContentLoaded', function() {
-            // Pequeño delay para asegurar que el SDK está cargado
-            setTimeout(() => {
-                if (window.CozeWebSDK) {
-                    initializeChat();
-                } else {
-                    updateStatus('❌ SDK no cargado', 'error');
-                }
-            }, 100);
         });
+        
+        // Cargar cuando la página esté lista
+        window.onload = loadChat;
     </script>
 </body>
 </html>

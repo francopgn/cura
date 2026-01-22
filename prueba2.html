@@ -117,10 +117,7 @@ AOS.init({ duration: 800, once: true });
 window.onload = function () {
   const layout = document.getElementById('root-layout');
 
-  // Limpiar sesiones previas
-  Object.keys(localStorage).forEach(key => {
-    if (key.includes('coze')) localStorage.removeItem(key);
-  });
+
 
   const cozeClient = new CozeWebSDK.WebChatClient({
     config: {

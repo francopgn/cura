@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/oversea/index.js"></script>
 <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -188,24 +187,7 @@
     border-style: solid;
     border-color: rgba(255, 255, 255, 0.5);
 }
-
-/* Clases para controlar Lenis */
-.lenis-stopped {
-  overflow: auto !important;
-}
-
-.lenis-stopped lenis,
-.lenis-stopped [data-lenis-prevent] {
-  overflow: visible !important;
-}
-
-/* Estilo para el contenedor del chat */
-.chatbot-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999 !important; /* Prioridad máxima */
-}
+  
 </style>
 
 </head>
@@ -705,146 +687,8 @@
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
   
 <script>
-// ====== SISTEMA DE CONTROL LENIS PARA CHATBOT ======
-let lenisInstance = null;
-let chatObserver = null;
-
-// Función para inicializar Lenis
-function initLenis() {
-  if (lenisInstance) {
-    lenisInstance.destroy();
-  }
-  
-  lenisInstance = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true,
-    smoothTouch: false, // Desactiva smooth en touch para dispositivos móviles
-    wheelMultiplier: 1,
-    touchMultiplier: 2,
-    infinite: false
-  });
-
-  function raf(time) {
-    lenisInstance.raf(time);
-    requestAnimationFrame(raf);
-  }
-  requestAnimationFrame(raf);
-
-  // Sincronizar AOS con Lenis
-  lenisInstance.on('scroll', () => {
-    if (typeof AOS !== 'undefined') {
-      AOS.refresh();
-    }
-  });
-
-  return lenisInstance;
-}
-
-// Función para detener Lenis temporalmente
-function stopLenis() {
-  if (lenisInstance) {
-    lenisInstance.stop();
-    document.documentElement.classList.add('lenis-stopped');
-  }
-}
-
-// Función para reanudar Lenis
-function resumeLenis() {
-  if (lenisInstance) {
-    lenisInstance.start();
-    document.documentElement.classList.remove('lenis-stopped');
-  }
-}
-
-// Observador para detectar cuando el chat está abierto/cerrado
-function setupChatObserver() {
-  // Configuración del MutationObserver para detectar el chat
-  chatObserver = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      // Buscar elementos del chat de Coze
-      const addedNodes = Array.from(mutation.addedNodes);
-      const removedNodes = Array.from(mutation.removedNodes);
-      
-      // Verificar si se añadió el chat
-      addedNodes.forEach(node => {
-        if (node.nodeType === 1) {
-          // Buscar elementos con clases que contengan 'coze' o 'chat'
-          const chatElements = node.querySelectorAll ? 
-            node.querySelectorAll('[class*="coze"], [class*="chat"], [id*="coze"], [id*="chat"]') : [];
-          
-          // También verificar el nodo mismo
-          const nodeClasses = node.className || '';
-          const nodeId = node.id || '';
-          
-          if (chatElements.length > 0 || 
-              nodeClasses.includes('coze') || 
-              nodeClasses.includes('chat') ||
-              nodeId.includes('coze') || 
-              nodeId.includes('chat')) {
-            
-            // Chat detectado, detener Lenis
-            stopLenis();
-            
-            // Agregar event listeners a los elementos del chat
-            chatElements.forEach(el => {
-              el.addEventListener('wheel', stopLenisOnChat, { passive: false });
-              el.addEventListener('touchmove', stopLenisOnChat, { passive: false });
-              el.addEventListener('mouseenter', stopLenisOnChat);
-            });
-          }
-        }
-      });
-      
-      // Verificar si se removió el chat
-      removedNodes.forEach(node => {
-        if (node.nodeType === 1) {
-          const nodeClasses = node.className || '';
-          const nodeId = node.id || '';
-          
-          if (nodeClasses.includes('coze') || 
-              nodeClasses.includes('chat') ||
-              nodeId.includes('coze') || 
-              nodeId.includes('chat')) {
-            
-            // Chat removido, reanudar Lenis
-            setTimeout(resumeLenis, 100);
-          }
-        }
-      });
-    });
-  });
-
-  // Iniciar observación
-  chatObserver.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: false,
-    characterData: false
-  });
-}
-
-// Función para detener Lenis cuando se interactúa con el chat
-function stopLenisOnChat(e) {
-  stopLenis();
-  
-  // Reanudar Lenis después de un tiempo si no hay más interacción
-  clearTimeout(window.chatInteractionTimeout);
-  window.chatInteractionTimeout = setTimeout(() => {
-    const chatElements = document.querySelectorAll('[class*="coze"], [class*="chat"], [id*="coze"], [id*="chat"]');
-    const hasActiveChat = Array.from(chatElements).some(el => {
-      const rect = el.getBoundingClientRect();
-      return rect.width > 0 && rect.height > 0;
-    });
-    
-    if (!hasActiveChat) {
-      resumeLenis();
-    }
-  }, 1000);
-}
-
-// Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function () {
+
   // --- INICIALIZACIÓN AOS ---
   AOS.init({
     duration: 800,
@@ -852,11 +696,21 @@ document.addEventListener('DOMContentLoaded', function () {
     offset: 100
   });
 
-  // --- INICIALIZAR LENIS ---
-  initLenis();
+  // --- INICIALIZACIÓN LENIS (Scroll Suave) ---
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
 
-  // --- CONFIGURAR OBSERVADOR DEL CHAT ---
-  setTimeout(setupChatObserver, 2000); // Esperar a que el chat se cargue
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Sincronizar AOS con Lenis
+  lenis.on('scroll', AOS.refresh);
 
   // --- BANNER SUPERIOR ROTATIVO (CADA 5s CON FADE + SLIDE) ---
   const bannerTextEl = document.getElementById('top-banner-text');
@@ -878,6 +732,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 350);
     }, 5000);
   }
+
 
   // --- CIUDADES Y GEOREF ---
   const provinciaSelect = document.querySelector('select[name="provincia"]');
@@ -928,8 +783,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const navContactoLinks = document.querySelectorAll('a[href="#contacto"]');
 
   function smoothScrollTo(element, offset = 100) {
-    if (!element || !lenisInstance) return;
-    lenisInstance.scrollTo(element, { offset: -offset });
+    if (!element) return;
+    lenis.scrollTo(element, { offset: -offset });
   }
 
   if (btnSumate && targetSumate) {
@@ -941,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   navInicioLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); lenisInstance.scrollTo(0); });
+    link.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); });
   });
 
   navInfoLinks.forEach(link => {
@@ -952,55 +807,56 @@ document.addEventListener('DOMContentLoaded', function () {
     link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto); });
   });
 
-  // --- FORMULARIO CONTACTO ---
-  const formContact = document.getElementById('contact-form');
-  const modalContact = document.getElementById('success-modal');
-  const cardContact = modalContact ? modalContact.querySelector('.modal-card') : null;
-  const okBtnContact = document.getElementById('success-modal-ok');
 
-  function abrirModalContact() {
-    modalContact.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      modalContact.classList.add('show');
-      cardContact.classList.add('show');
-    });
-  }
+// --- FORMULARIO CONTACTO ---
+const formContact = document.getElementById('contact-form');
+const modalContact = document.getElementById('success-modal');
+const cardContact = modalContact ? modalContact.querySelector('.modal-card') : null;
+const okBtnContact = document.getElementById('success-modal-ok');
 
-  function cerrarModalContact() {
-    modalContact.classList.remove('show');
-    cardContact.classList.remove('show');
-    setTimeout(() => modalContact.classList.add('hidden'), 250);
-  }
+function abrirModalContact() {
+  modalContact.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    modalContact.classList.add('show');
+    cardContact.classList.add('show');
+  });
+}
 
-  if (formContact) {
-    formContact.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(formContact);
-      const body = {
-        nombre:  formData.get('nombre')  || '',
-        email:   formData.get('email')   || '',
-        mensaje: formData.get('mensaje') || ''
-      };
+function cerrarModalContact() {
+  modalContact.classList.remove('show');
+  cardContact.classList.remove('show');
+  setTimeout(() => modalContact.classList.add('hidden'), 250);
+}
 
-      try {
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        if (!response.ok) throw new Error();
-        abrirModalContact();
-        formContact.reset();
-      } catch (err) {
-        alert('Ocurrió un error. Intentá nuevamente.');
-      }
-    });
+if (formContact) {
+  formContact.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(formContact);
+    const body = {
+      nombre:  formData.get('nombre')  || '',
+      email:   formData.get('email')   || '',
+      mensaje: formData.get('mensaje') || ''
+    };
 
-    okBtnContact.addEventListener('click', cerrarModalContact);
-    modalContact.addEventListener('click', e => {
-      if (e.target === modalContact) cerrarModalContact();
-    });
-  }
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!response.ok) throw new Error();
+      abrirModalContact();
+      formContact.reset();
+    } catch (err) {
+      alert('Ocurrió un error. Intentá nuevamente.');
+    }
+  });
+
+  okBtnContact.addEventListener('click', cerrarModalContact);
+  modalContact.addEventListener('click', e => {
+    if (e.target === modalContact) cerrarModalContact();
+  });
+}
 
   // --- RESTRICCIONES DE INPUT ---
   const onlyLettersInputs = document.querySelectorAll('input.only-letters');
@@ -1010,199 +866,140 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // --- FORMULARIO SUMATE ---
-  const sumateForm = document.getElementById('sumate-form');
-  const sumateModal = document.getElementById('sumate-modal');
-  const sumateCard = sumateModal ? sumateModal.querySelector('.modal-card') : null;
-  const sumateOkBtn = document.getElementById('sumate-modal-ok');
+// --- FORMULARIO SUMATE ---
+const sumateForm = document.getElementById('sumate-form');
+const sumateModal = document.getElementById('sumate-modal');
+const sumateCard = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+const sumateOkBtn = document.getElementById('sumate-modal-ok');
 
-  function abrirSumateModal() {
-    if (!sumateModal) return;
-    sumateModal.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      sumateModal.classList.add('show');
-      if (sumateCard) sumateCard.classList.add('show');
-    });
-  }
+function abrirSumateModal() {
+  if (!sumateModal) return;
+  sumateModal.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    sumateModal.classList.add('show');
+    if (sumateCard) sumateCard.classList.add('show');
+  });
+}
 
-  function cerrarSumateModal() {
-    if (!sumateModal) return;
-    sumateModal.classList.remove('show');
-    if (sumateCard) sumateCard.classList.remove('show');
-    setTimeout(() => sumateModal.classList.add('hidden'), 250);
-  }
+function cerrarSumateModal() {
+  if (!sumateModal) return;
+  sumateModal.classList.remove('show');
+  if (sumateCard) sumateCard.classList.remove('show');
+  setTimeout(() => sumateModal.classList.add('hidden'), 250);
+}
 
-  if (sumateForm && sumateModal && sumateOkBtn) {
-    sumateForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const submitBtn = sumateForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
+if (sumateForm && sumateModal && sumateOkBtn) {
+  sumateForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const submitBtn = sumateForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
 
-      const formData = new FormData(sumateForm);
-      try {
-        const bodyBrevo = {
-          email: (formData.get('email') || '').trim(),
-          nombre: (formData.get('nombre') || '').trim(),
-          apellido: (formData.get('apellido') || '').trim(),
-          provincia: (formData.get('provincia') || '').toString(),
-          ciudad:    (formData.get('ciudad')    || '').toString(),
-          dni: (formData.get('dni') || '').trim(),
-          telefono: (formData.get('telefono') || '').trim()
-        };
+    const formData = new FormData(sumateForm);
+    try {
+      const bodyBrevo = {
+        email: (formData.get('email') || '').trim(),
+        nombre: (formData.get('nombre') || '').trim(),
+        apellido: (formData.get('apellido') || '').trim(),
+        provincia: (formData.get('provincia') || '').toString(),
+        ciudad:    (formData.get('ciudad')    || '').toString(),
+        dni: (formData.get('dni') || '').trim(),
+        telefono: (formData.get('telefono') || '').trim()
+      };
 
-        await fetch('/api/sumate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bodyBrevo)
-        });
-
-        await fetch(sumateForm.action, {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' },
-            body: formData
-        });
-
-        sumateForm.reset();
-        abrirSumateModal();
-      } catch (err) {
-        console.error(err);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
-    });
-
-    sumateOkBtn.addEventListener('click', cerrarSumateModal);
-    sumateModal.addEventListener('click', e => {
-      if (e.target === sumateModal) cerrarSumateModal();
-    });
-  }
-
-  // --- NEWSLETTER ---
-  const newsletterForm = document.getElementById('newsletter-form');
-  const newsletterModal = document.getElementById('newsletter-modal');
-  const newsletterCard = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
-  const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
-
-  function abrirNewsletterModal() {
-    if (!newsletterModal) return;
-    newsletterModal.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      newsletterModal.classList.add('show');
-      if (newsletterCard) newsletterCard.classList.add('show');
-    });
-  }
-
-  function cerrarNewsletterModal() {
-    if (!newsletterModal) return;
-    newsletterModal.classList.remove('show');
-    if (newsletterCard) newsletterCard.classList.remove('show');
-    setTimeout(() => newsletterModal.classList.add('hidden'), 250);
-  }
-
-  if (newsletterForm && newsletterModal && newsletterOkBtn) {
-    newsletterForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
-
-      try {
-        const formData = new FormData(newsletterForm);
-        const bodyBrevo = { email: formData.get('email') || '' };
-        await fetch('/api/newsletter', {
+      await fetch('/api/sumate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(bodyBrevo)
-        });
-        newsletterForm.reset();
-        abrirNewsletterModal();
-      } catch (err) {
-        alert('Ocurrió un error.');
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
-    });
+      });
 
-    newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
-    newsletterModal.addEventListener('click', e => {
-      if (e.target === newsletterModal) cerrarNewsletterModal();
-    });
-  }
+      await fetch(sumateForm.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+      });
 
-  // --- INICIALIZAR CHATBOT DE COZE ---
-  setTimeout(() => {
-    if (typeof CozeWebSDK !== 'undefined') {
-      try {
-        new CozeWebSDK.WebChatClient({
-          config: {
-            type: 'bot',
-            bot_id: '7596429833782214709',
-            isIframe: false,
-          },
-          auth: {
-            type: "token",
-            token: "",
-            onRefreshToken: async () => {
-              try {
-                const res = await fetch("/api/coze-token");
-                const data = await res.json();
-                return data.token;
-              } catch (error) {
-                console.error("Error cargando el token:", error);
-              }
-            }
-          },
-          userInfo: {
-            id: 'user_' + Math.random().toString(36).slice(2),
-            nickname: 'Ciudadano',
-          },
-          ui: {
-            base: {
-              layout: 'pc',
-              lang: 'es',
-              zIndex: 999999,
-            },
-            header: {
-              isShow: true,
-              title: 'Asistente Ley C.U.R.A.'
-            },
-            asstBtn: {
-              isNeed: true
-            },
-            footer: {
-              isShow: true,
-            },
-            chatBot: {
-              title: 'Asistente Virtual Ley C.U.R.A.',
-              uploadable: false,
-              width: 390,
-            },
-          },
-        });
-      } catch (error) {
-        console.error("Error inicializando el chatbot:", error);
-      }
+      sumateForm.reset();
+      abrirSumateModal();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
     }
-  }, 1000); // Esperar un poco para que todo se cargue
+  });
+
+  sumateOkBtn.addEventListener('click', cerrarSumateModal);
+  sumateModal.addEventListener('click', e => {
+    if (e.target === sumateModal) cerrarSumateModal();
+  });
+}
+
+// --- NEWSLETTER ---
+const newsletterForm = document.getElementById('newsletter-form');
+const newsletterModal = document.getElementById('newsletter-modal');
+const newsletterCard = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
+const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
+
+function abrirNewsletterModal() {
+  if (!newsletterModal) return;
+  newsletterModal.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    newsletterModal.classList.add('show');
+    if (newsletterCard) newsletterCard.classList.add('show');
+  });
+}
+
+function cerrarNewsletterModal() {
+  if (!newsletterModal) return;
+  newsletterModal.classList.remove('show');
+  if (newsletterCard) newsletterCard.classList.remove('show');
+  setTimeout(() => newsletterModal.classList.add('hidden'), 250);
+}
+
+if (newsletterForm && newsletterModal && newsletterOkBtn) {
+  newsletterForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    try {
+      const formData = new FormData(newsletterForm);
+      const bodyBrevo = { email: formData.get('email') || '' };
+      await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyBrevo)
+      });
+      newsletterForm.reset();
+      abrirNewsletterModal();
+    } catch (err) {
+      alert('Ocurrió un error.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+
+  newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
+  newsletterModal.addEventListener('click', e => {
+    if (e.target === newsletterModal) cerrarNewsletterModal();
+  });
+}
+
 });
 </script>
 
 <script>
-// --- LOGICA CREDENCIAL ---
 document.addEventListener('DOMContentLoaded', function () {
   // Funcionalidad de giro
   const card = document.getElementById('credencial-giratoria');
-  if (card) { 
-    card.addEventListener('click', function() { 
-      this.classList.toggle('is-flipped'); 
-    }); 
-  }
+  if (card) { card.addEventListener('click', function() { this.classList.toggle('is-flipped'); }); }
 
+  // --- LOGICA CREDENCIAL ---
   const nombres = ["Franco", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena", "Martín", "Julia"];
   const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero", "Sosa", "Torres"];
   const localidadesCoherentes = {
@@ -1275,8 +1072,28 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+<script>
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
 
- <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/oversea/index.js"></script>
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Importante: refrescar AOS cuando Lenis haga scroll
+  lenis.on('scroll', () => {
+    if (typeof AOS !== 'undefined') {
+      AOS.refresh();
+    }
+  });
+</script>
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/oversea/index.js"></script>
 
 <script>
   window.onload = function () {
@@ -1301,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       userInfo: {
         id: 'user_' + Math.random().toString(36).slice(2),
-        nickname: 'Usuario',
+        nickname: 'Ciudadano',
       },
       ui: {
         base: {
@@ -1328,6 +1145,5 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 </script>
-
 </body>
 </html>

@@ -1,37 +1,61 @@
+// api/chat.js - VERSIÓN CON @pinecone-database/pinecone
 import { Pinecone } from '@pinecone-database/pinecone';
 
 export default async function handler(req, res) {
-  // Configurar CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
-  // Manejar preflight (OPTIONS)
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  // Solo aceptar POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método no permitido' });
-  }
-
+  console.log('🔍 /api/chat llamado');
+  
   try {
-    const { message } = req.body;
+    // Configurar CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Manejar OPTIONS
+    if (req.method === 'OPTIONS') {
+      console.log('📝 OPTIONS request');
+      return res.status(200).end();
+    }
+    
+    // Solo POST
+    if (req.method !== 'POST') {
+      console.log('❌ Método no permitido:', req.method);
+      return res.status(405).json({ error: 'Método no permitido' });
+    }
+    
+    // Parsear body
+    let body;
+    try {
+      body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    } catch (e) {
+      console.error('❌ Error parsing body:', e);
+      return res.status(400).json({ error: 'Body JSON inválido' });
+    }
+    
+    const { message } = body || {};
     
     if (!message || message.trim() === '') {
       return res.status(400).json({ error: 'El mensaje no puede estar vacío' });
     }
-
-    console.log('📩 Pregunta recibida:', message.substring(0, 50) + '...');
-
-    // 1. Obtener embedding de la pregunta
-    console.log('🔄 Obteniendo embedding de OpenRouter...');
+    
+    console.log('📩 Pregunta:', message.substring(0, 100));
+    
+    // 1. Verificar variables de entorno
+    console.log('🔐 Verificando ENV vars...');
+    const requiredVars = ['PINECONE_API_KEY', 'DEEPSEEK_API_KEY', 'OPENROUTER_API_KEY'];
+    const missingVars = requiredVars.filter(varName => !process.env[varName]);
+    
+    if (missingVars.length > 0) {
+      console.error('❌ Variables faltantes:', missingVars);
+      return res.status(500).json({
+        error: 'Variables de entorno faltantes',
+        missing: missingVars
+      });
+    }
+    
+    console.log('✅ Todas las variables configuradas');
+    
+    // 2. Obtener embedding
+    console.log('🔄 Obteniendo embedding...');
     const embedResponse = await fetch('https://openrouter.ai/api/v1/embeddings', {
       method: 'POST',
       headers: {
@@ -42,110 +66,156 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'text-embedding-ada-002',
-        input: message.substring(0, 8000)
+        input: message.substring(0, 5000)
       })
     });
-
+    
     if (!embedResponse.ok) {
       const errorText = await embedResponse.text();
-      console.error('❌ Error OpenRouter:', embedResponse.status, errorText);
-      return res.status(embedResponse.status).json({ 
+      console.error('❌ OpenRouter error:', embedResponse.status, errorText);
+      return res.status(embedResponse.status).json({
         error: 'Error obteniendo embedding',
         details: errorText.substring(0, 200)
       });
     }
-
+    
     const embedData = await embedResponse.json();
     const queryEmbedding = embedData.data[0].embedding;
     console.log('✅ Embedding obtenido');
-
-    // 2. Buscar en Pinecone
+    
+    // 3. Buscar en Pinecone
     console.log('🔎 Buscando en Pinecone...');
+    
+    // Inicializar Pinecone
     const pc = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY
     });
     
-    const index = pc.Index('leycura-law-index');
+    // Usar el índice correcto
+    const indexName = 'leycura-law-index';
+    console.log(`📁 Usando índice: ${indexName}`);
     
-    const searchResults = await index.query({
-      namespace: 'leycura',
-      vector: queryEmbedding,
-      topK: 5,
-      includeMetadata: true
-    });
-
-    console.log(`📊 Encontrados ${searchResults.matches.length} resultados`);
-
-    // 3. Construir contexto
-    let context = '';
-    if (searchResults.matches && searchResults.matches.length > 0) {
-      const relevantChunks = searchResults.matches
-        .filter(match => match.score > 0.5)
-        .map(match => match.metadata?.text || match.metadata?.full_text || '')
-        .filter(text => text && text.trim() !== '');
+    try {
+      const index = pc.Index(indexName);
       
-      if (relevantChunks.length > 0) {
-        context = relevantChunks.join('\n\n').substring(0, 3000);
-        console.log(`📚 Contexto: ${context.length} caracteres`);
+      const searchResults = await index.query({
+        namespace: 'leycura',
+        vector: queryEmbedding,
+        topK: 5,
+        includeMetadata: true
+      });
+      
+      console.log(`📊 Resultados: ${searchResults.matches?.length || 0} encontrados`);
+      
+      // 4. Construir contexto
+      let context = '';
+      if (searchResults.matches && searchResults.matches.length > 0) {
+        const relevantChunks = searchResults.matches
+          .filter(match => match.score > 0.5)
+          .map(match => match.metadata?.text || match.metadata?.full_text || '')
+          .filter(text => text && text.trim() !== '');
+        
+        if (relevantChunks.length > 0) {
+          context = relevantChunks.join('\n\n').substring(0, 3000);
+          console.log(`📚 Contexto: ${context.length} caracteres`);
+        }
       }
-    }
+      
+      // 5. Llamar a DeepSeek
+      console.log('💬 Enviando a DeepSeek...');
+      
+      const systemPrompt = context
+        ? `Eres un asistente de la Ley Cura de Argentina. Responde basándote en este contexto:
 
-    // 4. Preparar prompt para DeepSeek
-    const systemPrompt = context 
-      ? `Eres un asistente especializado en la Ley Cura de Argentina. Responde ÚNICAMENTE basándote en el siguiente contexto. Si la pregunta no está en el contexto, di: "No encuentro información específica sobre eso en la Ley Cura."
-
-CONTEXTO:
 ${context}
 
-Responde de forma clara, concisa y profesional.`
-      : `Eres un asistente especializado en la Ley Cura de Argentina. Responde sobre esta ley. Si no sabes algo, di: "No encuentro información sobre eso en la Ley Cura."`;
-
-    console.log('💬 Enviando a DeepSeek...');
-    
-    // 5. Llamar a DeepSeek
-    const chatResponse = await fetch('https://api.deepseek.com/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: message }
-        ],
-        stream: false,
-        temperature: 0.1,
-        max_tokens: 1000
-      })
-    });
-
-    if (!chatResponse.ok) {
-      const errorText = await chatResponse.text();
-      console.error('❌ Error DeepSeek:', chatResponse.status, errorText);
-      return res.status(chatResponse.status).json({ 
-        error: 'Error en el modelo de IA',
-        details: errorText.substring(0, 200)
+Si la pregunta no está cubierta, di: "No encuentro información específica sobre eso en la Ley Cura."`
+        : `Eres un asistente de la Ley Cura de Argentina. Responde sobre esta ley. Si no sabes algo, di: "No encuentro información sobre eso en la Ley Cura."`;
+      
+      const chatResponse = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: message }
+          ],
+          stream: false,
+          temperature: 0.1,
+          max_tokens: 1000
+        })
+      });
+      
+      if (!chatResponse.ok) {
+        const errorText = await chatResponse.text();
+        console.error('❌ DeepSeek error:', chatResponse.status, errorText);
+        throw new Error(`DeepSeek error: ${chatResponse.status}`);
+      }
+      
+      const result = await chatResponse.json();
+      const answer = result.choices[0].message.content;
+      
+      console.log('✅ Respuesta generada');
+      
+      return res.status(200).json({
+        answer: answer,
+        sources: searchResults.matches?.length || 0,
+        success: true
+      });
+      
+    } catch (pineconeError) {
+      console.error('❌ Pinecone error detallado:', pineconeError);
+      
+      // Fallback: responder directamente sin contexto
+      console.log('🔄 Usando fallback (sin Pinecone)...');
+      
+      const fallbackResponse = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { 
+              role: 'system', 
+              content: 'Eres un asistente de la Ley Cura de Argentina. Responde preguntas sobre esta ley.' 
+            },
+            { role: 'user', content: message }
+          ],
+          stream: false,
+          temperature: 0.1,
+          max_tokens: 800
+        })
+      });
+      
+      if (!fallbackResponse.ok) {
+        throw new Error('Fallback también falló');
+      }
+      
+      const fallbackResult = await fallbackResponse.json();
+      
+      return res.status(200).json({
+        answer: fallbackResult.choices[0].message.content + '\n\n(Nota: Respuesta sin contexto específico del documento)',
+        sources: 0,
+        fallback: true,
+        success: true
       });
     }
-
-    const result = await chatResponse.json();
-    const answer = result.choices[0].message.content;
     
-    console.log('✅ Respuesta generada:', answer.substring(0, 100) + '...');
-    
-    return res.status(200).json({ 
-      answer: answer,
-      sources: searchResults.matches?.length || 0
-    });
-
   } catch (error) {
-    console.error('💥 Error en /api/chat:', error);
-    return res.status(500).json({ 
+    console.error('💥 ERROR GENERAL:', error.message);
+    console.error('Stack:', error.stack);
+    
+    return res.status(500).json({
       error: 'Error interno del servidor',
       message: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      timestamp: new Date().toISOString()
     });
   }
 }

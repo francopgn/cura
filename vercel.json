@@ -3,7 +3,8 @@
   "trailingSlash": false,
   "functions": {
     "api/chat.js": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "memory": 1024
     }
   },
   "headers": [
@@ -38,5 +39,6 @@
       "destination": "/random/demo-random.html",
       "permanent": false
     }
-  ]
+  ],
+  "installCommand": "npm install"
 }

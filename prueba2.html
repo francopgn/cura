@@ -1276,69 +1276,58 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-    <!-- SDK de Coze -->
-<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/index.js"></script>
+ <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0/libs/oversea/index.js"></script>
 
-
-  <!-- Inicialización del chatbot -->
-  <script>
-    window.onload = function () {
-      new CozeWebSDK.WebChatClient({
-        config: {
-          type: 'bot',
-          bot_id: '7596429833782214709',
-          isIframe: false,
+<script>
+  window.onload = function () {
+    new CozeWebSDK.WebChatClient({
+      config: {
+        type: 'bot',
+        bot_id: '7596429833782214709',
+        isIframe: false,
+      },
+      auth: {
+        type: "token",
+        token: "",
+        onRefreshToken: async () => {
+          try {
+            const res = await fetch("/api/coze-token");
+            const data = await res.json();
+            return data.token;
+          } catch (e) {
+            console.error("Error al obtener el token:", e);
+          }
+        }
+      },
+      userInfo: {
+        id: 'user_' + Math.random().toString(36).slice(2),
+        nickname: 'Usuario',
+      },
+      ui: {
+        base: {
+          layout: 'pc',
+          lang: 'es', // Idioma en español
+          zIndex: 999999, // Prioridad máxima para que no quede oculto
         },
-
-auth: {
-  type: "token",
-  token: "",
-  onRefreshToken: async () => {
-    const res = await fetch("/api/coze-token");
-    const data = await res.json();
-    return data.token;
-  }
-},
-
-
-
-        userInfo: {
-          id: 'user_' + Math.random().toString(36).slice(2),
-          url: '/user_icon.png',
-          nickname: 'User',
+        header: {
+          isShow: true,
+          isNeedClose: true,
         },
-
-        ui: {
-          base: {
-            icon: 'https://sf-coze-web-cdn.coze.com/obj/eden-sg/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
-            layout: 'pc',
-            lang: 'en',
-            zIndex: 1000
-          },
-
-          header: {
-            isShow: true,
-            isNeedClose: true,
-          },
-
-          asstBtn: {
-            isNeed: true
-          },
-
-          footer: {
-            isShow: true,
-          },
-
-          chatBot: {
-            title: 'Asistente Virtual sobre Ley C.U.R.A.',
-            uploadable: false,
-            width: 390,
-            isNeedAudio: false,
-          },
+        asstBtn: {
+          isNeed: true // Esto activa la burbuja flotante
         },
-      });
-    };
-  </script>
+        footer: {
+          isShow: false, // Limpia el pie de página
+        },
+        chatBot: {
+          title: 'Asistente Virtual Ley C.U.R.A.',
+          uploadable: false,
+          width: 390,
+        },
+      },
+    });
+  };
+</script>
 
 </body>
 </html>

@@ -1,139 +1,253 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html> 
+<html lang="es">
 <head>
-    <script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
-    <style>
-        /* ESTILOS FORZADOS PARA VISIBILIDAD */
-        #force-visible * {
-            visibility: visible !important;
-            opacity: 1 !important;
-            display: block !important;
-            position: relative !important;
-            z-index: 9999 !important;
+  <meta charset="UTF-8" />
+  
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="C.U.R.A." />
+<link rel="manifest" href="/site.webmanifest" />
+  
+  <title>Ley C.U.R.A. | Diseñando el futuro de la Salud Pública Argentina</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cura: {
+              primary: '#004E85',      
+              primaryDark: '#00345C',  
+              card: '#065D9B',         
+              accent: '#00C2FF',       
+              accentLight: '#59D2FF'   
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
         }
-        
-        #force-visible iframe {
-            width: 100% !important;
-            height: 100% !important;
-            border: 3px solid red !important; /* Para verlo claramente */
-        }
-        
-        #debug-view {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: white;
-            border: 1px solid #ccc;
-            padding: 10px;
-            z-index: 10000;
-            font-size: 12px;
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+/* --- ESTILOS ORIGINALES (MODALES Y 3D BASE) --- */
+  .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+  .modal-backdrop.show { opacity: 1; }
+  
+  /* Banner rotativo (fade + slide) */
+#top-banner-text {
+  display: inline-block;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.banner-hidden {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ----POPUP----  */ 
+  
+.modal-card {
+      transform: scale(0.9) translateY(10px);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  
+  .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+
+  .perspective-container { perspective: 1500px; }
+  
+  .card-container {
+    position: relative; width: 100%; max-width: 450px;
+    aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20;
+    container-type: inline-size;
+  }
+
+  .card-inner {
+    position: relative; width: 100%; height: 100%; text-align: center;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-style: preserve-3d; cursor: pointer; will-change: transform;
+  }
+  .card-inner.is-flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; border-radius: 18px; overflow: hidden;
+    transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+
+  .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  .card-front { z-index: 2; transform: rotateY(0deg); }
+  .card-back { z-index: 1; transform: rotateY(180deg); }
+
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .card-container:hover .animate-float { animation-play-state: paused; }
+
+  /* --- CAPA DE DATOS --- */
+  .card-data-layer {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 10; pointer-events: none; color: white;
+  }
+
+  /* ====== POSICIONES CALIBRADAS ====== */
+  .pos-nombre-front {
+    position: absolute; left: 3.50%; top: 15%; width: 55%;
+    font-family: 'Vazirmatn', sans-serif; font-weight: 700;
+    font-size: 4.5cqw; text-align: left; line-height: 1.1;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pos-dni-front {
+      position: absolute; left: 3.50%; top: 21.06%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400;
+      font-size: 3cqw; text-align: left;
+  }
+  .pos-sangre {
+      position: absolute; left: 94.88%; top: 8.5%; transform: translate(-50%, -50%);
+      width: 12%; height: 18%;
+      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw;
+      display: flex; justify-content: center; align-items: center;
+  }
+
+.pos-ficticios {
+    position: absolute;
+    bottom: 3%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.8cqw;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.1em;
+    pointer-events: none;
+}
+  
+  .data-block {
+      position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
+      font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+  }
+  .block-alergias { left: 3.8%; top: 34%; }
+  .block-medicamentos { left: 3.6%; top: 53.7%; }
+  .block-antecedentes { left: 3.9%; top: 72%; }
+  .block-operaciones { left: 36.6%; top: 30%; height: 22%; font-size: 2cqw; }
+  .block-fecha-nac { left: 69%; top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
+  .block-domicilio { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2.3cqw; font-weight: 600; }
+  .block-contactos { left: 69.8%; top: 72.4%; font-size: 1.9cqw; }
+
+  .pos-nombre-back {
+      position: absolute; top: 5%; left: 3%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left;
+  }
+  .pos-dni-back {
+      position: absolute; top: 13%; left: 3.2%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left;
+  }
+  .pos-id-number {
+      position: absolute; bottom: 23%; left: 0; right: -3%; text-align: center;
+      font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.8cqw; letter-spacing: 0.05em;
+  }
+
+.btn-resumen-ejecutivo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-resumen-ejecutivo:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+  
+</style>
+
 </head>
-<body>
-    <div id="debug-view">
-        <button onclick="inspect()">🔍 Inspeccionar</button>
-        <div id="debug-info"></div>
-    </div>
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden">
+
+<div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
+  <span id="top-banner-text">
+   La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.
+  </span>
+</div>
+
+
+<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
     
-    <div id="force-visible" style="width:800px; height:600px; margin:50px auto; border:2px solid blue;">
-        <div id="coze-target"></div>
-    </div>
+    <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
+      <img src="/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
+      <div class="leading-tight">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
+        <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+      </div>
+    </a>
+    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
+      <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white">Inicio</a>
+      <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white">Información</a>
+      <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
+      <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demostración</a>
+    </nav>
+  </div>
+</header>
+
+
+<script src="https://sf-cdn.coze.com/obj/unpkg-va/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/oversea/index.js"></script>
+
+
+<script>
+    const cozeClient = new CozeWebSDK.WebChatClient({
+    config: {
+      type: 'bot',
+      bot_id: '7596429833782214709',
+      isIframe: false,
+    },
+    auth: {
+      type: "token",
+      token: "",
+      onRefreshToken: async () => {
+        const res = await fetch("/api/coze-token");
+        const data = await res.json();
+        return data.token;
+      }
+    },
+    userInfo: { id: 'user_' + Date.now(), nickname: 'Ciudadano' },
+    ui: {
+      base: { layout: 'pc', lang: 'es', zIndex: 999999 },
+      asstBtn: { isNeed: true },
+      footer: { isShow: false },
+      chatBot: { title: 'Asistente Ley C.U.R.A.', width: 390 }
+    }
+  });
+</script>
     
-    <script>
-        async function init() {
-            // 1. Primero verifica si el SDK está cargado
-            console.log('CozeWebSDK:', CozeWebSDK);
-            console.log('Métodos disponibles:', Object.keys(CozeWebSDK));
-            
-            // 2. Prueba diferentes métodos de inicialización
-            const methods = ['WebChatClient', 'init', 'create'];
-            let success = false;
-            
-            for (const method of methods) {
-                if (CozeWebSDK[method]) {
-                    console.log(`Probando método: ${method}`);
-                    try {
-                        if (method === 'WebChatClient') {
-                            const client = new CozeWebSDK.WebChatClient({
-                                config: {
-                                    bot_id: '7596429833782214709',
-                                    container: '#coze-target',
-                                    position: 'embedded',
-                                    auto_open: true
-                                },
-                                auth: {
-                                    type: "token",
-                                    token: await getToken(),
-                                    onRefreshToken: getToken
-                                },
-                                userInfo: { id: 'test', nickname: 'Test' }
-                            });
-                            success = true;
-                            console.log('✅ WebChatClient creado');
-                        } else if (method === 'init') {
-                            CozeWebSDK.init({
-                                config: {
-                                    bot_id: '7596429833782214709',
-                                    container: '#coze-target',
-                                    position: 'embedded'
-                                },
-                                userInfo: { id: 'test', nickname: 'Test' }
-                            });
-                            success = true;
-                            console.log('✅ init() ejecutado');
-                        }
-                    } catch (e) {
-                        console.log(`❌ ${method} falló:`, e.message);
-                    }
-                }
-            }
-            
-            if (!success) {
-                document.getElementById('coze-target').innerHTML = 
-                    '<h3>Error: No se pudo inicializar el SDK</h3>' +
-                    '<p>Prueba:</p>' +
-                    '<ol>' +
-                    '<li>Verificar que el SDK se cargó correctamente</li>' +
-                    '<li>Revisar la consola para errores CORS</li>' +
-                    '<li>Contactar a Coze support</li>' +
-                    '</ol>';
-            }
-        }
-        
-        async function getToken() {
-            try {
-                const res = await fetch('/api/coze-token');
-                const data = await res.json();
-                return data.token;
-            } catch {
-                return 'dummy_token_' + Date.now();
-            }
-        }
-        
-        function inspect() {
-            const target = document.getElementById('coze-target');
-            const info = document.getElementById('debug-info');
-            
-            info.innerHTML = `
-                <strong>Contenedor:</strong> ${target.id}<br>
-                <strong>Children:</strong> ${target.children.length}<br>
-                <strong>HTML:</strong> ${target.innerHTML.substring(0, 200)}...
-            `;
-            
-            // Buscar iframes en toda la página
-            const iframes = document.querySelectorAll('iframe');
-            console.log('Iframes encontrados:', iframes.length);
-            iframes.forEach((iframe, i) => {
-                console.log(`Iframe ${i}:`, {
-                    src: iframe.src,
-                    style: iframe.style.cssText,
-                    parent: iframe.parentElement.id
-                });
-            });
-        }
-        
-        window.onload = init;
-    </script>
 </body>
 </html>

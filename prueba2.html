@@ -209,7 +209,8 @@
 
 
 
-<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+ 
+          <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
   <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:gap-4">
     
     <div class="flex items-center justify-between w-full">
@@ -230,51 +231,44 @@
         </button>
 
         <div id="notificationMenu" class="hidden absolute right-0 mt-3 w-64 sm:w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
-  <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
-    <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
-    <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
-  </div>
-
-  <div class="max-h-64 overflow-y-auto">
-    <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default">
-      <div class="flex gap-3 text-left">
-        <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">Hace 2 días</span>
+          <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+            <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
+            <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
           </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">
-            Ya puedes consultar detalles técnicos de la ley con nuestro asistente inteligente.
-          </p>
-        </div>
-      </div>
-    </div>
 
-    <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default">
-      <div class="flex gap-3 text-left">
-        <i class="ph-bold ph-file-pdf text-cura-primary text-lg"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
+          <div class="max-h-64 overflow-y-auto">
+            <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default">
+              <div class="flex gap-3 text-left">
+                <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
+                <div class="flex-1">
+                  <div class="flex justify-between items-start mb-1">
+                    <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                    <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">Hace 2 días</span>
+                  </div>
+                  <p class="text-gray-600 text-[11px] leading-relaxed">Ya puedes consultar detalles técnicos de la ley con nuestro asistente inteligente.</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default">
+              <div class="flex gap-3 text-left">
+                <i class="ph-bold ph-file-pdf text-cura-primary text-lg"></i>
+                <div class="flex-1">
+                  <div class="flex justify-between items-start mb-1">
+                    <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
+                    <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
+                  </div>
+                  <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento con los nuevos anexos técnicos.</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">
-            Se actualizó el documento con los nuevos anexos técnicos.
-          </p>
+          <button onclick="document.getElementById('notificationMenu').classList.remove('show')" class="w-full text-center py-2 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100">CERRAR</button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <button onclick="document.getElementById('notificationMenu').classList.remove('show')" class="w-full text-center py-2 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors">CERRAR</button>
-</div>
-
-    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
+      </div> </div> <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">
-        <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white">Inicio</a>
-        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white">Información</a>
-        <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
+        <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
+        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors">Información</a>
+        <a href="#contacto" class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
       </div>
       <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">Demostración</a>
     </nav>

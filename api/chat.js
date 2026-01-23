@@ -1,48 +1,47 @@
 export default async function handler(req, res) {
-  // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") return res.status(200).end();
-
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
   }
 
   try {
     const { message } = req.body;
-
     if (!message || !message.trim()) {
       return res.status(400).json({ error: "Mensaje vacío" });
     }
 
     /* ======================================================
-       1. EMBEDDING CON DEEPSEEK
+       1. EMBEDDING — OPENROUTER (OPENAI)
     ====================================================== */
 
-    const embedRes = await fetch("https://api.deepseek.com/v1/embeddings", {
+    const embedRes = await fetch("https://openrouter.ai/api/v1/embeddings", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        "Content-Type": "application/json"
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://leycura.org",
+        "X-Title": "LeyCura Chatbot"
       },
       body: JSON.stringify({
-        model: "deepseek-embedding",
+        model: "text-embedding-3-small",
         input: message.slice(0, 3000)
       })
     });
 
     if (!embedRes.ok) {
       const t = await embedRes.text();
-      throw new Error("DeepSeek embedding error: " + t);
+      throw new Error("Embedding error: " + t);
     }
 
     const embedData = await embedRes.json();
     const vector = embedData.data[0].embedding;
 
     /* ======================================================
-       2. QUERY A PINECONE
+       2. QUERY PINECONE
     ====================================================== */
 
     const pineRes = await fetch(
@@ -56,8 +55,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           vector,
           topK: 5,
-          includeMetadata: true,
-          namespace: "leycura"
+          includeMetadata: true
         })
       }
     );
@@ -68,7 +66,6 @@ export default async function handler(req, res) {
     }
 
     const pineData = await pineRes.json();
-
     const matches = pineData.matches || [];
     const sources = matches.length;
 
@@ -79,21 +76,23 @@ export default async function handler(req, res) {
       .slice(0, 6000);
 
     /* ======================================================
-       3. CHAT CON DEEPSEEK
+       3. CHAT — DEEPSEEK (VIA OPENROUTER)
     ====================================================== */
 
     const systemPrompt =
       "Sos un asistente legal argentino especializado exclusivamente en la Ley Cura. " +
-      "Respondé solo usando el contexto provisto. Si no está en el contexto, decí que no figura en la ley.";
+      "Respondé solo usando el contexto provisto. Si no figura en el contexto, decí que no está en la ley.";
 
-    const chatRes = await fetch("https://api.deepseek.com/v1/chat/completions", {
+    const chatRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-        "Content-Type": "application/json"
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://leycura.org",
+        "X-Title": "LeyCura Chatbot"
       },
       body: JSON.stringify({
-        model: "deepseek-chat",
+        model: "deepseek/deepseek-chat",
         temperature: 0.1,
         messages: [
           { role: "system", content: systemPrompt },
@@ -107,17 +106,13 @@ export default async function handler(req, res) {
 
     if (!chatRes.ok) {
       const t = await chatRes.text();
-      throw new Error("DeepSeek chat error: " + t);
+      throw new Error("Chat error: " + t);
     }
 
     const chatData = await chatRes.json();
     const answer =
       chatData.choices?.[0]?.message?.content ||
       "No se pudo generar respuesta.";
-
-    /* ======================================================
-       4. RESPUESTA
-    ====================================================== */
 
     return res.status(200).json({
       answer,
@@ -131,8 +126,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       answer:
-        "Soy el asistente de la Ley Cura. Hubo un error técnico al procesar tu consulta. " +
-        "Intentá reformular la pregunta.",
+        "Soy el asistente de la Ley Cura. Hubo un error técnico al procesar tu consulta.",
       success: true,
       error: true
     });

@@ -114,6 +114,7 @@ Si el usuario consulta sobre el financiamiento, presupuesto o la sostenibilidad 
 
 Siempre explicá que la ley busca la eficiencia operativa para que el sistema se autofinancie mediante el ahorro burocrático.
 
+7. Definicion de la ley si pregunta que es, responde lo siguiente: La Ley C.U.R.A. establece un marco normativo para la transformación digital del sistema sanitario argentino, buscando unificar la información clínica mediante una infraestructura interoperable y federal. El proyecto crea la Historia Clínica Digital, un identificador único de paciente y una credencial nacional para garantizar la portabilidad de datos y la continuidad asistencial. Su implementación es progresiva y modular, integrando herramientas de inteligencia artificial bajo estrictos protocolos éticos y de seguridad informática. Además, la ley moderniza la gestión de farmacias y turnos, eliminando soportes físicos como el troquel para priorizar la soberanía tecnológica nacional. La gobernanza está a cargo de un Consejo Nacional que asegura la transparencia, la privacidad de los datos sensibles y la eficiencia presupuestaria.
 
 FORMATO DE SALIDA:
 

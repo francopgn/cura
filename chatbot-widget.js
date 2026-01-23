@@ -22,6 +22,13 @@
 
     injectStyles() {
       const css = `
+      /* ✅ Bloqueo de desborde horizontal para móviles */
+      html, body {
+        max-width: 100vw;
+        overflow-x: hidden;
+        position: relative;
+      }
+
       :root {
         --cura-primary: #004E85;
         --cura-primary-dark: #00345C;
@@ -46,6 +53,7 @@
         box-shadow: 0 10px 25px rgba(0,78,133,0.4);
         z-index: 2147483647;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        left: auto !important; /* ✅ Asegura que no se mueva a la izquierda */
       }
       .leycura-chat-btn:hover { transform: scale(1.1); }
 
@@ -54,7 +62,9 @@
         bottom: 96px;
         right: 24px;
         width: 360px;
-        height: 550px; /* Un poco más alta para las sugerencias */
+        max-width: calc(100vw - 48px); /* ✅ Evita que el chat se salga de la pantalla en móviles */
+        height: 550px;
+        max-height: 70vh; /* ✅ Evita que tape toda la pantalla verticalmente */
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 15px 50px rgba(0,0,0,0.2);
@@ -68,6 +78,19 @@
         transition: all 0.3s ease;
         border: 1px solid rgba(0,194,255,0.2);
         font-family: 'Inter', system-ui, sans-serif;
+      }
+
+      /* ✅ Ajustes de posición para pantallas muy pequeñas */
+      @media (max-width: 480px) {
+        .leycura-chat-btn {
+          bottom: 20px;
+          right: 20px;
+        }
+        .leycura-chat-window {
+          right: 20px;
+          bottom: 85px;
+          width: calc(100vw - 40px);
+        }
       }
 
       .leycura-chat-window.open {
@@ -123,7 +146,6 @@
         border-bottom-left-radius: 4px;
       }
 
-      /* ✅ ESTILO DE LOS BOTONES DE SUGERENCIA */
       .leycura-suggestions-wrapper {
         display: flex;
         flex-wrap: wrap;
@@ -229,7 +251,6 @@
       this.closeBtn = this.chatWindow.querySelector(".leycura-chat-close");
     }
 
-    // ✅ LÓGICA DE RENDERIZADO DE BOTONES
     addSuggestions(list) {
       const wrapper = document.createElement("div");
       wrapper.className = "leycura-suggestions-wrapper";
@@ -279,53 +300,48 @@
       this.chatWindow.classList.remove("open");
     }
 
-// En tu archivo frontend, dentro de la clase LeyCuraChatbot
+    async sendMessage() {
+      const message = this.inputEl.value.trim();
+      if (!message || this.isLoading) return;
 
-async sendMessage() {
-  const message = this.inputEl.value.trim();
-  if (!message || this.isLoading) return;
+      this.addMessage(message, "user");
+      this.inputEl.value = "";
+      this.isLoading = true;
 
-  this.addMessage(message, "user");
-  this.inputEl.value = "";
-  this.isLoading = true;
+      this.typingEl = document.createElement("div");
+      this.typingEl.className = "leycura-typing";
+      this.typingEl.textContent = "El asistente está pensando...";
+      this.messagesEl.appendChild(this.typingEl);
+      this.scrollToBottom();
 
-  // Mostramos "Pensando..."
-  this.typingEl = document.createElement("div");
-  this.typingEl.className = "leycura-typing";
-  this.typingEl.textContent = "El asistente está pensando...";
-  this.messagesEl.appendChild(this.typingEl);
-  this.scrollToBottom();
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, history: this.history }),
+        });
 
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, history: this.history }),
-    });
+        const data = await res.json();
+        if (this.typingEl) this.typingEl.remove();
 
-    const data = await res.json();
-    if (this.typingEl) this.typingEl.remove();
-
-    if (data.answer) {
-      // 1. Añadimos la respuesta del bot
-      this.addMessage(data.answer, "bot");
-      
-      // 2. ✅ USAMOS LAS SUGERENCIAS DINÁMICAS QUE VIENEN DEL BACKEND
-      if (data.suggestions && data.suggestions.length > 0) {
-        setTimeout(() => {
-          this.addSuggestions(data.suggestions);
-        }, 600);
+        if (data.answer) {
+          this.addMessage(data.answer, "bot");
+          if (data.suggestions && data.suggestions.length > 0) {
+            setTimeout(() => {
+              this.addSuggestions(data.suggestions);
+            }, 600);
+          }
+        } else {
+          this.addMessage("No se pudo generar una respuesta detallada.", "bot");
+        }
+      } catch (e) {
+        if (this.typingEl) this.typingEl.remove();
+        this.addMessage("Error de conexión con el asistente.", "bot");
+      } finally {
+        this.isLoading = false;
+        this.scrollToBottom();
       }
-    } else {
-      this.addMessage("No se pudo generar una respuesta detallada.", "bot");
     }
-  } catch (e) {
-    if (this.typingEl) this.typingEl.remove();
-    this.addMessage("Error de conexión con el asistente.", "bot");
-  } finally {
-    this.isLoading = false;
-  }
-}
 
     addMessage(text, type) {
       const div = document.createElement("div");

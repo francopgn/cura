@@ -124,7 +124,12 @@
         scrollbar-width: thin;
         scrollbar-color: var(--cura-primary) transparent;
       }
-
+      
+.leycura-message b {
+        color: var(--cura-primary-dark);
+        font-weight: 700;
+      }
+      
       .leycura-message {
         max-width: 85%;
         padding: 12px 16px;
@@ -302,23 +307,35 @@
       }
     }
 
-    addMessage(text, type) {
+addMessage(text, type) {
       const div = document.createElement("div");
       div.className = `leycura-message ${type}`;
 
+      // Procesamiento de Markdown mejorado
       let html = text
-        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
-        .replace(/\n-\s?/g, "<br>• ")
+        // 1. Negritas principales (doble asterisco)
+        .replace(/\*\*(.*?)\*\*/g, '<b class="font-bold">$1</b>')
+        
+        // 2. Énfasis / Términos destacados (asterisco simple) 
+        // Los ponemos en un gris oscuro azulado y semibold
+        .replace(/\*(.*?)\*/g, '<span style="color: #334155; font-weight: 600;">$1</span>')
+        
+        // 3. Listas con guiones o asteriscos al inicio de línea
+        .replace(/\n[-*]\s?/g, "<br>• ")
+        
+        // 4. Saltos de línea simples
         .replace(/\n/g, "<br>");
 
       div.innerHTML = html;
       this.messagesEl.appendChild(div);
 
+      // Guardar en historial
       this.history.push({
         role: type === "user" ? "user" : "assistant",
         content: text
       });
       if (this.history.length > 6) this.history.shift();
+
       this.scrollToBottom();
     }
 

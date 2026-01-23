@@ -254,20 +254,29 @@
       }
     }
 
-    addMessage(text, type) {
-      const div = document.createElement("div");
-      div.className = `leycura-message ${type}`;
-      div.innerHTML = text.replace(/\n/g, "<br>");
-      this.messagesEl.appendChild(div);
+  addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = `leycura-message ${type}`;
 
-      this.history.push({
-        role: type === "user" ? "user" : "assistant",
-        content: text
-      });
-      if (this.history.length > 6) this.history.shift();
+  // Markdown básico → HTML
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")   // **negrita**
+    .replace(/\n-\s?/g, "<br>• ")             // - bullets
+    .replace(/\n/g, "<br>");                  // saltos de línea
 
-      this.scrollToBottom();
-    }
+  div.innerHTML = html;
+  this.messagesEl.appendChild(div);
+
+  // Guardar historial (últimos 3 mensajes usuario + 3 bot)
+  this.history.push({
+    role: type === "user" ? "user" : "assistant",
+    content: text
+  });
+  if (this.history.length > 6) this.history.shift();
+
+  this.scrollToBottom();
+}
+
 
     scrollToBottom() {
       this.messagesEl.scrollTop = this.messagesEl.scrollHeight;

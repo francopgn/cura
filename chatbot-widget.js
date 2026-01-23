@@ -15,18 +15,16 @@
       this.createChatWindow();
       this.bindEvents();
       
-      // ✅ Sugerencias iniciales al cargar el chat
       this.renderInitialSuggestions();
-      console.log("🤖 LeyCura Chatbot: Botones de sugerencias activos");
+      console.log("🤖 LeyCura Chatbot: Estética de IA y optimización móvil aplicada");
     }
 
     injectStyles() {
       const css = `
-      /* ✅ Bloqueo de desborde horizontal para móviles */
+      /* ✅ Evita el desplazamiento horizontal en toda la web */
       html, body {
         max-width: 100vw;
         overflow-x: hidden;
-        position: relative;
       }
 
       :root {
@@ -36,35 +34,61 @@
         --cura-accent-light: #59D2FF;
       }
 
+      /* ✅ BOTÓN TIPO PÍLDORA CON IDENTIDAD DE IA */
       .leycura-chat-btn {
         position: fixed !important;
         bottom: 24px;
         right: 24px;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
+        padding: 0 20px;
+        height: 52px;
+        border-radius: 26px;
         background: var(--cura-primary);
         border: 2px solid var(--cura-accent);
         color: #fff;
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 10px;
         cursor: pointer;
-        box-shadow: 0 10px 25px rgba(0,78,133,0.4);
+        box-shadow: 0 8px 20px rgba(0,78,133,0.4);
         z-index: 2147483647;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        left: auto !important; /* ✅ Asegura que no se mueva a la izquierda */
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-family: 'Inter', sans-serif;
+        left: auto !important;
       }
-      .leycura-chat-btn:hover { transform: scale(1.1); }
 
+      .leycura-chat-btn:hover {
+        transform: scale(1.05);
+        background: var(--cura-primary-dark);
+        box-shadow: 0 12px 28px rgba(0,78,133,0.5);
+      }
+
+      .leycura-chat-btn i {
+        font-size: 20px;
+        color: var(--cura-accent);
+        animation: sparkle-glow 2s infinite;
+      }
+
+      .leycura-btn-text {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+
+      @keyframes sparkle-glow {
+        0%, 100% { filter: drop-shadow(0 0 2px var(--cura-accent)); transform: scale(1); }
+        50% { filter: drop-shadow(0 0 8px var(--cura-accent-light)); transform: scale(1.1); }
+      }
+
+      /* ✅ VENTANA DE CHAT */
       .leycura-chat-window {
         position: fixed !important;
-        bottom: 96px;
+        bottom: 85px;
         right: 24px;
         width: 360px;
-        max-width: calc(100vw - 48px); /* ✅ Evita que el chat se salga de la pantalla en móviles */
+        max-width: calc(100vw - 48px);
         height: 550px;
-        max-height: 70vh; /* ✅ Evita que tape toda la pantalla verticalmente */
+        max-height: 70vh;
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 15px 50px rgba(0,0,0,0.2);
@@ -78,19 +102,6 @@
         transition: all 0.3s ease;
         border: 1px solid rgba(0,194,255,0.2);
         font-family: 'Inter', system-ui, sans-serif;
-      }
-
-      /* ✅ Ajustes de posición para pantallas muy pequeñas */
-      @media (max-width: 480px) {
-        .leycura-chat-btn {
-          bottom: 20px;
-          right: 20px;
-        }
-        .leycura-chat-window {
-          right: 20px;
-          bottom: 85px;
-          width: calc(100vw - 40px);
-        }
       }
 
       .leycura-chat-window.open {
@@ -165,7 +176,6 @@
         cursor: pointer;
         transition: all 0.2s;
         text-align: left;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
       }
 
       .leycura-suggestion-btn:hover {
@@ -207,6 +217,22 @@
         0%, 100% { opacity: 0.5; }
         50% { opacity: 1; }
       }
+
+      /* ✅ RESPONSIVO CELULARES */
+      @media (max-width: 480px) {
+        .leycura-chat-btn {
+          bottom: 20px;
+          right: 15px;
+          padding: 0 15px;
+          height: 48px;
+        }
+        .leycura-btn-text { font-size: 13px; }
+        .leycura-chat-window {
+          right: 15px;
+          bottom: 80px;
+          width: calc(100vw - 30px);
+        }
+      }
       `;
       const style = document.createElement("style");
       style.textContent = css;
@@ -216,7 +242,10 @@
     createButton() {
       this.button = document.createElement("button");
       this.button.className = "leycura-chat-btn";
-      this.button.innerHTML = '<i class="ph-bold ph-chats-teardrop"></i>';
+      this.button.innerHTML = `
+        <i class="ph-bold ph-sparkle"></i>
+        <span class="leycura-btn-text">Chat con IA</span>
+      `;
       document.body.appendChild(this.button);
     }
 
@@ -235,7 +264,7 @@
         </div>
         <div class="leycura-chat-messages" id="leycuraMessages">
           <div class="leycura-message bot shadow-sm">
-            ¡Hola! Soy tu asistente virtual. Podés elegir una de estas preguntas o escribir la tuya:
+            ¡Hola! Soy tu asistente virtual inteligente. Podés elegir una de estas preguntas o escribir la tuya:
           </div>
         </div>
         <div class="leycura-chat-input-area">

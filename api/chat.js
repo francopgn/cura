@@ -13,7 +13,11 @@ export default async function handler(req, res) {
     if (!message || !message.trim()) {
       return res.status(400).json({ error: "Mensaje vacío" });
     }
-
+/* ======================================================
+     1. DEFINICIÓN DE LA VARIABLE (Faltaba esto)
+  ====================================================== */
+  // Enriquecemos la consulta para que Pinecone encuentre mejor los temas de dinero/ley
+  const enrichedMessage = `Financiamiento, presupuesto, recursos económicos y artículos de la ${message}`;
     /* ======================================================
        1. EMBEDDING — OPENROUTER (OPENAI)
     ====================================================== */

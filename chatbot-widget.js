@@ -111,12 +111,12 @@
         opacity: 0.8;
         transition: opacity 0.2s;
       }
-      .leycura-chat-close:hover { opacity: 1; }
 
       .leycura-chat-messages {
         flex: 1;
         padding: 16px;
         overflow-y: auto;
+        overflow-x: hidden !important;
         background: #F8FAFC;
         display: flex;
         flex-direction: column;
@@ -139,7 +139,6 @@
         color: #ffffff;
         margin-left: auto;
         border-bottom-right-radius: 4px;
-        box-shadow: 0 2px 8px rgba(0,78,133,0.2);
       }
 
       .leycura-message.bot {
@@ -148,7 +147,6 @@
         color: var(--cura-primary-dark);
         margin-right: auto;
         border-bottom-left-radius: 4px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       }
 
       .leycura-chat-input-area {
@@ -167,11 +165,8 @@
         border-radius: 12px;
         font-size: 14px;
         outline: none;
-        transition: border-color 0.2s;
         color: #111827;
       }
-
-      .leycura-chat-input:focus { border-color: var(--cura-accent); }
 
       .leycura-chat-send {
         background: var(--cura-primary);
@@ -184,37 +179,27 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: background 0.2s;
       }
-      .leycura-chat-send:hover { background: var(--cura-primary-dark); }
 
-  .leycura-typing {
-  font-size: 12px;
-  color: #64748b;
-  font-style: italic;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  background: rgba(0, 194, 255, 0.05);
-  border-radius: 12px;
-  border-bottom-left-radius: 2px;
-  width: fit-content;
-  max-width: 100%;
-  margin-bottom: 8px;
-  animation: pulse-simple 1.5s infinite;
-}
+      .leycura-typing {
+        font-size: 12px;
+        color: #64748b;
+        font-style: italic;
+        padding: 8px 12px;
+        background: rgba(0, 194, 255, 0.05);
+        border-radius: 12px;
+        border-bottom-left-radius: 2px;
+        width: fit-content;
+        max-width: 100%;
+        margin-bottom: 8px;
+        animation: pulse-simple 1.5s infinite;
+      }
 
-@keyframes pulse-simple {
-  0% { opacity: 0.5; }
-  50% { opacity: 1; }
-  100% { opacity: 0.5; }
-}
-
-/* Fix para evitar cualquier scroll horizontal en el contenedor de mensajes */
-.leycura-chat-messages {
-  overflow-x: hidden !important;
-}
+      @keyframes pulse-simple {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.5; }
+      }
       `;
       const style = document.createElement("style");
       style.textContent = css;
@@ -224,7 +209,6 @@
     createButton() {
       this.button = document.createElement("button");
       this.button.className = "leycura-chat-btn";
-      // Usando el icono Phosphor que ya tenés en tu web
       this.button.innerHTML = '<i class="ph-bold ph-chats-teardrop"></i>';
       document.body.appendChild(this.button);
     }
@@ -232,7 +216,7 @@
     createChatWindow() {
       this.chatWindow = document.createElement("div");
       this.chatWindow.className = "leycura-chat-window";
-      this.chatWindow.setAttribute("data-lenis-prevent", ""); // Evita conflictos con Lenis
+      this.chatWindow.setAttribute("data-lenis-prevent", "");
 
       this.chatWindow.innerHTML = `
         <div class="leycura-chat-header">
@@ -242,18 +226,14 @@
           </div>
           <button class="leycura-chat-close"><i class="ph-bold ph-x"></i></button>
         </div>
-
         <div class="leycura-chat-messages" id="leycuraMessages">
           <div class="leycura-message bot shadow-sm">
             ¡Hola! Soy tu asistente virtual. ¿Qué duda tenés sobre la <b>Ley C.U.R.A.</b>?
           </div>
         </div>
-
         <div class="leycura-chat-input-area">
           <input class="leycura-chat-input" id="leycuraInput" placeholder="Escribí tu consulta..." autocomplete="off" />
-          <button class="leycura-chat-send" id="leycuraSend">
-            <i class="ph-bold ph-paper-plane-right"></i>
-          </button>
+          <button class="leycura-chat-send" id="leycuraSend"><i class="ph-bold ph-paper-plane-right"></i></button>
         </div>
       `;
 
@@ -276,9 +256,7 @@
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);
-      if (this.isOpen) {
-        setTimeout(() => this.inputEl.focus(), 300);
-      }
+      if (this.isOpen) setTimeout(() => this.inputEl.focus(), 300);
     }
 
     closeChat() {
@@ -286,51 +264,28 @@
       this.chatWindow.classList.remove("open");
     }
 
- async sendMessage() {
-  const message = this.inputEl.value.trim();
-  if (!message || this.isLoading) return;
+    async sendMessage() {
+      const message = this.inputEl.value.trim();
+      if (!message || this.isLoading) return;
 
-  this.addMessage(message, "user");
-  this.inputEl.value = "";
-  this.isLoading = true;
+      this.addMessage(message, "user");
+      this.inputEl.value = "";
+      this.isLoading = true;
 
-  // ✅ Indicador "Pensando" corregido (estilo anterior, sin desborde)
-  this.typingEl = document.createElement("div");
-  this.typingEl.className = "leycura-typing";
-  this.typingEl.textContent = "El asistente está pensando...";
-  
-  this.messagesEl.appendChild(this.typingEl);
-  this.scrollToBottom();
+      this.typingEl = document.createElement("div");
+      this.typingEl.className = "leycura-typing";
+      this.typingEl.textContent = "El asistente está pensando...";
+      this.messagesEl.appendChild(this.typingEl);
+      this.scrollToBottom();
 
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message,
-        history: this.history
-      }),
-    });
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message, history: this.history }),
+        });
 
-    const data = await res.json();
-
-    if (this.typingEl) this.typingEl.remove();
-
-    if (data.answer) {
-      this.addMessage(data.answer, "bot");
-    } else {
-      this.addMessage("Recibí tu consulta. Estamos procesando los detalles técnicos del proyecto.", "bot");
-    }
-
-  } catch (e) {
-    if (this.typingEl) this.typingEl.remove();
-    this.addMessage("Perdón, tuve un problema de conexión. ¿Podés intentar de nuevo?", "bot");
-  } finally {
-    this.isLoading = false;
-  }
-}
         const data = await res.json();
-
         if (this.typingEl) this.typingEl.remove();
 
         if (data.answer) {
@@ -338,12 +293,12 @@
         } else {
           this.addMessage("Recibí tu consulta. Estamos procesando los detalles técnicos del proyecto.", "bot");
         }
-
       } catch (e) {
         if (this.typingEl) this.typingEl.remove();
         this.addMessage("Perdón, tuve un problema de conexión. ¿Podés intentar de nuevo?", "bot");
       } finally {
         this.isLoading = false;
+        this.scrollToBottom();
       }
     }
 
@@ -351,7 +306,6 @@
       const div = document.createElement("div");
       div.className = `leycura-message ${type}`;
 
-      // Tu lógica de Markdown original
       let html = text
         .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
         .replace(/\n-\s?/g, "<br>• ")
@@ -365,7 +319,6 @@
         content: text
       });
       if (this.history.length > 6) this.history.shift();
-
       this.scrollToBottom();
     }
 

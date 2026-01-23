@@ -5,7 +5,7 @@
     constructor() {
       this.isOpen = false;
       this.isLoading = false;
-      this.history = []; // ✅ memoria corta
+      this.history = []; 
       this.init();
     }
 
@@ -14,139 +14,189 @@
       this.createButton();
       this.createChatWindow();
       this.bindEvents();
-      console.log("🤖 LeyCura Chatbot listo");
+      console.log("🤖 LeyCura Chatbot: Estética C.U.R.A. aplicada");
     }
 
     injectStyles() {
       const css = `
+      :root {
+        --cura-primary: #004E85;
+        --cura-primary-dark: #00345C;
+        --cura-accent: #00C2FF;
+        --cura-accent-light: #59D2FF;
+      }
+
       .leycura-chat-btn {
         position: fixed !important;
-        bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-        border: none;
+        background: var(--cura-primary);
+        border: 2px solid var(--cura-accent);
         color: #fff;
-        font-size: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        box-shadow: 0 4px 20px rgba(37,99,235,.35);
+        box-shadow: 0 10px 25px rgba(0,78,133,0.4);
         z-index: 2147483647;
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
+
+      .leycura-chat-btn:hover { transform: scale(1.1); }
+      .leycura-chat-btn i { font-size: 24px; }
 
       .leycura-chat-window {
         position: fixed !important;
-        bottom: 90px;
-        right: 20px;
-        width: 380px;
+        bottom: 96px;
+        right: 24px;
+        width: 360px;
         height: 500px;
         background: #ffffff;
-        border-radius: 14px;
-        box-shadow: 0 10px 40px rgba(0,0,0,.18);
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.2);
         z-index: 2147483646;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        transform: translateY(20px);
+        transform: translateY(30px) scale(0.95);
         opacity: 0;
         visibility: hidden;
-        transition: .25s;
-        pointer-events: none;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,194,255,0.2);
+        font-family: 'Inter', system-ui, sans-serif;
       }
 
       .leycura-chat-window.open {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
       }
 
       .leycura-chat-header {
-        background: #1e3a8a;
+        background: var(--cura-primary);
         color: #fff;
-        padding: 14px;
+        padding: 16px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-weight: 600;
         flex-shrink: 0;
       }
 
+      .leycura-header-info { display: flex; align-items: center; gap: 8px; }
+      .leycura-status-dot {
+        width: 8px;
+        height: 8px;
+        background: #4ade80;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #4ade80;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse { 
+        0% { transform: scale(1); opacity: 1; } 
+        50% { transform: scale(1.2); opacity: 0.7; } 
+        100% { transform: scale(1); opacity: 1; } 
+      }
+
       .leycura-chat-close {
-        background: rgba(255,255,255,.25);
+        background: none;
         border: none;
         color: #fff;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
         cursor: pointer;
-        font-size: 18px;
+        font-size: 20px;
+        opacity: 0.8;
+        transition: opacity 0.2s;
       }
+      .leycura-chat-close:hover { opacity: 1; }
 
       .leycura-chat-messages {
         flex: 1;
-        padding: 14px;
+        padding: 16px;
         overflow-y: auto;
         background: #F8FAFC;
-        color: #111827;
-        font-family: system-ui, sans-serif;
-        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--cura-primary) transparent;
       }
 
       .leycura-message {
         max-width: 85%;
-        margin-bottom: 10px;
-        padding: 10px 14px;
-        border-radius: 16px;
-        line-height: 1.4;
+        padding: 12px 16px;
+        font-size: 14px;
+        line-height: 1.5;
+        border-radius: 18px;
         word-wrap: break-word;
       }
 
       .leycura-message.user {
-        background: #2563eb;
+        background: var(--cura-primary);
         color: #ffffff;
         margin-left: auto;
         border-bottom-right-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,78,133,0.2);
       }
 
       .leycura-message.bot {
         background: #ffffff;
-        border: 1px solid #E5E7EB;
-        color: #111827;
+        border: 1px solid rgba(0,194,255,0.15);
+        color: var(--cura-primary-dark);
         margin-right: auto;
         border-bottom-left-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       }
 
       .leycura-chat-input-area {
         padding: 12px;
+        background: #ffffff;
         border-top: 1px solid #E5E7EB;
         display: flex;
-        gap: 10px;
-        background: #ffffff;
-        flex-shrink: 0;
+        gap: 8px;
+        align-items: center;
       }
 
       .leycura-chat-input {
         flex: 1;
-        padding: 10px 14px;
+        padding: 10px 16px;
         border: 1px solid #D1D5DB;
-        border-radius: 22px;
+        border-radius: 12px;
         font-size: 14px;
         outline: none;
-        color: #111827 !important;
-        background: #ffffff !important;
+        transition: border-color 0.2s;
+        color: #111827;
       }
 
+      .leycura-chat-input:focus { border-color: var(--cura-accent); }
+
       .leycura-chat-send {
-        background: #2563eb;
+        background: var(--cura-primary);
         color: #ffffff;
         border: none;
-        border-radius: 50%;
+        border-radius: 12px;
         width: 40px;
         height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        flex-shrink: 0;
+        transition: background 0.2s;
+      }
+      .leycura-chat-send:hover { background: var(--cura-primary-dark); }
+
+      .leycura-typing {
+        font-size: 11px;
+        color: #94a3b8;
+        font-style: italic;
+        margin-top: -8px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
       }
       `;
       const style = document.createElement("style");
@@ -157,29 +207,36 @@
     createButton() {
       this.button = document.createElement("button");
       this.button.className = "leycura-chat-btn";
-      this.button.innerHTML = "🤖";
+      // Usando el icono Phosphor que ya tenés en tu web
+      this.button.innerHTML = '<i class="ph-bold ph-chats-teardrop"></i>';
       document.body.appendChild(this.button);
     }
 
     createChatWindow() {
       this.chatWindow = document.createElement("div");
       this.chatWindow.className = "leycura-chat-window";
+      this.chatWindow.setAttribute("data-lenis-prevent", ""); // Evita conflictos con Lenis
 
       this.chatWindow.innerHTML = `
         <div class="leycura-chat-header">
-          <span>🤖 Asistente Ley C.U.R.A.</span>
-          <button class="leycura-chat-close">×</button>
+          <div class="leycura-header-info">
+            <div class="leycura-status-dot"></div>
+            <span style="font-size: 14px; font-weight: 700;">Asistente Ley C.U.R.A.</span>
+          </div>
+          <button class="leycura-chat-close"><i class="ph-bold ph-x"></i></button>
         </div>
 
         <div class="leycura-chat-messages" id="leycuraMessages">
-          <div class="leycura-message bot">
-            Hola, puedo responder consultas sobre la <b>Ley C.U.R.A.</b>.
+          <div class="leycura-message bot shadow-sm">
+            ¡Hola! Soy tu asistente virtual. ¿Qué duda tenés sobre la <b>Ley C.U.R.A.</b>?
           </div>
         </div>
 
         <div class="leycura-chat-input-area">
-          <input class="leycura-chat-input" id="leycuraInput" placeholder="Escribí tu consulta..." />
-          <button class="leycura-chat-send" id="leycuraSend">➤</button>
+          <input class="leycura-chat-input" id="leycuraInput" placeholder="Escribí tu consulta..." autocomplete="off" />
+          <button class="leycura-chat-send" id="leycuraSend">
+            <i class="ph-bold ph-paper-plane-right"></i>
+          </button>
         </div>
       `;
 
@@ -202,7 +259,9 @@
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);
-      if (this.isOpen) setTimeout(() => this.inputEl.focus(), 50);
+      if (this.isOpen) {
+        setTimeout(() => this.inputEl.focus(), 300);
+      }
     }
 
     closeChat() {
@@ -218,10 +277,10 @@
       this.inputEl.value = "";
       this.isLoading = true;
 
-      // ✅ pensando...
+      // ✅ Indicador de pensando con estilo
       this.typingEl = document.createElement("div");
-      this.typingEl.className = "leycura-message bot";
-      this.typingEl.innerText = "Pensando…";
+      this.typingEl.className = "leycura-typing animate-pulse";
+      this.typingEl.innerHTML = '<i class="ph-bold ph-magic-wand"></i> El asistente está pensando...';
       this.messagesEl.appendChild(this.typingEl);
       this.scrollToBottom();
 
@@ -242,44 +301,44 @@
         if (data.answer) {
           this.addMessage(data.answer, "bot");
         } else {
-          this.addMessage("Error al procesar la respuesta.", "bot");
+          this.addMessage("Recibí tu consulta. Estamos procesando los detalles técnicos del proyecto.", "bot");
         }
 
       } catch (e) {
-        console.error(e);
         if (this.typingEl) this.typingEl.remove();
-        this.addMessage("No se pudo conectar con el servidor.", "bot");
+        this.addMessage("Perdón, tuve un problema de conexión. ¿Podés intentar de nuevo?", "bot");
       } finally {
         this.isLoading = false;
       }
     }
 
-  addMessage(text, type) {
-  const div = document.createElement("div");
-  div.className = `leycura-message ${type}`;
+    addMessage(text, type) {
+      const div = document.createElement("div");
+      div.className = `leycura-message ${type}`;
 
-  // Markdown básico → HTML
-  let html = text
-    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")   // **negrita**
-    .replace(/\n-\s?/g, "<br>• ")             // - bullets
-    .replace(/\n/g, "<br>");                  // saltos de línea
+      // Tu lógica de Markdown original
+      let html = text
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/\n-\s?/g, "<br>• ")
+        .replace(/\n/g, "<br>");
 
-  div.innerHTML = html;
-  this.messagesEl.appendChild(div);
+      div.innerHTML = html;
+      this.messagesEl.appendChild(div);
 
-  // Guardar historial (últimos 3 mensajes usuario + 3 bot)
-  this.history.push({
-    role: type === "user" ? "user" : "assistant",
-    content: text
-  });
-  if (this.history.length > 6) this.history.shift();
+      this.history.push({
+        role: type === "user" ? "user" : "assistant",
+        content: text
+      });
+      if (this.history.length > 6) this.history.shift();
 
-  this.scrollToBottom();
-}
-
+      this.scrollToBottom();
+    }
 
     scrollToBottom() {
-      this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+      this.messagesEl.scrollTo({
+        top: this.messagesEl.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }
 

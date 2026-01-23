@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
+    const { message, history = [] } = req.body;
     if (!message || !message.trim()) {
       return res.status(400).json({ error: "Mensaje vacío" });
     }

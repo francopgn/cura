@@ -188,16 +188,33 @@
       }
       .leycura-chat-send:hover { background: var(--cura-primary-dark); }
 
-      .leycura-typing {
-        font-size: 11px;
-        color: #94a3b8;
-        font-style: italic;
-        margin-top: -8px;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
+  .leycura-typing {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(0, 194, 255, 0.05);
+  border-radius: 12px;
+  border-bottom-left-radius: 2px;
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 8px;
+  animation: pulse-simple 1.5s infinite;
+}
+
+@keyframes pulse-simple {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* Fix para evitar cualquier scroll horizontal en el contenedor de mensajes */
+.leycura-chat-messages {
+  overflow-x: hidden !important;
+}
       `;
       const style = document.createElement("style");
       style.textContent = css;
@@ -269,31 +286,49 @@
       this.chatWindow.classList.remove("open");
     }
 
-    async sendMessage() {
-      const message = this.inputEl.value.trim();
-      if (!message || this.isLoading) return;
+ async sendMessage() {
+  const message = this.inputEl.value.trim();
+  if (!message || this.isLoading) return;
 
-      this.addMessage(message, "user");
-      this.inputEl.value = "";
-      this.isLoading = true;
+  this.addMessage(message, "user");
+  this.inputEl.value = "";
+  this.isLoading = true;
 
-      // ✅ Indicador de pensando con estilo
-      this.typingEl = document.createElement("div");
-      this.typingEl.className = "leycura-typing animate-pulse";
-      this.typingEl.innerHTML = '<i class="ph-bold ph-magic-wand"></i> El asistente está pensando...';
-      this.messagesEl.appendChild(this.typingEl);
-      this.scrollToBottom();
+  // ✅ Indicador "Pensando" corregido (estilo anterior, sin desborde)
+  this.typingEl = document.createElement("div");
+  this.typingEl.className = "leycura-typing";
+  this.typingEl.textContent = "El asistente está pensando...";
+  
+  this.messagesEl.appendChild(this.typingEl);
+  this.scrollToBottom();
 
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message,
-            history: this.history
-          }),
-        });
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message,
+        history: this.history
+      }),
+    });
 
+    const data = await res.json();
+
+    if (this.typingEl) this.typingEl.remove();
+
+    if (data.answer) {
+      this.addMessage(data.answer, "bot");
+    } else {
+      this.addMessage("Recibí tu consulta. Estamos procesando los detalles técnicos del proyecto.", "bot");
+    }
+
+  } catch (e) {
+    if (this.typingEl) this.typingEl.remove();
+    this.addMessage("Perdón, tuve un problema de conexión. ¿Podés intentar de nuevo?", "bot");
+  } finally {
+    this.isLoading = false;
+  }
+}
         const data = await res.json();
 
         if (this.typingEl) this.typingEl.remove();

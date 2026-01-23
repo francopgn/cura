@@ -14,7 +14,10 @@
       this.createButton();
       this.createChatWindow();
       this.bindEvents();
-      console.log("🤖 LeyCura Chatbot: Estética C.U.R.A. aplicada");
+      
+      // ✅ Sugerencias iniciales al cargar el chat
+      this.renderInitialSuggestions();
+      console.log("🤖 LeyCura Chatbot: Botones de sugerencias activos");
     }
 
     injectStyles() {
@@ -44,16 +47,14 @@
         z-index: 2147483647;
         transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-
       .leycura-chat-btn:hover { transform: scale(1.1); }
-      .leycura-chat-btn i { font-size: 24px; }
 
       .leycura-chat-window {
         position: fixed !important;
         bottom: 96px;
         right: 24px;
         width: 360px;
-        height: 500px;
+        height: 550px; /* Un poco más alta para las sugerencias */
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 15px 50px rgba(0,0,0,0.2);
@@ -86,32 +87,6 @@
         flex-shrink: 0;
       }
 
-      .leycura-header-info { display: flex; align-items: center; gap: 8px; }
-      .leycura-status-dot {
-        width: 8px;
-        height: 8px;
-        background: #4ade80;
-        border-radius: 50%;
-        box-shadow: 0 0 8px #4ade80;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse { 
-        0% { transform: scale(1); opacity: 1; } 
-        50% { transform: scale(1.2); opacity: 0.7; } 
-        100% { transform: scale(1); opacity: 1; } 
-      }
-
-      .leycura-chat-close {
-        background: none;
-        border: none;
-        color: #fff;
-        cursor: pointer;
-        font-size: 20px;
-        opacity: 0.8;
-        transition: opacity 0.2s;
-      }
-
       .leycura-chat-messages {
         flex: 1;
         padding: 16px;
@@ -122,14 +97,8 @@
         flex-direction: column;
         gap: 12px;
         scrollbar-width: thin;
-        scrollbar-color: var(--cura-primary) transparent;
       }
-      
-.leycura-message b {
-        color: var(--cura-primary-dark);
-        font-weight: 700;
-      }
-      
+
       .leycura-message {
         max-width: 85%;
         padding: 12px 16px;
@@ -154,13 +123,41 @@
         border-bottom-left-radius: 4px;
       }
 
+      /* ✅ ESTILO DE LOS BOTONES DE SUGERENCIA */
+      .leycura-suggestions-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 4px;
+        margin-bottom: 12px;
+      }
+
+      .leycura-suggestion-btn {
+        background: #ffffff;
+        border: 1px solid var(--cura-accent);
+        color: var(--cura-primary);
+        padding: 8px 14px;
+        border-radius: 99px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      }
+
+      .leycura-suggestion-btn:hover {
+        background: var(--cura-accent);
+        color: white;
+        transform: translateY(-2px);
+      }
+
       .leycura-chat-input-area {
         padding: 12px;
         background: #ffffff;
         border-top: 1px solid #E5E7EB;
         display: flex;
         gap: 8px;
-        align-items: center;
       }
 
       .leycura-chat-input {
@@ -173,19 +170,6 @@
         color: #111827;
       }
 
-      .leycura-chat-send {
-        background: var(--cura-primary);
-        color: #ffffff;
-        border: none;
-        border-radius: 12px;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-
       .leycura-typing {
         font-size: 12px;
         color: #64748b;
@@ -193,17 +177,13 @@
         padding: 8px 12px;
         background: rgba(0, 194, 255, 0.05);
         border-radius: 12px;
-        border-bottom-left-radius: 2px;
         width: fit-content;
-        max-width: 100%;
-        margin-bottom: 8px;
         animation: pulse-simple 1.5s infinite;
       }
 
       @keyframes pulse-simple {
-        0% { opacity: 0.5; }
+        0%, 100% { opacity: 0.5; }
         50% { opacity: 1; }
-        100% { opacity: 0.5; }
       }
       `;
       const style = document.createElement("style");
@@ -225,15 +205,15 @@
 
       this.chatWindow.innerHTML = `
         <div class="leycura-chat-header">
-          <div class="leycura-header-info">
-            <div class="leycura-status-dot"></div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 8px; height: 8px; background: #4ade80; border-radius: 50%;"></div>
             <span style="font-size: 14px; font-weight: 700;">Asistente Ley C.U.R.A.</span>
           </div>
           <button class="leycura-chat-close"><i class="ph-bold ph-x"></i></button>
         </div>
         <div class="leycura-chat-messages" id="leycuraMessages">
           <div class="leycura-message bot shadow-sm">
-            ¡Hola! Soy tu asistente virtual. ¿Qué duda tenés sobre la <b>Ley C.U.R.A.</b>?
+            ¡Hola! Soy tu asistente virtual. Podés elegir una de estas preguntas o escribir la tuya:
           </div>
         </div>
         <div class="leycura-chat-input-area">
@@ -247,6 +227,36 @@
       this.inputEl = document.getElementById("leycuraInput");
       this.sendBtn = document.getElementById("leycuraSend");
       this.closeBtn = this.chatWindow.querySelector(".leycura-chat-close");
+    }
+
+    // ✅ LÓGICA DE RENDERIZADO DE BOTONES
+    addSuggestions(list) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "leycura-suggestions-wrapper";
+      
+      list.forEach(text => {
+        const btn = document.createElement("button");
+        btn.className = "leycura-suggestion-btn";
+        btn.textContent = text;
+        btn.onclick = () => {
+          this.inputEl.value = text;
+          this.sendMessage();
+        };
+        wrapper.appendChild(btn);
+      });
+
+      this.messagesEl.appendChild(wrapper);
+      this.scrollToBottom();
+    }
+
+    renderInitialSuggestions() {
+      const initial = [
+        "¿Qué es la ley C.U.R.A.?",
+        "¿Cuáles son las fuentes de financiación?",
+        "¿Cómo garantiza la protección de datos?",
+        "¿Cuáles son los pilares fundamentales?"
+      ];
+      this.addSuggestions(initial);
     }
 
     bindEvents() {
@@ -295,55 +305,45 @@
 
         if (data.answer) {
           this.addMessage(data.answer, "bot");
+          
+          // ✅ SUGERENCIAS POST-RESPUESTA
+          // Dinámicamente podrías traer estas del backend, pero aquí ponemos temas clave
+          setTimeout(() => {
+            const followUps = ["Ver pilares de la Ley", "Más sobre Padrinazgo", "¿Cómo me sumo?"];
+            this.addSuggestions(followUps);
+          }, 600);
+
         } else {
-          this.addMessage("Recibí tu consulta. Estamos procesando los detalles técnicos del proyecto.", "bot");
+          this.addMessage("No se pudo generar respuesta.", "bot");
         }
       } catch (e) {
         if (this.typingEl) this.typingEl.remove();
-        this.addMessage("Perdón, tuve un problema de conexión. ¿Podés intentar de nuevo?", "bot");
+        this.addMessage("Error de conexión.", "bot");
       } finally {
         this.isLoading = false;
-        this.scrollToBottom();
       }
     }
 
-addMessage(text, type) {
+    addMessage(text, type) {
       const div = document.createElement("div");
       div.className = `leycura-message ${type}`;
-
-      // Procesamiento de Markdown mejorado
+      
       let html = text
-        // 1. Negritas principales (doble asterisco)
-        .replace(/\*\*(.*?)\*\*/g, '<b class="font-bold">$1</b>')
-        
-        // 2. Énfasis / Términos destacados (asterisco simple) 
-        // Los ponemos en un gris oscuro azulado y semibold
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
         .replace(/\*(.*?)\*/g, '<span style="color: #334155; font-weight: 600;">$1</span>')
-        
-        // 3. Listas con guiones o asteriscos al inicio de línea
-        .replace(/\n[-*]\s?/g, "<br>• ")
-        
-        // 4. Saltos de línea simples
+        .replace(/\n-\s?/g, "<br>• ")
         .replace(/\n/g, "<br>");
 
       div.innerHTML = html;
       this.messagesEl.appendChild(div);
-
-      // Guardar en historial
-      this.history.push({
-        role: type === "user" ? "user" : "assistant",
-        content: text
-      });
+      
+      this.history.push({ role: type === "user" ? "user" : "assistant", content: text });
       if (this.history.length > 6) this.history.shift();
-
       this.scrollToBottom();
     }
 
     scrollToBottom() {
-      this.messagesEl.scrollTo({
-        top: this.messagesEl.scrollHeight,
-        behavior: 'smooth'
-      });
+      this.messagesEl.scrollTo({ top: this.messagesEl.scrollHeight, behavior: 'smooth' });
     }
   }
 

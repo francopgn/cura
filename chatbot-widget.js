@@ -279,50 +279,53 @@
       this.chatWindow.classList.remove("open");
     }
 
-    async sendMessage() {
-      const message = this.inputEl.value.trim();
-      if (!message || this.isLoading) return;
+// En tu archivo frontend, dentro de la clase LeyCuraChatbot
 
-      this.addMessage(message, "user");
-      this.inputEl.value = "";
-      this.isLoading = true;
+async sendMessage() {
+  const message = this.inputEl.value.trim();
+  if (!message || this.isLoading) return;
 
-      this.typingEl = document.createElement("div");
-      this.typingEl.className = "leycura-typing";
-      this.typingEl.textContent = "El asistente está pensando...";
-      this.messagesEl.appendChild(this.typingEl);
-      this.scrollToBottom();
+  this.addMessage(message, "user");
+  this.inputEl.value = "";
+  this.isLoading = true;
 
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message, history: this.history }),
-        });
+  // Mostramos "Pensando..."
+  this.typingEl = document.createElement("div");
+  this.typingEl.className = "leycura-typing";
+  this.typingEl.textContent = "El asistente está pensando...";
+  this.messagesEl.appendChild(this.typingEl);
+  this.scrollToBottom();
 
-        const data = await res.json();
-        if (this.typingEl) this.typingEl.remove();
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, history: this.history }),
+    });
 
-        if (data.answer) {
-          this.addMessage(data.answer, "bot");
-          
-          // ✅ SUGERENCIAS POST-RESPUESTA
-          // Dinámicamente podrías traer estas del backend, pero aquí ponemos temas clave
-          setTimeout(() => {
-            const followUps = ["Ver pilares de la Ley", "Más sobre Padrinazgo", "¿Cómo me sumo?"];
-            this.addSuggestions(followUps);
-          }, 600);
+    const data = await res.json();
+    if (this.typingEl) this.typingEl.remove();
 
-        } else {
-          this.addMessage("No se pudo generar respuesta.", "bot");
-        }
-      } catch (e) {
-        if (this.typingEl) this.typingEl.remove();
-        this.addMessage("Error de conexión.", "bot");
-      } finally {
-        this.isLoading = false;
+    if (data.answer) {
+      // 1. Añadimos la respuesta del bot
+      this.addMessage(data.answer, "bot");
+      
+      // 2. ✅ USAMOS LAS SUGERENCIAS DINÁMICAS QUE VIENEN DEL BACKEND
+      if (data.suggestions && data.suggestions.length > 0) {
+        setTimeout(() => {
+          this.addSuggestions(data.suggestions);
+        }, 600);
       }
+    } else {
+      this.addMessage("No se pudo generar una respuesta detallada.", "bot");
     }
+  } catch (e) {
+    if (this.typingEl) this.typingEl.remove();
+    this.addMessage("Error de conexión con el asistente.", "bot");
+  } finally {
+    this.isLoading = false;
+  }
+}
 
     addMessage(text, type) {
       const div = document.createElement("div");

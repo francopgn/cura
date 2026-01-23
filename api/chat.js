@@ -52,11 +52,13 @@ export default async function handler(req, res) {
           "Api-Key": process.env.PINECONE_API_KEY,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          vector,
-          topK: 5,
-          includeMetadata: true
-        })
+       body: JSON.stringify({
+  vector,
+  topK: 5,
+  includeMetadata: true,
+  namespace: "leycura"
+})
+
       }
     );
 

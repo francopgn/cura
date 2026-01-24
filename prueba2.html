@@ -209,11 +209,10 @@
 
 
 
- 
-          <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:gap-4">
+ <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
     
-    <div class="flex items-center justify-between w-full">
+    <div class="flex items-center justify-between w-full sm:w-auto sm:justify-start">
       <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
         <div class="leading-tight">
@@ -264,7 +263,10 @@
           </div>
           <button onclick="document.getElementById('notificationMenu').classList.remove('show')" class="w-full text-center py-2 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100">CERRAR</button>
         </div>
-      </div> </div> <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
+      </div> 
+    </div>
+
+    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">
         <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
         <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors">Información</a>

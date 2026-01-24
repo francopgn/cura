@@ -202,6 +202,27 @@
         color: #111827;
       }
 
+/* ✅ BOTÓN DE ENVIAR (Agregalo aquí) */
+.leycura-chat-send {
+  background: var(--cura-primary);
+  color: white;
+  border: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0; /* 🔥 Esto evita que desaparezca en móviles */
+  transition: all 0.2s;
+}
+
+.leycura-chat-send i {
+  font-size: 18px;
+  color: #fff !important;
+}
+
       .leycura-typing {
         font-size: 12px;
         color: #64748b;
@@ -217,6 +238,7 @@
         0%, 100% { opacity: 0.5; }
         50% { opacity: 1; }
       }
+
 
       /* ✅ RESPONSIVO CELULARES */
       @media (max-width: 480px) {

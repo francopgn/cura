@@ -188,14 +188,12 @@
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-
-
-  /* --- ESTILOS DE LA CAMPANA --- */
+/* --- ESTILOS DE NOTIFICACIONES --- */
 .notification-badge-ui {
     position: absolute;
     top: -2px;
     right: -2px;
-    background-color: #ef4444; /* Rojo */
+    background-color: #ef4444;
     color: white;
     font-size: 9px;
     font-weight: bold;
@@ -227,12 +225,10 @@
   </span>
 </div>
 
-
-
- <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3">
+<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     
-    <div class="flex items-center justify-between w-full">
+    <div class="flex items-center justify-between w-full sm:w-auto">
       <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
         <div class="leading-tight">
@@ -242,7 +238,7 @@
       </a>
 
       <div class="sm:hidden relative">
-        <button onclick="toggleMenu()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
           <i class="ph-bold ph-bell text-2xl"></i>
           <span class="notification-badge-ui">1</span>
         </button>
@@ -262,7 +258,7 @@
         </a>
 
         <div class="hidden sm:block relative">
-          <button onclick="toggleMenu()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
             <i class="ph-bold ph-bell text-xl"></i>
             <span class="notification-badge-ui">1</span>
           </button>
@@ -270,13 +266,13 @@
       </div>
     </nav>
 
-    <div id="notificationMenu" class="hidden absolute right-4 sm:right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+    <div id="notificationMenu" class="hidden absolute right-4 sm:right-4 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
       <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
         <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
         <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
       </div>
 
-      <div class="max-h-[400px] overflow-y-visible">
+      <div class="max-h-[400px]">
         <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
           <div class="flex gap-3">
             <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
@@ -302,13 +298,11 @@
           </div>
         </div>
       </div>
-      <button onclick="toggleMenu()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100">CERRAR</button>
+      <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase">Cerrar</button>
     </div>
 
   </div>
 </header>
-
-
 
 <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
   <section class="grid md:grid-cols-2 gap-10 items-center">
@@ -334,22 +328,18 @@
           </button>
         </div>
 
-<a href="/Informacion/documentos/Resumen_Ejecutivo.pdf" target="_blank" 
-   class="group relative inline-flex items-center justify-center overflow-hidden bg-cura-accent px-8 py-4 rounded-full text-white font-bold shadow-lg transition-all duration-300 hover:bg-cura-accent/90 hover:shadow-cura-accent/20">
-  
-  <div class="relative flex flex-col items-center transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
-    
-    <span class="flex items-center gap-2 py-1">
-      <i class="ph-bold ph-file-pdf text-xl"></i>
-      Ver Resumen Ejecutivo
-    </span>
-    
-    <span class="absolute top-full flex items-center gap-2 py-1 whitespace-nowrap text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-      Última actualización: 15/01/2026
-    </span>
-    
-  </div>
-</a>
+        <a href="/Informacion/documentos/Resumen_Ejecutivo.pdf" target="_blank" 
+           class="group relative inline-flex items-center justify-center overflow-hidden bg-cura-accent px-8 py-4 rounded-full text-white font-bold shadow-lg transition-all duration-300 hover:bg-cura-accent/90 hover:shadow-cura-accent/20">
+          <div class="relative flex flex-col items-center transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
+            <span class="flex items-center gap-2 py-1">
+              <i class="ph-bold ph-file-pdf text-xl"></i>
+              Ver Resumen Ejecutivo
+            </span>
+            <span class="absolute top-full flex items-center gap-2 py-1 whitespace-nowrap text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              Última actualización: 15/01/2026
+            </span>
+          </div>
+        </a>
 
         <p class="mt-4 text-[11px] text-cura-accentLight leading-tight">
           Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
@@ -396,816 +386,138 @@
     </div>
   </section>
 
-<section id="informacion" class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-8" data-aos="fade-up">
-    
-    <div class="absolute -top-6 -right-4 w-28 h-28 rounded-full bg-cura-accent/25 blur-2xl"></div>
-
-    <div class="relative z-10 mb-12 text-center max-w-3xl mx-auto">
-        <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide mb-2">
-            SISTEMA C.U.R.A.
-        </p>
-        <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
-            Tu salud, simplificada y segura.
-        </h2>
-        <p class="text-sm md:text-base text-white/90 leading-relaxed">
-            La Ley C.U.R.A. crea la Credencial Única para que tu historia clínica viaje con vos. Un solo sistema que garantiza atención rápida, justa y sin papeles.
-        </p>
-    </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="100">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-identification-card text-cura-accent text-lg"></i> Tu DNI de salud
-        </h3>
-        <p class="text-xs text-cura-accentLight">Funciona como un documento único que unifica tu historia clínica del sector público, privado y obras sociales.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="150">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-shield-check text-cura-accent text-lg"></i> Seguridad y privacidad
-        </h3>
-        <p class="text-xs text-cura-accentLight">Auditorías estrictas y accesos por niveles donde <strong>vos decidís qué información compartir</strong>.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="200">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-globe-hemisphere-west text-cura-accent text-lg"></i> Interoperabilidad
-        </h3>
-        <p class="text-xs text-cura-accentLight">Tu historia clínica viaja con vos. Disponible para consultar en cualquier ciudad o país del exterior.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="250">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-file-x text-cura-accent text-lg"></i> Fin del papeleo
-        </h3>
-        <p class="text-xs text-cura-accentLight">Órdenes, estudios y certificados pasan a digital. Olvidate de perder papeles o llevar estudios viejos.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="300">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-pill text-cura-accent text-lg"></i> Recetas automáticas
-        </h3>
-        <p class="text-xs text-cura-accentLight">¿Medicación crónica? Recibí y validá tus recetas automáticamente sin volver al consultorio.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="350">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-users-three text-cura-accent text-lg"></i> Simplificamos PAMI
-        </h3>
-        <p class="text-xs text-cura-accentLight">Menos filas y trámites presenciales. Turnos rápidos y traslados automáticos para quienes más lo necesitan.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="400">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-first-aid text-cura-accent text-lg"></i> Salvavidas
-        </h3>
-        <p class="text-xs text-cura-accentLight">En una urgencia, un escaneo rápido (QR/NFC) revela tus alergias y datos vitales para salvarte la vida.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="450">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-microscope text-cura-accent text-lg"></i> Basta de repetir estudios
-        </h3>
-        <p class="text-xs text-cura-accentLight">Si ya te lo hiciste, el médico lo ve. Ahorrá tiempo y molestias innecesarias.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="500">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-hand-heart text-cura-accent text-lg"></i> Atención más humana
-        </h3>
-        <p class="text-xs text-cura-accentLight">La tecnología se ocupa de los datos administrativos, el médico se ocupa de vos.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="550">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-calendar-check text-cura-accent text-lg"></i> Conseguí turno rápido
-        </h3>
-        <p class="text-xs text-cura-accentLight">Agenda unificada que encuentra el turno más cercano entre hospitales y clínicas.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="600">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-chart-line-up text-cura-accent text-lg"></i> Recursos donde importan
-        </h3>
-        <p class="text-xs text-cura-accentLight">Al reducir gastos administrativos, el dinero vuelve en mejor atención e insumos médicos.</p>
-    </div>
-
-    <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20" data-aos="fade-up" data-aos-delay="650">
-        <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2">
-            <i class="ph-bold ph-bell-ringing text-cura-accent text-lg"></i> Alertas de salud
-        </h3>
-        <p class="text-xs text-cura-accentLight">Recibí recordatorios automáticos de vacunas y chequeos preventivos según tu edad.</p>
-    </div>
-
-<div class="sm:col-span-2 lg:col-span-3 bg-cura-card rounded-xl border border-cura-accent/60 p-5 shadow-lg transition hover:-translate-y-2 hover:border-cura-accent hover:shadow-cura-accent/10" data-aos="zoom-in" data-aos-delay="700">
-    <h3 class="text-sm md:text-base font-bold text-white mb-2 flex items-center gap-2">
-        <i class="ph-bold ph-brain text-cura-accent text-xl"></i> Salud Mental sin esperas
-    </h3>
-    <p class="text-xs md:text-sm text-cura-accentLight leading-relaxed">
-        Chau a las listas de espera. Derivamos la demanda digital a una <strong>Red de Teleconsulta Federal</strong> para liberar turnos presenciales para quienes más lo necesitan, garantizando atención inmediata y total privacidad en tus sesiones.
-    </p>
-</div>
-
-</div>
- <div class="mt-12 flex justify-center w-full" data-aos="fade-up">
-            <a href="/Informacion/informacion.html" 
-               class="group relative inline-flex items-center gap-2 px-8 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10">
-                <span>Hay más beneficios. <strong>¿Querés saber más? Hacé click acá</strong></span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-            </a>
-        </div>
-        </div>
-
-</section>
-<section id="sumate" class="space-y-6" data-aos="fade-up">
-  <div class="max-w-2xl">
-    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-    <p class="text-sm text-cura-accentLight">Necesitamos reunir firmas para que esto sea una realidad. Completá tus datos para sumarte a la iniciativa y formar parte de la historia.</p>
-  </div>
-
-  <form id="sumate-form"
-        action="https://formsubmit.co/contacto@leycura.org"
-        method="POST"
-        class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
-
-    <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
-    <input type="hidden" name="_template" value="box">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://www.leycura.org/gracias-sumate.html">
-
-    <div class="grid md:grid-cols-2 gap-3">
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
-        <input name="nombre"
-               required
-               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters"
-               inputmode="text"
-               autocomplete="given-name" />
+  <section id="informacion" class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-8" data-aos="fade-up">
+      <div class="absolute -top-6 -right-4 w-28 h-28 rounded-full bg-cura-accent/25 blur-2xl"></div>
+      <div class="relative z-10 mb-12 text-center max-w-3xl mx-auto">
+          <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide mb-2">SISTEMA C.U.R.A.</p>
+          <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Tu salud, simplificada y segura.</h2>
+          <p class="text-sm md:text-base text-white/90 leading-relaxed">La Ley C.U.R.A. crea la Credencial Única para que tu historia clínica viaje con vos. Un solo sistema que garantiza atención rápida, justa y sin papeles.</p>
       </div>
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
-        <input name="apellido"
-               required
-               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters"
-               inputmode="text"
-               autocomplete="family-name" />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20">
+              <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-identification-card text-cura-accent text-lg"></i> Tu DNI de salud</h3>
+              <p class="text-xs text-cura-accentLight">Unifica tu historia clínica del sector público, privado y obras sociales.</p>
+          </div>
+          <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20">
+              <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-shield-check text-cura-accent text-lg"></i> Seguridad</h3>
+              <p class="text-xs text-cura-accentLight">Auditorías estrictas y accesos por niveles donde vos decidís qué compartir.</p>
+          </div>
+          <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md transition hover:-translate-y-2 hover:border-cura-accent/70 hover:shadow-cura-accent/20">
+              <h3 class="text-sm font-semibold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-globe-hemisphere-west text-cura-accent text-lg"></i> Interoperabilidad</h3>
+              <p class="text-xs text-cura-accentLight">Tu historia clínica disponible para consultar en cualquier ciudad o país.</p>
+          </div>
       </div>
-    </div>
+  </section>
 
-    <div class="grid md:grid-cols-2 gap-3">
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
-        <select name="provincia" required
-                class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-          <option value="">Seleccioná una provincia</option>
-          <option value="Buenos Aires">Buenos Aires</option>
-          <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
-          <option value="Catamarca">Catamarca</option>
-          <option value="Chaco">Chaco</option>
-          <option value="Chubut">Chubut</option>
-          <option value="Córdoba">Córdoba</option>
-          <option value="Corrientes">Corrientes</option>
-          <option value="Entre Ríos">Entre Ríos</option>
-          <option value="Formosa">Formosa</option>
-          <option value="Jujuy">Jujuy</option>
-          <option value="La Pampa">La Pampa</option>
-          <option value="La Rioja">La Rioja</option>
-          <option value="Mendoza">Mendoza</option>
-          <option value="Misiones">Misiones</option>
-          <option value="Neuquén">Neuquén</option>
-          <option value="Río Negro">Río Negro</option>
-          <option value="Salta">Salta</option>
-          <option value="San Juan">San Juan</option>
-          <option value="San Luis">San Luis</option>
-          <option value="Santa Cruz">Santa Cruz</option>
-          <option value="Santa Fe">Santa Fe</option>
-          <option value="Santiago del Estero">Santiago del Estero</option>
-          <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
-          <option value="Tucumán">Tucumán</option>
-        </select>
+  <section id="contacto" class="grid md:grid-cols-2 gap-10" data-aos="fade-up">
+      <div class="space-y-6">
+          <h2 class="text-2xl md:text-3xl font-bold text-white">¿Tenés dudas o querés sumarte?</h2>
+          <p class="text-sm md:text-base text-cura-accentLight">Estamos construyendo esto juntos. Si sos profesional o desarrollador, escribinos.</p>
+          <div class="space-y-4">
+              <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-cura-card border border-cura-accent/40 flex items-center justify-center text-cura-accent"><i class="ph-bold ph-envelope-simple text-xl"></i></div>
+                  <div><p class="text-sm font-semibold">contacto@leycura.org</p></div>
+              </div>
+          </div>
       </div>
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
-        <select name="ciudad" id="ciudad-select" required
-                class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-          <option value="">Seleccioná una ciudad</option>
-        </select>
-      </div>
-    </div>
-
-    <div>
-      <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
-      <input type="email"
-             name="email"
-             required
-             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"
-             autocomplete="email" />
-    </div>
-
-<div>
-  <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
-  <input
-    name="dni"
-    id="dni-input"
-    maxlength="8"
-    inputmode="numeric"
-    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"
-    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);"
-  />
-</div>
-
-<div>
-  <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
-  <input
-    name="telefono"
-    id="telefono-input"
-    maxlength="13"
-    inputmode="numeric"
-    class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary"
-    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13);"
-  />
-</div>
-
-
-    <button type="submit"
-            class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold transition hover:bg-cura-accentLight hover:text-cura-primaryDark">
-      Enviar
-    </button>
-    <p class="text-[10px] text-cura-accentLight mt-1">
-      Los campos marcados con * son obligatorios.
-    </p>
-  </form>
-</section>
-
-
-    <section id="contacto" class="space-y-6 mt-16" data-aos="fade-up">
-      <div class="max-w-2xl">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Comunícate con nosotros</h2>
-        <p class="text-sm text-cura-accentLight">Toda pregunta es válida. Nos interesa escuchar tus dudas, aportes y propuestas para que puedas formar parte de esta gran revolución sanitaria.</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8 items-start">
-        <div class="space-y-4" data-aos="fade-right">
-     <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747., sin fines de lucro.</div>
-           <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">SUMARTE</a> a hacerlo y ser parte de la historia.</div>
-          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
-          <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
-          <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
-          <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
-        </div>
-      
-        </div>
-
-     <div data-aos="fade-left">
-<form id="contact-form"
-      class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3"
-      action="/api/contact"
-      method="POST">
-  <div>
-    <label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label>
-    <input type="text" name="nombre"
-           class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
-  </div>
-
-  <div>
-    <label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label>
-    <input type="email" required name="email"
-           class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
-  </div>
-
-  <div>
-    <label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label>
-    <textarea rows="4" name="mensaje"
-              class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"></textarea>
-  </div>
-
-  <button type="submit"
-          class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
-    Enviar
-  </button>
-
-  <p class="text-[10px] text-cura-accentLight mt-1">
-    Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.
-  </p>
-</form>
-
-
-
-
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
-    <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-    <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
-    <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
-  </div>
-</div>
-
-       
-      </div>
-    </section>
-
-<section class="space-y-4 mt-10 md:mt-12" data-aos="fade-up">
-  <div class="max-w-2xl">
-    <h2 class="text-lg md:text-xl font-bold text-white mb-1">MANTENTE CONECTADO</h2>
-    <p class="text-sm text-cura-accentLight">Obtené información sobre los avances de la ley y sobre cómo podés formar parte de esta historia.</p>
-  </div>
-      <form id="newsletter-form" class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
-        <input name="email" type="email" required placeholder="Correo electrónico" class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
-        <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">MANTENERME INFORMADO</button>
+      <form class="bg-cura-card border border-cura-accent/40 rounded-2xl p-6 space-y-4 shadow-xl">
+          <div class="grid grid-cols-2 gap-4">
+              <input type="text" placeholder="Nombre" class="w-full bg-cura-primaryDark/50 border border-cura-accent/20 rounded-lg px-4 py-2 text-sm focus:outline-none" />
+              <input type="email" placeholder="Email" class="w-full bg-cura-primaryDark/50 border border-cura-accent/20 rounded-lg px-4 py-2 text-sm focus:outline-none" />
+          </div>
+          <textarea rows="4" placeholder="¿En qué podemos ayudarte?" class="w-full bg-cura-primaryDark/50 border border-cura-accent/20 rounded-lg px-4 py-2 text-sm focus:outline-none resize-none"></textarea>
+          <button type="button" class="w-full py-3 bg-cura-accent text-white font-bold rounded-lg hover:bg-cura-accentLight transition">ENVIAR MENSAJE</button>
       </form>
-    </section>
+  </section>
+</main>
 
-<section class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md mt-16 text-center" data-aos="zoom-in">
-  <h3 class="text-sm font-semibold text-white mb-1">Tenemos novedades</h3>
-  <p class="text-xs text-cura-accentLight leading-snug">
-    La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>
-    en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.<br>
-    <strong> Un documento de 90 páginas que propone una transformación histórica del sistema de salud.</strong>
-  </p>
-</section>
+<footer class="bg-cura-primaryDark border-t border-cura-accent/20 py-10 text-center text-xs text-cura-accentLight/50">
+    <p>© 2026 Ley C.U.R.A. - Todos los derechos reservados.</p>
+</footer>
 
-
-  </main>
-
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="#informacion" class="hover:text-white">Información</a>
-        <a href="/demonivel2.html" target="_blank" class="hover:text-white">Demo Enfermero</a>
-        <a href="#contacto" class="hover:text-white">Contacto</a>
-      </div>
-    </div>
-  </footer>
-
-  <div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
-    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
-      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-      </div>
-      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2>
-      <p class="text-sm text-gray-600 mb-4">Tu mensaje se ha enviado correctamente. Pronto nos pondremos en contacto.</p>
-      <button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">OK</button>
-    </div>
-  </div>
-
-  <div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
-    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
-      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-      </div>
-      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por sumarte!</h2>
-      <p class="text-sm text-gray-600 mb-4">En breve nos contactaremos para enviarte el formulario de junta de firmas.</p>
-      <button id="sumate-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button>
-    </div>
-  </div>
-
-  <div id="newsletter-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
-    <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
-      <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-      </div>
-      <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
-      <p class="text-sm text-gray-600 mb-4">Vas a recibir cualquier novedad sobre el proyecto.</p>
-      <button id="newsletter-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold mt-4">OK</button>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
-  
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+  AOS.init({ duration: 800, once: true });
 
-  // --- INICIALIZACIÓN AOS ---
-  AOS.init({
-    duration: 800,
-    once: true,
-    offset: 100
-  });
+  // --- FUNCIÓN DE NOVEDADES (Corregida) ---
+  function toggleMenuNovedades() {
+    const menu = document.getElementById('notificationMenu');
+    const badges = document.querySelectorAll('.notification-badge-ui');
+    const KEY = 'visto_novedades_v1';
 
-  // --- INICIALIZACIÓN LENIS (Scroll Suave) ---
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
+    // Abrir/Cerrar menú
+    menu.classList.toggle('show');
+    
+    // Al abrir, ocultamos el badge y guardamos en caché
+    badges.forEach(b => b.classList.add('hidden'));
+    localStorage.setItem(KEY, 'true');
   }
-  requestAnimationFrame(raf);
 
-  // Sincronizar AOS con Lenis
-  lenis.on('scroll', AOS.refresh);
+  document.addEventListener('DOMContentLoaded', function() {
+    const KEY = 'visto_novedades_v1';
+    
+    // Cargar estado de notificación
+    if (localStorage.getItem(KEY) === 'true') {
+        document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
+    }
 
-  // --- BANNER SUPERIOR ROTATIVO (CADA 5s CON FADE + SLIDE) ---
-  const bannerTextEl = document.getElementById('top-banner-text');
-  if (bannerTextEl) {
-    const bannerMessages = [
-      'La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.',
-      'La ley será presentada por primera vez del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas. 90 páginas de transformación histórica de la Salud.',
-      "Ya se encuentra disponible para descargar el Resumen Ejecutivo actualizado. [15/01/26] "
+    // Cerrar al hacer clic afuera
+    document.addEventListener('click', (e) => {
+        const menu = document.getElementById('notificationMenu');
+        const buttons = document.querySelectorAll('button[onclick="toggleMenuNovedades()"]');
+        let clickedOnButton = false;
+        
+        buttons.forEach(btn => { if(btn.contains(e.target)) clickedOnButton = true; });
+
+        if (menu && !menu.contains(e.target) && !clickedOnButton) {
+            menu.classList.remove('show');
+        }
+    });
+
+    // --- LÓGICA DE CREDENCIAL Y BANNER ---
+    const bannerText = document.getElementById('top-banner-text');
+    const messages = [
+      "La ley se encuentra en su etapa final de revisión técnica y estará disponible próximamente en la web.",
+      "¡NUEVO! Ya podés consultar el Resumen Ejecutivo actualizado al 15/01/2026.",
+      "C.U.R.A: Un sistema federal de salud digital diseñado para todos los argentinos."
     ];
-
-    let bannerIndex = 0;
-
+    let currentMsg = 0;
     setInterval(() => {
-      bannerTextEl.classList.add('banner-hidden');
+      bannerText.classList.add('banner-hidden');
       setTimeout(() => {
-        bannerIndex = (bannerIndex + 1) % bannerMessages.length;
-        bannerTextEl.textContent = bannerMessages[bannerIndex];
-        bannerTextEl.classList.remove('banner-hidden');
+        currentMsg = (currentMsg + 1) % messages.length;
+        bannerText.textContent = messages[currentMsg];
+        bannerText.classList.remove('banner-hidden');
       }, 350);
     }, 5000);
-  }
 
+    const cred = document.getElementById('credencial-giratoria');
+    if(cred) cred.addEventListener('click', () => { cred.classList.toggle('is-flipped'); });
 
-  // --- CIUDADES Y GEOREF ---
-  const provinciaSelect = document.querySelector('select[name="provincia"]');
-  const ciudadSelect = document.getElementById('ciudad-select');
-
-  async function cargarCiudades() {
-    if (!provinciaSelect || !ciudadSelect) return;
-    const prov = provinciaSelect.value;
-    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
-    if (!prov) {
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      return;
+    function randNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function poblarCredencial() {
+      const nombres = ["SANTIAGO PEREZ", "MATIAS GOMEZ", "LUCAS RODRIGUEZ", "MARCOS LOPEZ"];
+      const nombre = nombres[randNum(0, nombres.length-1)];
+      const dni = `${randNum(30, 45)}.${randNum(100, 999)}.${randNum(100, 999)}`;
+      
+      if(document.getElementById('cred-nombre-front')) {
+          document.getElementById('cred-nombre-front').textContent = nombre;
+          document.getElementById('cred-nombre-back').textContent = nombre;
+          document.getElementById('cred-dni-front').textContent = `DNI ${dni}`;
+          document.getElementById('cred-dni-back').textContent = `DNI ${dni}`;
+          document.getElementById('cred-id-number').textContent = `ID${randNum(10, 99)}-${dni.replace(/\./g, '')}`;
+      }
     }
-    try {
-      const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov);
-      const res = await fetch(url);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const localidades = (data.localidades || [])
-        .map(l => l.nombre)
-        .sort((a, b) => a.localeCompare(b, 'es'));
-
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      localidades.forEach(nombre => {
-        const opt = document.createElement('option');
-        opt.value = nombre;
-        opt.textContent = nombre;
-        ciudadSelect.appendChild(opt);
-      });
-    } catch (e) {
-      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
-    }
-  }
-
-  if (provinciaSelect) {
-    provinciaSelect.addEventListener('change', cargarCiudades);
-  }
-
-  // --- SCROLL SUAVE Y BOTONES HERO ---
-  const btnSumate = document.getElementById('btn-sumate');
-  const targetSumate = document.getElementById('sumate');
-  const btnInfo = document.getElementById('btn-info');
-  const targetInfo = document.getElementById('informacion');
-  const targetContacto = document.getElementById('contacto');
-
-  const navInicioLinks = document.querySelectorAll('a[href="#inicio"]');
-  const navInfoLinks = document.querySelectorAll('a[href="#informacion"]');
-  const navContactoLinks = document.querySelectorAll('a[href="#contacto"]');
-
-  function smoothScrollTo(element, offset = 100) {
-    if (!element) return;
-    lenis.scrollTo(element, { offset: -offset });
-  }
-
-  if (btnSumate && targetSumate) {
-    btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
-  }
-
-  if (btnInfo && targetInfo) {
-    btnInfo.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo, 100); });
-  }
-
-  navInicioLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); });
+    poblarCredencial();
   });
-
-  navInfoLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetInfo, 100); });
-  });
-
-  navContactoLinks.forEach(link => {
-    link.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetContacto); });
-  });
-
-
-// --- FORMULARIO CONTACTO ---
-const formContact = document.getElementById('contact-form');
-const modalContact = document.getElementById('success-modal');
-const cardContact = modalContact ? modalContact.querySelector('.modal-card') : null;
-const okBtnContact = document.getElementById('success-modal-ok');
-
-function abrirModalContact() {
-  modalContact.classList.remove('hidden');
-  requestAnimationFrame(() => {
-    modalContact.classList.add('show');
-    cardContact.classList.add('show');
-  });
-}
-
-function cerrarModalContact() {
-  modalContact.classList.remove('show');
-  cardContact.classList.remove('show');
-  setTimeout(() => modalContact.classList.add('hidden'), 250);
-}
-
-if (formContact) {
-  formContact.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(formContact);
-    const body = {
-      nombre:  formData.get('nombre')  || '',
-      email:   formData.get('email')   || '',
-      mensaje: formData.get('mensaje') || ''
-    };
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      if (!response.ok) throw new Error();
-      abrirModalContact();
-      formContact.reset();
-    } catch (err) {
-      alert('Ocurrió un error. Intentá nuevamente.');
-    }
-  });
-
-  okBtnContact.addEventListener('click', cerrarModalContact);
-  modalContact.addEventListener('click', e => {
-    if (e.target === modalContact) cerrarModalContact();
-  });
-}
-
-  // --- RESTRICCIONES DE INPUT ---
-  const onlyLettersInputs = document.querySelectorAll('input.only-letters');
-  onlyLettersInputs.forEach(input => {
-    input.addEventListener('input', () => {
-      input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, '');
-    });
-  });
-
-// --- FORMULARIO SUMATE ---
-const sumateForm = document.getElementById('sumate-form');
-const sumateModal = document.getElementById('sumate-modal');
-const sumateCard = sumateModal ? sumateModal.querySelector('.modal-card') : null;
-const sumateOkBtn = document.getElementById('sumate-modal-ok');
-
-function abrirSumateModal() {
-  if (!sumateModal) return;
-  sumateModal.classList.remove('hidden');
-  requestAnimationFrame(() => {
-    sumateModal.classList.add('show');
-    if (sumateCard) sumateCard.classList.add('show');
-  });
-}
-
-function cerrarSumateModal() {
-  if (!sumateModal) return;
-  sumateModal.classList.remove('show');
-  if (sumateCard) sumateCard.classList.remove('show');
-  setTimeout(() => sumateModal.classList.add('hidden'), 250);
-}
-
-if (sumateForm && sumateModal && sumateOkBtn) {
-  sumateForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const submitBtn = sumateForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando…';
-
-    const formData = new FormData(sumateForm);
-    try {
-      const bodyBrevo = {
-        email: (formData.get('email') || '').trim(),
-        nombre: (formData.get('nombre') || '').trim(),
-        apellido: (formData.get('apellido') || '').trim(),
-        provincia: (formData.get('provincia') || '').toString(),
-        ciudad:    (formData.get('ciudad')    || '').toString(),
-        dni: (formData.get('dni') || '').trim(),
-        telefono: (formData.get('telefono') || '').trim()
-      };
-
-      await fetch('/api/sumate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bodyBrevo)
-      });
-
-      await fetch(sumateForm.action, {
-          method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: formData
-      });
-
-      sumateForm.reset();
-      abrirSumateModal();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  });
-
-  sumateOkBtn.addEventListener('click', cerrarSumateModal);
-  sumateModal.addEventListener('click', e => {
-    if (e.target === sumateModal) cerrarSumateModal();
-  });
-}
-
-// --- NEWSLETTER ---
-const newsletterForm = document.getElementById('newsletter-form');
-const newsletterModal = document.getElementById('newsletter-modal');
-const newsletterCard = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
-const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
-
-function abrirNewsletterModal() {
-  if (!newsletterModal) return;
-  newsletterModal.classList.remove('hidden');
-  requestAnimationFrame(() => {
-    newsletterModal.classList.add('show');
-    if (newsletterCard) newsletterCard.classList.add('show');
-  });
-}
-
-function cerrarNewsletterModal() {
-  if (!newsletterModal) return;
-  newsletterModal.classList.remove('show');
-  if (newsletterCard) newsletterCard.classList.remove('show');
-  setTimeout(() => newsletterModal.classList.add('hidden'), 250);
-}
-
-if (newsletterForm && newsletterModal && newsletterOkBtn) {
-  newsletterForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const submitBtn = newsletterForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando…';
-
-    try {
-      const formData = new FormData(newsletterForm);
-      const bodyBrevo = { email: formData.get('email') || '' };
-      await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(bodyBrevo)
-      });
-      newsletterForm.reset();
-      abrirNewsletterModal();
-    } catch (err) {
-      alert('Ocurrió un error.');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  });
-
-  newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
-  newsletterModal.addEventListener('click', e => {
-    if (e.target === newsletterModal) cerrarNewsletterModal();
-  });
-}
-
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  // Funcionalidad de giro
-  const card = document.getElementById('credencial-giratoria');
-  if (card) { card.addEventListener('click', function() { this.classList.toggle('is-flipped'); }); }
-
-  // --- LOGICA CREDENCIAL ---
-  const nombres = ["Franco", "María", "Carlos", "Ana", "Pedro", "Lucía", "Miguel", "Sofía", "Jorge", "Elena", "Martín", "Julia"];
-  const apellidos = ["García", "Rodríguez", "López", "Martínez", "González", "Pérez", "Sánchez", "Romero", "Sosa", "Torres"];
-  const localidadesCoherentes = {
-      "CABA": ["Ciudad Autónoma de Buenos Aires"],
-      "Buenos Aires": ["La Plata", "Mar del Plata", "Bahía Blanca", "General Rodríguez"],
-      "Córdoba": ["Córdoba Capital", "Villa Carlos Paz", "Río Cuarto"],
-      "Santa Fe": ["Rosario", "Santa Fe Capital", "Rafaela"],
-      "Mendoza": ["Mendoza Capital", "San Rafael", "Godoy Cruz"],
-      "Tucumán": ["San Miguel de Tucumán", "Tafí Viejo"]
-  };
-  const tiposSangre = ["A+", "A-", "B+", "B-", "O+", "O-"];
-  const alergiasBase = ["PENICILINA", "CIPROFLOXACINA", "POLEN", "ÁCAROS", "SULFAS", "LATEX", "FRUTILLAS"];
-  const operacionesBase = ["APENDICECTOMÍA", "CESÁREA", "COLECISTECTOMÍA", "BOMBA DE MORFINA", "BYPASS GÁSTRICO", "AMIGDALECTOMÍA"];
-  const medsComunes = ["IBUPROFENO", "PARACETAMOL", "ASPIRINA"];
-  const perfilesMedicos = [
-    { nombre: "Sano", antecedentes: [], medicamentos: [] },
-    { nombre: "Hipertenso", antecedentes: ["HIPERTENSIÓN"], medicamentos: ["ENALAPRIL", "LOSARTÁN"] },
-    { nombre: "Diabético Tipo 2", antecedentes: ["DIABETES T2"], medicamentos: ["METFORMINA"] },
-    { nombre: "Asmático", antecedentes: ["ASMA"], medicamentos: ["SALBUTAMOL"] }
-  ];
-
-  function randItem(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-  function randNum(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-  function genDNI() { const num = randNum(10000000, 59999999).toString(); return `${num.slice(0, 2)}.${num.slice(2, 5)}.${num.slice(5)}`; }
-  function genFechaNac() { const dia = String(randNum(1, 28)); const mes = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"][randNum(0, 11)]; const anio = randNum(1950, 2005); return `${dia} ${mes} ${anio}`; }
-  function genTel() { return `011 ${randNum(1000,9999)} ${randNum(1000,9999)}<br>011 ${randNum(1000,9999)} ${randNum(1000,9999)}`; }
-  
-  function pickSubset(sourceArray, maxItems) {
-    let result = [];
-    let tempArray = [...sourceArray];
-    const count = randNum(1, Math.min(maxItems, tempArray.length));
-    for (let i = 0; i < count; i++) {
-        const randomIndex = Math.floor(Math.random() * tempArray.length);
-        result.push(tempArray.splice(randomIndex, 1)[0]);
-    }
-    return result;
-  }
-
-  function poblarCredencial() {
-    const fullName = `${randItem(nombres)} ${randItem(apellidos)}`;
-    const dni = genDNI();
-    const sangreTxt = randItem(tiposSangre);
-    const perfil = randItem(perfilesMedicos);
-    const antecedentesTxt = (perfil.antecedentes.length > 0) ? randItem(perfil.antecedentes) : "SIN PATOLOGÍAS REGISTRADAS";
-    let medsFinales = (perfil.medicamentos.length > 0) ? pickSubset(perfil.medicamentos, 2) : [];
-    const medicamentosTxt = (medsFinales.length > 0) ? medsFinales.join('<br>') : "SIN MEDICACIÓN VITAL EN USO";
-    const alergiasTxt = (Math.random() > 0.7) ? "NO REFIERE" : pickSubset(alergiasBase, 1).join('<br>');
-    const operacionesTxt = (Math.random() > 0.6) ? "NO REFIERE" : pickSubset(operacionesBase, 2).join('<br>');
-
-    document.getElementById('cred-nombre-front').textContent = fullName;
-    document.getElementById('cred-dni-front').textContent = `D.N.I: ${dni}`;
-    document.getElementById('cred-sangre').textContent = sangreTxt;
-    document.getElementById('cred-fecha-nac').textContent = genFechaNac();
-    const provinciasKeys = Object.keys(localidadesCoherentes);
-    const provElegida = randItem(provinciasKeys);
-    const ciudadElegida = randItem(localidadesCoherentes[provElegida]);
-    document.getElementById('cred-domicilio').innerHTML = `${ciudadElegida}<br>${provElegida}`;
-    document.getElementById('cred-contactos').innerHTML = genTel();
-    document.getElementById('cred-antecedentes').innerHTML = antecedentesTxt;
-    document.getElementById('cred-medicamentos').innerHTML = medicamentosTxt;
-    document.getElementById('cred-alergias').innerHTML = alergiasTxt;
-    document.getElementById('cred-operaciones').innerHTML = operacionesTxt;
-
-    document.getElementById('cred-nombre-back').textContent = fullName;
-    document.getElementById('cred-dni-back').textContent = `D.N.I: ${dni}`;
-    document.getElementById('cred-id-number').textContent = `ID${randNum(10, 99)}-${dni.replace(/\./g, '')}`;
-  }
-
-  poblarCredencial();
-});
 </script>
 
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
 <script>
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    smoothWheel: true
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
+  const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
-
-  // Importante: refrescar AOS cuando Lenis haga scroll
-  lenis.on('scroll', () => {
-    if (typeof AOS !== 'undefined') {
-      AOS.refresh();
-    }
-  });
 </script>
-<!-- En tu layout principal o index.html -->
 <script src="/chatbot-widget.js" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const bell = document.getElementById('notificationBell');
-    const badge = document.getElementById('notificationBadge');
-    const menu = document.getElementById('notificationMenu');
-    const KEY = 'visto_ia_v1';
-
-    if (localStorage.getItem(KEY) === 'true') badge.classList.add('hidden');
-
-    bell.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.toggle('show');
-        badge.classList.add('hidden');
-        localStorage.setItem(KEY, 'true');
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== bell) menu.classList.remove('show');
-    });
-});
-</script>
-
 </body>
 </html>

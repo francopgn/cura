@@ -772,42 +772,44 @@
   
 <script>
 
-   // --- FUNCIÓN DE NOVEDADES (Corregida) ---
-  function toggleMenuNovedades() {
+// 1. LA FUNCIÓN SIEMPRE FUERA DE TODO PARA QUE EL BOTÓN LA ENCUENTRE
+function toggleMenuNovedades() {
     const menu = document.getElementById('notificationMenu');
     const badges = document.querySelectorAll('.notification-badge-ui');
     const KEY = 'visto_novedades_v1';
 
-    // Abrir/Cerrar menú
-    menu.classList.toggle('show');
+    if (menu) menu.classList.toggle('show');
     
-    // Al abrir, ocultamos el badge y guardamos en caché
+    // Al abrir, ocultamos los badges y guardamos en caché
     badges.forEach(b => b.classList.add('hidden'));
     localStorage.setItem(KEY, 'true');
-  }
+}
 
-
-  
+// 2. TODO EL RESTO DENTRO DE UN SOLO DOMCONTENTLOADED
 document.addEventListener('DOMContentLoaded', function () {
-  const KEY = 'visto_novedades_v1';
+    const KEY = 'visto_novedades_v1';
     
-    // Cargar estado de notificación
+    // Cargar estado inicial de la notificación (si ya se vio)
     if (localStorage.getItem(KEY) === 'true') {
         document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
     }
 
-    // Cerrar al hacer clic afuera
+    // CERRAR AL HACER CLIC AFUERA (Aquí estaba el error de llaves)
     document.addEventListener('click', (e) => {
         const menu = document.getElementById('notificationMenu');
         const buttons = document.querySelectorAll('button[onclick="toggleMenuNovedades()"]');
         let clickedOnButton = false;
         
-        buttons.forEach(btn => { if(btn.contains(e.target)) clickedOnButton = true; });
+        buttons.forEach(btn => { 
+            if(btn.contains(e.target)) clickedOnButton = true; 
+        });
 
         if (menu && !menu.contains(e.target) && !clickedOnButton) {
             menu.classList.remove('show');
         }
-  // --- INICIALIZACIÓN AOS ---
+    }); // <--- AQUÍ SE CIERRA EL EVENTO DE CLIC
+
+    // --- INICIALIZACIÓN AOS ---
   AOS.init({
     duration: 800,
     once: true,

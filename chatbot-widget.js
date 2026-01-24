@@ -242,12 +242,18 @@
 
       /* ✅ RESPONSIVO CELULARES */
       @media (max-width: 480px) {
-        .leycura-chat-btn {
-          bottom: 20px;
-          right: 15px;
-          padding: 0 15px;
-          height: 48px;
-        }
+        .leycura-chat-window {
+    right: 15px;
+    bottom: 80px;
+    width: calc(100vw - 30px);
+    transition: all 0.3s ease; /* Suaviza el movimiento al subir */
+  }
+
+  /* ✅ Esta clase se activará cuando el usuario toque el input */
+  .leycura-chat-window.keyboard-up {
+    bottom: 10px !important; /* Lo sube para ganar espacio */
+    height: 85vh !important; /* Lo hace más alto para ver los mensajes anteriores */
+  }
         .leycura-btn-text { font-size: 13px; }
         .leycura-chat-window {
           right: 15px;

@@ -321,7 +321,7 @@
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);
-      if (this.isOpen) setTimeout(() => this.inputEl.focus(), 300);
+    /*  if (this.isOpen) setTimeout(() => this.inputEl.focus(), 300); */
     }
 
     closeChat() {

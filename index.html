@@ -226,7 +226,7 @@
 
 
 <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
     
     <div class="flex items-center justify-between w-full sm:w-auto">
       <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
@@ -266,12 +266,11 @@
       </div>
     </nav>
 
-    <div id="notificationMenu" class="hidden absolute right-4 sm:right-4 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+    <div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
       <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
         <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
         <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
       </div>
-
       <div class="max-h-[400px]">
         <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
           <div class="flex gap-3">
@@ -300,10 +299,8 @@
       </div>
       <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase">Cerrar</button>
     </div>
-
   </div>
 </header>
-
 
 <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
   <section class="grid md:grid-cols-2 gap-10 items-center">
@@ -500,7 +497,7 @@
         Chau a las listas de espera. Derivamos la demanda digital a una <strong>Red de Teleconsulta Federal</strong> para liberar turnos presenciales para quienes más lo necesitan, garantizando atención inmediata y total privacidad en tus sesiones.
     </p>
 </div>
-
+</div>
  <div class="mt-12 flex justify-center w-full" data-aos="fade-up">
             <a href="/Informacion/informacion.html" 
                class="group relative inline-flex items-center gap-2 px-8 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10">

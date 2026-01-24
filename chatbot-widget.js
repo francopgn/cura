@@ -344,8 +344,20 @@
       this.inputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") this.sendMessage();
       });
+     // ✅ NUEVO: Detectar cuando el usuario va a escribir en móvil
+  this.inputEl.addEventListener("focus", () => {
+    if (window.innerWidth <= 480) {
+      this.chatWindow.classList.add("keyboard-up");
+      // Pequeño delay para asegurar que el scroll se ajuste tras subir
+      setTimeout(() => this.scrollToBottom(), 300);
     }
+  });
 
+  // ✅ NUEVO: Detectar cuando el usuario deja de escribir
+  this.inputEl.addEventListener("blur", () => {
+    this.chatWindow.classList.remove("keyboard-up");
+  });
+}
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);

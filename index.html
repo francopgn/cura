@@ -501,7 +501,6 @@
     </p>
 </div>
 
-</div>
  <div class="mt-12 flex justify-center w-full" data-aos="fade-up">
             <a href="/Informacion/informacion.html" 
                class="group relative inline-flex items-center gap-2 px-8 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/25 hover:-translate-y-0.5 border border-white/10">
@@ -772,14 +771,6 @@
   <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
   
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  // --- INICIALIZACIÓN AOS ---
-  AOS.init({
-    duration: 800,
-    once: true,
-    offset: 100
-  });
 
    // --- FUNCIÓN DE NOVEDADES (Corregida) ---
   function toggleMenuNovedades() {
@@ -795,8 +786,10 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem(KEY, 'true');
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const KEY = 'visto_novedades_v1';
+
+  
+document.addEventListener('DOMContentLoaded', function () {
+  const KEY = 'visto_novedades_v1';
     
     // Cargar estado de notificación
     if (localStorage.getItem(KEY) === 'true') {
@@ -814,7 +807,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (menu && !menu.contains(e.target) && !clickedOnButton) {
             menu.classList.remove('show');
         }
-    });
+  // --- INICIALIZACIÓN AOS ---
+  AOS.init({
+    duration: 800,
+    once: true,
+    offset: 100
+  });
 
   // --- INICIALIZACIÓN LENIS (Scroll Suave) ---
   const lenis = new Lenis({

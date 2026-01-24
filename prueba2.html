@@ -191,57 +191,31 @@
 
 
   /* --- ESTILOS DE LA CAMPANA --- */
-
-.notification-wrapper {
-    position: absolute; /* En móvil sale del flujo y se va arriba */
-    top: 1.25rem;       /* Alineado con el logo en móvil */
-    right: 1rem;
-}
-
-@media (min-width: 640px) {
-    .notification-wrapper {
-        position: static; /* En PC se vuelve a poner al lado del botón */
-    }
-}
-
-.bell-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #59D2FF; /* accentLight */
-    transition: color 0.2s;
-    outline: none;
-    
-    /* Tamaño proporcional al botón de demostración */
-    width: 32px; 
-    height: 32px;
-    font-size: 1.4rem;
-}
-
-.bell-button:hover {
-    color: white;
-}
-
-.notification-badge {
+.notification-badge-ui {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -2px;
+    right: -2px;
     background-color: #ef4444; /* Rojo */
     color: white;
     font-size: 9px;
     font-weight: bold;
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    border: 2px solid #00345C; /* primaryDark */
+    border: 2px solid #00345C;
+    pointer-events: none;
 }
 
-#notificationMenu.show { display: block; }
+#notificationMenu.show { display: block !important; }
 
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-fade-in { animation: fadeInScale 0.2s ease-out forwards; }
 </style>
 
 </head>
@@ -256,9 +230,9 @@
 
 
  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between relative">
+  <div class="max-w-5xl mx-auto px-4 py-3">
     
-    <div class="flex items-center justify-between w-full sm:w-auto">
+    <div class="flex items-center justify-between w-full">
       <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
         <div class="leading-tight">
@@ -266,6 +240,13 @@
           <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
         </div>
       </a>
+
+      <div class="sm:hidden relative">
+        <button onclick="toggleMenu()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <i class="ph-bold ph-bell text-2xl"></i>
+          <span class="notification-badge-ui">1</span>
+        </button>
+      </div>
     </div>
 
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
@@ -280,36 +261,50 @@
           Demostración
         </a>
 
-        <div class="notification-wrapper">
-          <button id="notificationBell" class="bell-button">
-            <i class="ph-bold ph-bell"></i>
-            <span id="notificationBadge" class="notification-badge">1</span>
+        <div class="hidden sm:block relative">
+          <button onclick="toggleMenu()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+            <i class="ph-bold ph-bell text-xl"></i>
+            <span class="notification-badge-ui">1</span>
           </button>
-
-          <div id="notificationMenu" class="hidden absolute right-0 mt-3 w-64 sm:w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
-            <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
-              <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
-              <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
-            </div>
-            <div class="max-h-64 overflow-y-auto">
-              <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default">
-                <div class="flex gap-3 text-left">
-                  <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
-                  <div class="flex-1">
-                    <div class="flex justify-between items-start mb-1">
-                      <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
-                      <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">Hace 2 días</span>
-                    </div>
-                    <p class="text-gray-600 text-[11px] leading-relaxed">Ya puedes consultar detalles técnicos de la ley con nuestro asistente inteligente.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <button onclick="document.getElementById('notificationMenu').classList.remove('show')" class="w-full text-center py-2 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100">CERRAR</button>
-          </div>
-        </div> 
+        </div>
       </div>
     </nav>
+
+    <div id="notificationMenu" class="hidden absolute right-4 sm:right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+      <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+        <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
+        <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
+      </div>
+
+      <div class="max-h-[400px] overflow-y-visible">
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">Hace 2 días</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento con los nuevos anexos técnicos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleMenu()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100">CERRAR</button>
+    </div>
+
   </div>
 </header>
 

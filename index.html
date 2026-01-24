@@ -187,7 +187,32 @@
     border-style: solid;
     border-color: rgba(255, 255, 255, 0.5);
 }
-  
+  /* --- ESTILOS DE NOTIFICACIONES --- */
+.notification-badge-ui {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 2px solid #00345C;
+    pointer-events: none;
+}
+
+#notificationMenu.show { display: block !important; }
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-fade-in { animation: fadeInScale 0.2s ease-out forwards; }
 </style>
 
 </head>
@@ -201,21 +226,81 @@
 
 
 <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     
-    <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
-      <img src="/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
-      <div class="leading-tight">
-        <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
-        <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+    <div class="flex items-center justify-between w-full sm:w-auto">
+      <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
+        <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
+        <div class="leading-tight">
+          <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
+          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+        </div>
+      </a>
+
+      <div class="sm:hidden relative">
+        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <i class="ph-bold ph-bell text-2xl"></i>
+          <span class="notification-badge-ui">1</span>
+        </button>
       </div>
-    </a>
-    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-center sm:justify-end mt-2 sm:mt-0">
-      <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white">Inicio</a>
-      <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white">Información</a>
-      <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
-      <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">Demostración</a>
+    </div>
+
+    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
+      <div class="flex gap-4">
+        <a href="#inicio" class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
+        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors">Información</a>
+        <a href="#contacto" class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
+          Demostración
+        </a>
+
+        <div class="hidden sm:block relative">
+          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+            <i class="ph-bold ph-bell text-xl"></i>
+            <span class="notification-badge-ui">1</span>
+          </button>
+        </div>
+      </div>
     </nav>
+
+    <div id="notificationMenu" class="hidden absolute right-4 sm:right-4 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+      <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+        <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
+        <span class="text-[9px] text-gray-400 font-medium">Actualizado: 23/01/26</span>
+      </div>
+
+      <div class="max-h-[400px]">
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">Hace 2 días</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento con los nuevos anexos técnicos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase">Cerrar</button>
+    </div>
+
   </div>
 </header>
 
@@ -695,6 +780,41 @@ document.addEventListener('DOMContentLoaded', function () {
     once: true,
     offset: 100
   });
+
+   // --- FUNCIÓN DE NOVEDADES (Corregida) ---
+  function toggleMenuNovedades() {
+    const menu = document.getElementById('notificationMenu');
+    const badges = document.querySelectorAll('.notification-badge-ui');
+    const KEY = 'visto_novedades_v1';
+
+    // Abrir/Cerrar menú
+    menu.classList.toggle('show');
+    
+    // Al abrir, ocultamos el badge y guardamos en caché
+    badges.forEach(b => b.classList.add('hidden'));
+    localStorage.setItem(KEY, 'true');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const KEY = 'visto_novedades_v1';
+    
+    // Cargar estado de notificación
+    if (localStorage.getItem(KEY) === 'true') {
+        document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
+    }
+
+    // Cerrar al hacer clic afuera
+    document.addEventListener('click', (e) => {
+        const menu = document.getElementById('notificationMenu');
+        const buttons = document.querySelectorAll('button[onclick="toggleMenuNovedades()"]');
+        let clickedOnButton = false;
+        
+        buttons.forEach(btn => { if(btn.contains(e.target)) clickedOnButton = true; });
+
+        if (menu && !menu.contains(e.target) && !clickedOnButton) {
+            menu.classList.remove('show');
+        }
+    });
 
   // --- INICIALIZACIÓN LENIS (Scroll Suave) ---
   const lenis = new Lenis({

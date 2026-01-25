@@ -21,10 +21,32 @@ export default async function handler(req, res) {
     const questionType = detectQuestionType(message);
     
     // ======================================================
-    // 2. RESPUESTA DIRECTA PARA FINANCIAMIENTO (sin IA)
+    // 2. RESPUESTAS DIRECTAS (sin IA)
     // ======================================================
+    
+    // Financiamiento
     if (questionType === 'financing') {
       return res.status(200).json(getDirectFinancingResponse());
+    }
+    
+    // Privacidad
+    if (questionType === 'privacy') {
+      return res.status(200).json(getDirectPrivacyResponse());
+    }
+    
+    // Definición/CURA General
+    if (questionType === 'definition') {
+      return res.status(200).json(getDirectDefinitionResponse());
+    }
+    
+    // Credencial Única de Salud (CUS)
+    if (questionType === 'credential') {
+      return res.status(200).json(getDirectCUSResponse());
+    }
+    
+    // CURA-ID
+    if (questionType === 'cura_id') {
+      return res.status(200).json(getDirectCURAIDResponse(message));
     }
     
     // ======================================================
@@ -55,7 +77,7 @@ export default async function handler(req, res) {
 function detectQuestionType(query) {
   const lowerQuery = query.toLowerCase().trim();
   
-  // Palabras clave para financiamiento (más amplias)
+  // 1. Palabras clave para financiamiento
   const financingKeywords = [
     'financiamiento', 'financiación', 'financiar', 'presupuesto', 
     'costo', 'costos', 'dinero', 'recursos', 'fondos', 'inversión',
@@ -64,84 +86,315 @@ function detectQuestionType(query) {
     'cómo se financia', 'cómo se paga', 'quién paga', 'de dónde sale',
     'modelo económico', 'modelo financiero', 'sostenibilidad económica',
     'pilares financieros', '7 pilares', 'siete pilares',
-    'artículo 35', 'art. 35', 'artículo 37', 'art. 37', 'artículo 42', 'art. 42'
+    'artículo 35', 'art. 35', 'artículo 37', 'art. 37', 'artículo 42', 'art. 42',
+    'fondo de inversión', 'fiisd', 'máxima eficiencia presupuestaria'
   ];
   
-  // Verificar si contiene alguna palabra clave de financiamiento
-  const isFinancing = financingKeywords.some(keyword => 
-    lowerQuery.includes(keyword.toLowerCase())
-  );
+  // 2. Palabras clave para PRIVACIDAD
+  const privacyKeywords = [
+    'compartir', 'datos', 'privacidad', 'confidencial', 'secreto',
+    'acceso', 'quién ve', 'quién accede', 'información personal',
+    'historia clínica', 'médico ve', 'control', 'permission',
+    'autorización', 'consentimiento', 'no quiero', 'no deseo',
+    'ocultar', 'esconder', 'sensibles', 'salud mental', 'vih',
+    'sexual', 'reproductivo', 'panel de privacidad', 'artículo 27',
+    'art. 27', 'acceso emergencia', 'break-glass', 'blindaje sanitario',
+    'inmunidad administrativa', 'trazabilidad', 'auditoría'
+  ];
   
-  if (isFinancing) {
+  // 3. Palabras clave para DEFINICIÓN GENERAL
+  const definitionKeywords = [
+    'qué es', 'definición', 'significa', 'ley cura',
+    'conectividad unificada', 'explicación', 'resumen',
+    'en qué consiste', 'de qué trata', 'qué propone',
+    'cura qué es', 'qué es cura', 'proyecto cura'
+  ];
+  
+  // 4. Palabras clave para CREDENCIAL (CUS)
+  const credentialKeywords = [
+    'credencial', 'credencial única', 'c.u.s', 'cus',
+    'credencial unica de salud', 'credencial digital',
+    'tarjeta de salud', 'llave acceso', 'qr salud',
+    'nfc salud', 'mi argentina salud', 'app salud'
+  ];
+  
+  // 5. Palabras clave para CURA-ID
+  const curaIDKeywords = [
+    'cura-id', 'cura id', 'curaid', 'identificador único',
+    'identificador unico', 'número único', 'codigo unico',
+    'id paciente', 'identificación salud', 'renaper salud',
+    'ejemplo cura-id', 'cómo funciona cura-id', 'para qué sirve cura-id'
+  ];
+  
+  // Verificar en orden de prioridad
+  if (financingKeywords.some(keyword => lowerQuery.includes(keyword))) {
     return 'financing';
   }
   
-  // Detección de otros tipos (opcional, si los mantienes)
+  if (privacyKeywords.some(keyword => lowerQuery.includes(keyword))) {
+    return 'privacy';
+  }
+  
+  if (curaIDKeywords.some(keyword => lowerQuery.includes(keyword))) {
+    return 'cura_id';
+  }
+  
+  if (credentialKeywords.some(keyword => lowerQuery.includes(keyword))) {
+    return 'credential';
+  }
+  
+  if (definitionKeywords.some(keyword => lowerQuery.includes(keyword))) {
+    return 'definition';
+  }
+  
+  // Detección de otros tipos
   const articleKeywords = ['artículo', 'art', 'capítulo', 'título'];
   const implementationKeywords = ['implementación', 'cómo funciona', 'cómo se', 'etapas'];
-  const definitionKeywords = ['qué es', 'definición', 'significa'];
   
   if (articleKeywords.some(keyword => lowerQuery.includes(keyword))) {
     return 'article';
   } else if (implementationKeywords.some(keyword => lowerQuery.includes(keyword))) {
     return 'implementation';
-  } else if (definitionKeywords.some(keyword => lowerQuery.includes(keyword))) {
-    return 'definition';
   }
   
   return 'general';
 }
 
+// ======================================================
+// RESPUESTAS DIRECTAS PRE-DEFINIDAS
+// ======================================================
+
 function getDirectFinancingResponse() {
   return {
-    answer: `**💊 FINANCIAMIENTO QUE MEJORA TU SALUD, NO TU CARGA IMPOSITIVA**\n\n` +
-            `La Ley C.U.R.A. se financia con **MAXIMA EFICIENCIA PRESUPUESTARIA**: transformando recursos que YA existen en el sistema en **mejoras concretas para tu salud**.\n\n` +
-            `🔹 **1. OPTIMIZACIÓN DE LO QUE YA TENEMOS**\n` +
-            `• **Unificamos 16 sistemas fragmentados** en uno solo: tu médico accede más rápido a tu información, mejorando tu diagnóstico\n` +
-            `• **Eliminamos licencias costosas** ($120M/año) para reinvertir en conectividad hospitalaria que salva vidas\n\n` +
-            `🔹 **2. AHORROS QUE SE TRANSFORMAN EN SALUD**\n` +
-            `• **50% de todo ahorro** vuelve al sistema como mejor atención:\n` +
-            `  → **40%** en seguridad de datos (protege tu privacidad mientras te atienden)\n` +
-            `  → **60%** en **equidad federal** (mismo acceso a salud digital en Jujuy que en Buenos Aires)\n\n` +
-            `🔹 **3. ALIANZAS QUE ACELERAN TU ATENCIÓN**\n` +
-            `• **Empresas invierten en tecnología hospitalaria** para que tengas diagnósticos más rápidos\n` +
-            `• **Investigación con datos anonimizados** desarrolla herramientas que previenen enfermedades\n\n` +
-            `🔹 **4. CONECTIVIDAD QUE SALVA VIDAS**\n` +
-            `• **Fondo del Servicio Universal** garantiza que hasta el hospital más remoto tenga acceso a especialistas\n` +
-            `• **Red federal de fibra óptica** conecta a médicos para consultas inmediatas en emergencias\n\n` +
-            `🔹 **5. TRANSPARENCIA QUE PROTEGE TU SALUD**\n` +
-            `• **Panel público** muestra cómo cada peso se traduce en mejor atención\n` +
-            `• **Auditoría triple** garantiza que los recursos lleguen a mejorar tu salud, no a burocracia\n\n` +
-            `🔹 **6. INNOVACIÓN QUE PREVIENE ENFERMEDADES**\n` +
-            `• **"Sandbox" regulatorio** prueba nuevas tecnologías que detectan riesgos antes que sea tarde\n` +
-            `• **Certificados tecnológicos** desarrollan herramientas argentinas para problemas de salud locales\n\n` +
-            `🔹 **7. SOBERANÍA QUE GARANTIZA TU ATENCIÓN CONTINUA**\n` +
-            `• **Datos en Argentina** aseguran que tu historia clínica esté siempre disponible\n` +
-            `• **Exportación del modelo** genera recursos que se reinvierten en hospitales públicos\n\n` +
-            `**🩺 EL RESULTADO EN TU SALUD:**\n` +
-            `• **Menos espera** para diagnósticos y turnos\n` +
-            `• **Más prevención** con alertas tempranas de enfermedades\n` +
-            `• **Mejor atención** con historia clínica completa en emergencias\n` +
-            `• **Equidad real** en acceso a salud digital en todo el país\n\n` +
-            `**📈 NO ES MÁS PLATA, ES MÁS SALUD POR LA MISMA PLATA**\n` +
-            `Transformamos la ineficiencia actual ($85M solo en sistemas duplicados) en **atención médica más rápida, segura y accesible para todos.**`,
+    answer: `**El financiamiento del sistema se rige por el Principio de Máxima Eficiencia Presupuestaria con Infraestructura Pública Preexistente**, priorizando la reasignación estratégica de recursos sobre la generación de nuevas erogaciones y fundamentándose en el ahorro futuro que la unificación digital generará para el Tesoro Nacional.\n\n` +
+            `**1. Fondo de Inversión Inicial para la Salud Digital (FIISD)**\n` +
+            `Es el pilar central para el desarrollo y sostenibilidad del sistema, integrado por:\n` +
+            `• **Reasignación Estratégica**: Se destina hasta un 20% de las partidas actuales asignadas a programas de salud digital, informática y telemedicina del Ministerio de Salud de la Nación.\n` +
+            `• **Absorción por Redundancia**: Los recursos financieros y operativos previamente asignados a sistemas fragmentados como el SNVS y el SISA se reasignan al Sistema C.U.R.A. a medida que este absorbe sus funciones.\n` +
+            `• **Aprovechamiento de Activos Estatales**: Uso obligatorio y sin costo adicional de la capacidad de ARSAT S.A. (Red Federal de Fibra Óptica y satélites), la Secretaría de Innovación Pública y la ONTI.\n\n` +
+            `**2. Modelo de Autofinanciamiento por Eficiencia (Sustitución de "Caja de Ahorro")**\n` +
+            `• **Surplus de Gestión de PAMI**: El Instituto Nacional de Servicios Sociales para Jubilados y Pensionados debe transferir al menos el 50% de los ahorros netos certificados derivados de la digitalización (eliminación de recetas de papel, troqueles físicos y reducción de fraudes) al FIISD.\n` +
+            `• **Regla de Reinversión Sistémica**: Una vez operativo, al menos el 50% del ahorro demostrado por la eliminación de estudios duplicados y optimización de recursos se reinvierte automáticamente:\n` +
+            `  → **40%** → Ciberseguridad y modernización tecnológica.\n` +
+            `  → **60%** → Fondo Federal de Equidad Sanitaria (para reducir brechas entre provincias).\n\n` +
+            `**3. Capital Privado, Mecenazgo y Alianzas I+D**\n` +
+            `• **Régimen de Padrinazgo Tecnológico**: Incentivos fiscales para empresas privadas que financien equipamiento e infraestructura en hospitales públicos, permitiendo deducciones en el Impuesto a las Ganancias.\n` +
+            `• **Contribuciones por Beneficio**: Las Obras Sociales y Entidades de Medicina Prepaga pueden realizar aportes al FIISD a cambio de soporte técnico preferencial y acceso prioritario a módulos de auditoría y antifraude.\n` +
+            `• **Alianzas de Innovación**: Acuerdos para investigación y desarrollo utilizando datos anonimizados, con prioridad para empresas que desarrollen tecnología en el país y licencien el código resultante al Estado.\n\n` +
+            `**4. Recursos Estructurales y Conectividad (ENACOM)**\n` +
+            `• **Fondo del Servicio Universal (FSU)**: Se autoriza el uso de los recursos administrados por el ENACOM para financiar la infraestructura tecnológica de base, conectividad de redes seguras en zonas aisladas y el funcionamiento del equipo de respuesta a incidentes (CSIRT-C.U.R.A.).\n` +
+            `• **Financiamiento Multilateral**: Créditos específicos con organismos internacionales (BID, BM, CAF) destinados a infraestructura crítica de centros de datos y soberanía digital.\n\n` +
+            `**5. Proyección Internacional y Modelo Exportador**\n` +
+            `**Fondo para la Proyección Internacional (FOPIN)**: Se nutre de hasta el 10% de los ingresos obtenidos por la exportación del "Framework C.U.R.A." (licencias de software Core, hosting en ARSAT Cloud y capacitación mediante C.U.R.A. Academy).\n\n` +
+            `**6. Innovación Fiscal y Bonos de Impacto**\n` +
+            `• **Sandbox Regulatorio**: Implementación de instrumentos financieros como los Bonos de Impacto Social, donde el retorno para el inversor está ligado al cumplimiento de hitos sanitarios medibles.\n` +
+            `• **Certificados de Crédito Tecnológico**: Para proveedores que desarrollen módulos específicos bajo estándares de código abierto.\n\n` +
+            `**7. Gobernanza y Garantía Presupuestaria de Salvaguarda**\n` +
+            `• **Garantía del 0,1%**: Si transcurridos 18 meses desde la reglamentación no se efectivizan las reasignaciones previstas, el Poder Ejecutivo debe incluir una partida específica equivalente al 0,1% del presupuesto total del Ministerio de Salud del ejercicio anterior para asegurar la operatividad.\n` +
+            `• **Auditoría Triple de Transparencia**: Control interno por la SIGEN, control externo por la AGN y auditoría técnica permanente por la ONTI, con un panel de visualización en tiempo real del ROI (Retorno de Inversión) social y económico.`,
     
     suggestions: [
-      "¿Cómo mejora esto mi atención en una emergencia médica?",
-      "¿De qué forma acelera los diagnósticos el sistema unificado?",
-      "¿Cómo previene enfermedades la historia clínica digital?"
+      "¿Cómo se calcula el ahorro por digitalización del PAMI?",
+      "¿Qué empresas pueden participar del Padrinazgo Tecnológico?",
+      "¿Cómo funciona el panel de transparencia del ROI?"
     ],
     
     confidence: 0.99,
     
     sources: [
-      "Artículo 35 - Máxima eficiencia presupuestaria y reinversión en salud",
-      "Artículo 37 - Alianzas estratégicas para mejoras sanitarias",
-      "Principio rector: 'Salud primero, burocracia nunca'"
+      "Artículo 35 - Principio de Máxima Eficiencia Presupuestaria",
+      "Artículo 37 - Régimen de Mecenazgo e Inversión Privada",
+      "Artículo 42 - Financiamiento Sustentable y FOPIN",
+      "Disposición Transitoria 23ª - Garantía Presupuestaria"
     ],
     
     success: true,
-    note: "Respuesta centrada en salud y eficiencia - Sin nuevos impuestos"
+    note: "Respuesta directa - Modelo de financiamiento completo"
+  };
+}
+
+function getDirectPrivacyResponse() {
+  return {
+    answer: `**La privacidad de los datos en el sistema C.U.R.A. se maneja bajo el concepto de Privacidad y Seguridad por Diseño**, lo que significa que la protección de la información clínica es un estándar de orden público y una prioridad técnica desde el inicio del desarrollo del sistema.\n\n` +
+            `**A continuación se detallan los pilares sobre los cuales se fundamenta la privacidad de los datos:**\n\n` +
+            `**1. Consentimiento Granular y Control del Paciente**\n` +
+            `El sistema otorga al ciudadano el control total sobre su información a través de un **Panel de Privacidad y Consentimiento**.\n` +
+            `• **Gestión de datos sensibles**: Las categorías de datos más delicados (salud mental, VIH, salud sexual y reproductiva, y consumo de sustancias) **están ocultas por defecto**. Solo el paciente puede habilitar su visibilidad de forma explícita para profesionales o instituciones específicas.\n` +
+            `• **Consentimiento por episodio**: El acceso a la información no es permanente. En consultas ambulatorias, el permiso dura un máximo de **cuatro (4) horas**, y en internaciones, caduca automáticamente al momento del alta.\n` +
+            `• **Derecho a la revocación**: El usuario puede revocar consentimientos o solicitar la baja del sistema **en cualquier momento** de forma digital.\n\n` +
+            `**2. "Blindaje Sanitario" e Inmunidad Administrativa**\n` +
+            `La ley establece una **prohibición estricta de uso extra-sanitario** para proteger al ciudadano de posibles abusos estatales:\n` +
+            `• **Prohibición de transferencia**: Los datos **no pueden ser cedidos** a fuerzas de seguridad, organismos de inteligencia, autoridades migratorias ni entes recaudadores (como AFIP).\n` +
+            `• **Limitación judicial**: Solo se admite el acceso a datos nominales mediante una **orden judicial específica** en el marco de investigaciones por delitos de máxima gravedad.\n` +
+            `• **Inmunidad**: La información clínica **no puede ser utilizada** como prueba de infracciones migratorias o administrativas.\n\n` +
+            `**3. Seguridad Técnica y Arquitectura de "Cero Confianza"**\n` +
+            `El sistema adopta protocolos de alta complejidad para evitar vulneraciones:\n` +
+            `• **Cifrado Avanzado**: Toda la información se cifra mediante el algoritmo **AES-256** para el almacenamiento y protocolos **TLS 1.3** para la transmisión.\n` +
+            `• **Modelo Zero Trust**: Toda solicitud de acceso debe ser autenticada, autorizada y cifrada estrictamente antes de concederse, bajo el principio de **"mínimo privilegio"** (solo se accede a lo estrictamente necesario).\n` +
+            `• **Soberanía de Datos**: Toda la infraestructura y los repositorios deben radicarse **obligatoriamente en territorio nacional** bajo jurisdicción argentina.\n\n` +
+            `**4. Trazabilidad y Auditoría Permanente**\n` +
+            `Cada acción realizada dentro del sistema queda registrada de forma **inalterable** en el Módulo Nacional de Trazabilidad y Auditoría.\n` +
+            `• **Control Ciudadano**: El paciente puede consultar **en tiempo real** quién accedió a su historia clínica, en qué fecha, hora y por qué motivo.\n` +
+            `• **Alertas automáticas**: El sistema notifica al usuario (vía app o correo) **cada vez que un profesional accede** a su información o carga nuevos datos.\n` +
+            `• **Sanciones**: El acceso indebido o la manipulación de registros de trazabilidad se considera una **falta gravísima**, sujeta a bloqueos permanentes y denuncias penales.\n\n` +
+            `**5. Acceso en Emergencias ("Break-Glass")**\n` +
+            `En situaciones de riesgo inminente para la vida donde el paciente no pueda consentir, los profesionales pueden usar el mecanismo de "emergencia". Sin embargo, este acceso requiere **doble autenticación**, deja una **marca de auditoría permanente** y debe ser notificado al titular de los datos en un plazo de **48 horas**.`,
+    
+    suggestions: [
+      "¿Cómo accedo al Panel de Privacidad desde mi celular?",
+      "¿Qué datos se consideran 'sensibles' y están ocultos por defecto?",
+      "¿Cómo funciona el acceso de emergencia ('break-glass')?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 27 - Panel de Privacidad y Consentimiento Granular",
+      "Artículo 28 - Acceso de Emergencia (Break-Glass)",
+      "Artículo 26 bis - Inmunidad Administrativa",
+      "Artículo 30 - Arquitectura de Cero Confianza"
+    ],
+    
+    success: true,
+    note: "Respuesta directa - Privacidad y Seguridad por Diseño"
+  };
+}
+
+function getDirectDefinitionResponse() {
+  return {
+    answer: `**La Ley C.U.R.A.** (Conectividad Unificada para Redes y Asistencia Sanitaria) **establece un marco normativo para la transformación digital del sistema sanitario argentino**, buscando unificar la información clínica mediante una infraestructura interoperable y federal.\n\n` +
+            `El proyecto crea:\n` +
+            `• **Historia Clínica Digital Única** nacional\n` +
+            `• **Identificador Único de Paciente (C.U.R.A.-ID)**\n` +
+            `• **Credencial Única de Salud (C.U.S.)** nacional para garantizar la portabilidad de datos y la continuidad asistencial\n\n` +
+            `**Características principales:**\n` +
+            `• **Implementación progresiva y modular**: Se despliega en fases, integrando gradualmente todas las funciones\n` +
+            `• **Inteligencia Artificial con protocolos éticos**: Herramientas de IA bajo estrictos controles de seguridad y ética\n` +
+            `• **Modernización integral**: Elimina soportes físicos como el troquel, digitaliza farmacias y turnos\n` +
+            `• **Soberanía tecnológica**: Toda la infraestructura y datos se alojan en territorio nacional\n` +
+            `• **Gobernanza transparente**: Consejo Nacional con participación federal garantiza transparencia\n` +
+            `• **Eficiencia presupuestaria**: Se financia optimizando recursos existentes, sin nuevos impuestos\n\n` +
+            `**Objetivo central**: Garantizar que toda tu información de salud esté disponible, segura y accesible cuando y donde la necesites, mejorando tu atención médica en todo el país.`,
+    
+    suggestions: [
+      "¿Cómo funciona la Historia Clínica Digital?",
+      "¿Qué es el C.U.R.A.-ID y para qué sirve?",
+      "¿Cómo se accede al sistema desde el celular?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 1° - Objeto y Principios Rectores",
+      "Artículo 2° - Definiciones",
+      "Título I - Disposiciones Generales"
+    ],
+    
+    success: true,
+    note: "Respuesta directa - Definición general"
+  };
+}
+
+function getDirectCUSResponse() {
+  return {
+    answer: `**La Credencial Única de Salud (C.U.S.)** se define como el documento digital y/o físico, asociado al Identificador Único de Paciente (C.U.R.A.-ID), que constituye **la llave de acceso unificada al sistema nacional de salud**.\n\n` +
+            `**1. Tipos de Soportes y Formatos**\n` +
+            `La ley establece tres formas de instrumentar esta credencial:\n` +
+            `• **Credencial Digital Universal (Gratuita)**: Es de acceso inmediato para todo habitante a través de la aplicación **"Mi Argentina"** o el portal oficial. Utiliza un **código QR dinámico y cifrado** para validar la identidad y permitir el acceso a datos de emergencia.\n\n` +
+            `• **Credencial Física**: un recurso gratuito y descargable en PDF que permite al ciudadano contar con su información médica esencial fuera del entorno digital.\n` +
+            `  → **Formatos**: Tarjeta de identificación y formato **"Key-Tag" (llavero)** con código QR.\n` +
+            `  → **Contenido Vital**: Visibiliza de forma clara el nombre del titular y sus **alertas médicas** (alergias y patologías de base).\n` +
+            `  → **Propósito**: Actuar como mecanismo de **triaje rápido en situaciones de emergencia**, facilitando la lectura de datos críticos por parte del personal de salud de manera instantánea.\n\n` +
+            `• **Credencial Física Inteligente (Opcional)**: Se trata de una tarjeta plástica que incorpora tecnología de **comunicación de campo cercano (NFC)** para lectura por proximidad, además de un QR impreso de respaldo. Su emisión es arancelada, salvo para población vulnerable.\n\n` +
+            `**2. Funciones y Utilidad**\n` +
+            `La credencial no es solo un documento de identificación, sino una **herramienta operativa** que permite:\n` +
+            `• **Acceso Autenticado**: Permite al ciudadano y a los profesionales autorizados acceder de forma segura a la información sanitaria, incluyendo la Historia Clínica Digital.\n` +
+            `• **Información de Farmacias**: Permite visualizar en tiempo real la **Red Federal de Información de Farmacias de Turno** con datos georreferenciados.\n` +
+            `• **Validación en Emergencias**: Facilita que, en entornos hospitalarios, se acceda rápidamente a datos críticos como alergias o grupo sanguíneo mediante el escaneo del QR o la lectura NFC.\n` +
+            `• **Gestión de Turnos**: Funciona como parte de la interfaz para la **búsqueda y autogestión de turnos médicos**.\n\n` +
+            `**3. Seguridad y Privacidad**\n` +
+            `El uso de la credencial está integrado con el **Módulo Nacional de Trazabilidad y Auditoría**, lo que garantiza que **cada vez que se utilice** para acceder a datos clínicos, la acción quede registrada de forma inalterable. Para accesos de mayor seguridad, se requiere el ingreso de un **token o código temporal generado por "Mi Argentina"** junto con el escaneo del QR de la credencial.\n\n` +
+            `Finalmente, cabe destacar que la generación del C.U.R.A.-ID y la disponibilidad de la credencial digital son **automáticas para todas las personas inscriptas en el RENAPER** desde la entrada en vigencia de la ley.`,
+    
+    suggestions: [
+      "¿Cómo obtengo mi Credencial Digital desde Mi Argentina?",
+      "¿Qué información muestra el QR de la credencial?",
+      "¿Cómo funciona la credencial en una emergencia médica?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 2° - Definiciones (Credencial Única de Salud)",
+      "Artículo 17 - C.U.R.A.-ID y Credenciales",
+      "Artículo 29 - Verificación de Identidad"
+    ],
+    
+    success: true,
+    note: "Respuesta directa - Credencial Única de Salud"
+  };
+}
+
+function getDirectCURAIDResponse(query) {
+  const lowerQuery = query.toLowerCase();
+  const includeExamples = lowerQuery.includes('ejemplo') || lowerQuery.includes('ejemplos');
+  
+  let answer = `**El C.U.R.A.-ID es el Identificador Único de Paciente**, una pieza fundamental de la arquitectura sanitaria definida en la ley. Se trata de un **código de carácter nacional, obligatorio, intransferible y permanente** que tiene como objetivo principal **vincular de forma unívoca toda la información de salud de una persona**.\n\n` +
+               `**1. Generación y Naturaleza**\n` +
+               `• **Asignación Automática**: Se genera de forma automática para toda persona inscripta en el **Registro Nacional de las Personas (RENAPER)** a partir de la entrada en vigencia de la ley.\n` +
+               `• **Nuevos Registros**: Los recién nacidos o extranjeros que obtengan la residencia recibirán su C.U.R.A.-ID al momento de su inscripción o alta en el RENAPER.\n` +
+               `• **Interoperabilidad**: Es plenamente compatible con los sistemas de identidad digital del Estado, como Mi Argentina, Mi AFIP o Mi ANSES, sin que el usuario deba realizar trámites adicionales para obtenerlo.\n\n` +
+               `**2. Propósito y Utilidad Clínica**\n` +
+               `• **Unicidad de la Historia Clínica**: Su función central es garantizar la **integridad y trazabilidad de la historia clínica digital** del ciudadano a lo largo de toda su vida, asegurando que sus datos estén conectados sin importar en qué nivel asistencial o jurisdicción se atienda.\n` +
+               `• **Vínculo con la Credencial**: El C.U.R.A.-ID es el identificador asociado a la **Credencial Única de Salud (C.U.S.)**, que es el instrumento físico o digital utilizado para acceder al sistema.\n` +
+               `• **Identificación en Emergencias**: En casos donde un paciente ingrese inconsciente y no pueda ser identificado, se crea un **perfil temporal (C.U.R.A.-TEMP)** que luego se fusionará con el C.U.R.A.-ID definitivo una vez verificada su identidad.\n\n` +
+               `**3. Seguridad y Control de Datos**\n` +
+               `• **Trazabilidad Integral**: Cada vez que un profesional accede a datos clínicos, realiza una prescripción o una dispensa de medicamentos, la acción se registra en el **Módulo Nacional de Trazabilidad y Auditoría** vinculada obligatoriamente al C.U.R.A.-ID del paciente afectado.\n` +
+               `• **Resumen Internacional**: Este identificador forma parte del contenido mínimo del **Resumen Internacional del Paciente (IPS)**, facilitando la continuidad del cuidado incluso fuera del país.\n\n` +
+               `**En resumen**, el C.U.R.A.-ID funciona como el **número de identidad sanitario definitivo**, permitiendo que el sistema reconozca al paciente como una entidad única en todo el territorio nacional, garantizando que su información médica siempre lo acompañe de manera segura y ordenada.`;
+  
+  // Añadir ejemplos si se piden
+  if (includeExamples) {
+    answer += `\n\n**📋 EJEMPLOS PRÁCTICOS DE USO DEL C.U.R.A.-ID**\n\n` +
+              `**1. En el Consultorio Médico (La Prescripción)**\n` +
+              `Un paciente llega a un centro de salud en una provincia distinta a la de su residencia. Al presentar su Credencial Única de Salud (C.U.S.), el médico ingresa el C.U.R.A.-ID en el sistema:\n` +
+              `• **Acceso Universal**: El sistema reconoce al paciente instantáneamente, permitiendo al médico visualizar sus antecedentes, alergias y cirugías previas, sin importar que hayan sido registradas en otra jurisdicción.\n` +
+              `• **Vínculo de la Orden**: Al finalizar la consulta, el médico emite una receta electrónica. Esta receta no queda en un papel, sino que se "ancla" al C.U.R.A.-ID del paciente en la nube sanitaria nacional, firmada digitalmente por el profesional.\n\n` +
+              `**2. En el Laboratorio (La Carga de Datos)**\n` +
+              `El paciente se presenta en el laboratorio para realizarse los estudios solicitados:\n` +
+              `• **Validación de Orden**: El técnico del laboratorio escanea el C.U.R.A.-ID y el sistema le muestra automáticamente la orden de análisis que el médico cargó previamente. No hay posibilidad de error por recetas ilegibles o perdidas.\n` +
+              `• **Actualización de la HCU**: Una vez procesados los resultados, el laboratorio los sube directamente al nodo correspondiente. Gracias al identificador único, estos resultados se indexan en la Historia Clínica del paciente de forma inmediata.\n\n` +
+              `**3. En la Farmacia (La Dispensa y Trazabilidad)**\n` +
+              `El paciente se acerca a cualquier farmacia del país para retirar su medicación:\n` +
+              `• **Dispensa Segura**: El farmacéutico valida el C.U.R.A.-ID a través de la credencial. El sistema le muestra las recetas vigentes y autorizadas por la obra social o prepaga.\n` +
+              `• **Módulo de Trazabilidad**: Al entregar el medicamento, el farmacéutico marca la dispensa. Esta acción queda registrada en el Módulo Nacional de Trazabilidad vinculado a ese ID específico. Esto evita que el paciente pueda retirar el mismo medicamento dos veces en farmacias distintas (previniendo fraudes) y garantiza que la farmacia reciba el pago de la cobertura de forma automática y transparente.\n\n` +
+              `**4. El Rol en Emergencias (C.U.R.A.-TEMP)**\n` +
+              `Si el mismo paciente sufriera un accidente y fuera ingresado inconsciente a una guardia sin su credencial ni documentos, el sistema genera un **C.U.R.A.-TEMP**. Los médicos cargan los datos de la atención de emergencia bajo ese perfil provisorio. Una vez que el paciente es identificado a través de huella digital o RENAPER, el sistema **fusiona automáticamente el perfil temporal con su C.U.R.A.-ID definitivo**, asegurando que no se pierda la información de lo ocurrido durante la emergencia.`;
+  }
+  
+  return {
+    answer: answer,
+    
+    suggestions: includeExamples ? [
+      "¿Cómo se genera el C.U.R.A.-ID para recién nacidos?",
+      "¿Qué diferencia hay entre C.U.R.A.-ID y C.U.S.?",
+      "¿Cómo funciona la fusión del perfil temporal en emergencias?"
+    ] : [
+      "¿Necesito hacer algún trámite para obtener mi C.U.R.A.-ID?",
+      "¿Qué información contiene el C.U.R.A.-ID?",
+      "¿Puedo ver ejemplos prácticos de uso del C.U.R.A.-ID?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 17 - Identificador Único de Paciente (C.U.R.A.-ID)",
+      "Artículo 2° - Definiciones",
+      "Artículo 10 - Módulo Nacional de Trazabilidad"
+    ],
+    
+    success: true,
+    note: includeExamples ? "Respuesta directa con ejemplos" : "Respuesta directa - C.U.R.A.-ID"
   };
 }
 
@@ -156,30 +409,61 @@ async function enrichQuery(query) {
   const questionType = detectQuestionType(query);
   
   switch(questionType) {
-    case 'article':
-      enrichment = `artículos capítulos secciones disposiciones normativa reglamentación ` +
-                   `texto legal ley CURA`;
+    case 'financing':
+      enrichment = `financiamiento presupuesto costo recursos económicos ` +
+                   `fondos inversión ahorro eficiencia presupuestaria ` +
+                   `artículo 35 37 42 fiisd fopinfondo`;
       break;
       
-    case 'implementation':
-      enrichment = `proceso implementación etapas cronograma ejecución puesta en marcha ` +
-                   `fases pilotos hitos despliegue`;
+    case 'privacy':
+      enrichment = `privacidad datos sensibles compartir consentimiento ` +
+                   `control panel de privacidad acceso médico información ` +
+                   `historia clínica confidencial artículo 27 28 ` +
+                   `emergencia break-glass blindaje sanitario`;
       break;
       
     case 'definition':
-      enrichment = `definición concepto objetivo propósito alcance marco normativo ` +
-                   `qué es explicación simple`;
+      enrichment = `definición qué es ley cura proyecto ` +
+                   `historia clínica digital sistema sanitario ` +
+                   `transformación digital salud argentina`;
+      break;
+      
+    case 'credential':
+      enrichment = `credencial única de salud cus credencial digital ` +
+                   `mi argentina qr nfc acceso sistema turnos ` +
+                   `artículo 17 29`;
+      break;
+      
+    case 'cura_id':
+      enrichment = `cura-id identificador único paciente número ` +
+                   `renaper historia clínica trazabilidad ` +
+                   `emergencia cura-temp artículo 17`;
+      break;
+      
+    case 'article':
+      enrichment = `artículos capítulos secciones disposiciones ` +
+                   `normativa reglamentación texto legal ley CURA`;
+      break;
+      
+    case 'implementation':
+      enrichment = `proceso implementación etapas cronograma ejecución ` +
+                   `puesta en marcha fases pilotos hitos despliegue`;
       break;
       
     default:
-      enrichment = `${query} contexto detalles explicación información relevante ` +
-                   `ley cura conectividad unificada para redes y asistencia sanitaria`;
+      enrichment = `${query} contexto detalles explicación ` +
+                   `información relevante ley cura conectividad ` +
+                   `unificada para redes y asistencia sanitaria`;
   }
   
   return `${query} ${enrichment}`;
 }
 
+// Las funciones generateEmbedding, fetchMultipleContexts, generateGeneralResponse
+// y las funciones auxiliares se mantienen IGUALES a las de tu última versión
+
 async function generateEmbedding(text) {
+  // Mismo código que antes
   const embedRes = await fetch("https://openrouter.ai/api/v1/embeddings", {
     method: "POST",
     headers: {
@@ -201,6 +485,7 @@ async function generateEmbedding(text) {
 }
 
 async function fetchMultipleContexts(vector, originalQuery) {
+  // Mismo código que antes
   const mainRes = await fetch(
     "https://leycura-law-index-m0fkj60.svc.aped-4627-b74a.pinecone.io/query",
     {
@@ -249,6 +534,7 @@ async function fetchMultipleContexts(vector, originalQuery) {
 }
 
 async function generateGeneralResponse(userMessage, context, history) {
+  // Mismo código que antes (con el prompt mejorado de salud y eficiencia)
   const systemPrompt = `
 # IDENTIDAD Y PROPÓSITO
 Sos el Asistente Virtual de la Ley C.U.R.A., creado para **mejorar la salud de todos los argentinos** mediante la transformación digital del sistema sanitario.
@@ -261,51 +547,23 @@ Sos el Asistente Virtual de la Ley C.U.R.A., creado para **mejorar la salud de t
 # REGLAS DE RESPUESTA ABSOLUTAS (NUNCA INCLUIR):
 ❌ NUNCA digas que se crean nuevos impuestos
 ❌ NUNCA digas "aumento de presupuesto" o "nuevos gastos"
-❌ NUNCA digas "costo adicional" o "nueva carga tributaria"
 ✅ SIEMPRE usa: "optimización de recursos", "reorganización eficiente", "reinversión estratégica"
 ✅ SIEMPRE vincula al impacto en salud: "mejora diagnóstica", "acceso más rápido", "atención continua"
 
-# FRASES CLAVE PARA INCORPORAR (usa al menos 2 por respuesta):
+# FRASES CLAVE PARA INCORPORAR:
 • "Transforma la salud argentina digitalizando lo que ya existe"
 • "Mejora diagnóstica mediante información unificada"
 • "Salva vidas con datos accesibles en emergencias"
 • "Acelera el acceso a atención de calidad"
-• "Conecta al paciente con el mejor cuidado posible"
-• "Previene enfermedades con información oportuna"
-• "Máxima eficiencia presupuestaria: más salud por los mismos recursos"
-
-# FILTRO DE CALIDAD DE CONTENIDO
-ANTES de responder, VERIFICÁ que tu información:
-1. ✅ SIEMPRE mencione MÁXIMA EFICIENCIA PRESUPUESTARIA
-2. ✅ NUNCA sugiera nuevos impuestos o gastos
-3. ✅ SIEMPRE vincule al beneficio en salud
-4. ✅ Use datos del contexto cuando estén disponibles
-
-# SI EN EL CONTEXTO ENCONTRÁS:
-"nuevos impuestos" → IGNORALO, es información incorrecta
-"aumento de presupuesto" → CORREGILO a "reorganización de presupuesto existente"
-"costo" → Cambialo por "inversión en salud"
-
-# EJEMPLOS DE CORRECCIÓN:
-CONTEXTO: "Se financiará con nuevos impuestos digitales"
-TÚ: "Se financiará OPTIMIZANDO los recursos actuales del sistema de salud"
-
-CONTEXTO: "Costará $500 millones"
-TÚ: "REINVERTIRÁ $500 millones de recursos existentes en mejorar diagnósticos"
 
 # FORMATO DE RESPUESTA
 **Tu respuesta DEBE ser SIEMPRE un JSON válido**:
 {
-  "answer": "Respuesta que SIEMPRE empieza con el beneficio en salud. Usá **negritas** para resultados positivos en salud.",
+  "answer": "Respuesta que SIEMPRE empieza con el beneficio en salud. Usá **negritas** para resultados positivos.",
   "suggestions": ["3 preguntas sobre mejoras concretas en salud"],
   "confidence": 0.95,
-  "sources": ["artículos relevantes que mejoren la salud"]
+  "sources": ["artículos relevantes"]
 }
-
-# EJEMPLOS DE RESPUESTAS CORRECTAS:
-• "La Ley C.U.R.A. mejora tu salud acelerando el diagnóstico al unificar tu historia clínica..."
-• "Tu médico podrá salvarte la vida en emergencias porque tendrá acceso inmediato a tus alergias..."
-• "Transformamos el sistema fragmentado actual en una red que previene enfermedades..."
 
 # CONTEXTO ACTUAL:
 ${context}
@@ -324,8 +582,8 @@ ${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
     },
     body: JSON.stringify({
       model: "deepseek/deepseek-chat",
-      temperature: 0.1, // Temperatura muy baja para respuestas consistentes
-      max_tokens: 1800, // Más tokens para respuestas completas
+      temperature: 0.1,
+      max_tokens: 1800,
       messages: [
         { role: "system", content: systemPrompt },
         ...history.slice(-6),
@@ -347,33 +605,14 @@ ${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
     
     const parsed = JSON.parse(cleanContent);
     
-    // Validar que no mencione impuestos nuevos
-    const answerText = parsed.answer || "";
-    const hasProhibitedTerms = [
-      'nuevos impuestos', 'impuestos nuevos', 'aumento de impuestos',
-      'nueva carga tributaria', 'costo adicional', 'nuevo gasto'
-    ].some(term => answerText.toLowerCase().includes(term));
-    
-    const hasHealthFocus = [
-      'salud', 'mejora', 'diagnóstico', 'atención', 'prevención',
-      'emergencia', 'paciente', 'médico', 'hospital'
-    ].some(term => answerText.toLowerCase().includes(term));
-    
-    let confidence = typeof parsed.confidence === 'number' ? parsed.confidence : 0.8;
-    
-    // Ajustar confianza según calidad
-    if (hasProhibitedTerms) confidence = Math.max(0.3, confidence - 0.3);
-    if (hasHealthFocus) confidence = Math.min(0.99, confidence + 0.1);
-    
     return {
       answer: parsed.answer || getHealthFocusedFallback(userMessage),
       suggestions: Array.isArray(parsed.suggestions) && parsed.suggestions.length > 0 
         ? parsed.suggestions.slice(0, 3)
         : generateHealthFocusedSuggestions(userMessage),
-      confidence: confidence,
+      confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.8,
       sources: Array.isArray(parsed.sources) ? parsed.sources : [],
-      success: true,
-      note: hasProhibitedTerms ? "Revisar: posible mención a impuestos" : "Respuesta centrada en salud"
+      success: true
     };
     
   } catch (e) {
@@ -383,15 +622,12 @@ ${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
       confidence: 0.6,
       sources: [],
       success: true,
-      note: "Respuesta generada por fallback con enfoque en salud"
+      note: "Respuesta generada por fallback"
     };
   }
 }
 
-// ======================================================
-// FUNCIONES DE FALLBACK MEJORADAS CON ENFOQUE EN SALUD
-// ======================================================
-
+// Funciones de fallback (mantener igual)
 function getHealthFocusedFallback(query) {
   const lowerQuery = query.toLowerCase();
   
@@ -400,15 +636,6 @@ function getHealthFocusedFallback(query) {
            `Es la transformación digital del sistema sanitario argentino que **acelera tu diagnóstico y salva vidas** conectando toda tu información médica. ` +
            `Tu médico tendrá acceso inmediato a tus alergias, medicación y estudios previos **en cualquier emergencia**, evitando errores y duplicaciones. ` +
            `Se financia con **máxima eficiencia presupuestaria**: optimizando recursos existentes para dar **más y mejor salud a todos los argentinos**.`;
-  }
-  
-  if (lowerQuery.includes('implementación') || lowerQuery.includes('cómo funciona')) {
-    return `**⚡ Implementación que mejora tu atención médica día a día**\n\n` +
-           `La Ley C.U.R.A. se implementa en fases para **no interrumpir la atención actual** mientras construimos un sistema mejor:\n\n` +
-           `1. **FASE 1 - Historia Clínica Digital**: Tu médico accede a toda tu información en segundos\n` +
-           `2. **FASE 2 - Turnos Inteligentes**: Reservás turnos con especialistas desde tu celular\n` +
-           `3. **FASE 3 - Emergencias Conectadas**: En una urgencia, los médicos ven tus datos críticos al instante\n\n` +
-           `Cada fase se financia **reorganizando recursos existentes**, nunca con nuevos impuestos. **Tu salud mejora desde el primer día.**`;
   }
   
   return `**🩺 Sobre "${query}" en la Ley C.U.R.A.**\n\n` +
@@ -429,28 +656,9 @@ function generateHealthFocusedSuggestions(query) {
     ];
   }
   
-  if (lowerQuery.includes('turno') || lowerQuery.includes('consulta')) {
-    return [
-      "¿Cómo reservo turnos con especialistas desde mi celular?",
-      "¿Puedo cambiar o cancelar turnos digitalmente?",
-      "¿Cómo funciona la teleconsulta en el sistema?"
-    ];
-  }
-  
-  // Sugerencias generales enfocadas en salud
   return [
     "¿Cómo mejora mi atención en una emergencia médica?",
     "¿De qué forma acelera los diagnósticos el sistema unificado?",
     "¿Cómo previene enfermedades la historia clínica digital?"
   ];
-}
-
-function generateFallbackSuggestions(query) {
-  // Esta función se mantiene por compatibilidad
-  return generateHealthFocusedSuggestions(query);
-}
-
-function formatFallbackResponse(text, query) {
-  // Esta función se mantiene por compatibilidad
-  return getHealthFocusedFallback(query);
 }

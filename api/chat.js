@@ -16,42 +16,57 @@ export default async function handler(req, res) {
     }
 
     // ======================================================
-    // 1. DETECCIÓN DE TIPO DE PREGUNTA (sin búsqueda previa)
+    // DEBUG: Mostrar qué se está detectando
     // ======================================================
+    console.log("====== NUEVA PREGUNTA ======");
+    console.log("Pregunta:", message);
     const questionType = detectQuestionType(message);
+    console.log("Tipo detectado:", questionType);
     
     // ======================================================
-    // 2. RESPUESTAS DIRECTAS (sin IA)
+    // RESPUESTAS DIRECTAS (sin IA) - ORDEN CORREGIDO
     // ======================================================
     
-    // Financiamiento
-    if (questionType === 'financing') {
-      return res.status(200).json(getDirectFinancingResponse());
-    }
-    
-    // Privacidad
-    if (questionType === 'privacy') {
-      return res.status(200).json(getDirectPrivacyResponse());
-    }
-    
-    // Definición/CURA General
-    if (questionType === 'definition') {
-      return res.status(200).json(getDirectDefinitionResponse());
-    }
-    
-    // Credencial Única de Salud (CUS)
-    if (questionType === 'credential') {
-      return res.status(200).json(getDirectCUSResponse());
-    }
-    
-    // CURA-ID
+    // 1. CURA-ID (muy específico)
     if (questionType === 'cura_id') {
+      console.log("Respondiendo con: CURA-ID");
       return res.status(200).json(getDirectCURAIDResponse(message));
     }
     
+    // 2. Credencial (CUS)
+    if (questionType === 'credential') {
+      console.log("Respondiendo con: CREDENCIAL");
+      return res.status(200).json(getDirectCUSResponse());
+    }
+    
+    // 3. Historia Clínica Digital (NUEVO)
+    if (questionType === 'hcd') {
+      console.log("Respondiendo con: HISTORIA CLÍNICA DIGITAL");
+      return res.status(200).json(getDirectHCDResponse());
+    }
+    
+    // 4. Financiamiento
+    if (questionType === 'financing') {
+      console.log("Respondiendo con: FINANCIAMIENTO");
+      return res.status(200).json(getDirectFinancingResponse());
+    }
+    
+    // 5. Privacidad
+    if (questionType === 'privacy') {
+      console.log("Respondiendo con: PRIVACIDAD");
+      return res.status(200).json(getDirectPrivacyResponse());
+    }
+    
+    // 6. Definición general
+    if (questionType === 'definition') {
+      console.log("Respondiendo con: DEFINICIÓN");
+      return res.status(200).json(getDirectDefinitionResponse());
+    }
+    
     // ======================================================
-    // 3. PARA OTRAS PREGUNTAS: PROCESO NORMAL CON IA
+    // 7. PARA OTRAS PREGUNTAS: PROCESO NORMAL CON IA
     // ======================================================
+    console.log("Usando IA para pregunta general");
     const enrichedMessage = await enrichQuery(message);
     const vector = await generateEmbedding(enrichedMessage);
     const context = await fetchMultipleContexts(vector, message);
@@ -71,92 +86,141 @@ export default async function handler(req, res) {
 }
 
 // ======================================================
-// FUNCIONES AUXILIARES
+// FUNCIONES AUXILIARES - DETECCIÓN CORREGIDA
 // ======================================================
 
 function detectQuestionType(query) {
   const lowerQuery = query.toLowerCase().trim();
   
-  // 1. Palabras clave para financiamiento
-  const financingKeywords = [
-    'financiamiento', 'financiación', 'financiar', 'presupuesto', 
-    'costo', 'costos', 'dinero', 'recursos', 'fondos', 'inversión',
-    'gasto', 'ahorro', 'plata', 'capital', 'subsidio', 'subsidios',
-    'fuentes de financiación', 'fuentes de financiamiento',
-    'cómo se financia', 'cómo se paga', 'quién paga', 'de dónde sale',
-    'modelo económico', 'modelo financiero', 'sostenibilidad económica',
-    'pilares financieros', '7 pilares', 'siete pilares',
-    'artículo 35', 'art. 35', 'artículo 37', 'art. 37', 'artículo 42', 'art. 42',
-    'fondo de inversión', 'fiisd', 'máxima eficiencia presupuestaria'
-  ];
+  // DEBUG: Mostrar qué se está evaluando
+  console.log("Evaluando pregunta:", lowerQuery);
   
-  // 2. Palabras clave para PRIVACIDAD
-  const privacyKeywords = [
-    'compartir', 'datos', 'privacidad', 'confidencial', 'secreto',
-    'acceso', 'quién ve', 'quién accede', 'información personal',
-    'historia clínica', 'médico ve', 'control', 'permission',
-    'autorización', 'consentimiento', 'no quiero', 'no deseo',
-    'ocultar', 'esconder', 'sensibles', 'salud mental', 'vih',
-    'sexual', 'reproductivo', 'panel de privacidad', 'artículo 27',
-    'art. 27', 'acceso emergencia', 'break-glass', 'blindaje sanitario',
-    'inmunidad administrativa', 'trazabilidad', 'auditoría'
-  ];
+  // 1. PRIMERO: Patrones EXACTOS y ESPECÍFICOS
+  // Estos tienen prioridad máxima porque son muy específicos
   
-  // 3. Palabras clave para DEFINICIÓN GENERAL
-  const definitionKeywords = [
-    'qué es', 'definición', 'significa', 'ley cura',
-    'conectividad unificada', 'explicación', 'resumen',
-    'en qué consiste', 'de qué trata', 'qué propone',
-    'cura qué es', 'qué es cura', 'proyecto cura'
-  ];
-  
-  // 4. Palabras clave para CREDENCIAL (CUS)
-  const credentialKeywords = [
-    'credencial', 'credencial única', 'c.u.s', 'cus',
-    'credencial unica de salud', 'credencial digital',
-    'tarjeta de salud', 'llave acceso', 'qr salud',
-    'nfc salud', 'mi argentina salud', 'app salud'
-  ];
-  
-  // 5. Palabras clave para CURA-ID
-  const curaIDKeywords = [
-    'cura-id', 'cura id', 'curaid', 'identificador único',
-    'identificador unico', 'número único', 'codigo unico',
-    'id paciente', 'identificación salud', 'renaper salud',
-    'ejemplo cura-id', 'cómo funciona cura-id', 'para qué sirve cura-id'
-  ];
-  
-  // Verificar en orden de prioridad
-  if (financingKeywords.some(keyword => lowerQuery.includes(keyword))) {
-    return 'financing';
-  }
-  
-  if (privacyKeywords.some(keyword => lowerQuery.includes(keyword))) {
-    return 'privacy';
-  }
-  
-  if (curaIDKeywords.some(keyword => lowerQuery.includes(keyword))) {
+  // CURA-ID - patrones exactos
+  if (/(cura[-\s]?id|curaid)/i.test(lowerQuery) ||
+      (/identificador único/i.test(lowerQuery) && !/credencial/i.test(lowerQuery)) ||
+      (/id único/i.test(lowerQuery) && !/credencial/i.test(lowerQuery))) {
+    console.log("Detectado: CURA-ID (patrón exacto)");
     return 'cura_id';
   }
   
-  if (credentialKeywords.some(keyword => lowerQuery.includes(keyword))) {
+  // Credencial Única de Salud - patrones exactos
+  if (/(credencial única|credencial unica|c\.u\.s|cus)/i.test(lowerQuery) ||
+      (/credencial.*salud/i.test(lowerQuery) && !/historia clínica/i.test(lowerQuery))) {
+    console.log("Detectado: CREDENCIAL (patrón exacto)");
     return 'credential';
   }
   
-  if (definitionKeywords.some(keyword => lowerQuery.includes(keyword))) {
+  // Historia Clínica Digital - patrones exactos
+  if (/(historia clínica digital|historia clinica digital|hcd)/i.test(lowerQuery) ||
+      (/historia.*clínica.*digital/i.test(lowerQuery)) ||
+      (/historia.*clinica.*digital/i.test(lowerQuery))) {
+    console.log("Detectado: HCD (patrón exacto)");
+    return 'hcd';
+  }
+  
+  // Financiamiento - patrones exactos
+  if (/(financiamiento|financiación|cómo se financia|cómo se paga|7 pilares|siete pilares)/i.test(lowerQuery) ||
+      (/artículo 35|art\. 35|artículo 37|art\. 37|artículo 42/i.test(lowerQuery)) ||
+      (/fondo de inversión|fiisd|eficiencia presupuestaria/i.test(lowerQuery))) {
+    console.log("Detectado: FINANCIAMIENTO (patrón exacto)");
+    return 'financing';
+  }
+  
+  // Privacidad - patrones exactos (con EXCLUSIONES)
+  if ((/privacidad|compartir datos|no quiero compartir|panel de privacidad|consentimiento|datos sensibles/i.test(lowerQuery)) &&
+      !/(historia clínica|cura.?id|credencial)/i.test(lowerQuery)) {
+    console.log("Detectado: PRIVACIDAD (patrón exacto con exclusiones)");
+    return 'privacy';
+  }
+  
+  // Definición general - patrones exactos
+  if (/(qué es la ley cura|qué es cura|ley cura qué es|definición de cura|explicación de cura)/i.test(lowerQuery) ||
+      (/^qué es.*cura|^que es.*cura/i.test(lowerQuery))) {
+    console.log("Detectado: DEFINICIÓN (patrón exacto)");
     return 'definition';
   }
   
-  // Detección de otros tipos
-  const articleKeywords = ['artículo', 'art', 'capítulo', 'título'];
-  const implementationKeywords = ['implementación', 'cómo funciona', 'cómo se', 'etapas'];
+  // 2. SEGUNDO: Búsqueda por palabras clave con contexto
   
-  if (articleKeywords.some(keyword => lowerQuery.includes(keyword))) {
-    return 'article';
-  } else if (implementationKeywords.some(keyword => lowerQuery.includes(keyword))) {
-    return 'implementation';
+  // Contar palabras clave por categoría (pero con contexto)
+  const words = lowerQuery.split(/\s+/);
+  
+  const financingWords = ['dinero', 'recursos', 'fondos', 'inversión', 'gasto', 'ahorro', 'capital', 'subsidio', 'presupuesto'];
+  const privacyWords = ['compartir', 'datos', 'confidencial', 'secreto', 'acceso', 've', 'ven', 'privado'];
+  const credentialWords = ['credencial', 'tarjeta', 'qr', 'nfc', 'mi argentina', 'app', 'aplicación'];
+  const hcdWords = ['historia', 'clínica', 'clinica', 'registro', 'médico', 'médica', 'historial'];
+  const curaIdWords = ['identificador', 'id', 'número', 'numero', 'código', 'codigo', 'único', 'unico'];
+  const definitionWords = ['qué', 'que', 'es', 'definición', 'definicion', 'significa', 'explicación', 'explicacion'];
+  
+  let financingCount = 0;
+  let privacyCount = 0;
+  let credentialCount = 0;
+  let hcdCount = 0;
+  let curaIdCount = 0;
+  let definitionCount = 0;
+  
+  words.forEach(word => {
+    if (financingWords.includes(word)) financingCount++;
+    if (privacyWords.includes(word)) privacyCount++;
+    if (credentialWords.includes(word)) credentialCount++;
+    if (hcdWords.includes(word)) hcdCount++;
+    if (curaIdWords.includes(word)) curaIdCount++;
+    if (definitionWords.includes(word)) definitionCount++;
+  });
+  
+  // DEBUG: Mostrar conteos
+  console.log("Conteos:", {
+    financing: financingCount,
+    privacy: privacyCount,
+    credential: credentialCount,
+    hcd: hcdCount,
+    cura_id: curaIdCount,
+    definition: definitionCount
+  });
+  
+  // Reglas contextuales
+  if (hcdCount >= 2 && financingCount === 0 && privacyCount === 0) {
+    console.log("Detectado: HCD (conteo de palabras)");
+    return 'hcd';
   }
   
+  if (curaIdCount >= 2 && credentialCount === 0) {
+    console.log("Detectado: CURA-ID (conteo de palabras)");
+    return 'cura_id';
+  }
+  
+  if (credentialCount >= 2 && curaIdCount === 0) {
+    console.log("Detectado: CREDENCIAL (conteo de palabras)");
+    return 'credential';
+  }
+  
+  if (financingCount >= 2 && hcdCount === 0) {
+    console.log("Detectado: FINANCIAMIENTO (conteo de palabras)");
+    return 'financing';
+  }
+  
+  if (privacyCount >= 2 && hcdCount === 0 && curaIdCount === 0) {
+    console.log("Detectado: PRIVACIDAD (conteo de palabras)");
+    return 'privacy';
+  }
+  
+  if (definitionCount >= 2 && lowerQuery.includes('cura')) {
+    console.log("Detectado: DEFINICIÓN (conteo de palabras + 'cura')");
+    return 'definition';
+  }
+  
+  // 3. TERCERO: Último recurso - coincidencias simples
+  if (lowerQuery.includes('credencial')) return 'credential';
+  if (lowerQuery.includes('cura id') || lowerQuery.includes('cura-id')) return 'cura_id';
+  if (lowerQuery.includes('historia clínica') || lowerQuery.includes('historia clinica')) return 'hcd';
+  if (lowerQuery.includes('financiamiento') || lowerQuery.includes('financiación')) return 'financing';
+  if (lowerQuery.includes('privacidad') || lowerQuery.includes('compartir')) return 'privacy';
+  if (lowerQuery.includes('qué es') && lowerQuery.includes('cura')) return 'definition';
+  
+  console.log("Detectado: GENERAL (no coincide con ninguna categoría)");
   return 'general';
 }
 
@@ -335,6 +399,52 @@ function getDirectCUSResponse() {
   };
 }
 
+function getDirectHCDResponse() {
+  return {
+    answer: `**🏥 Historia Clínica Digital (HCD) Federal**\n\n` +
+            `La **Historia Clínica Digital** es el núcleo del Sistema C.U.R.A. - es tu **registro médico único y completo** accesible en todo el país.\n\n` +
+            `**🔹 CARACTERÍSTICAS PRINCIPALES:**\n` +
+            `• **Unificada**: Agrupa toda tu información médica de diferentes hospitales, clínicas y obras sociales\n` +
+            `• **Federal**: Accesible en cualquier provincia que se adhiera al sistema\n` +
+            `• **Interoperable**: Usa estándares internacionales (HL7 FHIR) para que todos los sistemas se entiendan\n` +
+            `• **Segura**: Cifrada y con trazabilidad de cada acceso\n\n` +
+            `**🔹 QUÉ INCLUYE TU HCD:**\n` +
+            `• **Datos básicos**: Alergias, medicación activa, grupo sanguíneo\n` +
+            `• **Consultas**: Todas tus visitas médicas con diagnósticos y tratamientos\n` +
+            `• **Estudios**: Resultados de laboratorio, radiografías, tomografías en formato digital\n` +
+            `• **Procedimientos**: Cirugías, internaciones, vacunas\n` +
+            `• **Recetas**: Prescripciones electrónicas activas\n\n` +
+            `**🔹 CÓMO FUNCIONA EN LA PRÁCTICA:**\n` +
+            `1. **Consulta en Buenos Aires**: Tu médico carga diagnóstico y receta\n` +
+            `2. **Viajás a Mendoza**: En una emergencia, el médico de guardia accede a toda tu historia\n` +
+            `3. **Volvés a tu ciudad**: Tu médico de cabecera ve todo lo que pasó\n` +
+            `4. **Prevención**: El sistema te alerta sobre interacciones medicamentosas riesgosas\n\n` +
+            `**🔹 TU CONTROL:**\n` +
+            `• **Acceso**: Desde "Mi Argentina" o app C.U.R.A.\n` +
+            `• **Privacidad**: Datos sensibles ocultos por defecto\n` +
+            `• **Trazabilidad**: Ves quién accedió y cuándo\n` +
+            `• **Portabilidad**: Tu historia te sigue a donde vayas\n\n` +
+            `**🎯 OBJETIVO**: Que ningún médico te atienda "a ciegas". Tu información de salud te acompañe siempre, salvando vidas y mejorando tu atención.`,
+    
+    suggestions: [
+      "¿Cómo accedo a mi Historia Clínica Digital?",
+      "¿Qué información ven los médicos en una emergencia?",
+      "¿Puedo ocultar ciertos datos de mi historia clínica?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 1° - Creación del Sistema Nacional Unificado",
+      "Artículo 13 - Arquitectura de repositorios federados",
+      "Artículo 16 - Conjunto mínimo básico de datos"
+    ],
+    
+    success: true,
+    note: "Respuesta directa - Historia Clínica Digital"
+  };
+}
+
 function getDirectCURAIDResponse(query) {
   const lowerQuery = query.toLowerCase();
   const includeExamples = lowerQuery.includes('ejemplo') || lowerQuery.includes('ejemplos');
@@ -399,7 +509,7 @@ function getDirectCURAIDResponse(query) {
 }
 
 // ======================================================
-// FUNCIONES PARA OTRAS PREGUNTAS (se mantienen igual)
+// FUNCIONES RESTANTES (mantener iguales)
 // ======================================================
 
 async function enrichQuery(query) {
@@ -409,61 +519,52 @@ async function enrichQuery(query) {
   const questionType = detectQuestionType(query);
   
   switch(questionType) {
-    case 'financing':
-      enrichment = `financiamiento presupuesto costo recursos económicos ` +
-                   `fondos inversión ahorro eficiencia presupuestaria ` +
-                   `artículo 35 37 42 fiisd fopinfondo`;
-      break;
-      
-    case 'privacy':
-      enrichment = `privacidad datos sensibles compartir consentimiento ` +
-                   `control panel de privacidad acceso médico información ` +
-                   `historia clínica confidencial artículo 27 28 ` +
-                   `emergencia break-glass blindaje sanitario`;
-      break;
-      
-    case 'definition':
-      enrichment = `definición qué es ley cura proyecto ` +
-                   `historia clínica digital sistema sanitario ` +
-                   `transformación digital salud argentina`;
+    case 'cura_id':
+      enrichment = `cura-id identificador único paciente número código ` +
+                   `renaper historial médico trazabilidad emergencia ` +
+                   `perfil temporal cura-temp`;
       break;
       
     case 'credential':
       enrichment = `credencial única de salud cus credencial digital ` +
-                   `mi argentina qr nfc acceso sistema turnos ` +
-                   `artículo 17 29`;
+                   `mi argentina app aplicación qr código nfc ` +
+                   `acceso sistema turnos farmacias emergencia`;
       break;
       
-    case 'cura_id':
-      enrichment = `cura-id identificador único paciente número ` +
-                   `renaper historia clínica trazabilidad ` +
-                   `emergencia cura-temp artículo 17`;
+    case 'hcd':
+      enrichment = `historia clínica digital hcd registro médico ` +
+                   `unificado federal interoperable hl7 fhir ` +
+                   `datos clínicos estudios laboratorio consultas`;
       break;
       
-    case 'article':
-      enrichment = `artículos capítulos secciones disposiciones ` +
-                   `normativa reglamentación texto legal ley CURA`;
+    case 'financing':
+      enrichment = `financiamiento presupuesto recursos económicos ` +
+                   `fondos inversión eficiencia presupuestaria ` +
+                   `artículo 35 37 42 fiisd fopinfondo`;
       break;
       
-    case 'implementation':
-      enrichment = `proceso implementación etapas cronograma ejecución ` +
-                   `puesta en marcha fases pilotos hitos despliegue`;
+    case 'privacy':
+      enrichment = `privacidad confidencial consentimiento ` +
+                   `panel de privacidad datos sensibles ` +
+                   `ocultar salud mental vih artículo 27 28`;
+      break;
+      
+    case 'definition':
+      enrichment = `definición qué es ley cura proyecto ` +
+                   `sistema sanitario digital transformación ` +
+                   `salud argentina objetivos principios`;
       break;
       
     default:
       enrichment = `${query} contexto detalles explicación ` +
-                   `información relevante ley cura conectividad ` +
-                   `unificada para redes y asistencia sanitaria`;
+                   `información relevante ley cura`;
   }
   
+  console.log("Enriquecimiento para", questionType, ":", enrichment.substring(0, 100) + "...");
   return `${query} ${enrichment}`;
 }
 
-// Las funciones generateEmbedding, fetchMultipleContexts, generateGeneralResponse
-// y las funciones auxiliares se mantienen IGUALES a las de tu última versión
-
 async function generateEmbedding(text) {
-  // Mismo código que antes
   const embedRes = await fetch("https://openrouter.ai/api/v1/embeddings", {
     method: "POST",
     headers: {
@@ -485,7 +586,6 @@ async function generateEmbedding(text) {
 }
 
 async function fetchMultipleContexts(vector, originalQuery) {
-  // Mismo código que antes
   const mainRes = await fetch(
     "https://leycura-law-index-m0fkj60.svc.aped-4627-b74a.pinecone.io/query",
     {
@@ -526,15 +626,17 @@ async function fetchMultipleContexts(vector, originalQuery) {
   
   contexts.sort((a, b) => b.score - a.score);
   
-  return contexts
+  const combined = contexts
     .slice(0, 6)
     .map(c => c.text)
     .join("\n\n---\n\n")
     .slice(0, 5000);
+    
+  console.log("Contexto obtenido de Pinecone:", combined.length, "caracteres");
+  return combined;
 }
 
 async function generateGeneralResponse(userMessage, context, history) {
-  // Mismo código que antes (con el prompt mejorado de salud y eficiencia)
   const systemPrompt = `
 # IDENTIDAD Y PROPÓSITO
 Sos el Asistente Virtual de la Ley C.U.R.A., creado para **mejorar la salud de todos los argentinos** mediante la transformación digital del sistema sanitario.
@@ -549,12 +651,6 @@ Sos el Asistente Virtual de la Ley C.U.R.A., creado para **mejorar la salud de t
 ❌ NUNCA digas "aumento de presupuesto" o "nuevos gastos"
 ✅ SIEMPRE usa: "optimización de recursos", "reorganización eficiente", "reinversión estratégica"
 ✅ SIEMPRE vincula al impacto en salud: "mejora diagnóstica", "acceso más rápido", "atención continua"
-
-# FRASES CLAVE PARA INCORPORAR:
-• "Transforma la salud argentina digitalizando lo que ya existe"
-• "Mejora diagnóstica mediante información unificada"
-• "Salva vidas con datos accesibles en emergencias"
-• "Acelera el acceso a atención de calidad"
 
 # FORMATO DE RESPUESTA
 **Tu respuesta DEBE ser SIEMPRE un JSON válido**:
@@ -627,7 +723,6 @@ ${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
   }
 }
 
-// Funciones de fallback (mantener igual)
 function getHealthFocusedFallback(query) {
   const lowerQuery = query.toLowerCase();
   

@@ -16,34 +16,24 @@ export default async function handler(req, res) {
     }
 
     // ======================================================
-    // 1. ENRICHMENT INTELIGENTE (con análisis semántico)
-    // ======================================================
-    const enrichedMessage = await enrichQuery(message);
-    
-    // ======================================================
-    // 2. EMBEDDING
-    // ======================================================
-    const vector = await generateEmbedding(enrichedMessage);
-    
-    // ======================================================
-    // 3. BÚSQUEDA EN PINECONE CON MULTIPLES ESTRATEGIAS
-    // ======================================================
-    const context = await fetchMultipleContexts(vector, message);
-    
-    // ======================================================
-    // 4. DETECCIÓN DE TIPO DE PREGUNTA PARA RESPUESTAS ESPECÍFICAS
+    // 1. DETECCIÓN DE TIPO DE PREGUNTA (sin búsqueda previa)
     // ======================================================
     const questionType = detectQuestionType(message);
     
     // ======================================================
-    // 5. GENERACIÓN DE RESPUESTA (con lógica específica para financiamiento)
+    // 2. RESPUESTA DIRECTA PARA FINANCIAMIENTO (sin IA)
     // ======================================================
-    let response;
     if (questionType === 'financing') {
-      response = await generateFinancingResponse(message, context, history);
-    } else {
-      response = await generateGeneralResponse(message, context, history);
+      return res.status(200).json(getDirectFinancingResponse());
     }
+    
+    // ======================================================
+    // 3. PARA OTRAS PREGUNTAS: PROCESO NORMAL CON IA
+    // ======================================================
+    const enrichedMessage = await enrichQuery(message);
+    const vector = await generateEmbedding(enrichedMessage);
+    const context = await fetchMultipleContexts(vector, message);
+    const response = await generateGeneralResponse(message, context, history);
     
     return res.status(200).json(response);
 
@@ -63,23 +53,35 @@ export default async function handler(req, res) {
 // ======================================================
 
 function detectQuestionType(query) {
-  const lowerQuery = query.toLowerCase();
+  const lowerQuery = query.toLowerCase().trim();
   
-  // Palabras clave para financiamiento
+  // Palabras clave para financiamiento (más amplias)
   const financingKeywords = [
-    'financiamiento', 'presupuesto', 'costo', 'dinero', 'recursos',
-    'fondos', 'inversión', 'gasto', 'ahorro', 'plata',
-    'financiar', 'presupuestario', 'económico', 'capital', 'subsidio'
+    'financiamiento', 'financiación', 'financiar', 'presupuesto', 
+    'costo', 'costos', 'dinero', 'recursos', 'fondos', 'inversión',
+    'gasto', 'ahorro', 'plata', 'capital', 'subsidio', 'subsidios',
+    'fuentes de financiación', 'fuentes de financiamiento',
+    'cómo se financia', 'cómo se paga', 'quién paga', 'de dónde sale',
+    'modelo económico', 'modelo financiero', 'sostenibilidad económica',
+    'pilares financieros', '7 pilares', 'siete pilares',
+    'artículo 35', 'art. 35', 'artículo 37', 'art. 37', 'artículo 42', 'art. 42'
   ];
   
-  // Palabras clave para otros tipos
+  // Verificar si contiene alguna palabra clave de financiamiento
+  const isFinancing = financingKeywords.some(keyword => 
+    lowerQuery.includes(keyword.toLowerCase())
+  );
+  
+  if (isFinancing) {
+    return 'financing';
+  }
+  
+  // Detección de otros tipos (opcional, si los mantienes)
   const articleKeywords = ['artículo', 'art', 'capítulo', 'título'];
   const implementationKeywords = ['implementación', 'cómo funciona', 'cómo se', 'etapas'];
   const definitionKeywords = ['qué es', 'definición', 'significa'];
   
-  if (financingKeywords.some(keyword => lowerQuery.includes(keyword))) {
-    return 'financing';
-  } else if (articleKeywords.some(keyword => lowerQuery.includes(keyword))) {
+  if (articleKeywords.some(keyword => lowerQuery.includes(keyword))) {
     return 'article';
   } else if (implementationKeywords.some(keyword => lowerQuery.includes(keyword))) {
     return 'implementation';
@@ -90,6 +92,71 @@ function detectQuestionType(query) {
   return 'general';
 }
 
+function getDirectFinancingResponse() {
+  return {
+    answer: `**📊 Financiamiento de la Ley C.U.R.A.: Modelo de 7 Pilares Inteligentes**\n\n` +
+            `El proyecto se financia mediante un **modelo híbrido innovador** que **NO depende de nuevo gasto público**, sino de optimización estratégica y colaboración inteligente.\n\n` +
+            `🔹 **1. REASIGNACIÓN INTELIGENTE Y EFICIENCIA PRESUPUESTARIA**\n` +
+            `• **Consolidación de sistemas redundantes**: SNVS, SIISA y 14 registros provinciales se unifican en C.U.R.A., liberando **~$200M anuales**\n` +
+            `• **Migración a código abierto**: Ahorro estimado de **$120M** en licencias privadas eliminadas\n\n` +
+            `🔹 **2. AUTOFINANCIAMIENTO POR AHORRO SISTÉMICO**\n` +
+            `• **Regla 50/40/10**: **50%** de todo ahorro demostrado se reinvierte automáticamente:\n` +
+            `  → **40%** en ciberseguridad y modernización tecnológica\n` +
+            `  → **60%** en **Fondo Federal de Equidad** (reduce brecha norte-sur)\n` +
+            `• **PAMI como "motor de ahorro"**: Obligado a transferir **50%** de sus **~$350M de ahorro anual** por digitalización\n\n` +
+            `🔹 **3. INTERCAMBIO TECNOLÓGICO ESTRATÉGICO**\n` +
+            `• **Datos anonimizados × IA**: Empresas acceden a repositorio para I+D, a cambio de:\n` +
+            `  ✓ **Transferencia tecnológica completa**\n` +
+            `  ✓ **Capacitación de talento local**\n` +
+            `  ✓ **Licencia perpetua para el Estado**\n` +
+            `  ✓ **Prioridad a desarrollos argentinos**\n\n` +
+            `🔹 **4. CAPITAL PRIVADO CON INCENTIVOS**\n` +
+            `• **Padrinazgo tecnológico**: Empresas adoptan hospitales (ej: Techint → 5 hospitales del conurbano)\n` +
+            `• **Mecenazgo digital**: **150% de deducción** en Ganancias para donaciones\n` +
+            `• **Bonos de impacto social**: Inversión medida en resultados sanitarios concretos\n\n` +
+            `🔹 **5. FINANCIAMIENTO ESTRUCTURAL**\n` +
+            `• **Fondo del Servicio Universal (FSU)**: Recursos de ENACOM para conectividad hospitalaria\n` +
+            `• **Créditos BID/BM**: **$300M** para infraestructura tecnológica de alta seguridad\n` +
+            `• **Exportación del modelo**: Venta de C.U.R.A.-Core a países de la región\n\n` +
+            `🔹 **6. GOBERNANZA TRANSPARENTE**\n` +
+            `• **Panel público en tiempo real**: Cualquier ciudadano puede ver ejecución y ahorros por provincia\n` +
+            `• **Auditoría triple anual**: SIGEN (control interno) + AGN (control externo) + ONTI (auditoría técnica)\n` +
+            `• **Financiamiento contingente**: Los fondos se liberan solo tras cumplimiento de hitos verificables\n\n` +
+            `🔹 **7. INNOVACIÓN FISCAL**\n` +
+            `• **"Sandbox" regulatorio**: Permite testear nuevos modelos sin afectar el sistema productivo\n` +
+            `• **Impuesto a celulares → conectividad hospitalaria**: Parte del impuesto financia la red de fibra óptica en hospitales remotos\n` +
+            `• **Certificados de crédito tecnológico**: Para proveedores que desarrollen módulos específicos del sistema\n\n` +
+            `**📈 IMPACTO PRESUPUESTARIO NETO:**\n` +
+            `• **Años 1-3**: Inversión inicial de **~$800M** (70% reasignado de partidas existentes, 30% capital privado)\n` +
+            `• **Año 4+**: **Autofinanciamiento completo** + superávit de **~$200M anuales** para el Fondo Federal de Equidad\n\n` +
+            `**💰 LA CLAVE DIFERENCIADORA:**\n` +
+            `NO es un "gasto público nuevo". Es una **REINVERSIÓN ESTRATÉGICA** que transforma el **costo actual del sistema fragmentado** ($85M solo en SNVS) en un **ACTIVO DIGITAL SOBERANO** que genera ahorros recurrentes y posiciona a Argentina como líder en salud digital.`,
+    
+    suggestions: [
+      "¿Cómo funciona exactamente el intercambio datos×tecnología con empresas?",
+      "¿Qué pasa si una provincia no logra los hitos de implementación?",
+      "¿Cómo se garantiza que los ahorros de PAMI no afecten la atención de los afiliados?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 35 - Financiamiento y principio de máxima eficiencia presupuestaria",
+      "Artículo 37 - Régimen de mecenazgo e inversión privada estratégica",
+      "Artículo 42 - Financiamiento sustentable del Hub Global",
+      "Disposición Transitoria 23ª - Garantía de ejecución presupuestaria",
+      "Disposición Transitoria 24ª - Implementación del ahorro PAMI-C.U.R.A."
+    ],
+    
+    success: true,
+    note: "Respuesta directa predefinida - Modelo de 7 Pilares"
+  };
+}
+
+// ======================================================
+// FUNCIONES PARA OTRAS PREGUNTAS (se mantienen igual)
+// ======================================================
+
 async function enrichQuery(query) {
   const lowerQuery = query.toLowerCase();
   let enrichment = "";
@@ -97,15 +164,6 @@ async function enrichQuery(query) {
   const questionType = detectQuestionType(query);
   
   switch(questionType) {
-    case 'financing':
-      enrichment = `financiamiento presupuesto costo recursos económicos fondos inversión ` +
-                   `ahorro eficiencia presupuestaria reasignación partidas consolidación ` +
-                   `SNVS código abierto FIISD FSU ENACOM PAMI autofinanciamiento ` +
-                   `intercambio datos anonimizados IA inteligencia artificial padrinazgo ` +
-                   `mecenazgo incentivos fiscales equidad federal siete pilares ` +
-                   `modelo híbrido 7 pilares financieros artículo 35 37 42`;
-      break;
-      
     case 'article':
       enrichment = `artículos capítulos secciones disposiciones normativa reglamentación ` +
                    `texto legal ley CURA`;
@@ -161,7 +219,7 @@ async function fetchMultipleContexts(vector, originalQuery) {
       },
       body: JSON.stringify({
         vector,
-        topK: 10, // Aumentamos para financiamiento que necesita más contexto
+        topK: 8,
         includeMetadata: true,
         namespace: "leycura"
       })
@@ -178,26 +236,13 @@ async function fetchMultipleContexts(vector, originalQuery) {
   (mainData.matches || []).forEach(match => {
     const text = match.metadata?.text || "";
     const score = match.score || 0;
-    const source = match.metadata?.source || "";
     
-    // Priorizar documentos de financiamiento si la pregunta es sobre eso
-    const isFinancingRelated = source.includes('financiamiento') || 
-                              text.includes('presupuesto') || 
-                              text.includes('artículo 35') ||
-                              text.includes('artículo 37') ||
-                              text.includes('artículo 42');
-    
-    let adjustedScore = score;
-    if (detectQuestionType(originalQuery) === 'financing' && isFinancingRelated) {
-      adjustedScore += 0.1; // Boost para documentos de financiamiento
-    }
-    
-    if (text && adjustedScore > 0.5 && !seenTexts.has(text)) {
+    if (text && score > 0.6 && !seenTexts.has(text)) {
       seenTexts.add(text);
       contexts.push({
         text,
-        score: adjustedScore,
-        source
+        score,
+        source: match.metadata?.source || "ley_cura"
       });
     }
   });
@@ -205,179 +250,11 @@ async function fetchMultipleContexts(vector, originalQuery) {
   contexts.sort((a, b) => b.score - a.score);
   
   return contexts
-    .slice(0, 8) // Tomar los 8 más relevantes
+    .slice(0, 6)
     .map(c => c.text)
     .join("\n\n---\n\n")
-    .slice(0, 6000); // Aumentar límite para financiamiento
+    .slice(0, 5000);
 }
-
-// ======================================================
-// RESPUESTA ESPECÍFICA PARA FINANCIAMIENTO
-// ======================================================
-
-async function generateFinancingResponse(userMessage, context, history) {
-  const financingSystemPrompt = `
-# IDENTIDAD
-Sos el Asistente Virtual Inteligente de la Ley C.U.R.A. (Conectividad Unificada para Redes y Asistencia Sanitaria). 
-Tu especialidad es explicar el modelo de financiamiento con precisión técnica y claridad.
-
-# REGLAS ESPECÍFICAS PARA FINANCIAMIENTO
-1. **SIEMPRE MENCIONÁ LOS 7 PILARES** exactamente en este orden:
-   🔹 1. REASIGNACIÓN INTELIGENTE Y EFICIENCIA PRESUPUESTARIA
-   🔹 2. AUTOFINANCIAMIENTO POR AHORRO SISTÉMICO
-   🔹 3. INTERCAMBIO TECNOLÓGICO ESTRATÉGICO
-   🔹 4. CAPITAL PRIVADO CON INCENTIVOS
-   🔹 5. FINANCIAMIENTO ESTRUCTURAL
-   🔹 6. GOBERNANZA TRANSPARENTE
-   🔹 7. INNOVACIÓN FISCAL
-
-2. **INCLUÍ DATOS CONCRETOS** siempre que sea posible:
-   - Consolidación SNVS: $85M → $12M anuales
-   - Ahorro PAMI: ~$350M anuales
-   - Migración a código abierto: ~$120M en licencias
-   - Regla 50/40/10: 50% de ahorro se reinvierte (40% seguridad, 60% equidad)
-
-3. **DESTACÁ QUE NO ES GASTO NUEVO** sino "reinversión estratégica"
-
-4. **EXPLICÁ EL INTERCAMBIO DATOS×IA** con prioridad argentina:
-   - Empresa extranjera provee algoritmo
-   - Argentina provee datos anonimizados
-   - Contraprestación: licencia perpetua + capacitación + centro I+D local
-
-5. **MENCIONÁ FUENTES ESPECÍFICAS**: Artículo 35, 37, 42, Disposición Transitoria 23ª
-
-# FORMATO DE RESPUESTA OBLIGATORIO
-**Tu respuesta DEBE ser SIEMPRE un JSON válido** con esta estructura EXACTA:
-{
-  "answer": "TEXTO COMPLETO AQUÍ. Usá emojis 🔹 para los 7 pilares. Incluí números concretos. Terminá con el concepto de 'activo digital soberano'.",
-  "suggestions": [
-    "¿Cómo funciona exactamente el intercambio datos×tecnología con empresas?",
-    "¿Qué pasa si una provincia no logra los hitos de implementación?",
-    "¿Cómo se garantiza que los ahorros de PAMI no afecten a los afiliados?"
-  ],
-  "confidence": 0.95,
-  "sources": ["Art. 35", "Art. 37", "Art. 42", "Disposición Transitoria 23ª"]
-}
-
-# PLANTILLA BASE DE RESPUESTA (adaptala según contexto):
-El proyecto Ley C.U.R.A. se financia mediante un **modelo híbrido de 7 pilares inteligentes** que NO depende de nuevo gasto público, sino de optimización y colaboración estratégica.
-
-🔹 **1. REASIGNACIÓN INTELIGENTE Y EFICIENCIA PRESUPUESTARIA**
-• **Consolidación de sistemas redundantes**: SNVS, SIISA y 14 registros provinciales se unifican en C.U.R.A., liberando ~$200M anuales
-• **Migración a código abierto**: Ahorro estimado de $120M en licencias privadas
-
-🔹 **2. AUTOFINANCIAMIENTO POR AHORRO SISTÉMICO** 
-• **Regla 50/40/10**: 50% de todo ahorro demostrado se reinvierte automáticamente
-  → 40% en ciberseguridad
-  → 60% en Fondo Federal de Equidad (reduce brecha norte-sur)
-• **PAMI como "motor de ahorro"**: Obligado a transferir 50% de sus ~$350M de ahorro anual
-
-🔹 **3. INTERCAMBIO TECNOLÓGICO ESTRATÉGICO**
-• **Datos anonimizados × IA**: Empresas acceden a repositorio para I+D, a cambio de:
-  ✓ Transferencia tecnológica completa
-  ✓ Capacitación de talento local
-  ✓ Licencia perpetua para el Estado
-  ✓ Prioridad a desarrollos argentinos
-
-🔹 **4. CAPITAL PRIVADO CON INCENTIVOS**
-• **Padrinazgo tecnológico**: Empresas adoptan hospitales (Techint → 5 hospitales conurbano)
-• **Mecenazgo digital**: 150% de deducción en Ganancias
-• **Bonos de impacto social**: Inversión medida en resultados sanitarios
-
-🔹 **5. FINANCIAMIENTO ESTRUCTURAL**
-• **Fondo del Servicio Universal (FSU)**: Recursos de ENACOM para conectividad
-• **Créditos BID/BM**: $300M para infraestructura tecnológica
-• **Exportación del modelo**: Venta de C.U.R.A.-Core a otros países
-
-🔹 **6. GOBERNANZA TRANSPARENTE**
-• **Panel público en tiempo real**: Vea ejecución y ahorros por provincia
-• **Auditoría triple anual**: SIGEN + AGN + ONTI
-• **Financiamiento contingente**: Fondos sujetos a cumplimiento de hitos
-
-🔹 **7. INNOVACIÓN FISCAL**
-• **"Sandbox" regulatorio**: Prueba de nuevos modelos
-• **Impuesto a celulares → conectividad hospitalaria**
-• **Certificados de crédito tecnológico**
-
-**📊 IMPACTO PRESUPUESTARIO NETO:**
-• **Año 1-3**: Inversión inicial de ~$800M (70% reasignado, 30% privado)
-• **Año 4+**: Autofinanciamiento completo + superávit de ~$200M anuales para equidad
-
-**La clave**: No es un gasto, es una **reinversión estratégica** que transforma el costo actual del sistema fragmentado en un **activo digital soberano**.
-
-# HISTORIAL DE CONVERSACIÓN:
-${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
-
-# CONTEXTO ACTUAL:
-${context}
-
-# PREGUNTA DEL USUARIO:
-${userMessage}
-`;
-
-  const chatRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": "https://leycura.org",
-      "X-Title": "LeyCura Chatbot"
-    },
-    body: JSON.stringify({
-      model: "deepseek/deepseek-chat",
-      temperature: 0.1, // Muy baja temperatura para respuestas consistentes
-      max_tokens: 2000, // Más tokens para respuesta detallada
-      messages: [
-        { role: "system", content: financingSystemPrompt },
-        ...history.slice(-6),
-        { role: "user", content: userMessage }
-      ]
-    })
-  });
-
-  if (!chatRes.ok) throw new Error("Chat error");
-  
-  const chatData = await chatRes.json();
-  const rawContent = chatData.choices?.[0]?.message?.content || "";
-
-  try {
-    const cleanContent = rawContent
-      .replace(/```json\s*/g, '')
-      .replace(/```\s*/g, '')
-      .trim();
-    
-    const parsed = JSON.parse(cleanContent);
-    
-    // Validar que contenga los 7 pilares
-    const answerText = parsed.answer || "";
-    const hasSevenPillars = (answerText.match(/🔹/g) || []).length >= 7;
-    
-    return {
-      answer: parsed.answer || getFallbackFinancingAnswer(),
-      suggestions: Array.isArray(parsed.suggestions) && parsed.suggestions.length > 0 
-        ? parsed.suggestions.slice(0, 3)
-        : getFinancingSuggestions(),
-      confidence: hasSevenPillars ? 0.95 : 0.8,
-      sources: Array.isArray(parsed.sources) ? parsed.sources : ["Art. 35", "Art. 37", "Art. 42"],
-      success: true,
-      note: hasSevenPillars ? "Incluye los 7 pilares" : "Respuesta general sobre financiamiento"
-    };
-    
-  } catch (e) {
-    return {
-      answer: getFallbackFinancingAnswer(),
-      suggestions: getFinancingSuggestions(),
-      confidence: 0.7,
-      sources: ["Art. 35", "Art. 37", "Art. 42"],
-      success: true,
-      note: "Respuesta de fallback para financiamiento"
-    };
-  }
-}
-
-// ======================================================
-// RESPUESTA GENERAL PARA OTROS TEMAS
-// ======================================================
 
 async function generateGeneralResponse(userMessage, context, history) {
   const systemPrompt = `
@@ -463,37 +340,8 @@ ${context}
   }
 }
 
-// ======================================================
-// FUNCIONES DE FALLBACK ESPECÍFICAS PARA FINANCIAMIENTO
-// ======================================================
-
-function getFallbackFinancingAnswer() {
-  return `**Financiamiento de la Ley C.U.R.A.: Modelo de 7 Pilares Inteligentes**\n\n` +
-         `El proyecto se financia mediante un **modelo híbrido** que combina eficiencia presupuestaria con inversión estratégica, **sin crear nuevo gasto público**.\n\n` +
-         `🔹 **1. REASIGNACIÓN INTELIGENTE**\nConsolidación de sistemas redundantes (SNVS, SIISA) libera ~$200M anuales.\n\n` +
-         `🔹 **2. AUTOFINANCIAMIENTO**\nRegla 50/40/10: 50% del ahorro se reinvierte (40% seguridad, 60% equidad federal).\n\n` +
-         `🔹 **3. INTERCAMBIO TECNOLÓGICO**\nDatos anonimizados × IA: Prioridad para desarrollos argentinos.\n\n` +
-         `🔹 **4. CAPITAL PRIVADO**\nPadrinazgo tecnológico + Mecenazgo digital con 150% deducción.\n\n` +
-         `🔹 **5. FINANCIAMIENTO ESTRUCTURAL**\nFSU (ENACOM) + Créditos multilaterales + Exportación del modelo.\n\n` +
-         `🔹 **6. GOBERNANZA**\nPanel público transparente + Auditoría triple anual.\n\n` +
-         `🔹 **7. INNOVACIÓN FISCAL**\nSandbox regulatorio + Certificados de crédito tecnológico.\n\n` +
-         `**Total**: No es gasto, es **reinversión estratégica** que transforma costos en un activo digital soberano.`;
-}
-
-function getFinancingSuggestions() {
-  return [
-    "¿Cómo funciona exactamente el intercambio datos×tecnología con empresas?",
-    "¿Qué pasa si una provincia no logra los hitos de implementación?",
-    "¿Cómo se garantiza que los ahorros de PAMI no afecten a los afiliados?"
-  ];
-}
-
 function generateFallbackSuggestions(query) {
   const lowerQuery = query.toLowerCase();
-  
-  if (lowerQuery.includes('financiamiento')) {
-    return getFinancingSuggestions();
-  }
   
   if (lowerQuery.includes('artículo')) {
     return [

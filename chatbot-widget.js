@@ -214,21 +214,27 @@
         animation: pulse-simple 1.5s infinite;
       }
 
-      @media (max-width: 480px) {
-        .leycura-chat-window {
-          right: 15px;
-          bottom: 80px;
-          width: calc(100vw - 30px);
-        }
-        .leycura-chat-window.keyboard-up {
-          bottom: 0px !important;
-          right: 0px !important;
-          width: 100vw !important;
-          height: 95vh !important;
-          border-radius: 20px 20px 0 0;
-          z-index: 2147483647;
-        }
-      }
+/* ✅ RESPONSIVO CELULARES MEJORADO */
+@media (max-width: 480px) {
+  .leycura-chat-window {
+    right: 15px;
+    bottom: 80px;
+    width: calc(100vw - 30px);
+    transition: all 0.3s ease;
+  }
+
+  /* ✅ ESTADO CUANDO ESCRIBES: Se vuelve pantalla completa */
+  .leycura-chat-window.keyboard-up {
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: 100% !important; /* Ocupa todo el alto disponible */
+    max-height: 100vh !important;
+    top: 0 !important;       /* Se ancla arriba para que el teclado no lo desplace */
+    border-radius: 0 !important; /* Pantalla completa para mejor lectura */
+    z-index: 2147483647;
+  }
+}
 
       @keyframes sparkle-glow {
         0%, 100% { filter: drop-shadow(0 0 2px var(--cura-accent)); transform: scale(1); }
@@ -323,13 +329,19 @@
         if (e.key === "Enter") this.sendMessage();
       });
 
-      this.inputEl.addEventListener("focus", () => {
-        if (window.innerWidth <= 480) {
-          this.chatWindow.classList.add("keyboard-up");
-          this.button.classList.add("leycura-btn-hidden-mobile");
-          setTimeout(() => this.scrollToBottom(), 300);
-        }
-      });
+     this.inputEl.addEventListener("focus", () => {
+  if (window.innerWidth <= 480) {
+    this.chatWindow.classList.add("keyboard-up");
+    this.button.classList.add("leycura-btn-hidden-mobile");
+    
+    // Esperamos un instante a que el teclado termine de subir
+    setTimeout(() => {
+      this.scrollToBottom();
+      // Forzamos al input a ser visible
+      this.inputEl.scrollIntoView({ block: "end", behavior: "smooth" });
+    }, 300);
+  }
+});
 
       this.inputEl.addEventListener("blur", () => {
         if (window.innerWidth <= 480) {

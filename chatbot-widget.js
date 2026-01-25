@@ -19,7 +19,7 @@
       console.log("🤖 LeyCura Chatbot: Estética de IA y optimización móvil aplicada");
     }
 
-    injectStyles() {
+injectStyles() {
       const css = `
       /* ✅ Evita el desplazamiento horizontal en toda la web */
       html, body {
@@ -34,7 +34,7 @@
         --cura-accent-light: #59D2FF;
       }
 
-      /* ✅ BOTÓN TIPO PÍLDORA CON IDENTIDAD DE IA */
+      /* ✅ BOTÓN CIRCULAR (Identidad Ley C.U.R.A.) */
       .leycura-chat-btn {
         position: fixed !important;
         bottom: 24px;
@@ -59,7 +59,13 @@
       .leycura-chat-btn:hover {
         transform: scale(1.05);
         background: var(--cura-primary-dark);
-        box-shadow: 0 12px 28px rgba(0,78,133,0.5);
+      }
+
+      /* ✅ CLASE PARA OCULTAR EL BOTÓN (Solo se activa en móvil al escribir) */
+      .leycura-btn-hidden-mobile {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transform: scale(0.8) translateY(10px);
       }
 
       .leycura-chat-btn i {
@@ -68,22 +74,10 @@
         animation: sparkle-glow 2s infinite;
       }
 
-      .leycura-btn-text {
-        font-size: 14px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-      }
-
-      @keyframes sparkle-glow {
-        0%, 100% { filter: drop-shadow(0 0 2px var(--cura-accent)); transform: scale(1); }
-        50% { filter: drop-shadow(0 0 8px var(--cura-accent-light)); transform: scale(1.1); }
-      }
-
-      /* ✅ VENTANA DE CHAT */
+      /* ✅ VENTANA DE CHAT (PC: Flota arriba del botón) */
       .leycura-chat-window {
         position: fixed !important;
-        bottom: 85px;
+        bottom: 90px; /* 24px base + 52px botón + 14px aire */
         right: 24px;
         width: 360px;
         max-width: calc(100vw - 48px);
@@ -99,7 +93,7 @@
         transform: translateY(30px) scale(0.95);
         opacity: 0;
         visibility: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         border: 1px solid rgba(0,194,255,0.2);
         font-family: 'Inter', system-ui, sans-serif;
       }
@@ -125,12 +119,10 @@
         flex: 1;
         padding: 16px;
         overflow-y: auto;
-        overflow-x: hidden !important;
         background: #F8FAFC;
         display: flex;
         flex-direction: column;
         gap: 12px;
-        scrollbar-width: thin;
       }
 
       .leycura-message {
@@ -157,38 +149,12 @@
         border-bottom-left-radius: 4px;
       }
 
-      .leycura-suggestions-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 4px;
-        margin-bottom: 12px;
-      }
-
-      .leycura-suggestion-btn {
-        background: #ffffff;
-        border: 1px solid var(--cura-accent);
-        color: var(--cura-primary);
-        padding: 8px 14px;
-        border-radius: 99px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-align: left;
-      }
-
-      .leycura-suggestion-btn:hover {
-        background: var(--cura-accent);
-        color: white;
-        transform: translateY(-2px);
-      }
-
       .leycura-chat-input-area {
         padding: 12px;
         background: #ffffff;
         border-top: 1px solid #E5E7EB;
         display: flex;
+        align-items: center;
         gap: 8px;
       }
 
@@ -202,65 +168,54 @@
         color: #111827;
       }
 
-/* ✅ BOTÓN DE ENVIAR (Agregalo aquí) */
-.leycura-chat-send {
-  background: var(--cura-primary);
-  color: white;
-  border: none;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0; /* 🔥 Esto evita que desaparezca en móviles */
-  transition: all 0.2s;
-}
-
-.leycura-chat-send i {
-  font-size: 18px;
-  color: #fff !important;
-}
-
-      .leycura-typing {
-        font-size: 12px;
-        color: #64748b;
-        font-style: italic;
-        padding: 8px 12px;
-        background: rgba(0, 194, 255, 0.05);
+      /* ✅ BOTÓN DE ENVIAR (Protegido para móviles) */
+      .leycura-chat-send {
+        background: var(--cura-primary);
+        color: white;
+        border: none;
+        width: 42px;
+        height: 42px;
         border-radius: 12px;
-        width: fit-content;
-        animation: pulse-simple 1.5s infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0; 
+        transition: all 0.2s;
       }
 
-      @keyframes pulse-simple {
-        0%, 100% { opacity: 0.5; }
-        50% { opacity: 1; }
-      }
-
+      .leycura-chat-send:hover { background: var(--cura-primary-dark); }
 
       /* ✅ RESPONSIVO CELULARES */
       @media (max-width: 480px) {
-        .leycura-chat-window {
-    right: 15px;
-    bottom: 80px;
-    width: calc(100vw - 30px);
-    transition: all 0.3s ease; /* Suaviza el movimiento al subir */
-  }
-
-  /* ✅ Esta clase se activará cuando el usuario toque el input */
-  .leycura-chat-window.keyboard-up {
-    bottom: 10px !important; /* Lo sube para ganar espacio */
-    height: 85vh !important; /* Lo hace más alto para ver los mensajes anteriores */
-  }
-        .leycura-btn-text { font-size: 13px; }
         .leycura-chat-window {
           right: 15px;
           bottom: 80px;
           width: calc(100vw - 30px);
         }
+
+        /* Cuando el usuario toca para escribir: sube y se expande */
+        .leycura-chat-window.keyboard-up {
+          bottom: 0px !important;
+          right: 0px !important;
+          width: 100vw !important;
+          height: 95vh !important;
+          border-radius: 20px 20px 0 0;
+          z-index: 2147483647;
+        }
+
+        .leycura-btn-text { font-size: 13px; }
       }
+
+      @keyframes sparkle-glow {
+        0%, 100% { filter: drop-shadow(0 0 2px var(--cura-accent)); transform: scale(1); }
+        50% { filter: drop-shadow(0 0 8px var(--cura-accent-light)); transform: scale(1.1); }
+      }
+      `;
+      const style = document.createElement("style");
+      style.textContent = css;
+      document.head.appendChild(style);
+    }
       `;
       const style = document.createElement("style");
       style.textContent = css;

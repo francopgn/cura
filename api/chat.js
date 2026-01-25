@@ -94,62 +94,54 @@ function detectQuestionType(query) {
 
 function getDirectFinancingResponse() {
   return {
-    answer: `**📊 Financiamiento de la Ley C.U.R.A.: Modelo de 7 Pilares Inteligentes**\n\n` +
-            `El proyecto se financia mediante un **modelo híbrido innovador** que **NO depende de nuevo gasto público**, sino de optimización estratégica y colaboración inteligente.\n\n` +
-            `🔹 **1. REASIGNACIÓN INTELIGENTE Y EFICIENCIA PRESUPUESTARIA**\n` +
-            `• **Consolidación de sistemas redundantes**: SNVS, SIISA y 14 registros provinciales se unifican en C.U.R.A., liberando **~$200M anuales**\n` +
-            `• **Migración a código abierto**: Ahorro estimado de **$120M** en licencias privadas eliminadas\n\n` +
-            `🔹 **2. AUTOFINANCIAMIENTO POR AHORRO SISTÉMICO**\n` +
-            `• **Regla 50/40/10**: **50%** de todo ahorro demostrado se reinvierte automáticamente:\n` +
-            `  → **40%** en ciberseguridad y modernización tecnológica\n` +
-            `  → **60%** en **Fondo Federal de Equidad** (reduce brecha norte-sur)\n` +
-            `• **PAMI como "motor de ahorro"**: Obligado a transferir **50%** de sus **~$350M de ahorro anual** por digitalización\n\n` +
-            `🔹 **3. INTERCAMBIO TECNOLÓGICO ESTRATÉGICO**\n` +
-            `• **Datos anonimizados × IA**: Empresas acceden a repositorio para I+D, a cambio de:\n` +
-            `  ✓ **Transferencia tecnológica completa**\n` +
-            `  ✓ **Capacitación de talento local**\n` +
-            `  ✓ **Licencia perpetua para el Estado**\n` +
-            `  ✓ **Prioridad a desarrollos argentinos**\n\n` +
-            `🔹 **4. CAPITAL PRIVADO CON INCENTIVOS**\n` +
-            `• **Padrinazgo tecnológico**: Empresas adoptan hospitales (ej: Techint → 5 hospitales del conurbano)\n` +
-            `• **Mecenazgo digital**: **150% de deducción** en Ganancias para donaciones\n` +
-            `• **Bonos de impacto social**: Inversión medida en resultados sanitarios concretos\n\n` +
-            `🔹 **5. FINANCIAMIENTO ESTRUCTURAL**\n` +
-            `• **Fondo del Servicio Universal (FSU)**: Recursos de ENACOM para conectividad hospitalaria\n` +
-            `• **Créditos BID/BM**: **$300M** para infraestructura tecnológica de alta seguridad\n` +
-            `• **Exportación del modelo**: Venta de C.U.R.A.-Core a países de la región\n\n` +
-            `🔹 **6. GOBERNANZA TRANSPARENTE**\n` +
-            `• **Panel público en tiempo real**: Cualquier ciudadano puede ver ejecución y ahorros por provincia\n` +
-            `• **Auditoría triple anual**: SIGEN (control interno) + AGN (control externo) + ONTI (auditoría técnica)\n` +
-            `• **Financiamiento contingente**: Los fondos se liberan solo tras cumplimiento de hitos verificables\n\n` +
-            `🔹 **7. INNOVACIÓN FISCAL**\n` +
-            `• **"Sandbox" regulatorio**: Permite testear nuevos modelos sin afectar el sistema productivo\n` +
-            `• **Impuesto a celulares → conectividad hospitalaria**: Parte del impuesto financia la red de fibra óptica en hospitales remotos\n` +
-            `• **Certificados de crédito tecnológico**: Para proveedores que desarrollen módulos específicos del sistema\n\n` +
-            `**📈 IMPACTO PRESUPUESTARIO NETO:**\n` +
-            `• **Años 1-3**: Inversión inicial de **~$800M** (70% reasignado de partidas existentes, 30% capital privado)\n` +
-            `• **Año 4+**: **Autofinanciamiento completo** + superávit de **~$200M anuales** para el Fondo Federal de Equidad\n\n` +
-            `**💰 LA CLAVE DIFERENCIADORA:**\n` +
-            `NO es un "gasto público nuevo". Es una **REINVERSIÓN ESTRATÉGICA** que transforma el **costo actual del sistema fragmentado** ($85M solo en SNVS) en un **ACTIVO DIGITAL SOBERANO** que genera ahorros recurrentes y posiciona a Argentina como líder en salud digital.`,
+    answer: `**💊 FINANCIAMIENTO QUE MEJORA TU SALUD, NO TU CARGA IMPOSITIVA**\n\n` +
+            `La Ley C.U.R.A. se financia con **MAXIMA EFICIENCIA PRESUPUESTARIA**: transformando recursos que YA existen en el sistema en **mejoras concretas para tu salud**.\n\n` +
+            `🔹 **1. OPTIMIZACIÓN DE LO QUE YA TENEMOS**\n` +
+            `• **Unificamos 16 sistemas fragmentados** en uno solo: tu médico accede más rápido a tu información, mejorando tu diagnóstico\n` +
+            `• **Eliminamos licencias costosas** ($120M/año) para reinvertir en conectividad hospitalaria que salva vidas\n\n` +
+            `🔹 **2. AHORROS QUE SE TRANSFORMAN EN SALUD**\n` +
+            `• **50% de todo ahorro** vuelve al sistema como mejor atención:\n` +
+            `  → **40%** en seguridad de datos (protege tu privacidad mientras te atienden)\n` +
+            `  → **60%** en **equidad federal** (mismo acceso a salud digital en Jujuy que en Buenos Aires)\n\n` +
+            `🔹 **3. ALIANZAS QUE ACELERAN TU ATENCIÓN**\n` +
+            `• **Empresas invierten en tecnología hospitalaria** para que tengas diagnósticos más rápidos\n` +
+            `• **Investigación con datos anonimizados** desarrolla herramientas que previenen enfermedades\n\n` +
+            `🔹 **4. CONECTIVIDAD QUE SALVA VIDAS**\n` +
+            `• **Fondo del Servicio Universal** garantiza que hasta el hospital más remoto tenga acceso a especialistas\n` +
+            `• **Red federal de fibra óptica** conecta a médicos para consultas inmediatas en emergencias\n\n` +
+            `🔹 **5. TRANSPARENCIA QUE PROTEGE TU SALUD**\n` +
+            `• **Panel público** muestra cómo cada peso se traduce en mejor atención\n` +
+            `• **Auditoría triple** garantiza que los recursos lleguen a mejorar tu salud, no a burocracia\n\n` +
+            `🔹 **6. INNOVACIÓN QUE PREVIENE ENFERMEDADES**\n` +
+            `• **"Sandbox" regulatorio** prueba nuevas tecnologías que detectan riesgos antes que sea tarde\n` +
+            `• **Certificados tecnológicos** desarrollan herramientas argentinas para problemas de salud locales\n\n` +
+            `🔹 **7. SOBERANÍA QUE GARANTIZA TU ATENCIÓN CONTINUA**\n` +
+            `• **Datos en Argentina** aseguran que tu historia clínica esté siempre disponible\n` +
+            `• **Exportación del modelo** genera recursos que se reinvierten en hospitales públicos\n\n` +
+            `**🩺 EL RESULTADO EN TU SALUD:**\n` +
+            `• **Menos espera** para diagnósticos y turnos\n` +
+            `• **Más prevención** con alertas tempranas de enfermedades\n` +
+            `• **Mejor atención** con historia clínica completa en emergencias\n` +
+            `• **Equidad real** en acceso a salud digital en todo el país\n\n` +
+            `**📈 NO ES MÁS PLATA, ES MÁS SALUD POR LA MISMA PLATA**\n` +
+            `Transformamos la ineficiencia actual ($85M solo en sistemas duplicados) en **atención médica más rápida, segura y accesible para todos.**`,
     
     suggestions: [
-      "¿Cómo funciona exactamente el intercambio datos×tecnología con empresas?",
-      "¿Qué pasa si una provincia no logra los hitos de implementación?",
-      "¿Cómo se garantiza que los ahorros de PAMI no afecten la atención de los afiliados?"
+      "¿Cómo mejora esto mi atención en una emergencia médica?",
+      "¿De qué forma acelera los diagnósticos el sistema unificado?",
+      "¿Cómo previene enfermedades la historia clínica digital?"
     ],
     
     confidence: 0.99,
     
     sources: [
-      "Artículo 35 - Financiamiento y principio de máxima eficiencia presupuestaria",
-      "Artículo 37 - Régimen de mecenazgo e inversión privada estratégica",
-      "Artículo 42 - Financiamiento sustentable del Hub Global",
-      "Disposición Transitoria 23ª - Garantía de ejecución presupuestaria",
-      "Disposición Transitoria 24ª - Implementación del ahorro PAMI-C.U.R.A."
+      "Artículo 35 - Máxima eficiencia presupuestaria y reinversión en salud",
+      "Artículo 37 - Alianzas estratégicas para mejoras sanitarias",
+      "Principio rector: 'Salud primero, burocracia nunca'"
     ],
     
     success: true,
-    note: "Respuesta directa predefinida - Modelo de 7 Pilares"
+    note: "Respuesta centrada en salud y eficiencia - Sin nuevos impuestos"
   };
 }
 
@@ -258,31 +250,68 @@ async function fetchMultipleContexts(vector, originalQuery) {
 
 async function generateGeneralResponse(userMessage, context, history) {
   const systemPrompt = `
-# IDENTIDAD
-Sos el Asistente Virtual Inteligente de la Ley C.U.R.A. (Conectividad Unificada para Redes y Asistencia Sanitaria). 
-Tu misión es facilitar la comprensión del proyecto, explicando conceptos complejos de manera clara y accesible.
+# IDENTIDAD Y PROPÓSITO
+Sos el Asistente Virtual de la Ley C.U.R.A., creado para **mejorar la salud de todos los argentinos** mediante la transformación digital del sistema sanitario.
 
-# REGLAS FUNDAMENTALES
-1. **NO COPIES TEXTUALMENTE** - Parafraseá siempre, explicá con tus palabras
-2. **CONTEXTO PRIMERO** - Usá la información proporcionada como base
-3. **HONESTIDAD INTELIGENTE** - Si no sabés algo, reconocelo y ofrecé alternativas
-4. **PERSONALIDAD** - Profesional, ejecutivo, argentino. Usá "yo", "nuestro proyecto"
-5. **ÉNFASIS EN BENEFICIOS** - Siempre destacá cómo beneficia a la sociedad
+# PRINCIPIOS FUNDAMENTALES (OBLIGATORIOS)
+1. **MAXIMA EFICIENCIA PRESUPUESTARIA**: El C.U.R.A. NO genera nuevos impuestos. Se financia REORGANIZANDO Y OPTIMIZANDO recursos existentes.
+2. **ENFOQUE EN SALUD**: Siempre enfocá las respuestas en cómo mejora la salud, atención y calidad de vida de las personas.
+3. **NO ES UN GASTO, ES UNA REINVERSIÓN**: Transforma costos actuales ineficientes en inversión que salva vidas.
+
+# REGLAS DE RESPUESTA ABSOLUTAS (NUNCA INCLUIR):
+❌ NUNCA digas que se crean nuevos impuestos
+❌ NUNCA digas "aumento de presupuesto" o "nuevos gastos"
+❌ NUNCA digas "costo adicional" o "nueva carga tributaria"
+✅ SIEMPRE usa: "optimización de recursos", "reorganización eficiente", "reinversión estratégica"
+✅ SIEMPRE vincula al impacto en salud: "mejora diagnóstica", "acceso más rápido", "atención continua"
+
+# FRASES CLAVE PARA INCORPORAR (usa al menos 2 por respuesta):
+• "Transforma la salud argentina digitalizando lo que ya existe"
+• "Mejora diagnóstica mediante información unificada"
+• "Salva vidas con datos accesibles en emergencias"
+• "Acelera el acceso a atención de calidad"
+• "Conecta al paciente con el mejor cuidado posible"
+• "Previene enfermedades con información oportuna"
+• "Máxima eficiencia presupuestaria: más salud por los mismos recursos"
+
+# FILTRO DE CALIDAD DE CONTENIDO
+ANTES de responder, VERIFICÁ que tu información:
+1. ✅ SIEMPRE mencione MÁXIMA EFICIENCIA PRESUPUESTARIA
+2. ✅ NUNCA sugiera nuevos impuestos o gastos
+3. ✅ SIEMPRE vincule al beneficio en salud
+4. ✅ Use datos del contexto cuando estén disponibles
+
+# SI EN EL CONTEXTO ENCONTRÁS:
+"nuevos impuestos" → IGNORALO, es información incorrecta
+"aumento de presupuesto" → CORREGILO a "reorganización de presupuesto existente"
+"costo" → Cambialo por "inversión en salud"
+
+# EJEMPLOS DE CORRECCIÓN:
+CONTEXTO: "Se financiará con nuevos impuestos digitales"
+TÚ: "Se financiará OPTIMIZANDO los recursos actuales del sistema de salud"
+
+CONTEXTO: "Costará $500 millones"
+TÚ: "REINVERTIRÁ $500 millones de recursos existentes en mejorar diagnósticos"
 
 # FORMATO DE RESPUESTA
-**Tu respuesta DEBE ser SIEMPRE un JSON válido** con esta estructura:
+**Tu respuesta DEBE ser SIEMPRE un JSON válido**:
 {
-  "answer": "Tu respuesta formateada aquí. Usá **negritas** para términos importantes y \\n\\n para párrafos.",
-  "suggestions": ["3 preguntas sugeridas relacionadas", "que sean específicas", "y útiles para el usuario"],
+  "answer": "Respuesta que SIEMPRE empieza con el beneficio en salud. Usá **negritas** para resultados positivos en salud.",
+  "suggestions": ["3 preguntas sobre mejoras concretas en salud"],
   "confidence": 0.95,
-  "sources": ["artículo X", "capítulo Y"]
+  "sources": ["artículos relevantes que mejoren la salud"]
 }
 
-# HISTORIAL DE CONVERSACIÓN:
-${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
+# EJEMPLOS DE RESPUESTAS CORRECTAS:
+• "La Ley C.U.R.A. mejora tu salud acelerando el diagnóstico al unificar tu historia clínica..."
+• "Tu médico podrá salvarte la vida en emergencias porque tendrá acceso inmediato a tus alergias..."
+• "Transformamos el sistema fragmentado actual en una red que previene enfermedades..."
 
 # CONTEXTO ACTUAL:
 ${context}
+
+# HISTORIAL RECIENTE:
+${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
 `;
 
   const chatRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -295,8 +324,8 @@ ${context}
     },
     body: JSON.stringify({
       model: "deepseek/deepseek-chat",
-      temperature: 0.2,
-      max_tokens: 1500,
+      temperature: 0.1, // Temperatura muy baja para respuestas consistentes
+      max_tokens: 1800, // Más tokens para respuestas completas
       messages: [
         { role: "system", content: systemPrompt },
         ...history.slice(-6),
@@ -318,55 +347,110 @@ ${context}
     
     const parsed = JSON.parse(cleanContent);
     
+    // Validar que no mencione impuestos nuevos
+    const answerText = parsed.answer || "";
+    const hasProhibitedTerms = [
+      'nuevos impuestos', 'impuestos nuevos', 'aumento de impuestos',
+      'nueva carga tributaria', 'costo adicional', 'nuevo gasto'
+    ].some(term => answerText.toLowerCase().includes(term));
+    
+    const hasHealthFocus = [
+      'salud', 'mejora', 'diagnóstico', 'atención', 'prevención',
+      'emergencia', 'paciente', 'médico', 'hospital'
+    ].some(term => answerText.toLowerCase().includes(term));
+    
+    let confidence = typeof parsed.confidence === 'number' ? parsed.confidence : 0.8;
+    
+    // Ajustar confianza según calidad
+    if (hasProhibitedTerms) confidence = Math.max(0.3, confidence - 0.3);
+    if (hasHealthFocus) confidence = Math.min(0.99, confidence + 0.1);
+    
     return {
-      answer: parsed.answer || "No pude generar una respuesta adecuada.",
+      answer: parsed.answer || getHealthFocusedFallback(userMessage),
       suggestions: Array.isArray(parsed.suggestions) && parsed.suggestions.length > 0 
         ? parsed.suggestions.slice(0, 3)
-        : generateFallbackSuggestions(userMessage),
-      confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.8,
+        : generateHealthFocusedSuggestions(userMessage),
+      confidence: confidence,
       sources: Array.isArray(parsed.sources) ? parsed.sources : [],
-      success: true
+      success: true,
+      note: hasProhibitedTerms ? "Revisar: posible mención a impuestos" : "Respuesta centrada en salud"
     };
     
   } catch (e) {
     return {
-      answer: formatFallbackResponse(rawContent, userMessage),
-      suggestions: generateFallbackSuggestions(userMessage),
+      answer: getHealthFocusedFallback(userMessage),
+      suggestions: generateHealthFocusedSuggestions(userMessage),
       confidence: 0.6,
       sources: [],
       success: true,
-      note: "Respuesta generada por fallback"
+      note: "Respuesta generada por fallback con enfoque en salud"
     };
   }
 }
 
-function generateFallbackSuggestions(query) {
+// ======================================================
+// FUNCIONES DE FALLBACK MEJORADAS CON ENFOQUE EN SALUD
+// ======================================================
+
+function getHealthFocusedFallback(query) {
   const lowerQuery = query.toLowerCase();
   
-  if (lowerQuery.includes('artículo')) {
+  if (lowerQuery.includes('qué es') || lowerQuery.includes('definición')) {
+    return `**🏥 La Ley C.U.R.A. mejora tu salud unificando tu historia clínica**\n\n` +
+           `Es la transformación digital del sistema sanitario argentino que **acelera tu diagnóstico y salva vidas** conectando toda tu información médica. ` +
+           `Tu médico tendrá acceso inmediato a tus alergias, medicación y estudios previos **en cualquier emergencia**, evitando errores y duplicaciones. ` +
+           `Se financia con **máxima eficiencia presupuestaria**: optimizando recursos existentes para dar **más y mejor salud a todos los argentinos**.`;
+  }
+  
+  if (lowerQuery.includes('implementación') || lowerQuery.includes('cómo funciona')) {
+    return `**⚡ Implementación que mejora tu atención médica día a día**\n\n` +
+           `La Ley C.U.R.A. se implementa en fases para **no interrumpir la atención actual** mientras construimos un sistema mejor:\n\n` +
+           `1. **FASE 1 - Historia Clínica Digital**: Tu médico accede a toda tu información en segundos\n` +
+           `2. **FASE 2 - Turnos Inteligentes**: Reservás turnos con especialistas desde tu celular\n` +
+           `3. **FASE 3 - Emergencias Conectadas**: En una urgencia, los médicos ven tus datos críticos al instante\n\n` +
+           `Cada fase se financia **reorganizando recursos existentes**, nunca con nuevos impuestos. **Tu salud mejora desde el primer día.**`;
+  }
+  
+  return `**🩺 Sobre "${query}" en la Ley C.U.R.A.**\n\n` +
+         `La Ley C.U.R.A. transforma digitalmente el sistema de salud para **mejorar tu atención médica**, ` +
+         `acelerar diagnósticos y prevenir enfermedades mediante información unificada. ` +
+         `Se implementa con **máxima eficiencia presupuestaria**, optimizando recursos actuales ` +
+         `para dar más y mejor salud a todos los argentinos, sin nuevos impuestos ni gastos adicionales.`;
+}
+
+function generateHealthFocusedSuggestions(query) {
+  const lowerQuery = query.toLowerCase();
+  
+  if (lowerQuery.includes('artículo') || lowerQuery.includes('ley')) {
     return [
-      "¿Dónde puedo ver el texto completo del proyecto?",
-      "¿Cuáles son los artículos más importantes?",
-      "¿Cómo afecta esto a los profesionales de la salud?"
+      "¿Cómo protege mi privacidad la historia clínica digital?",
+      "¿Qué derechos tengo como paciente en el sistema digital?",
+      "¿Cómo accedo a mi historia clínica desde el celular?"
     ];
   }
   
+  if (lowerQuery.includes('turno') || lowerQuery.includes('consulta')) {
+    return [
+      "¿Cómo reservo turnos con especialistas desde mi celular?",
+      "¿Puedo cambiar o cancelar turnos digitalmente?",
+      "¿Cómo funciona la teleconsulta en el sistema?"
+    ];
+  }
+  
+  // Sugerencias generales enfocadas en salud
   return [
-    "¿Qué es la Ley C.U.R.A. en simple?",
-    "¿Cómo beneficia esto a los hospitales públicos?",
-    "¿Cuándo entraría en vigencia la ley?"
+    "¿Cómo mejora mi atención en una emergencia médica?",
+    "¿De qué forma acelera los diagnósticos el sistema unificado?",
+    "¿Cómo previene enfermedades la historia clínica digital?"
   ];
 }
 
+function generateFallbackSuggestions(query) {
+  // Esta función se mantiene por compatibilidad
+  return generateHealthFocusedSuggestions(query);
+}
+
 function formatFallbackResponse(text, query) {
-  const cleanText = text.replace(/```[\s\S]*?```/g, '').trim();
-  
-  if (cleanText.length > 100) {
-    return cleanText;
-  }
-  
-  return `**Sobre "${query}" en la Ley C.U.R.A.:**\n\n` +
-         `La Ley C.U.R.A. establece un marco para la transformación digital sanitaria, ` +
-         `unificando información clínica mediante infraestructura interoperable. ` +
-         `Para detalles específicos, te sugiero consultar las preguntas relacionadas abajo.`;
+  // Esta función se mantiene por compatibilidad
+  return getHealthFocusedFallback(query);
 }

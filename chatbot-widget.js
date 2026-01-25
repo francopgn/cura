@@ -19,9 +19,8 @@
       console.log("🤖 LeyCura Chatbot: Estética de IA y optimización móvil aplicada");
     }
 
-injectStyles() {
+    injectStyles() {
       const css = `
-      /* ✅ Evita el desplazamiento horizontal en toda la web */
       html, body {
         max-width: 100vw;
         overflow-x: hidden;
@@ -34,7 +33,6 @@ injectStyles() {
         --cura-accent-light: #59D2FF;
       }
 
-      /* ✅ BOTÓN CIRCULAR (Identidad Ley C.U.R.A.) */
       .leycura-chat-btn {
         position: fixed !important;
         bottom: 24px;
@@ -61,7 +59,6 @@ injectStyles() {
         background: var(--cura-primary-dark);
       }
 
-      /* ✅ CLASE PARA OCULTAR EL BOTÓN (Solo se activa en móvil al escribir) */
       .leycura-btn-hidden-mobile {
         opacity: 0 !important;
         pointer-events: none !important;
@@ -74,10 +71,16 @@ injectStyles() {
         animation: sparkle-glow 2s infinite;
       }
 
-      /* ✅ VENTANA DE CHAT (PC: Flota arriba del botón) */
+      .leycura-btn-text {
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+
       .leycura-chat-window {
         position: fixed !important;
-        bottom: 90px; /* 24px base + 52px botón + 14px aire */
+        bottom: 90px;
         right: 24px;
         width: 360px;
         max-width: calc(100vw - 48px);
@@ -149,6 +152,26 @@ injectStyles() {
         border-bottom-left-radius: 4px;
       }
 
+      .leycura-suggestions-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 4px;
+        margin-bottom: 12px;
+      }
+
+      .leycura-suggestion-btn {
+        background: #ffffff;
+        border: 1px solid var(--cura-accent);
+        color: var(--cura-primary);
+        padding: 8px 14px;
+        border-radius: 99px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
       .leycura-chat-input-area {
         padding: 12px;
         background: #ffffff;
@@ -168,7 +191,6 @@ injectStyles() {
         color: #111827;
       }
 
-      /* ✅ BOTÓN DE ENVIAR (Protegido para móviles) */
       .leycura-chat-send {
         background: var(--cura-primary);
         color: white;
@@ -184,17 +206,20 @@ injectStyles() {
         transition: all 0.2s;
       }
 
-      .leycura-chat-send:hover { background: var(--cura-primary-dark); }
+      .leycura-typing {
+        font-size: 12px;
+        color: #64748b;
+        font-style: italic;
+        padding: 8px 12px;
+        animation: pulse-simple 1.5s infinite;
+      }
 
-      /* ✅ RESPONSIVO CELULARES */
       @media (max-width: 480px) {
         .leycura-chat-window {
           right: 15px;
           bottom: 80px;
           width: calc(100vw - 30px);
         }
-
-        /* Cuando el usuario toca para escribir: sube y se expande */
         .leycura-chat-window.keyboard-up {
           bottom: 0px !important;
           right: 0px !important;
@@ -203,19 +228,17 @@ injectStyles() {
           border-radius: 20px 20px 0 0;
           z-index: 2147483647;
         }
-
-        .leycura-btn-text { font-size: 13px; }
       }
 
       @keyframes sparkle-glow {
         0%, 100% { filter: drop-shadow(0 0 2px var(--cura-accent)); transform: scale(1); }
         50% { filter: drop-shadow(0 0 8px var(--cura-accent-light)); transform: scale(1.1); }
       }
-      `;
-      const style = document.createElement("style");
-      style.textContent = css;
-      document.head.appendChild(style);
-    }
+
+      @keyframes pulse-simple {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
       `;
       const style = document.createElement("style");
       style.textContent = css;
@@ -299,29 +322,33 @@ injectStyles() {
       this.inputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") this.sendMessage();
       });
-     // ✅ NUEVO: Detectar cuando el usuario va a escribir en móvil
-  this.inputEl.addEventListener("focus", () => {
-    if (window.innerWidth <= 480) {
-      this.chatWindow.classList.add("keyboard-up");
-      // Pequeño delay para asegurar que el scroll se ajuste tras subir
-      setTimeout(() => this.scrollToBottom(), 300);
-    }
-  });
 
-  // ✅ NUEVO: Detectar cuando el usuario deja de escribir
-  this.inputEl.addEventListener("blur", () => {
-    this.chatWindow.classList.remove("keyboard-up");
-  });
-}
+      this.inputEl.addEventListener("focus", () => {
+        if (window.innerWidth <= 480) {
+          this.chatWindow.classList.add("keyboard-up");
+          this.button.classList.add("leycura-btn-hidden-mobile");
+          setTimeout(() => this.scrollToBottom(), 300);
+        }
+      });
+
+      this.inputEl.addEventListener("blur", () => {
+        if (window.innerWidth <= 480) {
+          this.chatWindow.classList.remove("keyboard-up");
+          this.button.classList.remove("leycura-btn-hidden-mobile");
+        }
+      });
+    }
+
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);
-    /*  if (this.isOpen) setTimeout(() => this.inputEl.focus(), 300); */
     }
 
     closeChat() {
       this.isOpen = false;
       this.chatWindow.classList.remove("open");
+      this.button.classList.remove("leycura-btn-hidden-mobile");
+      this.chatWindow.classList.remove("keyboard-up");
     }
 
     async sendMessage() {

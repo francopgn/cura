@@ -21,7 +21,10 @@ export default async function handler(req, res) {
     console.log("====== NUEVA PREGUNTA ======");
     console.log("Pregunta:", message);
     const questionType = detectQuestionType(message);
-    console.log("Tipo detectado:", questionType);
+    
+    // DEBUG mejorado
+    console.log("📋 RESULTADO FINAL DE DETECCIÓN:", questionType);
+    console.log("📝 Pregunta completa:", message);
     
     // ======================================================
     // RESPUESTAS DIRECTAS (sin IA) - ORDEN CORREGIDO
@@ -29,44 +32,46 @@ export default async function handler(req, res) {
     
     // 1. CURA-ID (muy específico)
     if (questionType === 'cura_id') {
-      console.log("Respondiendo con: CURA-ID");
+      console.log("🎯 Respondiendo con: CURA-ID");
       return res.status(200).json(getDirectCURAIDResponse(message));
     }
     
     // 2. Credencial (CUS)
     if (questionType === 'credential') {
-      console.log("Respondiendo con: CREDENCIAL");
+      console.log("🎯 Respondiendo con: CREDENCIAL");
       return res.status(200).json(getDirectCUSResponse());
     }
     
     // 3. Historia Clínica Digital (NUEVO)
     if (questionType === 'hcd') {
-      console.log("Respondiendo con: HISTORIA CLÍNICA DIGITAL");
+      console.log("🎯 Respondiendo con: HISTORIA CLÍNICA DIGITAL");
       return res.status(200).json(getDirectHCDResponse());
     }
     
     // 4. Financiamiento
     if (questionType === 'financing') {
-      console.log("Respondiendo con: FINANCIAMIENTO");
+      console.log("🎯 Respondiendo con: FINANCIAMIENTO");
       return res.status(200).json(getDirectFinancingResponse());
     }
     
     // 5. Privacidad
     if (questionType === 'privacy') {
-      console.log("Respondiendo con: PRIVACIDAD");
+      console.log("🎯 Respondiendo con: PRIVACIDAD");
       return res.status(200).json(getDirectPrivacyResponse());
     }
     
-    // 6. Definición general
+    // 6. Definición general - ¡ESTE DEBERÍA ACTIVARSE!
     if (questionType === 'definition') {
-      console.log("Respondiendo con: DEFINICIÓN");
+      console.log("🎯 Respondiendo con: DEFINICIÓN");
       return res.status(200).json(getDirectDefinitionResponse());
     }
+    
+    // Si llegamos aquí, la detección falló
+    console.log("❓ No se detectó categoría específica, usando IA");
     
     // ======================================================
     // 7. PARA OTRAS PREGUNTAS: PROCESO NORMAL CON IA
     // ======================================================
-    console.log("Usando IA para pregunta general");
     const enrichedMessage = await enrichQuery(message);
     const vector = await generateEmbedding(enrichedMessage);
     const context = await fetchMultipleContexts(vector, message);
@@ -92,24 +97,24 @@ export default async function handler(req, res) {
 function detectQuestionType(query) {
   const lowerQuery = query.toLowerCase().trim();
   
-  // DEBUG: Mostrar qué se está evaluando
-  console.log("Evaluando pregunta:", lowerQuery);
+  console.log("====== DETECCIÓN DE TIPO ======");
+  console.log("Pregunta original:", query);
+  console.log("Pregunta normalizada:", lowerQuery);
   
   // 1. PRIMERO: Patrones EXACTOS y ESPECÍFICOS
-  // Estos tienen prioridad máxima porque son muy específicos
   
   // CURA-ID - patrones exactos
   if (/(cura[-\s]?id|curaid)/i.test(lowerQuery) ||
       (/identificador único/i.test(lowerQuery) && !/credencial/i.test(lowerQuery)) ||
       (/id único/i.test(lowerQuery) && !/credencial/i.test(lowerQuery))) {
-    console.log("Detectado: CURA-ID (patrón exacto)");
+    console.log("✅ Detectado: CURA-ID (patrón exacto)");
     return 'cura_id';
   }
   
   // Credencial Única de Salud - patrones exactos
   if (/(credencial única|credencial unica|c\.u\.s|cus)/i.test(lowerQuery) ||
       (/credencial.*salud/i.test(lowerQuery) && !/historia clínica/i.test(lowerQuery))) {
-    console.log("Detectado: CREDENCIAL (patrón exacto)");
+    console.log("✅ Detectado: CREDENCIAL (patrón exacto)");
     return 'credential';
   }
   
@@ -117,7 +122,7 @@ function detectQuestionType(query) {
   if (/(historia clínica digital|historia clinica digital|hcd)/i.test(lowerQuery) ||
       (/historia.*clínica.*digital/i.test(lowerQuery)) ||
       (/historia.*clinica.*digital/i.test(lowerQuery))) {
-    console.log("Detectado: HCD (patrón exacto)");
+    console.log("✅ Detectado: HCD (patrón exacto)");
     return 'hcd';
   }
   
@@ -125,27 +130,50 @@ function detectQuestionType(query) {
   if (/(financiamiento|financiación|cómo se financia|cómo se paga|7 pilares|siete pilares)/i.test(lowerQuery) ||
       (/artículo 35|art\. 35|artículo 37|art\. 37|artículo 42/i.test(lowerQuery)) ||
       (/fondo de inversión|fiisd|eficiencia presupuestaria/i.test(lowerQuery))) {
-    console.log("Detectado: FINANCIAMIENTO (patrón exacto)");
+    console.log("✅ Detectado: FINANCIAMIENTO (patrón exacto)");
     return 'financing';
   }
   
   // Privacidad - patrones exactos (con EXCLUSIONES)
   if ((/privacidad|compartir datos|no quiero compartir|panel de privacidad|consentimiento|datos sensibles/i.test(lowerQuery)) &&
       !/(historia clínica|cura.?id|credencial)/i.test(lowerQuery)) {
-    console.log("Detectado: PRIVACIDAD (patrón exacto con exclusiones)");
+    console.log("✅ Detectado: PRIVACIDAD (patrón exacto con exclusiones)");
     return 'privacy';
   }
   
-  // Definición general - patrones exactos
-  if (/(qué es la ley cura|qué es cura|ley cura qué es|definición de cura|explicación de cura)/i.test(lowerQuery) ||
-      (/^qué es.*cura|^que es.*cura/i.test(lowerQuery))) {
-    console.log("Detectado: DEFINICIÓN (patrón exacto)");
+  // DEFINICIÓN - CORREGIDO: patrones más flexibles
+  // Verificar si la pregunta es sobre "qué es" la ley CURA
+  const isDefinitionQuery = 
+    // Patrón 1: Empieza con "qué es" y contiene "cura" o "ley cura"
+    (/^[¿\s]*qué es.*(cura|ley cura)/i.test(lowerQuery) ||
+     /^[¿\s]*que es.*(cura|ley cura)/i.test(lowerQuery)) ||
+    
+    // Patrón 2: Contiene "definición" y "cura"
+    (/definición.*cura/i.test(lowerQuery) ||
+     /definicion.*cura/i.test(lowerQuery)) ||
+    
+    // Patrón 3: Contiene "explicación" y "cura"
+    (/explicación.*cura/i.test(lowerQuery) ||
+     /explicacion.*cura/i.test(lowerQuery)) ||
+    
+    // Patrón 4: Pregunta directa "qué es la ley cura"
+    (/qué es la ley cura/i.test(lowerQuery) ||
+     /que es la ley cura/i.test(lowerQuery)) ||
+    
+    // Patrón 5: "en qué consiste" + "cura"
+    (/en qué consiste.*cura/i.test(lowerQuery) ||
+     /en que consiste.*cura/i.test(lowerQuery));
+  
+  if (isDefinitionQuery) {
+    console.log("✅ Detectado: DEFINICIÓN (patrón corregido)");
+    console.log("   - lowerQuery:", lowerQuery);
+    console.log("   - Coincide con patrón de definición");
     return 'definition';
   }
   
   // 2. SEGUNDO: Búsqueda por palabras clave con contexto
   
-  // Contar palabras clave por categoría (pero con contexto)
+  // Contar palabras clave por categoría
   const words = lowerQuery.split(/\s+/);
   
   const financingWords = ['dinero', 'recursos', 'fondos', 'inversión', 'gasto', 'ahorro', 'capital', 'subsidio', 'presupuesto'];
@@ -171,8 +199,7 @@ function detectQuestionType(query) {
     if (definitionWords.includes(word)) definitionCount++;
   });
   
-  // DEBUG: Mostrar conteos
-  console.log("Conteos:", {
+  console.log("📊 Conteos de palabras:", {
     financing: financingCount,
     privacy: privacyCount,
     credential: credentialCount,
@@ -181,35 +208,35 @@ function detectQuestionType(query) {
     definition: definitionCount
   });
   
-  // Reglas contextuales
+  // Reglas contextuales con umbral más bajo para definición
+  if (definitionCount >= 2 && lowerQuery.includes('cura')) {
+    console.log("✅ Detectado: DEFINICIÓN (conteo de palabras + 'cura')");
+    return 'definition';
+  }
+  
   if (hcdCount >= 2 && financingCount === 0 && privacyCount === 0) {
-    console.log("Detectado: HCD (conteo de palabras)");
+    console.log("✅ Detectado: HCD (conteo de palabras)");
     return 'hcd';
   }
   
   if (curaIdCount >= 2 && credentialCount === 0) {
-    console.log("Detectado: CURA-ID (conteo de palabras)");
+    console.log("✅ Detectado: CURA-ID (conteo de palabras)");
     return 'cura_id';
   }
   
   if (credentialCount >= 2 && curaIdCount === 0) {
-    console.log("Detectado: CREDENCIAL (conteo de palabras)");
+    console.log("✅ Detectado: CREDENCIAL (conteo de palabras)");
     return 'credential';
   }
   
   if (financingCount >= 2 && hcdCount === 0) {
-    console.log("Detectado: FINANCIAMIENTO (conteo de palabras)");
+    console.log("✅ Detectado: FINANCIAMIENTO (conteo de palabras)");
     return 'financing';
   }
   
   if (privacyCount >= 2 && hcdCount === 0 && curaIdCount === 0) {
-    console.log("Detectado: PRIVACIDAD (conteo de palabras)");
+    console.log("✅ Detectado: PRIVACIDAD (conteo de palabras)");
     return 'privacy';
-  }
-  
-  if (definitionCount >= 2 && lowerQuery.includes('cura')) {
-    console.log("Detectado: DEFINICIÓN (conteo de palabras + 'cura')");
-    return 'definition';
   }
   
   // 3. TERCERO: Último recurso - coincidencias simples
@@ -218,9 +245,15 @@ function detectQuestionType(query) {
   if (lowerQuery.includes('historia clínica') || lowerQuery.includes('historia clinica')) return 'hcd';
   if (lowerQuery.includes('financiamiento') || lowerQuery.includes('financiación')) return 'financing';
   if (lowerQuery.includes('privacidad') || lowerQuery.includes('compartir')) return 'privacy';
-  if (lowerQuery.includes('qué es') && lowerQuery.includes('cura')) return 'definition';
   
-  console.log("Detectado: GENERAL (no coincide con ninguna categoría)");
+  // DEFINICIÓN como última opción si contiene "qué es" y "cura"
+  if ((lowerQuery.includes('qué es') || lowerQuery.includes('que es')) && 
+      lowerQuery.includes('cura')) {
+    console.log("✅ Detectado: DEFINICIÓN (último recurso)");
+    return 'definition';
+  }
+  
+  console.log("🔍 Detectado: GENERAL (no coincide con ninguna categoría)");
   return 'general';
 }
 
@@ -477,7 +510,7 @@ function getDirectCURAIDResponse(query) {
               `**3. En la Farmacia (La Dispensa y Trazabilidad)**\n` +
               `El paciente se acerca a cualquier farmacia del país para retirar su medicación:\n` +
               `• **Dispensa Segura**: El farmacéutico valida el C.U.R.A.-ID a través de la credencial. El sistema le muestra las recetas vigentes y autorizadas por la obra social o prepaga.\n` +
-              `• **Módulo de Trazabilidad**: Al entregar el medicamento, el farmacéutico marca la dispensa. Esta acción queda registrada en el Módulo Nacional de Trazabilidad vinculado a ese ID específico. Esto evita que el paciente pueda retirar el mismo medicamento dos veces en farmacias distintas (previniendo fraudes) y garantiza que la farmacia reciba el pago de la cobertura de forma automática y transparente.\n\n` +
+              `• **Módulo de Trazabilidad**: Al entregar el medicamento, el farmacéutico marca la dispensa. Esta acción queda registrada en el Módulo Nacional de Trazabilidad vinculada a ese ID específico. Esto evita que el paciente pueda retirar el mismo medicamento dos veces en farmacias distintas (previniendo fraudes) y garantiza que la farmacia reciba el pago de la cobertura de forma automática y transparente.\n\n` +
               `**4. El Rol en Emergencias (C.U.R.A.-TEMP)**\n` +
               `Si el mismo paciente sufriera un accidente y fuera ingresado inconsciente a una guardia sin su credencial ni documentos, el sistema genera un **C.U.R.A.-TEMP**. Los médicos cargan los datos de la atención de emergencia bajo ese perfil provisorio. Una vez que el paciente es identificado a través de huella digital o RENAPER, el sistema **fusiona automáticamente el perfil temporal con su C.U.R.A.-ID definitivo**, asegurando que no se pierda la información de lo ocurrido durante la emergencia.`;
   }

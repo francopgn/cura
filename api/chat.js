@@ -15,32 +15,23 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Mensaje vacío" });
     }
 
-    // ======================================================
-    // DEBUG: Mostrar qué se está detectando
-    // ======================================================
     console.log("====== NUEVA PREGUNTA ======");
     console.log("Pregunta:", message);
     
     // Primero detectar el tipo UNA VEZ
     const questionType = detectQuestionType(message);
     
-    // DEBUG mejorado
     console.log("📋 RESULTADO FINAL DE DETECCIÓN:", questionType);
     console.log("📝 Pregunta completa:", message);
-    console.log("🎯 Categoría detectada:", questionType);
     
     // ======================================================
     // RESPUESTAS DIRECTAS (sin IA) - CON RETURN INMEDIATO
     // ======================================================
     
-    // IMPORTANTE: Cada if debe devolver inmediatamente con return
-    
     // 1. Definición general - PRIMERA PRIORIDAD
     if (questionType === 'definition') {
       console.log("🎯🎯🎯 Respondiendo con: DEFINICIÓN (RESPUESTA DIRECTA)");
-      const response = getDirectDefinitionResponse();
-      console.log("Respuesta preparada, longitud:", response.answer.length);
-      return res.status(200).json(response);
+      return res.status(200).json(getDirectDefinitionResponse());
     }
     
     // 2. CURA-ID (muy específico)
@@ -91,11 +82,72 @@ export default async function handler(req, res) {
     console.error("CHAT API ERROR:", err);
     return res.status(500).json({
       answer: "Soy el asistente de la Ley CURA. Estoy teniendo dificultades técnicas. Por favor, intentá nuevamente o reformulá tu pregunta.",
-      suggestions: ["Reintentar", "Volver al inicio", "Contactar soporte"],
+      suggestions: getSafeSuggestions('general'),
       success: false,
       error: true
     });
   }
+}
+
+// ======================================================
+// SISTEMA DE SUGERENCIAS SEGURAS
+// ======================================================
+
+// Mapa de preguntas seguras que SÍ tienen respuestas directas
+const SAFE_SUGGESTIONS = {
+  definition: [
+    "¿Cómo funciona la Historia Clínica Digital?",
+    "¿Qué es el C.U.R.A.-ID y para qué sirve?",
+    "¿Cómo se accede al sistema desde el celular?"
+  ],
+  
+  cura_id: [
+    "¿Necesito hacer algún trámite para obtener mi C.U.R.A.-ID?",
+    "¿Qué información contiene el C.U.R.A.-ID?",
+    "¿Puedo ver ejemplos prácticos de uso del C.U.R.A.-ID?"
+  ],
+  
+  credential: [
+    "¿Cómo obtengo mi Credencial Digital desde Mi Argentina?",
+    "¿Qué información muestra el QR de la credencial?",
+    "¿Cómo funciona la credencial en una emergencia médica?"
+  ],
+  
+  hcd: [
+    "¿Cómo accedo a mi Historia Clínica Digital?",
+    "¿Qué información ven los médicos en una emergencia?",
+    "¿Puedo ocultar ciertos datos de mi historia clínica?"
+  ],
+  
+  financing: [
+    "¿Cómo se calcula el ahorro por digitalización del PAMI?",
+    "¿Qué empresas pueden participar del Padrinazgo Tecnológico?",
+    "¿Cómo funciona el panel de transparencia del ROI?"
+  ],
+  
+  privacy: [
+    "¿Cómo accedo al Panel de Privacidad desde mi celular?",
+    "¿Qué datos se consideran 'sensibles' y están ocultos por defecto?",
+    "¿Cómo funciona el acceso de emergencia ('break-glass')?"
+  ],
+  
+  general: [
+    "¿Cómo funciona la Historia Clínica Digital?",
+    "¿Qué es la Credencial Única de Salud?",
+    "¿Cómo protege mi privacidad el sistema C.U.R.A.?",
+    "¿Cómo se financia la ley sin nuevos impuestos?",
+    "¿Qué es el C.U.R.A.-ID y para qué sirve?",
+    "¿Cómo accedo a mi información médica desde el celular?"
+  ]
+};
+
+// Función para obtener sugerencias seguras basadas en categoría
+function getSafeSuggestions(category = 'general') {
+  const suggestions = SAFE_SUGGESTIONS[category] || SAFE_SUGGESTIONS.general;
+  
+  // Mezclar aleatoriamente y tomar máximo 3
+  const shuffled = [...suggestions].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, 3);
 }
 
 // ======================================================
@@ -111,44 +163,32 @@ function detectQuestionType(query) {
   
   // LIMPIEZA: eliminar signos de interrogación y caracteres especiales
   const cleanQuery = lowerQuery.replace(/[¿?¡!.,;:]/g, '');
-  console.log("Pregunta limpia:", cleanQuery);
   
-  // 1. PRIMERO: Patrones EXACTOS y ESPECÍFICOS
-  
-  // DEFINICIÓN - PRIMERA PRIORIDAD - patrones más flexibles
-  // Verificar si la pregunta es sobre "qué es" la ley CURA
+  // 1. DEFINICIÓN - PRIMERA PRIORIDAD - patrones más flexibles
   const isDefinitionQuery = 
-    // Patrón 1: Empieza con "qué es" y contiene "cura" o "ley cura"
     (/^[¿\s]*qué es.*(cura|ley cura)/i.test(lowerQuery) ||
      /^[¿\s]*que es.*(cura|ley cura)/i.test(lowerQuery)) ||
     
-    // Patrón 2: Contiene "definición" y "cura"
     (/definición.*cura/i.test(lowerQuery) ||
      /definicion.*cura/i.test(lowerQuery)) ||
     
-    // Patrón 3: Contiene "explicación" y "cura"
     (/explicación.*cura/i.test(lowerQuery) ||
      /explicacion.*cura/i.test(lowerQuery)) ||
     
-    // Patrón 4: Pregunta directa "qué es la ley cura"
     (/qué es la ley cura/i.test(lowerQuery) ||
      /que es la ley cura/i.test(lowerQuery)) ||
     
-    // Patrón 5: "en qué consiste" + "cura"
     (/en qué consiste.*cura/i.test(lowerQuery) ||
      /en que consiste.*cura/i.test(lowerQuery)) ||
     
-    // Patrón 6: "qué significa" + "cura"
     (/qué significa.*cura/i.test(lowerQuery) ||
      /que significa.*cura/i.test(lowerQuery)) ||
     
-    // Patrón 7: Preguntas simples de definición
     (/^qué es.*cura$/i.test(cleanQuery) ||
      /^que es.*cura$/i.test(cleanQuery));
   
   if (isDefinitionQuery) {
-    console.log("✅✅✅ DETECTADO: DEFINICIÓN (patrón corregido)");
-    console.log("   - Coincide con patrón de definición");
+    console.log("✅✅✅ DETECTADO: DEFINICIÓN");
     return 'definition';
   }
   
@@ -158,14 +198,14 @@ function detectQuestionType(query) {
   if (/(cura[-\s]?id|curaid)/i.test(lowerQuery) ||
       (/identificador único/i.test(lowerQuery) && !/credencial/i.test(lowerQuery)) ||
       (/id único/i.test(lowerQuery) && !/credencial/i.test(lowerQuery))) {
-    console.log("✅ Detectado: CURA-ID (patrón exacto)");
+    console.log("✅ Detectado: CURA-ID");
     return 'cura_id';
   }
   
   // Credencial Única de Salud - patrones exactos
   if (/(credencial única|credencial unica|c\.u\.s|cus)/i.test(lowerQuery) ||
       (/credencial.*salud/i.test(lowerQuery) && !/historia clínica/i.test(lowerQuery))) {
-    console.log("✅ Detectado: CREDENCIAL (patrón exacto)");
+    console.log("✅ Detectado: CREDENCIAL");
     return 'credential';
   }
   
@@ -173,7 +213,7 @@ function detectQuestionType(query) {
   if (/(historia clínica digital|historia clinica digital|hcd)/i.test(lowerQuery) ||
       (/historia.*clínica.*digital/i.test(lowerQuery)) ||
       (/historia.*clinica.*digital/i.test(lowerQuery))) {
-    console.log("✅ Detectado: HCD (patrón exacto)");
+    console.log("✅ Detectado: HCD");
     return 'hcd';
   }
   
@@ -181,14 +221,14 @@ function detectQuestionType(query) {
   if (/(financiamiento|financiación|cómo se financia|cómo se paga|7 pilares|siete pilares)/i.test(lowerQuery) ||
       (/artículo 35|art\. 35|artículo 37|art\. 37|artículo 42/i.test(lowerQuery)) ||
       (/fondo de inversión|fiisd|eficiencia presupuestaria/i.test(lowerQuery))) {
-    console.log("✅ Detectado: FINANCIAMIENTO (patrón exacto)");
+    console.log("✅ Detectado: FINANCIAMIENTO");
     return 'financing';
   }
   
   // Privacidad - patrones exactos (con EXCLUSIONES)
   if ((/privacidad|compartir datos|no quiero compartir|panel de privacidad|consentimiento|datos sensibles/i.test(lowerQuery)) &&
       !/(historia clínica|cura.?id|credencial)/i.test(lowerQuery)) {
-    console.log("✅ Detectado: PRIVACIDAD (patrón exacto con exclusiones)");
+    console.log("✅ Detectado: PRIVACIDAD");
     return 'privacy';
   }
   
@@ -220,18 +260,9 @@ function detectQuestionType(query) {
     if (definitionWords.includes(word)) definitionCount++;
   });
   
-  console.log("📊 Conteos de palabras:", {
-    financing: financingCount,
-    privacy: privacyCount,
-    credential: credentialCount,
-    hcd: hcdCount,
-    cura_id: curaIdCount,
-    definition: definitionCount
-  });
-  
   // Reglas contextuales con umbral más bajo para definición
   if (definitionCount >= 2 && lowerQuery.includes('cura')) {
-    console.log("✅ Detectado: DEFINICIÓN (conteo de palabras + 'cura')");
+    console.log("✅ Detectado: DEFINICIÓN (conteo de palabras)");
     return 'definition';
   }
   
@@ -279,11 +310,10 @@ function detectQuestionType(query) {
 }
 
 // ======================================================
-// RESPUESTAS DIRECTAS PRE-DEFINIDAS
+// RESPUESTAS DIRECTAS PRE-DEFINIDAS (SIMPLIFICADAS)
 // ======================================================
 
 function getDirectDefinitionResponse() {
-  console.log("📤 EJECUTANDO getDirectDefinitionResponse()");
   return {
     answer: `**La Ley C.U.R.A.** (Conectividad Unificada para Redes y Asistencia Sanitaria) **establece un marco normativo para la transformación digital del sistema sanitario argentino**, buscando unificar la información clínica mediante una infraestructura interoperable y federal.\n\n` +
             `El proyecto crea:\n` +
@@ -299,11 +329,7 @@ function getDirectDefinitionResponse() {
             `• **Eficiencia presupuestaria**: Se financia optimizando recursos existentes, sin nuevos impuestos\n\n` +
             `**Objetivo central**: Garantizar que toda tu información de salud esté disponible, segura y accesible cuando y donde la necesites, mejorando tu atención médica en todo el país.`,
     
-    suggestions: [
-      "¿Cómo funciona la Historia Clínica Digital?",
-      "¿Qué es el C.U.R.A.-ID y para qué sirve?",
-      "¿Cómo se accede al sistema desde el celular?"
-    ],
+    suggestions: getSafeSuggestions('definition'),
     
     confidence: 0.99,
     
@@ -332,7 +358,7 @@ function getDirectFinancingResponse() {
             `  → **40%** → Ciberseguridad y modernización tecnológica.\n` +
             `  → **60%** → Fondo Federal de Equidad Sanitaria (para reducir brechas entre provincias).\n\n` +
             `**3. Capital Privado, Mecenazgo y Alianzas I+D**\n` +
-            `• **Régimen de Padrinazgo Tecnológico**: Incentivos fiscales para empresas privadas que financien equipamiento e infraestructura en hospitales públicos, permitiendo deducciones en el Impuesto a las Ganancias.\n` +
+            `• **Régimen de Padrinazgo Tecnológico**: Incentivos fiscales para empresas privadas que financien equipamiento e infraestructura en hospitales públicos, permitiendo deducciones en el Impuesto a las Ganances.\n` +
             `• **Contribuciones por Beneficio**: Las Obras Sociales y Entidades de Medicina Prepaga pueden realizar aportes al FIISD a cambio de soporte técnico preferencial y acceso prioritario a módulos de auditoría y antifraude.\n` +
             `• **Alianzas de Innovación**: Acuerdos para investigación y desarrollo utilizando datos anonimizados, con prioridad para empresas que desarrollen tecnología en el país y licencien el código resultante al Estado.\n\n` +
             `**4. Recursos Estructurales y Conectividad (ENACOM)**\n` +
@@ -347,11 +373,7 @@ function getDirectFinancingResponse() {
             `• **Garantía del 0,1%**: Si transcurridos 18 meses desde la reglamentación no se efectivizan las reasignaciones previstas, el Poder Ejecutivo debe incluir una partida específica equivalente al 0,1% del presupuesto total del Ministerio de Salud del ejercicio anterior para asegurar la operatividad.\n` +
             `• **Auditoría Triple de Transparencia**: Control interno por la SIGEN, control externo por la AGN y auditoría técnica permanente por la ONTI, con un panel de visualización en tiempo real del ROI (Retorno de Inversión) social y económico.`,
     
-    suggestions: [
-      "¿Cómo se calcula el ahorro por digitalización del PAMI?",
-      "¿Qué empresas pueden participar del Padrinazgo Tecnológico?",
-      "¿Cómo funciona el panel de transparencia del ROI?"
-    ],
+    suggestions: getSafeSuggestions('financing'),
     
     confidence: 0.99,
     
@@ -394,11 +416,7 @@ function getDirectPrivacyResponse() {
             `**5. Acceso en Emergencias ("Break-Glass")**\n` +
             `En situaciones de riesgo inminente para la vida donde el paciente no pueda consentir, los profesionales pueden usar el mecanismo de "emergencia". Sin embargo, este acceso requiere **doble autenticación**, deja una **marca de auditoría permanente** y debe ser notificado al titular de los datos en un plazo de **48 horas**.`,
     
-    suggestions: [
-      "¿Cómo accedo al Panel de Privacidad desde mi celular?",
-      "¿Qué datos se consideran 'sensibles' y están ocultos por defecto?",
-      "¿Cómo funciona el acceso de emergencia ('break-glass')?"
-    ],
+    suggestions: getSafeSuggestions('privacy'),
     
     confidence: 0.99,
     
@@ -435,11 +453,7 @@ function getDirectCUSResponse() {
             `El uso de la credencial está integrado con el **Módulo Nacional de Trazabilidad y Auditoría**, lo que garantiza que **cada vez que se utilice** para acceder a datos clínicos, la acción quede registrada de forma inalterable. Para accesos de mayor seguridad, se requiere el ingreso de un **token o código temporal generado por "Mi Argentina"** junto con el escaneo del QR de la credencial.\n\n` +
             `Finalmente, cabe destacar que la generación del C.U.R.A.-ID y la disponibilidad de la credencial digital son **automáticas para todas las personas inscriptas en el RENAPER** desde la entrada en vigencia de la ley.`,
     
-    suggestions: [
-      "¿Cómo obtengo mi Credencial Digital desde Mi Argentina?",
-      "¿Qué información muestra el QR de la credencial?",
-      "¿Cómo funciona la credencial en una emergencia médica?"
-    ],
+    suggestions: getSafeSuggestions('credential'),
     
     confidence: 0.99,
     
@@ -481,11 +495,7 @@ function getDirectHCDResponse() {
             `• **Portabilidad**: Tu historia te sigue a donde vayas\n\n` +
             `**🎯 OBJETIVO**: Que ningún médico te atienda "a ciegas". Tu información de salud te acompañe siempre, salvando vidas y mejorando tu atención.`,
     
-    suggestions: [
-      "¿Cómo accedo a mi Historia Clínica Digital?",
-      "¿Qué información ven los médicos en una emergencia?",
-      "¿Puedo ocultar ciertos datos de mi historia clínica?"
-    ],
+    suggestions: getSafeSuggestions('hcd'),
     
     confidence: 0.99,
     
@@ -518,7 +528,6 @@ function getDirectCURAIDResponse(query) {
                `• **Resumen Internacional**: Este identificador forma parte del contenido mínimo del **Resumen Internacional del Paciente (IPS)**, facilitando la continuidad del cuidado incluso fuera del país.\n\n` +
                `**En resumen**, el C.U.R.A.-ID funciona como el **número de identidad sanitario definitivo**, permitiendo que el sistema reconozca al paciente como una entidad única en todo el territorio nacional, garantizando que su información médica siempre lo acompañe de manera segura y ordenada.`;
   
-  // Añadir ejemplos si se piden
   if (includeExamples) {
     answer += `\n\n**📋 EJEMPLOS PRÁCTICOS DE USO DEL C.U.R.A.-ID**\n\n` +
               `**1. En el Consultorio Médico (La Prescripción)**\n` +
@@ -544,11 +553,7 @@ function getDirectCURAIDResponse(query) {
       "¿Cómo se genera el C.U.R.A.-ID para recién nacidos?",
       "¿Qué diferencia hay entre C.U.R.A.-ID y C.U.S.?",
       "¿Cómo funciona la fusión del perfil temporal en emergencias?"
-    ] : [
-      "¿Necesito hacer algún trámite para obtener mi C.U.R.A.-ID?",
-      "¿Qué información contiene el C.U.R.A.-ID?",
-      "¿Puedo ver ejemplos prácticos de uso del C.U.R.A.-ID?"
-    ],
+    ] : getSafeSuggestions('cura_id'),
     
     confidence: 0.99,
     
@@ -564,11 +569,10 @@ function getDirectCURAIDResponse(query) {
 }
 
 // ======================================================
-// FUNCIONES RESTANTES (modificadas)
+// FUNCIONES RESTANTES (modificadas para usar sugerencias seguras)
 // ======================================================
 
 async function enrichQuery(query, questionType = null) {
-  // Usar el questionType ya detectado si se pasa como parámetro
   if (!questionType) {
     questionType = detectQuestionType(query);
   }
@@ -715,7 +719,7 @@ Sos el Asistente Virtual de la Ley C.U.R.A., creado para **mejorar la salud de t
 **Tu respuesta DEBE ser SIEMPRE un JSON válido**:
 {
   "answer": "Respuesta que SIEMPRE empieza con el beneficio en salud. Usá **negritas** para resultados positivos.",
-  "suggestions": ["3 preguntas sobre mejoras concretas en salud"],
+  "suggestions": ["NO USAR - SE REEMPLAZARÁN AUTOMÁTICAMENTE"],
   "confidence": 0.95,
   "sources": ["artículos relevantes"]
 }
@@ -760,20 +764,22 @@ ${history.slice(-3).map(h => `${h.role}: ${h.content}`).join('\n')}
     
     const parsed = JSON.parse(cleanContent);
     
+    // Detectar categoría para sugerencias seguras
+    const detectedCategory = detectQuestionType(userMessage);
+    
     return {
       answer: parsed.answer || getHealthFocusedFallback(userMessage),
-      suggestions: Array.isArray(parsed.suggestions) && parsed.suggestions.length > 0 
-        ? parsed.suggestions.slice(0, 3)
-        : generateHealthFocusedSuggestions(userMessage),
+      suggestions: getSafeSuggestions(detectedCategory === 'general' ? 'general' : detectedCategory),
       confidence: typeof parsed.confidence === 'number' ? parsed.confidence : 0.8,
       sources: Array.isArray(parsed.sources) ? parsed.sources : [],
       success: true
     };
     
   } catch (e) {
+    console.error("Error parsing AI response:", e);
     return {
       answer: getHealthFocusedFallback(userMessage),
-      suggestions: generateHealthFocusedSuggestions(userMessage),
+      suggestions: getSafeSuggestions('general'),
       confidence: 0.6,
       sources: [],
       success: true,
@@ -797,22 +803,4 @@ function getHealthFocusedFallback(query) {
          `acelerar diagnósticos y prevenir enfermedades mediante información unificada. ` +
          `Se implementa con **máxima eficiencia presupuestaria**, optimizando recursos actuales ` +
          `para dar más y mejor salud a todos los argentinos, sin nuevos impuestos ni gastos adicionales.`;
-}
-
-function generateHealthFocusedSuggestions(query) {
-  const lowerQuery = query.toLowerCase();
-  
-  if (lowerQuery.includes('artículo') || lowerQuery.includes('ley')) {
-    return [
-      "¿Cómo protege mi privacidad la historia clínica digital?",
-      "¿Qué derechos tengo como paciente en el sistema digital?",
-      "¿Cómo accedo a mi historia clínica desde el celular?"
-    ];
-  }
-  
-  return [
-    "¿Cómo mejora mi atención en una emergencia médica?",
-    "¿De qué forma acelera los diagnósticos el sistema unificado?",
-    "¿Cómo previene enfermedades la historia clínica digital?"
-  ];
 }

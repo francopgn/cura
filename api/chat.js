@@ -20,59 +20,67 @@ export default async function handler(req, res) {
     // ======================================================
     console.log("====== NUEVA PREGUNTA ======");
     console.log("Pregunta:", message);
+    
+    // Primero detectar el tipo UNA VEZ
     const questionType = detectQuestionType(message);
     
     // DEBUG mejorado
     console.log("📋 RESULTADO FINAL DE DETECCIÓN:", questionType);
     console.log("📝 Pregunta completa:", message);
+    console.log("🎯 Categoría detectada:", questionType);
     
     // ======================================================
-    // RESPUESTAS DIRECTAS (sin IA) - ORDEN CORREGIDO
+    // RESPUESTAS DIRECTAS (sin IA) - CON RETURN INMEDIATO
     // ======================================================
     
-    // 1. CURA-ID (muy específico)
+    // IMPORTANTE: Cada if debe devolver inmediatamente con return
+    
+    // 1. Definición general - PRIMERA PRIORIDAD
+    if (questionType === 'definition') {
+      console.log("🎯🎯🎯 Respondiendo con: DEFINICIÓN (RESPUESTA DIRECTA)");
+      const response = getDirectDefinitionResponse();
+      console.log("Respuesta preparada, longitud:", response.answer.length);
+      return res.status(200).json(response);
+    }
+    
+    // 2. CURA-ID (muy específico)
     if (questionType === 'cura_id') {
       console.log("🎯 Respondiendo con: CURA-ID");
       return res.status(200).json(getDirectCURAIDResponse(message));
     }
     
-    // 2. Credencial (CUS)
+    // 3. Credencial (CUS)
     if (questionType === 'credential') {
       console.log("🎯 Respondiendo con: CREDENCIAL");
       return res.status(200).json(getDirectCUSResponse());
     }
     
-    // 3. Historia Clínica Digital (NUEVO)
+    // 4. Historia Clínica Digital
     if (questionType === 'hcd') {
       console.log("🎯 Respondiendo con: HISTORIA CLÍNICA DIGITAL");
       return res.status(200).json(getDirectHCDResponse());
     }
     
-    // 4. Financiamiento
+    // 5. Financiamiento
     if (questionType === 'financing') {
       console.log("🎯 Respondiendo con: FINANCIAMIENTO");
       return res.status(200).json(getDirectFinancingResponse());
     }
     
-    // 5. Privacidad
+    // 6. Privacidad
     if (questionType === 'privacy') {
       console.log("🎯 Respondiendo con: PRIVACIDAD");
       return res.status(200).json(getDirectPrivacyResponse());
     }
     
-    // 6. Definición general - ¡ESTE DEBERÍA ACTIVARSE!
-    if (questionType === 'definition') {
-      console.log("🎯 Respondiendo con: DEFINICIÓN");
-      return res.status(200).json(getDirectDefinitionResponse());
-    }
-    
-    // Si llegamos aquí, la detección falló
-    console.log("❓ No se detectó categoría específica, usando IA");
+    // Si llegamos aquí, la detección falló o es general
+    console.log("❓ Usando IA para pregunta general o no detectada");
     
     // ======================================================
     // 7. PARA OTRAS PREGUNTAS: PROCESO NORMAL CON IA
     // ======================================================
-    const enrichedMessage = await enrichQuery(message);
+    // Pasar el questionType ya detectado para evitar llamar a detectQuestionType nuevamente
+    const enrichedMessage = await enrichQuery(message, questionType);
     const vector = await generateEmbedding(enrichedMessage);
     const context = await fetchMultipleContexts(vector, message);
     const response = await generateGeneralResponse(message, context, history);
@@ -101,7 +109,50 @@ function detectQuestionType(query) {
   console.log("Pregunta original:", query);
   console.log("Pregunta normalizada:", lowerQuery);
   
+  // LIMPIEZA: eliminar signos de interrogación y caracteres especiales
+  const cleanQuery = lowerQuery.replace(/[¿?¡!.,;:]/g, '');
+  console.log("Pregunta limpia:", cleanQuery);
+  
   // 1. PRIMERO: Patrones EXACTOS y ESPECÍFICOS
+  
+  // DEFINICIÓN - PRIMERA PRIORIDAD - patrones más flexibles
+  // Verificar si la pregunta es sobre "qué es" la ley CURA
+  const isDefinitionQuery = 
+    // Patrón 1: Empieza con "qué es" y contiene "cura" o "ley cura"
+    (/^[¿\s]*qué es.*(cura|ley cura)/i.test(lowerQuery) ||
+     /^[¿\s]*que es.*(cura|ley cura)/i.test(lowerQuery)) ||
+    
+    // Patrón 2: Contiene "definición" y "cura"
+    (/definición.*cura/i.test(lowerQuery) ||
+     /definicion.*cura/i.test(lowerQuery)) ||
+    
+    // Patrón 3: Contiene "explicación" y "cura"
+    (/explicación.*cura/i.test(lowerQuery) ||
+     /explicacion.*cura/i.test(lowerQuery)) ||
+    
+    // Patrón 4: Pregunta directa "qué es la ley cura"
+    (/qué es la ley cura/i.test(lowerQuery) ||
+     /que es la ley cura/i.test(lowerQuery)) ||
+    
+    // Patrón 5: "en qué consiste" + "cura"
+    (/en qué consiste.*cura/i.test(lowerQuery) ||
+     /en que consiste.*cura/i.test(lowerQuery)) ||
+    
+    // Patrón 6: "qué significa" + "cura"
+    (/qué significa.*cura/i.test(lowerQuery) ||
+     /que significa.*cura/i.test(lowerQuery)) ||
+    
+    // Patrón 7: Preguntas simples de definición
+    (/^qué es.*cura$/i.test(cleanQuery) ||
+     /^que es.*cura$/i.test(cleanQuery));
+  
+  if (isDefinitionQuery) {
+    console.log("✅✅✅ DETECTADO: DEFINICIÓN (patrón corregido)");
+    console.log("   - Coincide con patrón de definición");
+    return 'definition';
+  }
+  
+  // 2. Otras categorías...
   
   // CURA-ID - patrones exactos
   if (/(cura[-\s]?id|curaid)/i.test(lowerQuery) ||
@@ -141,40 +192,10 @@ function detectQuestionType(query) {
     return 'privacy';
   }
   
-  // DEFINICIÓN - CORREGIDO: patrones más flexibles
-  // Verificar si la pregunta es sobre "qué es" la ley CURA
-  const isDefinitionQuery = 
-    // Patrón 1: Empieza con "qué es" y contiene "cura" o "ley cura"
-    (/^[¿\s]*qué es.*(cura|ley cura)/i.test(lowerQuery) ||
-     /^[¿\s]*que es.*(cura|ley cura)/i.test(lowerQuery)) ||
-    
-    // Patrón 2: Contiene "definición" y "cura"
-    (/definición.*cura/i.test(lowerQuery) ||
-     /definicion.*cura/i.test(lowerQuery)) ||
-    
-    // Patrón 3: Contiene "explicación" y "cura"
-    (/explicación.*cura/i.test(lowerQuery) ||
-     /explicacion.*cura/i.test(lowerQuery)) ||
-    
-    // Patrón 4: Pregunta directa "qué es la ley cura"
-    (/qué es la ley cura/i.test(lowerQuery) ||
-     /que es la ley cura/i.test(lowerQuery)) ||
-    
-    // Patrón 5: "en qué consiste" + "cura"
-    (/en qué consiste.*cura/i.test(lowerQuery) ||
-     /en que consiste.*cura/i.test(lowerQuery));
-  
-  if (isDefinitionQuery) {
-    console.log("✅ Detectado: DEFINICIÓN (patrón corregido)");
-    console.log("   - lowerQuery:", lowerQuery);
-    console.log("   - Coincide con patrón de definición");
-    return 'definition';
-  }
-  
-  // 2. SEGUNDO: Búsqueda por palabras clave con contexto
+  // 3. SEGUNDO: Búsqueda por palabras clave con contexto
   
   // Contar palabras clave por categoría
-  const words = lowerQuery.split(/\s+/);
+  const words = cleanQuery.split(/\s+/);
   
   const financingWords = ['dinero', 'recursos', 'fondos', 'inversión', 'gasto', 'ahorro', 'capital', 'subsidio', 'presupuesto'];
   const privacyWords = ['compartir', 'datos', 'confidencial', 'secreto', 'acceso', 've', 'ven', 'privado'];
@@ -239,7 +260,7 @@ function detectQuestionType(query) {
     return 'privacy';
   }
   
-  // 3. TERCERO: Último recurso - coincidencias simples
+  // 4. TERCERO: Último recurso - coincidencias simples
   if (lowerQuery.includes('credencial')) return 'credential';
   if (lowerQuery.includes('cura id') || lowerQuery.includes('cura-id')) return 'cura_id';
   if (lowerQuery.includes('historia clínica') || lowerQuery.includes('historia clinica')) return 'hcd';
@@ -260,6 +281,42 @@ function detectQuestionType(query) {
 // ======================================================
 // RESPUESTAS DIRECTAS PRE-DEFINIDAS
 // ======================================================
+
+function getDirectDefinitionResponse() {
+  console.log("📤 EJECUTANDO getDirectDefinitionResponse()");
+  return {
+    answer: `**La Ley C.U.R.A.** (Conectividad Unificada para Redes y Asistencia Sanitaria) **establece un marco normativo para la transformación digital del sistema sanitario argentino**, buscando unificar la información clínica mediante una infraestructura interoperable y federal.\n\n` +
+            `El proyecto crea:\n` +
+            `• **Historia Clínica Digital Única** nacional\n` +
+            `• **Identificador Único de Paciente (C.U.R.A.-ID)**\n` +
+            `• **Credencial Única de Salud (C.U.S.)** nacional para garantizar la portabilidad de datos y la continuidad asistencial\n\n` +
+            `**Características principales:**\n` +
+            `• **Implementación progresiva y modular**: Se despliega en fases, integrando gradualmente todas las funciones\n` +
+            `• **Inteligencia Artificial con protocolos éticos**: Herramientas de IA bajo estrictos controles de seguridad y ética\n` +
+            `• **Modernización integral**: Elimina soportes físicos como el troquel, digitaliza farmacias y turnos\n` +
+            `• **Soberanía tecnológica**: Toda la infraestructura y datos se alojan en territorio nacional\n` +
+            `• **Gobernanza transparente**: Consejo Nacional con participación federal garantiza transparencia\n` +
+            `• **Eficiencia presupuestaria**: Se financia optimizando recursos existentes, sin nuevos impuestos\n\n` +
+            `**Objetivo central**: Garantizar que toda tu información de salud esté disponible, segura y accesible cuando y donde la necesites, mejorando tu atención médica en todo el país.`,
+    
+    suggestions: [
+      "¿Cómo funciona la Historia Clínica Digital?",
+      "¿Qué es el C.U.R.A.-ID y para qué sirve?",
+      "¿Cómo se accede al sistema desde el celular?"
+    ],
+    
+    confidence: 0.99,
+    
+    sources: [
+      "Artículo 1° - Objeto y Principios Rectores",
+      "Artículo 2° - Definiciones",
+      "Título I - Disposiciones Generales"
+    ],
+    
+    success: true,
+    note: "Respuesta directa - Definición general"
+  };
+}
 
 function getDirectFinancingResponse() {
   return {
@@ -354,41 +411,6 @@ function getDirectPrivacyResponse() {
     
     success: true,
     note: "Respuesta directa - Privacidad y Seguridad por Diseño"
-  };
-}
-
-function getDirectDefinitionResponse() {
-  return {
-    answer: `**La Ley C.U.R.A.** (Conectividad Unificada para Redes y Asistencia Sanitaria) **establece un marco normativo para la transformación digital del sistema sanitario argentino**, buscando unificar la información clínica mediante una infraestructura interoperable y federal.\n\n` +
-            `El proyecto crea:\n` +
-            `• **Historia Clínica Digital Única** nacional\n` +
-            `• **Identificador Único de Paciente (C.U.R.A.-ID)**\n` +
-            `• **Credencial Única de Salud (C.U.S.)** nacional para garantizar la portabilidad de datos y la continuidad asistencial\n\n` +
-            `**Características principales:**\n` +
-            `• **Implementación progresiva y modular**: Se despliega en fases, integrando gradualmente todas las funciones\n` +
-            `• **Inteligencia Artificial con protocolos éticos**: Herramientas de IA bajo estrictos controles de seguridad y ética\n` +
-            `• **Modernización integral**: Elimina soportes físicos como el troquel, digitaliza farmacias y turnos\n` +
-            `• **Soberanía tecnológica**: Toda la infraestructura y datos se alojan en territorio nacional\n` +
-            `• **Gobernanza transparente**: Consejo Nacional con participación federal garantiza transparencia\n` +
-            `• **Eficiencia presupuestaria**: Se financia optimizando recursos existentes, sin nuevos impuestos\n\n` +
-            `**Objetivo central**: Garantizar que toda tu información de salud esté disponible, segura y accesible cuando y donde la necesites, mejorando tu atención médica en todo el país.`,
-    
-    suggestions: [
-      "¿Cómo funciona la Historia Clínica Digital?",
-      "¿Qué es el C.U.R.A.-ID y para qué sirve?",
-      "¿Cómo se accede al sistema desde el celular?"
-    ],
-    
-    confidence: 0.99,
-    
-    sources: [
-      "Artículo 1° - Objeto y Principios Rectores",
-      "Artículo 2° - Definiciones",
-      "Título I - Disposiciones Generales"
-    ],
-    
-    success: true,
-    note: "Respuesta directa - Definición general"
   };
 }
 
@@ -542,14 +564,18 @@ function getDirectCURAIDResponse(query) {
 }
 
 // ======================================================
-// FUNCIONES RESTANTES (mantener iguales)
+// FUNCIONES RESTANTES (modificadas)
 // ======================================================
 
-async function enrichQuery(query) {
-  const lowerQuery = query.toLowerCase();
-  let enrichment = "";
+async function enrichQuery(query, questionType = null) {
+  // Usar el questionType ya detectado si se pasa como parámetro
+  if (!questionType) {
+    questionType = detectQuestionType(query);
+  }
   
-  const questionType = detectQuestionType(query);
+  console.log("🔧 Enriquecimiento para tipo:", questionType);
+  
+  let enrichment = "";
   
   switch(questionType) {
     case 'cura_id':
@@ -593,7 +619,7 @@ async function enrichQuery(query) {
                    `información relevante ley cura`;
   }
   
-  console.log("Enriquecimiento para", questionType, ":", enrichment.substring(0, 100) + "...");
+  console.log("Enriquecimiento:", enrichment.substring(0, 100) + "...");
   return `${query} ${enrichment}`;
 }
 

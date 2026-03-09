@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C.U.R.A. — Red Sanitaria Nacional · Mapa GeoJSON Real</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --c-primary:      #004E85;
+      --c-dark:         #00345C;
+      --c-darker:       #001E38;
+      --c-card:         #065D9B;
+      --c-accent:       #00C2FF;
+      --c-accent-light: #59D2FF;
+      --c-accent-dim:   rgba(0,194,255,0.15);
+      --c-accent-glow:  rgba(0,194,255,0.4);
+      --c-white:        #E8F4FF;
+      --c-dim:          rgba(232,244,255,0.5);
+      --radius:         12px;
+      --font:           'Space Grotesk', sans-serif;
+      --mono:           'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--c-darker);
+      color: var(--c-white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    .page-header {
+      border-bottom: 1px solid rgba(0,194,255,0.2);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: rgba(0,30,56,0.95);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .page-header-left { display: flex; align-items: center; gap: 1rem; }
+    .brand-badge {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--c-accent);
+      background: var(--c-accent-dim);
+      border: 1px solid rgba(0,194,255,0.3);
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .geo-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: #00FF9A;
+      background: rgba(0,255,154,0.1);
+      border: 1px solid rgba(0,255,154,0.3);
+      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      letter-spacing: 0.1em;
+    }
+    .page-header h1 { font-size: 0.9rem; font-weight: 600; color: var(--c-white); }
+    .page-header p  { font-size: 0.7rem; color: var(--c-dim); }
+    .header-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--c-dim); text-align: right; white-space: nowrap; }
+
+    /* LAYOUT */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      height: calc(100vh - 61px);
+    }
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; height: auto; }
+    }
+
+    /* SIDEBAR */
+    .anim-sidebar {
+      background: rgba(0,52,92,0.7);
+      border-right: 1px solid rgba(0,194,255,0.15);
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-title {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--c-dim);
+      padding: 0.5rem 0.5rem 0.75rem;
+      border-bottom: 1px solid rgba(0,194,255,0.1);
+      margin-bottom: 0.25rem;
+    }
+    .anim-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      width: 100%;
+      color: var(--c-white);
+    }
+    .anim-btn:hover { background: var(--c-accent-dim); border-color: rgba(0,194,255,0.25); }
+    .anim-btn.active { background: var(--c-accent-dim); border-color: rgba(0,194,255,0.5); }
+    .anim-btn-num { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--c-accent); min-width: 24px; padding-top: 1px; }
+    .anim-btn-text { flex: 1; }
+    .anim-btn-name { font-size: 0.8rem; font-weight: 600; color: var(--c-white); line-height: 1.2; margin-bottom: 0.25rem; }
+    .anim-btn-desc { font-size: 0.65rem; color: var(--c-dim); line-height: 1.35; }
+    .anim-btn.active .anim-btn-name { color: var(--c-accent-light); }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--c-accent); margin-top: 5px; flex-shrink: 0; display: none; }
+    .anim-btn.active .status-dot { display: block; animation: blink 1.5s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid rgba(0,194,255,0.1); }
+    .sidebar-footer p { font-size: 0.6rem; color: var(--c-dim); line-height: 1.5; font-family: var(--mono); }
+
+    /* CANVAS AREA */
+    .canvas-area { position: relative; overflow: hidden; background: var(--c-darker); }
+    #main-canvas { display: block; width: 100%; height: 100%; }
+
+    /* LOADING OVERLAY */
+    #loading-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0,15,30,0.95);
+      z-index: 50;
+      gap: 1.2rem;
+      transition: opacity 0.6s ease;
+    }
+    #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+    .loading-spinner {
+      width: 48px; height: 48px;
+      border: 2px solid rgba(0,194,255,0.15);
+      border-top-color: #00C2FF;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text { font-family: var(--mono); font-size: 0.7rem; color: var(--c-accent); letter-spacing: 0.15em; text-align: center; }
+    .loading-sub  { font-family: var(--mono); font-size: 0.6rem; color: var(--c-dim); }
+
+    /* INFO OVERLAY */
+    .anim-overlay-info {
+      position: absolute;
+      bottom: 1.5rem; left: 1.5rem; right: 1.5rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      pointer-events: none;
+    }
+    .overlay-label { pointer-events: none; }
+    .overlay-anim-name { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--c-accent); display: block; margin-bottom: 0.25rem; }
+    .overlay-anim-concept { font-size: 1.25rem; font-weight: 700; color: var(--c-white); line-height: 1.2; }
+    .overlay-hint { font-family: var(--mono); font-size: 0.6rem; color: var(--c-dim); text-align: right; background: rgba(0,30,56,0.7); border: 1px solid rgba(0,194,255,0.15); border-radius: 8px; padding: 0.5rem 0.75rem; backdrop-filter: blur(4px); }
+
+    /* LEGEND */
+    .legend { position: absolute; top: 1.5rem; right: 1.5rem; display: flex; flex-direction: column; gap: 0.4rem; pointer-events: none; }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.62rem; color: var(--c-dim); font-family: var(--mono); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* TOOLTIP */
+    #tooltip {
+      position: absolute;
+      background: rgba(0,20,40,0.9);
+      border: 1px solid rgba(0,194,255,0.4);
+      border-radius: 8px;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.7rem;
+      font-family: var(--mono);
+      color: var(--c-accent-light);
+      pointer-events: none;
+      display: none;
+      white-space: nowrap;
+      backdrop-filter: blur(4px);
+      z-index: 10;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout { height: auto; }
+      .anim-sidebar { flex-direction: row; overflow-x: auto; overflow-y: hidden; padding: 0.75rem; gap: 0.4rem; border-right: none; border-bottom: 1px solid rgba(0,194,255,0.15); }
+      .sidebar-title { display: none; }
+      .anim-btn { flex-direction: column; min-width: 120px; padding: 0.6rem; }
+      .anim-btn-desc { display: none; }
+      .sidebar-footer { display: none; }
+      .canvas-area { height: 70vw; min-height: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="page-header-left">
+    <span class="brand-badge">C.U.R.A. / PROTO</span>
+    <span class="geo-badge">GeoJSON REAL</span>
+    <div>
+      <h1>Visualizaciones — Red Sanitaria Nacional</h1>
+      <p>Mapa real de Argentina · datos.gob.ar · georef</p>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div>v2.0 — GeoJSON · marzo 2026</div>
+    <div>8 animaciones · mapa oficial</div>
+  </div>
+</header>
+
+<div class="main-layout">
+
+  <aside class="anim-sidebar">
+    <div class="sidebar-title">Animaciones disponibles</div>
+
+    <button class="anim-btn active" onclick="switchAnimation(0)">
+      <div class="anim-btn-num">01</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Argentina que Despierta</div>
+        <div class="anim-btn-desc">El país se activa nodo por nodo. De fragmentado a conectado.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(1)">
+      <div class="anim-btn-num">02</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Red Neuronal Sanitaria</div>
+        <div class="anim-btn-desc">El sistema funciona como un cerebro. Sinapsis y pulsos luminosos.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(2)">
+      <div class="anim-btn-num">03</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Flujo de Datos Clínicos</div>
+        <div class="anim-btn-desc">Partículas de datos viajan entre paciente, médico, farmacia y lab.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(3)">
+      <div class="anim-btn-num">04</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Red Infraestructura</div>
+        <div class="anim-btn-desc">Estilo red eléctrica. Flujo de energía/datos entre nodos.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(4)">
+      <div class="anim-btn-num">05</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Construcción de la Red</div>
+        <div class="anim-btn-desc">El sistema se construye en vivo: mapa → nodos → conexiones → flujo.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(5)">
+      <div class="anim-btn-num">06</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Pulso Sanitario Nacional</div>
+        <div class="anim-btn-desc">El país late. Ondas sincronizadas de actividad sanitaria.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(6)">
+      <div class="anim-btn-num">07</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Capas del Sistema</div>
+        <div class="anim-btn-desc">Arquitectura del ecosistema revelada en capas sucesivas.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <button class="anim-btn" onclick="switchAnimation(7)">
+      <div class="anim-btn-num">08</div>
+      <div class="anim-btn-text">
+        <div class="anim-btn-name">Datos como Luz</div>
+        <div class="anim-btn-desc">Partículas de luz recorriendo el país. Estelas luminosas entre provincias.</div>
+      </div>
+      <div class="status-dot"></div>
+    </button>
+
+    <div class="sidebar-footer">
+      <p>Hacé hover sobre el mapa<br>para interactuar con los nodos.<br><br>Mapa oficial: infra.datos.gob.ar<br>Provincias simplificadas · GeoJSON</p>
+    </div>
+  </aside>
+
+  <div class="canvas-area" id="canvas-area">
+    <canvas id="main-canvas"></canvas>
+    <div id="tooltip"></div>
+
+    <div id="loading-overlay">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">CARGANDO MAPA OFICIAL</div>
+      <div class="loading-sub">Obteniendo GeoJSON · infra.datos.gob.ar</div>
+    </div>
+
+    <div class="anim-overlay-info">
+      <div class="overlay-label">
+        <span class="overlay-anim-name" id="overlay-anim-name">ANIMACIÓN 01</span>
+        <span class="overlay-anim-concept" id="overlay-concept">Argentina que Despierta</span>
+      </div>
+      <div class="overlay-hint" id="overlay-hint">Mové el mouse sobre el mapa</div>
+    </div>
+
+    <div class="legend" id="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#00C2FF"></div>Nodo activo</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(0,194,255,0.3)"></div>Nodo inactivo</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(0,194,255,0.6);border-radius:0"></div>Conexión</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* =============================================
+   BOUNDS GEOGRÁFICOS DE ARGENTINA
+   (sin Malvinas/Antártida para bounding box)
+   lon: oeste→este  lat: sur→norte
+============================================== */
+const GEO_BOUNDS = {
+  minLon: -73.58, maxLon: -53.63,
+  minLat:  -55.06, maxLat: -21.78
+};
+const LON_RANGE = GEO_BOUNDS.maxLon - GEO_BOUNDS.minLon; // ~19.95°
+const LAT_RANGE = GEO_BOUNDS.maxLat - GEO_BOUNDS.minLat; // ~33.28°
+const MID_LAT   = (GEO_BOUNDS.minLat + GEO_BOUNDS.maxLat) / 2;
+// Aspect ratio real con corrección de latitud
+const AR_RATIO  = (LON_RANGE * Math.cos(MID_LAT * Math.PI / 180)) / LAT_RANGE; // ≈ 0.47
+
+/* =============================================
+   PROVINCIAS: cargadas desde GeoJSON
+============================================== */
+let geoProvinces  = []; // [{ name, paths: [[nx,ny],...] }]
+let geoProvCount  = 0;
+let geoReady      = false;
+
+/* =============================================
+   PROYECCIÓN: lon/lat → nx,ny ∈ [0,1]
+============================================== */
+function geoProject(lon, lat) {
+  // Filtrar puntos fuera del bounding box continental
+  if (lon < -74 || lon > -52 || lat < -56 || lat > -21) return null;
+  const nx = (lon - GEO_BOUNDS.minLon) / LON_RANGE;
+  const ny = (GEO_BOUNDS.maxLat - lat) / LAT_RANGE;
+  return [nx, ny];
+}
+
+/* =============================================
+   DOUGLAS-PEUCKER SIMPLIFICATION
+============================================== */
+function pdist([px,py],[ax,ay],[bx,by]) {
+  const dx = bx-ax, dy = by-ay;
+  const len2 = dx*dx + dy*dy;
+  if (len2 === 0) return Math.hypot(px-ax, py-ay);
+  const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / len2));
+  return Math.hypot(px-(ax+t*dx), py-(ay+t*dy));
+}
+
+function simplify(pts, tol) {
+  if (pts.length <= 2) return pts;
+  let maxD = 0, idx = 1;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const d = pdist(pts[i], pts[0], pts[pts.length-1]);
+    if (d > maxD) { maxD = d; idx = i; }
+  }
+  if (maxD > tol) {
+    const L = simplify(pts.slice(0, idx+1), tol);
+    const R = simplify(pts.slice(idx), tol);
+    return [...L.slice(0,-1), ...R];
+  }
+  return [pts[0], pts[pts.length-1]];
+}
+
+/* =============================================
+   CARGAR Y PROCESAR GEOJSON
+============================================== */
+async function loadGeoJSON() {
+  const TOL = 0.003; // tolerancia en coords normalizadas
+  const URL = 'https://infra.datos.gob.ar/georef-dev/provincias.geojson';
+
+  try {
+    const resp = await fetch(URL);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+
+    // Provincias a excluir (sin coordenadas reales o fuera del mapa)
+    const SKIP = ['Ciudad Autónoma de Buenos Aires']; // tiny, drawn as node
+
+    for (const feat of data.features) {
+      const name = feat.properties.nombre || feat.properties.name || 'Provincia';
+      const geom = feat.geometry;
+      if (!geom) continue;
+
+      const paths = [];
+
+      const processRing = (ring) => {
+        const proj = [];
+        for (const [lon, lat] of ring) {
+          const p = geoProject(lon, lat);
+          if (p) proj.push(p);
+        }
+        if (proj.length < 3) return null;
+        return simplify(proj, TOL);
+      };
+
+      if (geom.type === 'Polygon') {
+        const p = processRing(geom.coordinates[0]);
+        if (p && p.length >= 3) paths.push(p);
+      } else if (geom.type === 'MultiPolygon') {
+        for (const poly of geom.coordinates) {
+          const p = processRing(poly[0]);
+          if (p && p.length >= 3) paths.push(p);
+        }
+      }
+
+      if (paths.length > 0) {
+        geoProvinces.push({ name, paths });
+      }
+    }
+
+    geoProvCount = geoProvinces.length;
+    console.log(`✅ GeoJSON cargado: ${geoProvCount} provincias`);
+    geoReady = true;
+
+  } catch(err) {
+    console.warn('⚠️ GeoJSON falló, usando contorno de respaldo:', err.message);
+    useFallback();
+  }
+
+  // Ocultar loading
+  const ol = document.getElementById('loading-overlay');
+  if (ol) { ol.classList.add('hidden'); setTimeout(() => ol.remove(), 700); }
+
+  // Iniciar animaciones
+  resizeCanvas();
+  switchAnimation(0);
+  loop();
+}
+
+/* =============================================
+   FALLBACK: contorno manual si falla el fetch
+============================================== */
+const AR_FALLBACK = [
+  [0.28,0.00],[0.34,0.00],[0.40,0.01],[0.47,0.02],[0.52,0.03],
+  [0.58,0.03],[0.64,0.04],[0.70,0.06],[0.75,0.08],
+  [0.80,0.11],[0.86,0.14],[0.90,0.18],[0.92,0.23],[0.90,0.29],
+  [0.87,0.32],[0.84,0.35],[0.82,0.39],[0.84,0.44],[0.83,0.48],
+  [0.82,0.52],[0.80,0.57],[0.78,0.61],[0.74,0.64],[0.71,0.68],
+  [0.68,0.72],[0.65,0.76],[0.62,0.79],[0.60,0.82],[0.57,0.85],
+  [0.55,0.88],[0.52,0.91],[0.49,0.94],[0.45,0.96],[0.41,0.97],
+  [0.38,0.98],[0.34,0.97],[0.30,0.99],[0.24,0.96],[0.21,0.94],
+  [0.18,0.89],[0.15,0.82],[0.13,0.75],[0.12,0.68],[0.13,0.62],
+  [0.14,0.56],[0.15,0.50],[0.17,0.44],[0.18,0.38],[0.20,0.32],
+  [0.22,0.26],[0.23,0.20],[0.25,0.14],[0.27,0.08],[0.28,0.04],
+];
+
+function useFallback() {
+  geoProvinces = [{ name: 'Argentina', paths: [AR_FALLBACK] }];
+  geoReady = true;
+}
+
+/* =============================================
+   NODOS DE CIUDADES
+   Coordenadas geográficas → proyectadas con geoProject
+============================================== */
+const CITY_GEO = [
+  { id:'caba', name:'Buenos Aires (CABA)',    short:'CABA',  lon:-58.38, lat:-34.60, size:5   },
+  { id:'ros',  name:'Rosario',               short:'ROS',   lon:-60.65, lat:-32.89, size:3.5 },
+  { id:'cba',  name:'Córdoba',               short:'CBA',   lon:-64.18, lat:-31.42, size:4   },
+  { id:'mza',  name:'Mendoza',               short:'MZA',   lon:-68.83, lat:-32.89, size:3.5 },
+  { id:'tuc',  name:'Tucumán',               short:'TUC',   lon:-65.21, lat:-26.82, size:3   },
+  { id:'sal',  name:'Salta',                 short:'SAL',   lon:-65.41, lat:-24.78, size:2.5 },
+  { id:'neu',  name:'Neuquén',               short:'NEU',   lon:-68.06, lat:-38.95, size:2.5 },
+  { id:'res',  name:'Resistencia',           short:'RES',   lon:-59.02, lat:-27.43, size:2.5 },
+  { id:'bbl',  name:'Bahía Blanca',          short:'BBA',   lon:-62.27, lat:-38.72, size:3   },
+  { id:'sfe',  name:'Santa Fe',              short:'SFE',   lon:-60.70, lat:-31.63, size:3   },
+  { id:'juj',  name:'Jujuy',                short:'JUJ',   lon:-65.30, lat:-24.19, size:2   },
+  { id:'mis',  name:'Misiones',              short:'MIS',   lon:-55.89, lat:-27.36, size:2   },
+  { id:'cat',  name:'Catamarca',             short:'CAT',   lon:-65.78, lat:-28.47, size:2   },
+  { id:'lri',  name:'La Rioja',              short:'LRI',   lon:-66.85, lat:-29.41, size:2   },
+  { id:'ste',  name:'Santiago del Estero',   short:'STE',   lon:-64.26, lat:-27.78, size:2.5 },
+  { id:'eri',  name:'Paraná',                short:'PNA',   lon:-60.52, lat:-31.73, size:2.5 },
+  { id:'sju',  name:'San Juan',              short:'SJU',   lon:-68.54, lat:-31.54, size:2   },
+  { id:'slu',  name:'San Luis',              short:'SLU',   lon:-66.35, lat:-33.30, size:2   },
+  { id:'lpa',  name:'Santa Rosa (La Pampa)', short:'LPA',   lon:-64.29, lat:-36.62, size:2   },
+  { id:'vid',  name:'Viedma',                short:'VDM',   lon:-62.99, lat:-40.81, size:2   },
+  { id:'raw',  name:'Rawson (Chubut)',        short:'CHU',   lon:-65.10, lat:-43.30, size:2   },
+  { id:'gal',  name:'Río Gallegos',           short:'SCR',   lon:-69.22, lat:-51.62, size:2   },
+  { id:'ush',  name:'Ushuaia',               short:'TDF',   lon:-68.30, lat:-54.80, size:2   },
+  { id:'for',  name:'Formosa',               short:'FOR',   lon:-58.17, lat:-26.18, size:2   },
+  { id:'cor',  name:'Corrientes',            short:'COR',   lon:-58.83, lat:-27.47, size:2.5 },
+];
+
+// Proyectar nodos desde coordenadas geográficas
+const NODES = CITY_GEO.map(c => {
+  const p = geoProject(c.lon, c.lat);
+  return { ...c, x: p ? p[0] : 0.5, y: p ? p[1] : 0.5 };
+});
+
+/* =============================================
+   CONEXIONES
+============================================== */
+const CONNECTIONS = [
+  ['caba','ros'],['caba','eri'],['caba','lpa'],['caba','bbl'],
+  ['ros','cba'],['ros','sfe'],['ros','eri'],
+  ['cba','tuc'],['cba','lri'],['cba','slu'],['cba','ste'],['cba','sfe'],
+  ['mza','sju'],['mza','neu'],['mza','slu'],['mza','lri'],
+  ['tuc','sal'],['tuc','ste'],['tuc','cat'],
+  ['sal','juj'],['sal','cat'],
+  ['for','res'],['res','cor'],['cor','mis'],['res','ste'],
+  ['ste','cat'],['sfe','eri'],
+  ['bbl','lpa'],['bbl','vid'],['vid','neu'],['vid','raw'],
+  ['raw','gal'],['gal','ush'],
+  ['neu','lpa'],['slu','lpa'],
+];
+
+/* =============================================
+   CANVAS SETUP
+============================================== */
+const canvas  = document.getElementById('main-canvas');
+const ctx     = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+let W, H, dpr = window.devicePixelRatio || 1;
+let mouseX = -1, mouseY = -1;
+
+function resizeCanvas() {
+  const area = document.getElementById('canvas-area');
+  W = area.offsetWidth;
+  H = area.offsetHeight;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+  if (currentAnim && currentAnim.onResize) currentAnim.onResize();
+}
+
+/* =============================================
+   MAPA → PIXEL
+============================================== */
+function mapPad() {
+  const padX = W * 0.06, padY = H * 0.05;
+  const availW = W - 2*padX, availH = H - 2*padY;
+  let mapW = availW, mapH = availW / AR_RATIO;
+  if (mapH > availH) { mapH = availH; mapW = availH * AR_RATIO; }
+  const offX = padX + (availW - mapW) / 2;
+  const offY = padY + (availH - mapH) / 2;
+  return { offX, offY, mapW, mapH };
+}
+
+function toCanvasXY(nx, ny) {
+  const { offX, offY, mapW, mapH } = mapPad();
+  return { x: offX + nx * mapW, y: offY + ny * mapH };
+}
+
+function nodePos(n) { return toCanvasXY(n.x, n.y); }
+
+/* =============================================
+   DIBUJAR GRILLA TECNOLÓGICA DE FONDO
+============================================== */
+function drawGrid(alpha = 0.04) {
+  const step = 40;
+  ctx.save();
+  ctx.strokeStyle = `rgba(0,194,255,${alpha})`;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  for (let x = 0; x < W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+  for (let y = 0; y < H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* =============================================
+   DIBUJAR MAPA GEOJSON
+   progress 0→1: traza provincias sucesivamente
+   mode: 'outline' | 'filled'
+============================================== */
+function drawArgentina(fillAlpha = 0.06, strokeAlpha = 0.5, glowAlpha = 0.15, progress = 1, provinceAlphas = null) {
+  if (!geoReady || geoProvinces.length === 0) return;
+
+  ctx.save();
+
+  // Construir lista plana de paths
+  const allPaths = [];
+  geoProvinces.forEach(p => p.paths.forEach(path => allPaths.push({ path, name: p.name })));
+
+  if (progress >= 1) {
+    // Dibujar todas las provincias completas
+    allPaths.forEach(({ path, name }, i) => {
+      const pAlpha = provinceAlphas ? (provinceAlphas[name] ?? fillAlpha) : fillAlpha;
+      drawProvincePath(path, pAlpha, strokeAlpha, glowAlpha);
+    });
+  } else {
+    // Distribución progresiva: provincias por orden, cada una trazada en su momento
+    const n = allPaths.length;
+    const provProgress = progress * n; // 0 → n
+    
+    for (let i = 0; i < n; i++) {
+      if (provProgress <= i) break;
+      const localProg = Math.min(1, provProgress - i);
+      const { path } = allPaths[i];
+
+      ctx.save();
+      ctx.shadowColor = `rgba(0,194,255,${glowAlpha * 0.8})`;
+      ctx.shadowBlur  = 8;
+      
+      if (localProg >= 1) {
+        // Provincia completa
+        ctx.beginPath();
+        const p0 = toCanvasXY(path[0][0], path[0][1]);
+        ctx.moveTo(p0.x, p0.y);
+        for (let j = 1; j < path.length; j++) {
+          const p = toCanvasXY(path[j][0], path[j][1]);
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.fillStyle   = `rgba(0,78,133,${fillAlpha})`;
+        ctx.fill();
+        ctx.strokeStyle = `rgba(0,194,255,${strokeAlpha * localProg})`;
+        ctx.lineWidth   = 1;
+        ctx.stroke();
+      } else {
+        // Trazado progresivo de esta provincia
+        const count = Math.max(2, Math.floor(path.length * localProg));
+        ctx.beginPath();
+        const p0 = toCanvasXY(path[0][0], path[0][1]);
+        ctx.moveTo(p0.x, p0.y);
+        for (let j = 1; j < count; j++) {
+          const p = toCanvasXY(path[j][0], path[j][1]);
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = `rgba(0,194,255,${strokeAlpha})`;
+        ctx.lineWidth   = 1.5;
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+  }
+
+  ctx.restore();
+}
+
+function drawProvincePath(path, fillAlpha, strokeAlpha, glowAlpha) {
+  if (path.length < 2) return;
+  ctx.save();
+  ctx.shadowColor = `rgba(0,194,255,${glowAlpha})`;
+  ctx.shadowBlur  = 10;
+  ctx.beginPath();
+  const p0 = toCanvasXY(path[0][0], path[0][1]);
+  ctx.moveTo(p0.x, p0.y);
+  for (let i = 1; i < path.length; i++) {
+    const p = toCanvasXY(path[i][0], path[i][1]);
+    ctx.lineTo(p.x, p.y);
+  }
+  ctx.closePath();
+  ctx.fillStyle   = `rgba(0,78,133,${fillAlpha})`;
+  ctx.fill();
+  ctx.strokeStyle = `rgba(0,194,255,${strokeAlpha})`;
+  ctx.lineWidth   = 0.8;
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* =============================================
+   DIBUJAR NODO
+============================================== */
+function drawNode(n, opts = {}) {
+  const pos = nodePos(n);
+  const {
+    r = n.size * 1.4,
+    color = '#00C2FF',
+    alpha = 1,
+    glow = 0.6,
+    glowR = r * 3,
+    label = false,
+    pulse = 0
+  } = opts;
+
+  ctx.save();
+  if (glow > 0) {
+    const grad = ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, glowR + pulse);
+    grad.addColorStop(0, `rgba(0,194,255,${glow * alpha * 0.5})`);
+    grad.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, glowR + pulse, 0, Math.PI*2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+  }
+  ctx.beginPath();
+  ctx.arc(pos.x, pos.y, r, 0, Math.PI*2);
+  ctx.fillStyle = color;
+  ctx.globalAlpha = alpha;
+  ctx.fill();
+  ctx.strokeStyle = `rgba(255,255,255,${0.5 * alpha})`;
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  if (label) {
+    ctx.globalAlpha = alpha * 0.85;
+    ctx.fillStyle = '#E8F4FF';
+    ctx.font = `600 ${Math.max(9, n.size * 1.8)}px Space Grotesk, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(n.short, pos.x, pos.y - r - 4);
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+/* =============================================
+   DIBUJAR CONEXIÓN
+============================================== */
+function drawConnection(n1, n2, opts = {}) {
+  const p1 = nodePos(n1), p2 = nodePos(n2);
+  const { alpha = 0.25, color = '#00C2FF', width = 0.8, dash = [] } = opts;
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.strokeStyle = color;
+  ctx.globalAlpha = alpha;
+  ctx.lineWidth = width;
+  ctx.setLineDash(dash);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+/* =============================================
+   PARTÍCULAS
+============================================== */
+function createParticle(fromNode, toNode, opts = {}) {
+  return {
+    from: fromNode, to: toNode,
+    t: 0,
+    speed: opts.speed || 0.004 + Math.random() * 0.004,
+    size: opts.size || 2.5,
+    color: opts.color || '#00C2FF',
+    trail: [],
+    trailMax: opts.trailMax || 12,
+    done: false
+  };
+}
+
+function updateParticle(p) {
+  p.t = Math.min(1, p.t + p.speed);
+  if (p.t >= 1) p.done = true;
+}
+
+function drawParticle(p) {
+  const p1 = nodePos(p.from), p2 = nodePos(p.to);
+  const x = p1.x + (p2.x - p1.x) * p.t;
+  const y = p1.y + (p2.y - p1.y) * p.t;
+
+  p.trail.push({ x, y });
+  if (p.trail.length > p.trailMax) p.trail.shift();
+
+  for (let i = 0; i < p.trail.length - 1; i++) {
+    const a = (i / p.trail.length) * 0.5;
+    ctx.beginPath();
+    ctx.moveTo(p.trail[i].x, p.trail[i].y);
+    ctx.lineTo(p.trail[i+1].x, p.trail[i+1].y);
+    ctx.strokeStyle = p.color;
+    ctx.globalAlpha = a;
+    ctx.lineWidth = p.size * (i / p.trail.length);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.arc(x, y, p.size, 0, Math.PI*2);
+  ctx.fillStyle = '#fff';
+  ctx.globalAlpha = 0.9;
+  ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+function nodeById(id) { return NODES.find(n => n.id === id); }
+
+/* =============================================
+   HELPERS
+============================================== */
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x+r, y); c.lineTo(x+w-r, y);
+  c.quadraticCurveTo(x+w, y, x+w, y+r);
+  c.lineTo(x+w, y+h-r);
+  c.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  c.lineTo(x+r, y+h);
+  c.quadraticCurveTo(x, y+h, x, y+h-r);
+  c.lineTo(x, y+r);
+  c.quadraticCurveTo(x, y, x+r, y);
+}
+
+function bgVignette() {
+  const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H)*0.75);
+  bg.addColorStop(0, 'rgba(4,40,70,1)');
+  bg.addColorStop(1, 'rgba(0,20,40,1)');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+}
+
+/* =============================================
+   DEFINICIÓN DE ANIMACIONES
+============================================== */
+let currentAnim = null;
+let rafId = null;
+let animIndex = 0;
+
+const ANIMATIONS = [
+
+  /* =========================================
+     [0] ARGENTINA QUE DESPIERTA
+  ========================================= */
+  {
+    name: 'Argentina que Despierta',
+    nameShort: 'ANIMACIÓN 01',
+    concept: 'Argentina que Despierta',
+    hint: '🌐 El mapa real se activa progresivamente',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.phase       = 0;
+      s.phaseTimer  = 0;
+      s.activeNodes = [];
+      s.connections = [];
+      s.particles   = [];
+      s.queue       = [...NODES.map(n => n.id)];
+      s.nodeAlphas  = {};
+      NODES.forEach(n => { s.nodeAlphas[n.id] = 0; });
+      s.lastSpawn   = 0;
+      s.outline     = 0;
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.clearRect(0, 0, W, H);
+      bgVignette();
+      drawGrid(0.03);
+      s.phaseTimer++;
+
+      if (s.phase === 0) {
+        s.outline = Math.min(1, s.outline + 0.012);
+        drawArgentina(0.04, 0.4, 0.12, s.outline);
+        if (s.outline >= 1 && s.phaseTimer > 80) { s.phase = 1; s.phaseTimer = 0; }
+        return;
+      }
+
+      drawArgentina(0.05, 0.18, 0.06);
+
+      if (s.phase === 1) {
+        if (s.queue.length > 0 && t - s.lastSpawn > 90) {
+          const nextId = s.queue.shift();
+          s.activeNodes.push(nextId);
+          CONNECTIONS.forEach(([a,b]) => {
+            if ((a===nextId && s.activeNodes.includes(b)) ||
+                (b===nextId && s.activeNodes.includes(a))) {
+              s.connections.push([a, b, 0]);
+            }
+          });
+          const n = nodeById(nextId);
+          if (n) {
+            for (let i = 0; i < 3; i++) {
+              s.particles.push({ ...createParticle(n, NODES[Math.floor(Math.random()*NODES.length)], { speed:0.012, size:1.5, trailMax:8 }), done:false });
+            }
+          }
+          s.lastSpawn = t;
+        }
+        if (s.queue.length === 0) s.phase = 2;
+      }
+
+      NODES.forEach(n => {
+        if (s.activeNodes.includes(n.id)) {
+          s.nodeAlphas[n.id] = Math.min(1, s.nodeAlphas[n.id] + 0.04);
+        }
+      });
+
+      s.connections.forEach(c => {
+        c[2] = Math.min(1, c[2] + 0.03);
+        const n1 = nodeById(c[0]), n2 = nodeById(c[1]);
+        if (n1 && n2) drawConnection(n1, n2, { alpha: c[2] * 0.3, width: 0.8 });
+      });
+
+      NODES.forEach(n => {
+        const a = s.nodeAlphas[n.id];
+        if (a <= 0) return;
+        const pulse = a > 0.9 ? Math.sin(t * 0.002 + n.x * 10) * 3 : 0;
+        const glow  = a > 0.9 ? 0.4 + 0.2 * Math.sin(t * 0.003) : 0.2;
+        drawNode(n, { alpha: a, glow, pulse, label: a > 0.8, r: n.size * 1.5 });
+      });
+
+      s.particles = s.particles.filter(p => !p.done);
+      s.particles.forEach(p => { updateParticle(p); drawParticle(p); });
+
+      if (s.phase === 2 && Math.random() < 0.04) {
+        const conn = CONNECTIONS[Math.floor(Math.random() * CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a && b) s.particles.push(createParticle(Math.random()<0.5?a:b, Math.random()<0.5?b:a, { speed:0.006, trailMax:10 }));
+      }
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [1] RED NEURONAL SANITARIA
+  ========================================= */
+  {
+    name: 'Red Neuronal Sanitaria',
+    nameShort: 'ANIMACIÓN 02',
+    concept: 'Red Neuronal Sanitaria',
+    hint: '🧠 Sinapsis sanitarias activas',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.pulses   = [];
+      s.t        = 0;
+      s.particles = [];
+      s.lastFire = 0;
+      s.synapses  = CONNECTIONS.map(([a,b]) => ({ a, b, phase: Math.random()*Math.PI*2, speed: 0.5+Math.random()*0.5 }));
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.fillStyle = 'rgba(0,15,30,0.25)';
+      ctx.fillRect(0, 0, W, H);
+
+      drawGrid(0.025);
+      drawArgentina(0.04, 0.12, 0.04);
+
+      // Sinapsis con glow
+      s.synapses.forEach(syn => {
+        const n1 = nodeById(syn.a), n2 = nodeById(syn.b);
+        if (!n1||!n2) return;
+        const wave = (Math.sin(t * 0.001 * syn.speed + syn.phase) + 1) / 2;
+        drawConnection(n1, n2, { alpha: 0.05 + wave * 0.18, width: 0.6 + wave, color: '#00C2FF' });
+      });
+
+      // Pulsos neuronales
+      if (t - s.lastFire > 120) {
+        const conn = CONNECTIONS[Math.floor(Math.random() * CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a && b) {
+          s.particles.push(createParticle(Math.random()<0.5?a:b, Math.random()<0.5?b:a, {
+            speed: 0.008 + Math.random()*0.006, size: 3, trailMax: 18, color: '#00FFEA'
+          }));
+        }
+        s.lastFire = t;
+      }
+      if (Math.random() < 0.03) {
+        const conn = CONNECTIONS[Math.floor(Math.random() * CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a && b) {
+          s.particles.push(createParticle(a, b, { speed: 0.012, size: 2, trailMax: 10 }));
+        }
+      }
+
+      s.particles = s.particles.filter(p => !p.done);
+      s.particles.forEach(p => { updateParticle(p); drawParticle(p); });
+
+      NODES.forEach(n => {
+        const pulse = (Math.sin(t * 0.002 + n.x * 7 + n.y * 5) + 1) / 2;
+        drawNode(n, {
+          r: n.size * (1.2 + pulse * 0.5),
+          glow: 0.3 + pulse * 0.5,
+          glowR: n.size * 4 + pulse * 6,
+          alpha: 0.6 + pulse * 0.4,
+          color: pulse > 0.7 ? '#00FFEA' : '#00C2FF',
+          label: n.size >= 3.5,
+          pulse: pulse * 4
+        });
+      });
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [2] FLUJO DE DATOS CLÍNICOS
+  ========================================= */
+  {
+    name: 'Flujo de Datos Clínicos',
+    nameShort: 'ANIMACIÓN 03',
+    concept: 'Flujo de Datos Clínicos',
+    hint: '💊 Datos clínicos circulando por la red',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.streams = [];
+      s.lastSpawn = 0;
+      const COLORS = ['#00C2FF','#00FFEA','#7B68EE','#FF69B4','#00FF9A','#FFD700'];
+      s.colorIdx = 0;
+      s.colorList = COLORS;
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.fillStyle = 'rgba(0,10,25,0.2)';
+      ctx.fillRect(0, 0, W, H);
+      drawGrid(0.02);
+      drawArgentina(0.05, 0.15, 0.05);
+
+      CONNECTIONS.forEach(([aId,bId]) => {
+        const a = nodeById(aId), b = nodeById(bId);
+        if (a&&b) drawConnection(a, b, { alpha:0.12, width:0.5, dash:[4,4] });
+      });
+
+      if (t - s.lastSpawn > 60) {
+        const conn = CONNECTIONS[Math.floor(Math.random()*CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a && b) {
+          const col = s.colorList[s.colorIdx++ % s.colorList.length];
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+              s.streams.push(createParticle(Math.random()<0.5?a:b, Math.random()<0.5?b:a, {
+                speed: 0.005 + Math.random()*0.007, size: 2 + Math.random()*1.5,
+                color: col, trailMax: 20
+              }));
+            }, i * 80);
+          }
+        }
+        s.lastSpawn = t;
+      }
+
+      s.streams = s.streams.filter(p => !p.done);
+      s.streams.forEach(p => { updateParticle(p); drawParticle(p); });
+
+      NODES.forEach(n => {
+        const incoming = s.streams.filter(p => p.to.id === n.id && p.t > 0.85).length;
+        const pulse = Math.sin(t*0.003 + n.x*6) * 2;
+        drawNode(n, {
+          r: n.size * 1.3 + (incoming > 0 ? incoming * 2 : 0),
+          glow: 0.3 + (incoming > 0 ? 0.5 : 0),
+          color: incoming > 0 ? '#00FF9A' : '#00C2FF',
+          label: n.size >= 3.5, pulse
+        });
+      });
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [3] RED INFRAESTRUCTURA
+  ========================================= */
+  {
+    name: 'Red Infraestructura',
+    nameShort: 'ANIMACIÓN 04',
+    concept: 'Red Infraestructura',
+    hint: '⚡ Flujo de energía/datos entre nodos',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.particles = [];
+      s.lastSpawn = 0;
+      s.connPhases = CONNECTIONS.map(() => Math.random() * Math.PI * 2);
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.clearRect(0, 0, W, H);
+      bgVignette();
+      drawGrid(0.04);
+      drawArgentina(0.03, 0.12, 0.04);
+
+      CONNECTIONS.forEach(([aId, bId], i) => {
+        const a = nodeById(aId), b = nodeById(bId);
+        if (!a||!b) return;
+        const wave = (Math.sin(t*0.0015 + s.connPhases[i]) + 1) / 2;
+        [2.5, 1.2, 0.5].forEach((lw, li) => {
+          const alphas = [0.03, 0.07, 0.15 + wave*0.12];
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(nodePos(a).x, nodePos(a).y);
+          ctx.lineTo(nodePos(b).x, nodePos(b).y);
+          ctx.strokeStyle = li === 0 ? '#00FFEA' : '#00C2FF';
+          ctx.globalAlpha = alphas[li];
+          ctx.lineWidth = lw;
+          ctx.stroke();
+          ctx.restore();
+        });
+      });
+
+      if (t - s.lastSpawn > 40) {
+        const conn = CONNECTIONS[Math.floor(Math.random()*CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a&&b) {
+          const dir = Math.random()<0.5;
+          s.particles.push(createParticle(dir?a:b, dir?b:a, {
+            speed: 0.006+Math.random()*0.006, size: 2.5+Math.random()*2, trailMax: 16,
+            color: Math.random()>0.5?'#00C2FF':'#00FFEA'
+          }));
+        }
+        s.lastSpawn = t;
+      }
+
+      s.particles = s.particles.filter(p => !p.done);
+      s.particles.forEach(p => { updateParticle(p); drawParticle(p); });
+
+      NODES.forEach(n => {
+        const load = s.particles.filter(p => p.from.id===n.id||p.to.id===n.id).length;
+        const pulse = Math.sin(t*0.002 + n.y*5) * 3;
+        drawNode(n, {
+          r: n.size * 1.4 + Math.min(load, 3),
+          glow: 0.4 + load*0.1,
+          glowR: n.size*4 + load*3,
+          color: load > 2 ? '#FFD700' : load > 0 ? '#00FFEA' : '#00C2FF',
+          label: n.size >= 3, pulse
+        });
+      });
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [4] CONSTRUCCIÓN DE LA RED (secuencia)
+  ========================================= */
+  {
+    name: 'Construcción de la Red',
+    nameShort: 'ANIMACIÓN 05',
+    concept: 'Construcción de la Red',
+    hint: '🏗️ El sistema se construye en tiempo real',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.phase      = 0;
+      s.timer      = 0;
+      s.mapProg    = 0;
+      s.nodeProg   = 0;
+      s.connProg   = 0;
+      s.particles  = [];
+      s.shownConns = [];
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.clearRect(0, 0, W, H);
+      bgVignette();
+      drawGrid(0.035);
+      s.timer++;
+
+      if (s.phase === 0) {
+        // Fase: trazado progresivo del mapa
+        s.mapProg = Math.min(1, s.mapProg + 0.007);
+        drawArgentina(0.04, 0.45, 0.2, s.mapProg);
+        if (s.mapProg >= 1) { s.phase = 1; s.timer = 0; }
+      } else if (s.phase === 1) {
+        drawArgentina(0.05, 0.25, 0.1);
+        // Fase: aparición de nodos
+        s.nodeProg = Math.min(1, s.nodeProg + 0.015);
+        const shownCount = Math.floor(s.nodeProg * NODES.length);
+        NODES.slice(0, shownCount).forEach(n => {
+          drawNode(n, { alpha: Math.min(1, s.nodeProg*NODES.length - NODES.indexOf(n)), r: n.size*1.5, label: true });
+        });
+        if (s.nodeProg >= 1) { s.phase = 2; s.timer = 0; }
+      } else if (s.phase === 2) {
+        drawArgentina(0.05, 0.2, 0.06);
+        NODES.forEach(n => drawNode(n, { r: n.size*1.5, label: true }));
+        // Fase: trazado de conexiones
+        s.connProg = Math.min(1, s.connProg + 0.02);
+        const shownConns = Math.floor(s.connProg * CONNECTIONS.length);
+        CONNECTIONS.slice(0, shownConns).forEach(([aId,bId]) => {
+          const a = nodeById(aId), b = nodeById(bId);
+          if (a&&b) {
+            ctx.save();
+            ctx.shadowColor = 'rgba(0,194,255,0.6)';
+            ctx.shadowBlur = 6;
+            drawConnection(a, b, { alpha: 0.5, width: 1.2 });
+            ctx.restore();
+          }
+        });
+        if (s.connProg >= 1) { s.phase = 3; s.timer = 0; }
+      } else {
+        // Fase: red viva
+        drawArgentina(0.05, 0.18, 0.06);
+        CONNECTIONS.forEach(([aId,bId]) => {
+          const a = nodeById(aId), b = nodeById(bId);
+          if (a&&b) drawConnection(a, b, { alpha: 0.3, width: 0.8 });
+        });
+        NODES.forEach(n => {
+          const pulse = Math.sin(t*0.002 + n.x*8) * 3;
+          drawNode(n, { r: n.size*1.5, pulse, glow: 0.4, label: n.size>=3 });
+        });
+        if (Math.random() < 0.06) {
+          const conn = CONNECTIONS[Math.floor(Math.random()*CONNECTIONS.length)];
+          const a = nodeById(conn[0]), b = nodeById(conn[1]);
+          if (a&&b) s.particles.push(createParticle(Math.random()<0.5?a:b, Math.random()<0.5?b:a, { speed:0.007, trailMax:12 }));
+        }
+        s.particles = s.particles.filter(p => !p.done);
+        s.particles.forEach(p => { updateParticle(p); drawParticle(p); });
+      }
+
+      // Label de fase
+      const phaseLabels = ['TRAZANDO MAPA OFICIAL…','ACTIVANDO NODOS SANITARIOS…','TRAZANDO CONEXIONES…','RED INTEROPERABLE ACTIVA'];
+      ctx.save();
+      ctx.font = `500 ${Math.min(11, W*0.013)}px JetBrains Mono, monospace`;
+      ctx.fillStyle = 'rgba(0,194,255,0.5)';
+      ctx.textAlign = 'center';
+      ctx.fillText(phaseLabels[Math.min(s.phase, 3)], W/2, 28);
+      ctx.restore();
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [5] PULSO SANITARIO NACIONAL
+  ========================================= */
+  {
+    name: 'Pulso Sanitario Nacional',
+    nameShort: 'ANIMACIÓN 06',
+    concept: 'Pulso Sanitario Nacional',
+    hint: '❤️ Argentina respira y late',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.waves     = [];
+      s.waveTimer = 0;
+      s.particles = [];
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.clearRect(0, 0, W, H);
+      bgVignette();
+      drawGrid(0.025);
+
+      const heartbeat = Math.max(0, Math.sin(t * 0.025));
+      const mapGlow   = 0.06 + heartbeat * 0.12;
+      const mapFill   = 0.06 + heartbeat * 0.1;
+      const mapStroke = 0.2  + heartbeat * 0.35;
+      drawArgentina(mapFill, mapStroke, mapGlow);
+
+      // Ondas de latido desde el centro
+      s.waveTimer++;
+      if (s.waveTimer % 90 === 0) {
+        const center = toCanvasXY(0.62, 0.35); // centro aproximado de Argentina
+        s.waves.push({ x: center.x, y: center.y, r: 0, alpha: 0.8, maxR: Math.min(W, H) * 0.5 });
+      }
+
+      s.waves = s.waves.filter(w => w.alpha > 0.01);
+      s.waves.forEach(w => {
+        w.r     += 3.5;
+        w.alpha *= 0.96;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(w.x, w.y, w.r, 0, Math.PI*2);
+        ctx.strokeStyle = `rgba(0,194,255,${w.alpha * 0.4})`;
+        ctx.lineWidth   = 1.5;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      CONNECTIONS.forEach(([aId,bId]) => {
+        const a = nodeById(aId), b = nodeById(bId);
+        if (a&&b) {
+          const beat = 0.15 + heartbeat * 0.3;
+          drawConnection(a, b, { alpha: beat, width: 0.6 + heartbeat * 0.8 });
+        }
+      });
+
+      NODES.forEach(n => {
+        const localBeat = Math.sin(t * 0.025 + n.x * 2) * 0.5 + 0.5;
+        const r = n.size * (1.3 + localBeat * 0.8);
+        const pulse = localBeat * 5;
+        drawNode(n, { r, glow: 0.3 + localBeat * 0.5, glowR: n.size*5 + pulse*2, pulse, alpha: 0.7 + localBeat * 0.3, label: n.size >= 3.5 });
+      });
+
+      if (Math.random() < 0.05) {
+        const conn = CONNECTIONS[Math.floor(Math.random()*CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a&&b) s.particles.push(createParticle(Math.random()<0.5?a:b, Math.random()<0.5?b:a, { speed:0.007, color:'#00FF9A', trailMax:14 }));
+      }
+
+      s.particles = s.particles.filter(p => !p.done);
+      s.particles.forEach(p => { updateParticle(p); drawParticle(p); });
+
+      drawECG(t, s);
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [6] CAPAS DEL SISTEMA
+  ========================================= */
+  {
+    name: 'Capas del Sistema',
+    nameShort: 'ANIMACIÓN 07',
+    concept: 'Capas del Sistema',
+    hint: '🔬 Arquitectura en capas de C.U.R.A.',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.layers = [
+        { name: 'Infraestructura',    color: '#0066FF', nodes: NODES.filter(n=>n.size>=3.5),  alpha:0 },
+        { name: 'Datos Clínicos',     color: '#00C2FF', nodes: NODES.filter(n=>n.size>=3),    alpha:0 },
+        { name: 'Interoperabilidad',  color: '#00FFEA', nodes: NODES.filter(n=>n.size>=2.5),  alpha:0 },
+        { name: 'Red Completa',       color: '#00FF9A', nodes: NODES,                          alpha:0 },
+      ];
+      s.currentLayer = -1;
+      s.timer        = 0;
+      s.particles    = [];
+      s.showAll      = false;
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.clearRect(0, 0, W, H);
+      bgVignette();
+      drawGrid(0.03);
+      s.timer++;
+
+      if (s.timer % 160 === 0 && s.currentLayer < s.layers.length - 1) {
+        s.currentLayer++;
+        if (s.currentLayer === s.layers.length - 1) s.showAll = true;
+      }
+
+      drawArgentina(0.04, 0.15, 0.05);
+
+      s.layers.forEach((layer, li) => {
+        if (li > s.currentLayer) return;
+        layer.alpha = Math.min(1, layer.alpha + 0.018);
+        ctx.save();
+        ctx.globalAlpha = layer.alpha;
+
+        if (li === s.layers.length - 1) {
+          CONNECTIONS.forEach(([aId,bId]) => {
+            const a = nodeById(aId), b = nodeById(bId);
+            if (a&&b) drawConnection(a, b, { alpha: 0.3, color: '#00C2FF', width: 0.8 });
+          });
+        }
+
+        layer.nodes.forEach(n => {
+          const r = n.size * (1 + li * 0.1);
+          const pos = nodePos(n);
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, r * 1.8, 0, Math.PI*2);
+          ctx.strokeStyle = layer.color;
+          ctx.globalAlpha = layer.alpha * 0.3;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.globalAlpha = layer.alpha;
+          drawNode(n, { r, color: layer.color, glow: 0.3, glowR: r*3, alpha: layer.alpha, label: li === s.layers.length-1 && n.size >= 3 });
+        });
+
+        ctx.restore();
+      });
+
+      if (s.showAll && Math.random() < 0.04) {
+        const conn = CONNECTIONS[Math.floor(Math.random()*CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a&&b) s.particles.push(createParticle(a, b, { speed:0.007, size:2.5, color:'#fff', trailMax:12 }));
+      }
+      s.particles = s.particles.filter(p => !p.done);
+      s.particles.forEach(p => { updateParticle(p); drawParticle(p); });
+
+      // Panel de capas
+      const lx = W - Math.min(200, W*0.24) - 12, ly = 12;
+      ctx.save();
+      ctx.fillStyle = 'rgba(0,20,40,0.7)';
+      ctx.strokeStyle = 'rgba(0,194,255,0.15)';
+      roundRect(ctx, lx, ly, Math.min(200, W*0.24), s.layers.length*26+12, 8);
+      ctx.fill(); ctx.stroke();
+      s.layers.forEach((layer, li) => {
+        const isActive = li <= s.currentLayer;
+        ctx.globalAlpha = isActive ? 1 : 0.3;
+        ctx.beginPath();
+        ctx.arc(lx+16, ly+22+li*26, 5, 0, Math.PI*2);
+        ctx.fillStyle = isActive ? layer.color : 'rgba(100,150,200,0.3)';
+        ctx.fill();
+        ctx.font = `${isActive?'600':'400'} 10px Space Grotesk, sans-serif`;
+        ctx.fillStyle = isActive ? '#E8F4FF' : 'rgba(232,244,255,0.4)';
+        ctx.textAlign = 'left';
+        ctx.fillText(layer.name, lx+28, ly+26+li*26);
+      });
+      ctx.globalAlpha = 1;
+      ctx.restore();
+    },
+
+    onResize() { this.init(); }
+  },
+
+  /* =========================================
+     [7] DATOS COMO LUZ
+  ========================================= */
+  {
+    name: 'Datos como Luz',
+    nameShort: 'ANIMACIÓN 08',
+    concept: 'Datos como Luz',
+    hint: '✨ Estelas de luz recorriendo Argentina',
+    state: {},
+
+    init() {
+      const s = this.state;
+      s.particles = [];
+      s.stars     = Array.from({ length: 60 }, () => ({
+        x: Math.random(), y: Math.random(),
+        r: Math.random()*1.2, alpha: Math.random()*0.4
+      }));
+      s.lastSpawn = 0;
+    },
+
+    update(t) {
+      const s = this.state;
+      ctx.fillStyle = 'rgba(0,8,20,0.3)';
+      ctx.fillRect(0, 0, W, H);
+
+      s.stars.forEach(st => {
+        const pos = toCanvasXY(st.x, st.y);
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, st.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,255,255,${st.alpha + Math.sin(t*0.001+st.x*10)*0.1})`;
+        ctx.fill();
+      });
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,194,255,0.5)';
+      ctx.shadowBlur  = 20;
+      drawArgentina(0.02, 0.45, 0.25);
+      ctx.restore();
+
+      CONNECTIONS.forEach(([aId, bId]) => {
+        const a = nodeById(aId), b = nodeById(bId);
+        if (!a||!b) return;
+        const pa = nodePos(a), pb = nodePos(b);
+        [0.6, 1.2, 2.5].forEach((lw, li) => {
+          const alphas = [0.04, 0.06, 0.1];
+          ctx.beginPath();
+          ctx.moveTo(pa.x, pa.y);
+          ctx.lineTo(pb.x, pb.y);
+          ctx.strokeStyle = 'rgba(0,194,255,1)';
+          ctx.globalAlpha = alphas[li];
+          ctx.lineWidth   = lw;
+          ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+      });
+
+      if (t - s.lastSpawn > 30 && Math.random() < 0.85) {
+        const conn = CONNECTIONS[Math.floor(Math.random()*CONNECTIONS.length)];
+        const a = nodeById(conn[0]), b = nodeById(conn[1]);
+        if (a&&b) {
+          const COLS = ['#00C2FF','#00FFEA','#7B68EE','#FF69B4','#FFD700','#00FF9A','#FF8C00','#E0E0FF'];
+          const col = COLS[Math.floor(Math.random()*COLS.length)];
+          const dir = Math.random() < 0.5;
+          s.particles.push(createParticle(dir?a:b, dir?b:a, {
+            speed: 0.005+Math.random()*0.01, size: 1.5+Math.random()*2.5,
+            color: col, trailMax: 25+Math.floor(Math.random()*20)
+          }));
+        }
+        s.lastSpawn = t;
+      }
+
+      s.particles = s.particles.filter(p => !p.done);
+      s.particles.forEach(p => {
+        updateParticle(p);
+        for (let i = 0; i < p.trail.length-1; i++) {
+          const a = i/p.trail.length;
+          const lw = p.size * a * 1.5;
+          ctx.beginPath();
+          ctx.moveTo(p.trail[i].x, p.trail[i].y);
+          ctx.lineTo(p.trail[i+1].x, p.trail[i+1].y);
+          ctx.strokeStyle = p.color;
+          ctx.globalAlpha = a * 0.15;
+          ctx.lineWidth   = lw * 3;
+          ctx.stroke();
+          ctx.globalAlpha = a * 0.7;
+          ctx.lineWidth   = lw * 0.8;
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+
+        const from = nodePos(p.from), to = nodePos(p.to);
+        const hx = from.x + (to.x-from.x)*p.t;
+        const hy = from.y + (to.y-from.y)*p.t;
+        ctx.save();
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur  = 15;
+        ctx.beginPath();
+        ctx.arc(hx, hy, p.size*1.5, 0, Math.PI*2);
+        ctx.fillStyle   = '#fff';
+        ctx.globalAlpha = 0.95;
+        ctx.fill();
+        ctx.restore();
+      });
+
+      NODES.forEach(n => {
+        const pos   = nodePos(n);
+        const pulse = Math.sin(t*0.002 + n.x*8)*0.5+0.5;
+        ctx.save();
+        ctx.shadowColor = '#00C2FF';
+        ctx.shadowBlur  = 20*pulse;
+        drawNode(n, { r: n.size*1.3+pulse*2, glow: 0.5+pulse*0.5, glowR: n.size*5, alpha: 0.8+pulse*0.2, color: '#88EEFF' });
+        ctx.restore();
+        if (n.size >= 3.5) {
+          const len = 12 + pulse*6;
+          ctx.save();
+          ctx.strokeStyle = `rgba(200,240,255,${0.2+pulse*0.3})`;
+          ctx.lineWidth   = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(pos.x-len, pos.y); ctx.lineTo(pos.x+len, pos.y);
+          ctx.moveTo(pos.x, pos.y-len); ctx.lineTo(pos.x, pos.y+len);
+          ctx.stroke();
+          ctx.restore();
+        }
+      });
+
+      ctx.save();
+      ctx.font        = `bold ${Math.min(14, W*0.017)}px Space Grotesk, sans-serif`;
+      ctx.fillStyle   = 'rgba(200,240,255,0.4)';
+      ctx.textAlign   = 'center';
+      ctx.shadowColor = 'rgba(0,194,255,0.5)';
+      ctx.shadowBlur  = 10;
+      ctx.fillText('INTEROPERABILIDAD · DATOS FLUYENDO EN TIEMPO REAL', W/2, H-14);
+      ctx.restore();
+    },
+
+    onResize() { this.init(); }
+  }
+
+]; // fin ANIMATIONS
+
+/* =============================================
+   ECG HELPER
+============================================== */
+function drawECG(t, s) {
+  const ecgW = Math.min(300, W*0.45);
+  const ecgH = 40;
+  const ecgX = (W-ecgW)/2;
+  const ecgY = H-60;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,15,30,0.6)';
+  roundRect(ctx, ecgX-10, ecgY-ecgH/2-8, ecgW+20, ecgH+16, 8);
+  ctx.fill();
+
+  ctx.beginPath();
+  for (let i = 0; i < 100; i++) {
+    const x = ecgX + (i/100)*ecgW;
+    const phase = (i/100*4 - (t*0.005)) % 1;
+    let y = ecgY;
+    if (phase > 0.3 && phase < 0.35) y = ecgY - ecgH*0.6*((phase-0.3)/0.05);
+    else if (phase >= 0.35 && phase < 0.4) y = ecgY - ecgH*0.6*((0.4-phase)/0.05);
+    else if (phase >= 0.45 && phase < 0.55) y = ecgY + ecgH*0.25*Math.sin((phase-0.45)/0.1*Math.PI);
+    if (i===0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = '#00FF9A';
+  ctx.lineWidth   = 1.5;
+  ctx.shadowColor = '#00FF9A';
+  ctx.shadowBlur  = 6;
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* =============================================
+   MOUSE
+============================================== */
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+
+  let hovered = null;
+  NODES.forEach(n => {
+    const pos = nodePos(n);
+    if (Math.hypot(mouseX-pos.x, mouseY-pos.y) < n.size*3.5) hovered = n;
+  });
+
+  if (hovered) {
+    tooltip.style.display = 'block';
+    tooltip.style.left = (mouseX+14)+'px';
+    tooltip.style.top  = (mouseY-8)+'px';
+    tooltip.textContent = hovered.name;
+  } else {
+    tooltip.style.display = 'none';
+  }
+});
+
+canvas.addEventListener('mouseleave', () => {
+  mouseX = -1; mouseY = -1;
+  tooltip.style.display = 'none';
+});
+
+/* =============================================
+   LOOP PRINCIPAL
+============================================== */
+let frameT = 0;
+
+function loop() {
+  frameT++;
+  if (currentAnim && geoReady) currentAnim.update(frameT);
+  rafId = requestAnimationFrame(loop);
+}
+
+/* =============================================
+   SWITCH ANIMATION
+============================================== */
+function switchAnimation(idx) {
+  document.querySelectorAll('.anim-btn').forEach((b,i) => b.classList.toggle('active', i===idx));
+  const anim = ANIMATIONS[idx];
+  document.getElementById('overlay-anim-name').textContent = anim.nameShort;
+  document.getElementById('overlay-concept').textContent   = anim.concept;
+  document.getElementById('overlay-hint').textContent      = anim.hint;
+  currentAnim = anim;
+  currentAnim.init();
+  animIndex = idx;
+  frameT    = 0;
+}
+
+/* =============================================
+   INICIALIZACIÓN
+============================================== */
+window.addEventListener('resize', () => { resizeCanvas(); });
+resizeCanvas();
+
+// Iniciar carga del GeoJSON
+loadGeoJSON();
+</script>
+
+</body>
+</html>

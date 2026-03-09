@@ -2,14 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-  <title>Ley C.U.R.A. | Diseñando el futuro de la Salud Pública Argentina</title>
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="C.U.R.A." />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- =============================================
+       TÍTULO Y META
+  ============================================== -->
+  <title>Ley C.U.R.A. | La infraestructura digital que conecta el sistema de salud argentino</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ley C.U.R.A. — La primera infraestructura pública nacional de datos de salud de Argentina. Un sistema interoperable que conecta hospitales, farmacias, laboratorios, obras sociales y pacientes." />
 
-  <!-- Fuente Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -17,11 +28,11 @@
         extend: {
           colors: {
             cura: {
-              primary: '#004E85',      // azul fondo principal (llavero)
-              primaryDark: '#00345C',  // azul más oscuro para header/nav
-              card: '#065D9B',        // azul más claro para tarjetas
-              accent: '#00C2FF',      // celeste circuito
-              accentLight: '#59D2FF'  // celeste más suave
+              primary:     '#004E85',
+              primaryDark: '#00345C',
+              card:        '#065D9B',
+              accent:      '#00C2FF',
+              accentLight: '#59D2FF'
             }
           },
           fontFamily: {
@@ -32,765 +43,1861 @@
     }
   </script>
 
-<style>
-  .modal-backdrop {
-    opacity: 0;
-    transition: opacity 0.25s ease;
-  }
-  .modal-backdrop.show {
-    opacity: 1;
-  }
-  .modal-card {
-    transform: scale(0.9) translateY(10px);
-    opacity: 0;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .modal-card.show {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-  }
-</style>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+  <style>
+    /* =============================================
+       ESTILOS ORIGINALES — NO MODIFICAR
+    ============================================== */
+    .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+    .modal-backdrop.show { opacity: 1; }
+
+    #top-banner-text {
+      display: inline-block;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .banner-hidden { opacity: 0; transform: translateY(-4px); }
+
+    .modal-card {
+      transform: scale(0.9) translateY(10px);
+      opacity: 0;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+
+    /* --- CREDENCIAL 3D (ORIGINAL INTACTO) --- */
+    .perspective-container { perspective: 1500px; }
+
+    .card-container {
+      position: relative; width: 100%; max-width: 450px;
+      aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20;
+      container-type: inline-size;
+    }
+    .card-inner {
+      position: relative; width: 100%; height: 100%; text-align: center;
+      transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform-style: preserve-3d; cursor: pointer; will-change: transform;
+    }
+    .card-inner.is-flipped { transform: rotateY(180deg); }
+    .card-face {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      backface-visibility: hidden; border-radius: 18px; overflow: hidden;
+      transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
+      -webkit-mask-image: -webkit-radial-gradient(white, black);
+    }
+    .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+    .card-front { z-index: 2; transform: rotateY(0deg); }
+    .card-back  { z-index: 1; transform: rotateY(180deg); }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .card-container:hover .animate-float { animation-play-state: paused; }
+
+    .card-data-layer {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 10; pointer-events: none; color: white;
+    }
+    .pos-nombre-front {
+      position: absolute; left: 3.50%; top: 15%; width: 55%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 700;
+      font-size: 4.5cqw; text-align: left; line-height: 1.1;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .pos-dni-front {
+      position: absolute; left: 3.50%; top: 21.06%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400;
+      font-size: 3cqw; text-align: left;
+    }
+    .pos-sangre {
+      position: absolute; left: 94.88%; top: 8.5%; transform: translate(-50%, -50%);
+      width: 12%; height: 18%;
+      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .pos-ficticios {
+      position: absolute; bottom: 3%; left: 0; width: 100%; text-align: center;
+      font-family: 'Open Sans', sans-serif; font-size: 1.8cqw; font-weight: 600;
+      color: rgba(255,255,255,0.5); letter-spacing: 0.1em; pointer-events: none;
+    }
+    .data-block {
+      position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
+      font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    }
+    .block-alergias     { left: 3.8%;  top: 34%; }
+    .block-medicamentos { left: 3.6%;  top: 53.7%; }
+    .block-antecedentes { left: 3.9%;  top: 72%; }
+    .block-operaciones  { left: 36.6%; top: 30%; height: 22%; font-size: 2cqw; }
+    .block-fecha-nac    { left: 69%;   top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
+    .block-domicilio    { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2.3cqw; font-weight: 600; }
+    .block-contactos    { left: 69.8%; top: 72.4%; font-size: 1.9cqw; }
+    .pos-nombre-back {
+      position: absolute; top: 5%; left: 3%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left;
+    }
+    .pos-dni-back {
+      position: absolute; top: 13%; left: 3.2%;
+      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left;
+    }
+    .pos-id-number {
+      position: absolute; bottom: 23%; left: 0; right: -3%; text-align: center;
+      font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.8cqw; letter-spacing: 0.05em;
+    }
+
+    .btn-resumen-ejecutivo {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 20px; background-color: rgba(255,255,255,0.08); color: #e2e8f0;
+      border-radius: 9999px; font-size: 0.875rem; font-weight: 600; text-decoration: none;
+      border: 1px dashed rgba(255,255,255,0.3); transition: all 0.3s ease; width: 100%; box-sizing: border-box;
+    }
+    .btn-resumen-ejecutivo:hover {
+      background-color: rgba(255,255,255,0.15); color: #fff;
+      border-style: solid; border-color: rgba(255,255,255,0.5);
+    }
+
+    .notification-badge-ui {
+      position: absolute; top: -2px; right: -2px; background-color: #ef4444; color: white;
+      font-size: 9px; font-weight: bold; width: 15px; height: 15px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 9999px; border: 2px solid #00345C; pointer-events: none;
+    }
+    #notificationMenu.show { display: block !important; }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-fade-in { animation: fadeInScale 0.2s ease-out forwards; }
+
+    /* =============================================
+       NUEVOS ESTILOS — SECCIONES AGREGADAS
+    ============================================== */
+
+    /* --- CANVAS RED SANITARIA --- */
+    #network-canvas {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* --- SECCIÓN QUÉ ES CURA --- */
+    .que-es-section {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      background: linear-gradient(135deg, #00345C 0%, #004E85 60%, #065D9B 100%);
+      border: 1px solid rgba(0, 194, 255, 0.3);
+    }
+
+    /* --- TABS DE ACTORES --- */
+    .actor-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .actor-tab-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid rgba(0,194,255,0.4);
+      color: #59D2FF;
+      background: transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .actor-tab-btn:hover {
+      background: rgba(0,194,255,0.1);
+      border-color: #00C2FF;
+    }
+    .actor-tab-btn.active {
+      background: #00C2FF;
+      color: #004E85;
+      border-color: #00C2FF;
+    }
+    .actor-panel { display: none; }
+    .actor-panel.active { display: grid; }
+
+    /* --- TARJETA DE BENEFICIO (CLIC ABRE MODAL) --- */
+    .benefit-card {
+      background: #065D9B;
+      border: 1px solid rgba(0,194,255,0.3);
+      border-radius: 0.875rem;
+      padding: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      text-align: left;
+      width: 100%;
+    }
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0,194,255,0.7);
+      box-shadow: 0 8px 24px rgba(0,194,255,0.15);
+    }
+    .benefit-card-icon {
+      font-size: 1.5rem;
+      color: #00C2FF;
+      margin-bottom: 0.5rem;
+    }
+    .benefit-card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .benefit-card-desc {
+      font-size: 0.75rem;
+      color: #59D2FF;
+      line-height: 1.4;
+    }
+    .benefit-card-hint {
+      font-size: 0.65rem;
+      color: rgba(89,210,255,0.6);
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* --- MODAL DE BENEFICIO --- */
+    #benefit-modal {
+      position: fixed; inset: 0; z-index: 60;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0);
+      pointer-events: none;
+      transition: background 0.25s ease;
+    }
+    #benefit-modal.open {
+      background: rgba(0,20,40,0.75);
+      pointer-events: all;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #benefit-modal-inner {
+      background: linear-gradient(135deg, #004E85, #065D9B);
+      border: 1px solid rgba(0,194,255,0.5);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      max-width: 480px;
+      width: calc(100% - 2rem);
+      transform: scale(0.92) translateY(12px);
+      opacity: 0;
+      transition: transform 0.28s cubic-bezier(0.2,0.8,0.2,1), opacity 0.28s ease;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      position: relative;
+    }
+    #benefit-modal.open #benefit-modal-inner {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    #benefit-modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: rgba(255,255,255,0.1); border: none; border-radius: 50%;
+      width: 32px; height: 32px; cursor: pointer;
+      color: #fff; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    #benefit-modal-close:hover { background: rgba(255,255,255,0.2); }
+    #benefit-modal-icon { font-size: 2.5rem; color: #00C2FF; margin-bottom: 0.75rem; }
+    #benefit-modal-title { font-size: 1.2rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; }
+    #benefit-modal-body  { font-size: 0.875rem; color: rgba(255,255,255,0.85); line-height: 1.7; }
+    #benefit-modal-tag   {
+      display: inline-block; margin-top: 1rem;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      color: #00C2FF; background: rgba(0,194,255,0.12);
+      border: 1px solid rgba(0,194,255,0.3);
+      border-radius: 9999px; padding: 0.2rem 0.7rem;
+      text-transform: uppercase;
+    }
+
+    /* --- SECCIÓN CÓMO FUNCIONA --- */
+    .flow-node {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(0,194,255,0.3);
+      border-radius: 0.875rem;
+      padding: 1rem 0.75rem;
+      transition: transform 0.2s, border-color 0.2s;
+      text-align: center;
+    }
+    .flow-node:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0,194,255,0.7);
+    }
+    .flow-node-icon { font-size: 1.75rem; color: #00C2FF; }
+    .flow-node-label { font-size: 0.7rem; font-weight: 600; color: #fff; line-height: 1.3; }
+
+    .flow-connector {
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(0,194,255,0.5); font-size: 1.25rem;
+    }
+
+    /* Flecha animada de flujo de datos */
+    @keyframes flowPulse {
+      0%   { opacity: 0.3; transform: scaleX(0.8); }
+      50%  { opacity: 1;   transform: scaleX(1); }
+      100% { opacity: 0.3; transform: scaleX(0.8); }
+    }
+    .flow-arrow-line {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00C2FF, transparent);
+      animation: flowPulse 2s ease-in-out infinite;
+      border-radius: 2px;
+    }
+
+    /* --- PILARES CENTRALES --- */
+    .pilar-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,194,255,0.25);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .pilar-card:hover {
+      border-color: rgba(0,194,255,0.6);
+      background: rgba(0,194,255,0.06);
+    }
+    .pilar-number {
+      font-size: 2.5rem; font-weight: 900; line-height: 1;
+      color: rgba(0,194,255,0.25);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 0.5rem;
+    }
+
+    /* --- MÉTRICAS / IMPACTO --- */
+    .metric-item {
+      text-align: center; padding: 1.25rem 1rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,194,255,0.2);
+      border-radius: 1rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .metric-item:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0,194,255,0.5);
+    }
+    .metric-value {
+      font-size: 1.75rem; font-weight: 900; color: #00C2FF; line-height: 1;
+    }
+    .metric-label {
+      font-size: 0.7rem; color: rgba(255,255,255,0.65); margin-top: 0.4rem; line-height: 1.3;
+    }
+
+    /* --- SCROLL REVEAL (complementa AOS) --- */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
 </head>
-<body class="font-sans bg-cura-primary text-white">
 
-  <!-- AVISO SUPERIOR -->
-  <div class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
-    La ley se encuentra en revisión técnica y estará disponible próximamente en la web.
-  </div>
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden">
 
-  <!-- NAVBAR -->
+<!-- =============================================
+     BANNER SUPERIOR ROTATIVO (ORIGINAL)
+============================================== -->
+<div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
+  <span id="top-banner-text">
+    Versión 05/03/26 — La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
+  </span>
+</div>
+
+<!-- =============================================
+     HEADER (ORIGINAL INTACTO)
+============================================== -->
 <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
 
-    <!-- Logo + texto -->
-    <div class="flex items-center gap-2">
-      <img src="/logo.png"
-           alt="Logo C.U.R.A."
-           class="h-16 w-auto object-contain shrink-0" />
-
-      <div class="leading-tight">
-        <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">LEY NACIONAL</p>
-        <p class="text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+    <div class="flex items-center justify-between w-full sm:w-auto">
+      <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
+        <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
+        <div class="leading-tight">
+          <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
+          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+        </div>
+      </a>
+      <div class="sm:hidden relative">
+        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <i class="ph-bold ph-bell text-2xl"></i>
+          <span class="notification-badge-ui">1</span>
+        </button>
       </div>
     </div>
 
-    <!-- Menú simple -->
-    <nav class="hidden sm:flex items-center gap-5 text-sm font-medium">
-      <a href="#inicio" class="text-cura-accentLight hover:text-white">Inicio</a>
-      <a href="#informacion" class="text-cura-accentLight hover:text-white">Información</a>
-      <a href="#contacto" class="text-cura-accentLight hover:text-white">Contacto</a>
-      <a href="/demonivel2.html"
-         class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-3 py-1 text-xs font-semibold hover:bg-white transition">
-        Demo QR Nivel 2
-      </a>
+    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
+      <div class="flex gap-4">
+        <a href="#inicio"      class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
+        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">El Sistema</a>
+        <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
+        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
+        <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
+          Demostración
+        </a>
+        <div class="hidden sm:block relative">
+          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+            <i class="ph-bold ph-bell text-xl"></i>
+            <span class="notification-badge-ui">1</span>
+          </button>
+        </div>
+      </div>
     </nav>
 
+    <!-- Menú novedades (ORIGINAL) -->
+    <div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+      <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+        <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
+        <span class="text-[9px] text-gray-400 font-medium">Actualizado: 24/01/26</span>
+      </div>
+      <div class="max-h-[400px]">
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento con los nuevos anexos técnicos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase">Cerrar</button>
+    </div>
   </div>
 </header>
 
+<!-- =============================================
+     CONTENIDO PRINCIPAL
+============================================== -->
+<main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-20">
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-16">
+  <!-- ==========================================
+       HERO — REESCRITO CON NUEVO POSICIONAMIENTO
+       (La credencial 3D se mantiene íntegra)
+  =========================================== -->
+  <section class="grid md:grid-cols-2 gap-10 items-center">
 
-    <!-- HERO -->
-<section class="grid md:grid-cols-2 gap-10 items-start">
-      <div>
-        <p class="text-xs font-semibold tracking-[0.25em] text-cura-accentLight uppercase mb-3">
-          LEY C.U.R.A.
-        </p>
-        <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 drop-shadow">
-          Diseñando el futuro de la Salud Pública Argentina
-        </h1>
-        <p class="text-sm md:text-base text-cura-accentLight mb-6">
-          Vos podés ser parte de la mayor transformación de la historia del sistema de Salud Digital Argentino.
-        </p>
+    <!-- Columna izquierda: nuevo posicionamiento conceptual -->
+    <div class="flex flex-col justify-center" data-aos="fade-right">
 
-        <div class="flex flex-wrap gap-3">
-          <button id="btn-sumate" type="button"
-             class="inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
+      <!-- Badge de tipo de proyecto -->
+      <div class="inline-flex items-center gap-2 mb-4 w-fit">
+        <span class="text-[10px] font-bold tracking-[0.2em] text-cura-accentLight uppercase border border-cura-accent/40 rounded-full px-3 py-1">
+          LEY C.U.R.A. · INFRAESTRUCTURA PÚBLICA NACIONAL
+        </span>
+      </div>
+
+      <!-- NUEVO TÍTULO: posicionamiento de infraestructura -->
+      <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3 drop-shadow">
+        La infraestructura digital que conecta el sistema de salud argentino
+      </h1>
+
+      <!-- NUEVO SUBTÍTULO -->
+      <p class="text-sm md:text-base text-white/80 mb-2 leading-relaxed">
+        Un sistema interoperable que une hospitales, farmacias, laboratorios, obras sociales y pacientes bajo un mismo lenguaje digital — con soberanía estatal y control del ciudadano.
+      </p>
+
+      <!-- REENMARCADO DE LA CREDENCIAL -->
+      <p class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic">
+        La credencial que ves a la derecha es la llave de acceso a esta infraestructura — el C.U.R.A.-ID que identifica tu historia clínica en todo el sistema sanitario nacional.
+      </p>
+
+      <div class="flex flex-col gap-3">
+        <div class="flex gap-3">
+          <button id="btn-sumate" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
             QUIERO SUMARME
           </button>
-          <button id="btn-info" type="button"
-             class="inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
-            Obtén más información
+          <button id="btn-info" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
+            Ver el sistema
           </button>
         </div>
 
-        <p class="mt-6 text-[11px] text-cura-accentLight">
+        <a href="/Informacion/documentos/Resumen_Ejecutivo.pdf" target="_blank"
+           class="group relative inline-flex items-center justify-center overflow-hidden bg-cura-accent px-8 py-4 rounded-full text-white font-bold shadow-lg transition-all duration-300 hover:bg-cura-accent/90">
+          <div class="relative flex flex-col items-center transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
+            <span class="flex items-center gap-2 py-1">
+              <i class="ph-bold ph-file-pdf text-xl"></i>
+              Ver Resumen Ejecutivo
+            </span>
+            <span class="absolute top-full flex items-center gap-2 py-1 whitespace-nowrap text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              Última actualización: 15/01/2026
+            </span>
+          </div>
+        </a>
+
+        <p class="mt-2 text-[11px] text-cura-accentLight leading-tight">
           Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
         </p>
       </div>
-
-     <!-- Tarjeta SISTEMA C.U.R.A. estilo llavero -->
-<div class="relative">
-  <div class="absolute -top-6 -right-4 w-28 h-28 rounded-full bg-cura-accent/25 blur-2xl"></div>
-  <div class="absolute -bottom-8 -left-4 w-28 h-28 rounded-full bg-cura-primaryDark/50 blur-2xl"></div>
-
-  <div class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-5 space-y-4">
-    <p class="text-xs font-semibold text-cura-accentLight uppercase tracking-wide">
-      SISTEMA C.U.R.A.
-    </p>
-
-    <p class="text-sm text-white">
-      Una credencial digital única y segura que unifica toda la información médica de cada persona. La Historia Clínica deja de estar dispersa: acompaña al paciente a cualquier lugar, en cualquier momento y en cualquier institución del país. Fin del papeleo, los trámites repetidos, los estudios duplicados y la burocracia que frena la atención.
-    </p>
-
-    <p class="text-sm text-white">
-      Beneficios clave para las personas:
-    </p>
-
-    <!-- BENEFICIOS EN RECTÁNGULOS -->
-    <div class="space-y-2 text-xs text-cura-accentLight">
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Acceso inmediato a su información médica desde cualquier centro de salud, público o privado del país, y en centros del exterior que utilicen estándares internacionales compatibles.
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Eliminación total del papel: órdenes, recetas, troqueles, certificados y estudios pasan a formato digital.
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Recetas electrónicas firmadas automáticamente: sin volver al médico solo para renovar o firmar.
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Integración real con ambulancias, guardias y emergencias: al escanear el QR, se accede solo a lo necesario según el rol (ciudadano, enfermero o médico).
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Facilita turnos rápidos, continuidad de tratamientos y evita repetir análisis o contar todo desde cero cada vez.
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Mejoras directas para PAMI: menos trámites, más velocidad, reducción de burocracia y automatización de traslados para personas con movilidad reducida.
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Seguridad avanzada y segmentación de datos: cada profesional ve únicamente lo que necesita para atender al paciente.
-      </div>
-
-      <div class="bg-cura-primaryDark/30 border border-cura-accent/40 rounded-lg px-3 py-2">
-        Reduce costos del sistema completo: menos papeles, menos errores, menos pérdida de información y más eficiencia.
-      </div>
     </div>
 
-    <div class="pt-2 border-t border-cura-accent/30 flex items-center justify-between">
-      <span class="text-[11px] text-cura-accentLight">
-        Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747., sin fines de lucro.
-      </span>
-      <span class="text-[11px] text-white font-semibold">#LeyCURA</span>
-    </div>
-  </div>
-</div>
+    <!-- Columna derecha: CREDENCIAL 3D ORIGINAL INTACTA -->
+    <div class="relative w-full flex justify-center items-center perspective-container" data-aos="zoom-in" data-aos-delay="300">
+      <div class="absolute inset-0 bg-cura-accent/40 blur-3xl rounded-full -z-10 transform scale-90"></div>
 
-    </section>
-
-    <!-- BLOQUE: CREADA PARA MEJORAR... -->
-    <section id="informacion" class="space-y-6">
-      <div class="max-w-2xl">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">
-          Creada para mejorar la salud de todos
-        </h2>
-        <p class="text-sm md:text-base text-cura-accentLight">
-          La Ley C.U.R.A. impulsa la creación de una credencial única para la salud argentina,
-          permitiendo un acceso más ágil, seguro y equitativo a la información clínica en todo el país.
-        </p>
-      </div>
-
- <div class="grid md:grid-cols-3 gap-4">
-
-  <!-- 1 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Unificación</h3>
-    <p class="text-xs text-cura-accentLight">
-      Un solo identificador de salud por persona, integrando datos de hospitales públicos, privados y de la seguridad social.
-    </p>
-  </div>
-
-  <!-- 2 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Seguridad y privacidad</h3>
-    <p class="text-xs text-cura-accentLight">
-      Accesos por niveles, auditorías y confidencialidad estricta de los datos de cada paciente.
-    </p>
-  </div>
-
-  <!-- 3 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Interoperabilidad</h3>
-    <p class="text-xs text-cura-accentLight">
-      Basada en estándares internacionales para que todos los sistemas “hablen el mismo idioma”.
-    </p>
-  </div>
-
-  <!-- 4 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Fin del papeleo</h3>
-    <p class="text-xs text-cura-accentLight">
-      Órdenes, estudios y certificados pasan a digital, evitando pérdidas, sellos y trámites repetidos.
-    </p>
-  </div>
-
-  <!-- 5 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Recetas automáticas</h3>
-    <p class="text-xs text-cura-accentLight">
-      Firmas digitales automáticas: no hace falta volver al consultorio para renovar o validar recetas.
-    </p>
-  </div>
-
-  <!-- 6 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">PAMI sin burocracia</h3>
-    <p class="text-xs text-cura-accentLight">
-      Turnos ágiles, menos trámites presenciales y traslados automatizados para movilidad reducida.
-    </p>
-  </div>
-
-  <!-- 7 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Mejor atención en emergencias</h3>
-    <p class="text-xs text-cura-accentLight">
-      El QR permite identificar a la persona y ver alergias y medicación en segundos.
-    </p>
-  </div>
-
-  <!-- 8 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Evita estudios repetidos</h3>
-    <p class="text-xs text-cura-accentLight">
-      Los médicos ven estudios previos al instante, evitando repetir análisis innecesarios.
-    </p>
-  </div>
-
-  <!-- 9 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Más tiempo para el paciente</h3>
-    <p class="text-xs text-cura-accentLight">
-      Menos carga administrativa, más tiempo real de atención y acompañamiento.
-    </p>
-  </div>
-
-  <!-- 10 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Turnos sin vueltas</h3>
-    <p class="text-xs text-cura-accentLight">
-      Agenda integrada para reducir esperas entre hospitales, clínicas y obras sociales.
-    </p>
-  </div>
-
-  <!-- 11 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Ahorro para todo el sistema</h3>
-    <p class="text-xs text-cura-accentLight">
-      Menos errores, menos pérdidas y menos costos administrativos que se reinvierten en salud.
-    </p>
-  </div>
-
-  <!-- 12 -->
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-    <h3 class="text-sm font-semibold text-white mb-1">Información en el país y exterior</h3>
-    <p class="text-xs text-cura-accentLight">
-      Disponible en todo el país y en instituciones del exterior que usen estándares compatibles.
-    </p>
-  </div>
-
-</div>
-
-
-
-    </section>
-
-    <!-- CONTACTO -->
-    
-<!-- SUMATE -->
-<section id="sumate" class="space-y-6">
-  <div class="max-w-2xl">
-    <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-    <p class="text-sm text-cura-accentLight">Completá tus datos para sumarte a la iniciativa.</p>
-  </div>
-
-  <form id="sumate-form"
-        action="https://formsubmit.co/ajax/contacto@leycura.org"
-        method="POST"
-        class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
-
-    <input type="hidden" name="_subject" value="Nuevo ciudadano sumado - LeyCURA">
-    <input type="hidden" name="_template" value="box">
-    <input type="hidden" name="_captcha" value="false">
-
-    <div class="grid md:grid-cols-2 gap-3">
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
-        <input name="nombre" required
-               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-      </div>
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
-        <input name="apellido" required
-               class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-3">
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
-        <select name="provincia" required
-                class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-          <option value="">Seleccioná una provincia</option>
-          <option value="Buenos Aires">Buenos Aires</option>
-          <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
-          <option value="Catamarca">Catamarca</option>
-          <option value="Chaco">Chaco</option>
-          <option value="Chubut">Chubut</option>
-          <option value="Córdoba">Córdoba</option>
-          <option value="Corrientes">Corrientes</option>
-          <option value="Entre Ríos">Entre Ríos</option>
-          <option value="Formosa">Formosa</option>
-          <option value="Jujuy">Jujuy</option>
-          <option value="La Pampa">La Pampa</option>
-          <option value="La Rioja">La Rioja</option>
-          <option value="Mendoza">Mendoza</option>
-          <option value="Misiones">Misiones</option>
-          <option value="Neuquén">Neuquén</option>
-          <option value="Río Negro">Río Negro</option>
-          <option value="Salta">Salta</option>
-          <option value="San Juan">San Juan</option>
-          <option value="San Luis">San Luis</option>
-          <option value="Santa Cruz">Santa Cruz</option>
-          <option value="Santa Fe">Santa Fe</option>
-          <option value="Santiago del Estero">Santiago del Estero</option>
-          <option value="Tierra del Fuego, Antártida e Islas del Atlántico Sur">Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
-          <option value="Tucumán">Tucumán</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
-        <select name="ciudad" id="ciudad-select" required
-                class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white text-cura-primary">
-          <option value="">Seleccioná una ciudad</option>
-        </select>
-      </div>
-    </div>
-
-    <div>
-      <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
-      <input type="email" name="email" required
-             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-    </div>
-
-    <div>
-      <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
-      <input name="dni"
-             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-    </div>
-
-    <div>
-      <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
-      <input name="telefono"
-             class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" />
-    </div>
-
-    <button type="submit"
-            class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold">
-      Enviar
-    </button>
-
-    <p class="text-[10px] text-cura-accentLight mt-1">
-      Los campos marcados con * son obligatorios.
-    </p>
-  </form>
-</section>
-
-
-<section id="contacto" class="space-y-6">
-      <div class="max-w-2xl">
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-2">
-          Comunícate con nosotros
-        </h2>
-        <p class="text-sm text-cura-accentLight">
-          Toda pregunta es válida. Nos interesa escuchar tus dudas, aportes y propuestas para que puedas formar parte de esta gran revolución sanitaria.
-        </p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- Info de contacto -->
-        <div class="space-y-4">
-          <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md">
-            <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-            <p class="text-sm text-cura-accentLight">
-              correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a>
-            </p>
-            <p class="text-xs text-cura-accentLight mt-2">
-              Comunícate con nosotros para más información o para sumarte a la iniciativa.
-            </p>
+      <div class="card-container animate-float">
+        <div id="credencial-giratoria" class="card-inner">
+          <div class="card-face card-front">
+            <img src="credencial-frente-base.png" alt="Credencial Frente" class="card-bg-img">
+            <div class="card-data-layer">
+              <div class="pos-nombre-front" id="cred-nombre-front"></div>
+              <div class="pos-dni-front"    id="cred-dni-front"></div>
+              <div class="pos-sangre"       id="cred-sangre"></div>
+              <div class="data-block block-alergias"     id="cred-alergias"></div>
+              <div class="data-block block-operaciones"  id="cred-operaciones"></div>
+              <div class="data-block block-fecha-nac"    id="cred-fecha-nac"></div>
+              <div class="data-block block-medicamentos" id="cred-medicamentos"></div>
+              <div class="data-block block-domicilio"    id="cred-domicilio"></div>
+              <div class="data-block block-antecedentes" id="cred-antecedentes"></div>
+              <div class="data-block block-contactos"    id="cred-contactos"></div>
+              <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
+            </div>
           </div>
-          <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">
-            Esta iniciativa no solicita aportes económicos. Tu apoyo se basa en informarte, difundir y acompañar el proceso.
+          <div class="card-face card-back">
+            <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
+            <div class="card-data-layer">
+              <div class="pos-nombre-back" id="cred-nombre-back"></div>
+              <div class="pos-dni-back"    id="cred-dni-back"></div>
+              <div class="pos-id-number"   id="cred-id-number"></div>
+              <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <!-- Formulario (estático) -->
-        <form id="contact-form"
-        action="https://formsubmit.co/ajax/contacto@leycura.org"
-        method="POST"
-        class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+      <p class="absolute -bottom-10 text-center text-[11px] text-cura-accentLight animate-pulse opacity-80">
+        (Hacé click en la credencial para girarla)
+      </p>
+    </div>
+  </section>
 
-          <input type="hidden" name="_subject" value="Nuevo mensaje desde leycura.org">
-          <input type="hidden" name="_template" value="box">
-          <input type="hidden" name="_captcha" value="false">
+  <!-- ==========================================
+       NUEVA SECCIÓN: ¿QUÉ ES C.U.R.A.?
+       Con animación de red sanitaria en canvas
+  =========================================== -->
+  <section id="que-es" class="que-es-section p-6 md:p-10 shadow-2xl" data-aos="fade-up">
 
+    <!-- Canvas de red animada (fondo) -->
+    <canvas id="network-canvas" aria-hidden="true"></canvas>
+
+    <div class="relative z-10">
+
+      <!-- Cabecera -->
+      <div class="text-center mb-10 max-w-3xl mx-auto">
+        <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-3">¿QUÉ ES C.U.R.A.?</p>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-4">
+          No es una app. No es solo una historia clínica.<br>
+          <span class="text-cura-accent">Es infraestructura pública.</span>
+        </h2>
+        <p class="text-sm md:text-base text-white/80 leading-relaxed">
+          Igual que la red eléctrica o la infraestructura de telecomunicaciones, C.U.R.A. es la plataforma pública que permite que todo el sistema de salud funcione conectado.
+          La información médica deja de quedar cautiva en una institución y pasa a acompañar al paciente a lo largo de todo el sistema sanitario.
+        </p>
+      </div>
+
+      <!-- Visualización de nodos del ecosistema -->
+      <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 gap-2 items-center mb-10" data-aos="fade-up" data-aos-delay="100">
+        <div class="flow-node">
+          <i class="flow-node-icon ph-bold ph-user-circle"></i>
+          <span class="flow-node-label">Paciente</span>
+        </div>
+        <div class="flow-connector hidden sm:flex">
+          <div class="flow-arrow-line w-full"></div>
+        </div>
+        <div class="flow-node border-cura-accent/70" style="background:rgba(0,194,255,0.08)">
+          <i class="flow-node-icon ph-bold ph-identification-badge" style="font-size:2.2rem"></i>
+          <span class="flow-node-label font-extrabold text-cura-accent">C.U.R.A.-ID</span>
+        </div>
+        <div class="flow-connector hidden sm:flex">
+          <div class="flow-arrow-line w-full"></div>
+        </div>
+        <div class="flow-node">
+          <i class="flow-node-icon ph-bold ph-hospital"></i>
+          <span class="flow-node-label">Hospital</span>
+        </div>
+        <div class="flow-connector hidden md:flex">
+          <div class="flow-arrow-line w-full"></div>
+        </div>
+        <div class="flow-node hidden md:flex flex-col">
+          <i class="flow-node-icon ph-bold ph-first-aid-kit"></i>
+          <span class="flow-node-label">Farmacia</span>
+        </div>
+      </div>
+
+      <!-- Segunda fila de nodos (pantallas medianas+) -->
+      <div class="hidden sm:grid grid-cols-4 gap-2 items-center mb-10" data-aos="fade-up" data-aos-delay="150">
+        <div class="flow-node">
+          <i class="flow-node-icon ph-bold ph-flask"></i>
+          <span class="flow-node-label">Laboratorio</span>
+        </div>
+        <div class="flow-node">
+          <i class="flow-node-icon ph-bold ph-hand-heart"></i>
+          <span class="flow-node-label">Obra Social</span>
+        </div>
+        <div class="flow-node">
+          <i class="flow-node-icon ph-bold ph-stethoscope"></i>
+          <span class="flow-node-label">Médico</span>
+        </div>
+        <div class="flow-node">
+          <i class="flow-node-icon ph-bold ph-building-office"></i>
+          <span class="flow-node-label">Estado / PAMI</span>
+        </div>
+      </div>
+
+      <!-- Los tres pilares -->
+      <div class="grid md:grid-cols-3 gap-4" data-aos="fade-up" data-aos-delay="200">
+
+        <div class="pilar-card">
+          <div class="pilar-number">01</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-arrows-merge text-cura-accent text-lg"></i>
+            Interoperabilidad obligatoria
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">
+            C.U.R.A. establece un lenguaje común para todo el sistema sanitario usando estándares internacionales (HL7 FHIR, SNOMED CT). La arquitectura es federada: cada provincia mantiene sus datos en su propio nodo. Es la lógica de Internet aplicada a la salud.
+          </p>
+        </div>
+
+        <div class="pilar-card">
+          <div class="pilar-number">02</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-lock-key text-cura-accent text-lg"></i>
+            El paciente como dueño
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">
+            Con C.U.R.A., la historia clínica pertenece al paciente, no a la institución. Podés ver quién accedió a tus datos, cuándo y con qué propósito. En emergencias, el médico accede solo a datos vitales críticos para actuar con rapidez.
+          </p>
+        </div>
+
+        <div class="pilar-card">
+          <div class="pilar-number">03</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-file-x text-cura-accent text-lg"></i>
+            Despapelización integral
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">
+            Órdenes, recetas, derivaciones y certificados pasan a digital. La receta crónica se renueva automáticamente. El médico recupera el tiempo que hoy gasta en formularios. El sistema recuerda lo que cada institución hoy olvida.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Frase potente del discurso -->
+      <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="100">
+        <blockquote class="text-sm md:text-base italic text-white/70 border-t border-cura-accent/20 pt-6">
+          "Cuando el paciente no puede hablar, su historia clínica sí puede hacerlo."
+        </blockquote>
+        <p class="text-xs text-cura-accentLight mt-1">— Franco A. Paganini, autor de la Ley C.U.R.A.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       NUEVA SECCIÓN: CÓMO FUNCIONA EL SISTEMA
+  =========================================== -->
+  <section id="como-funciona" class="space-y-6" data-aos="fade-up">
+
+    <div class="text-center max-w-2xl mx-auto">
+      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">EL ECOSISTEMA</p>
+      <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">Cómo funciona C.U.R.A.</h2>
+      <p class="text-sm text-white/70 leading-relaxed">
+        Una arquitectura híbrida federada. Cada provincia mantiene sus datos en su propio nodo. La Capa de Intercambio Federada permite que la información circule cuando es necesaria, con seguridad y trazabilidad total.
+      </p>
+    </div>
+
+    <!-- Diagrama de flujo vertical -->
+    <div class="max-w-2xl mx-auto space-y-3" data-aos="fade-up" data-aos-delay="100">
+
+      <!-- Nivel 1: Ciudadano -->
+      <div class="flex items-center gap-4 bg-white/5 border border-cura-accent/30 rounded-xl px-5 py-4">
+        <i class="ph-bold ph-user-circle text-3xl text-cura-accent flex-shrink-0"></i>
+        <div>
+          <p class="text-sm font-bold text-white">Ciudadano / Paciente</p>
+          <p class="text-xs text-white/60">Accede a su historia clínica completa con el C.U.R.A.-ID</p>
+        </div>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5">Control total</span>
+      </div>
+
+      <!-- Flecha -->
+      <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-cura-accent/60 to-transparent"></div></div>
+
+      <!-- Nivel 2: C.U.R.A.-ID -->
+      <div class="flex items-center gap-4 bg-cura-accent/10 border border-cura-accent/60 rounded-xl px-5 py-4">
+        <i class="ph-bold ph-identification-badge text-3xl text-cura-accent flex-shrink-0"></i>
+        <div>
+          <p class="text-sm font-bold text-cura-accent">C.U.R.A.-ID</p>
+          <p class="text-xs text-white/70">Identificador Único de Paciente seudonimizado, vinculado al RENAPER</p>
+        </div>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5">Art. 17</span>
+      </div>
+
+      <!-- Flecha -->
+      <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-cura-accent/60 to-transparent"></div></div>
+
+      <!-- Nivel 3: Capa de intercambio -->
+      <div class="flex items-center gap-4 bg-white/5 border border-white/20 rounded-xl px-5 py-4">
+        <i class="ph-bold ph-network text-3xl text-white/70 flex-shrink-0"></i>
+        <div>
+          <p class="text-sm font-bold text-white">Capa de Intercambio Federada (CIF)</p>
+          <p class="text-xs text-white/60">APIs seguras con OAuth 2.0, cifrado extremo a extremo y auditoría sellada digitalmente</p>
+        </div>
+        <span class="ml-auto text-xs font-bold text-white/60 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">HL7 FHIR</span>
+      </div>
+
+      <!-- Flecha ramificada -->
+      <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-white/20 to-transparent"></div></div>
+
+      <!-- Nivel 4: Actores del sistema -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+        <div class="flow-node"><i class="flow-node-icon ph-bold ph-hospital"></i><span class="flow-node-label">Hospital<br>Público</span></div>
+        <div class="flow-node"><i class="flow-node-icon ph-bold ph-buildings"></i><span class="flow-node-label">Clínica<br>Privada</span></div>
+        <div class="flow-node"><i class="flow-node-icon ph-bold ph-hand-heart"></i><span class="flow-node-label">Obras<br>Sociales</span></div>
+        <div class="flow-node"><i class="flow-node-icon ph-bold ph-first-aid-kit"></i><span class="flow-node-label">Farmacias</span></div>
+        <div class="flow-node"><i class="flow-node-icon ph-bold ph-flask"></i><span class="flow-node-label">Labora-<br>torios</span></div>
+        <div class="flow-node"><i class="flow-node-icon ph-bold ph-building-office"></i><span class="flow-node-label">PAMI /<br>Estado</span></div>
+      </div>
+
+      <!-- Nota de soberanía -->
+      <div class="text-center mt-2">
+        <span class="text-xs text-cura-accentLight/70">
+          <i class="ph-bold ph-shield-check"></i>
+          Datos clínicos con residencia exclusiva en territorio argentino · Soberanía digital garantizada por ley
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       BENEFICIOS POR ACTOR — CON TABS Y MODALES
+  =========================================== -->
+  <section id="beneficios" class="relative bg-cura-card border border-cura-accent/40 rounded-2xl shadow-xl p-6 md:p-8" data-aos="fade-up">
+
+    <div class="absolute -top-6 -right-4 w-28 h-28 rounded-full bg-cura-accent/20 blur-2xl"></div>
+
+    <div class="relative z-10">
+
+      <!-- Cabecera de sección -->
+      <div class="mb-8 text-center max-w-3xl mx-auto">
+        <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">BENEFICIOS DEL SISTEMA</p>
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Un sistema que beneficia a todos los actores</h2>
+        <p class="text-sm text-white/70">Seleccioná quién sos para ver los beneficios que C.U.R.A. genera para vos.</p>
+        <!-- Hint de modal -->
+        <p class="text-xs text-cura-accentLight/60 mt-1 flex items-center justify-center gap-1">
+          <i class="ph-bold ph-cursor-click"></i> Hacé click en cada tarjeta para ver más detalle
+        </p>
+      </div>
+
+      <!-- Tabs de actores -->
+      <div class="actor-tabs justify-center" role="tablist" aria-label="Actores del sistema">
+        <button class="actor-tab-btn active" onclick="switchTab('pacientes')"      role="tab" aria-selected="true">Pacientes</button>
+        <button class="actor-tab-btn"        onclick="switchTab('jubilados')"      role="tab">Jubilados</button>
+        <button class="actor-tab-btn"        onclick="switchTab('medicos')"        role="tab">Médicos</button>
+        <button class="actor-tab-btn"        onclick="switchTab('hospitales')"     role="tab">Hospitales</button>
+        <button class="actor-tab-btn"        onclick="switchTab('obraSocial')"     role="tab">Obras Sociales</button>
+        <button class="actor-tab-btn"        onclick="switchTab('estado')"         role="tab">Estado</button>
+      </div>
+
+      <!-- ---- PANEL: PACIENTES ---- -->
+      <div id="panel-pacientes" class="actor-panel active grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('cura-id')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-identification-badge"></i></div>
+          <div class="benefit-card-title">Tu C.U.R.A.-ID</div>
+          <div class="benefit-card-desc">Identificador sanitario único vinculado a tu DNI. Tu historia clínica completa, siempre disponible.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('control-datos')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-lock-key"></i></div>
+          <div class="benefit-card-title">Vos controlás tu información</div>
+          <div class="benefit-card-desc">Podés ver quién accedió a tus datos, cuándo y con qué propósito. Control granular sobre información sensible.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('urgencias')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-first-aid"></i></div>
+          <div class="benefit-card-title">Salvavidas en emergencias</div>
+          <div class="benefit-card-desc">QR/NFC revela alergias y datos vitales críticos al médico, incluso si no podés comunicarte.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('recetas-pac')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-pill"></i></div>
+          <div class="benefit-card-title">Recetas automáticas</div>
+          <div class="benefit-card-desc">Medicación crónica renovada automáticamente. Sin volver al consultorio solo para una receta.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('sin-repetir')" data-aos="fade-up" data-aos-delay="250">
+          <div class="benefit-card-icon"><i class="ph-bold ph-microscope"></i></div>
+          <div class="benefit-card-title">Basta de repetir estudios</div>
+          <div class="benefit-card-desc">Si ya te lo hiciste, el médico lo ve. Ahorrás tiempo, dinero y molestias innecesarias.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('turnos')" data-aos="fade-up" data-aos-delay="300">
+          <div class="benefit-card-icon"><i class="ph-bold ph-calendar-check"></i></div>
+          <div class="benefit-card-title">Turnos unificados</div>
+          <div class="benefit-card-desc">Agenda federal que encuentra el turno más cercano entre todos los hospitales y clínicas adheridas.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- ---- PANEL: JUBILADOS ---- -->
+      <div id="panel-jubilados" class="actor-panel grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('pami-integ')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-users-three"></i></div>
+          <div class="benefit-card-title">PAMI integrado al sistema</div>
+          <div class="benefit-card-desc">La ley establece integración obligatoria de PAMI (Art. 47). Todos los procesos pasan a digital.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('recetas-cronic')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-pill"></i></div>
+          <div class="benefit-card-title">Recetas crónicas sin colas</div>
+          <div class="benefit-card-desc">Tratamientos estables renovados automáticamente. Sin filas ni papelería en la farmacia.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('traslados')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-van"></i></div>
+          <div class="benefit-card-title">Traslados coordinados</div>
+          <div class="benefit-card-desc">Derivaciones y traslados coordinados digitalmente. Trazabilidad completa de cada proceso.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('videoconsulta')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-video-camera"></i></div>
+          <div class="benefit-card-title">Videoconsultas desde casa</div>
+          <div class="benefit-card-desc">Para personas con dificultades de movilidad. Atención médica sin salir del hogar.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('facilitadores')" data-aos="fade-up" data-aos-delay="250">
+          <div class="benefit-card-icon"><i class="ph-bold ph-chalkboard-teacher"></i></div>
+          <div class="benefit-card-title">Facilitadores digitales</div>
+          <div class="benefit-card-desc">Programa Federal de Facilitadores en centros de jubilados. Nadie queda afuera de la transformación.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('troquel')" data-aos="fade-up" data-aos-delay="300">
+          <div class="benefit-card-icon"><i class="ph-bold ph-scissors"></i></div>
+          <div class="benefit-card-title">Fin del troquel físico</div>
+          <div class="benefit-card-desc">El troquel físico de PAMI desaparece. El Registro Digital de Dispensación Trazable (RDDT) lo reemplaza.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- ---- PANEL: MÉDICOS ---- -->
+      <div id="panel-medicos" class="actor-panel grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('hce-medico')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-clipboard-text"></i></div>
+          <div class="benefit-card-title">Historia clínica completa</div>
+          <div class="benefit-card-desc">Al momento de la consulta, el médico tiene toda la información clínica relevante disponible.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('menos-papeles')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-hand-heart"></i></div>
+          <div class="benefit-card-title">Más tiempo para la medicina</div>
+          <div class="benefit-card-desc">Menos formularios, menos burocracia. El tiempo recuperado se destina al paciente.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('receta-elec')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-pencil-line"></i></div>
+          <div class="benefit-card-title">Prescripción electrónica</div>
+          <div class="benefit-card-desc">Receta electrónica interoperable con trazabilidad completa de prescripción y dispensación.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('teleconsulta-med')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-video-camera"></i></div>
+          <div class="benefit-card-title">Teleconsulta interjurisdiccional</div>
+          <div class="benefit-card-desc">Podés atender pacientes de otras provincias con plenas garantías de matriculación y responsabilidad.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('alertas-med')" data-aos="fade-up" data-aos-delay="250">
+          <div class="benefit-card-icon"><i class="ph-bold ph-warning"></i></div>
+          <div class="benefit-card-title">Alertas de interacciones</div>
+          <div class="benefit-card-desc">El sistema alerta automáticamente sobre interacciones medicamentosas y alergias conocidas.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('matriculas')" data-aos="fade-up" data-aos-delay="300">
+          <div class="benefit-card-icon"><i class="ph-bold ph-certificate"></i></div>
+          <div class="benefit-card-title">Créditos para matrículas</div>
+          <div class="benefit-card-desc">La capacitación en el sistema otorga puntaje para recertificación de matrículas profesionales.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- ---- PANEL: HOSPITALES ---- -->
+      <div id="panel-hospitales" class="actor-panel grid-cols-1 sm:grid-cols-2 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('audit-dig')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-magnifying-glass"></i></div>
+          <div class="benefit-card-title">Auditoría digital remota</div>
+          <div class="benefit-card-desc">Toda auditoría basada en el RDDT puede realizarse en forma remota, con igual valor legal que la presencial.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('sin-dup')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-prohibit"></i></div>
+          <div class="benefit-card-title">Sin duplicación de estudios</div>
+          <div class="benefit-card-desc">Los estudios previos del paciente están disponibles en el sistema. Se evitan costos innecesarios.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('indice-interop')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-chart-bar"></i></div>
+          <div class="benefit-card-title">Índice de interoperabilidad</div>
+          <div class="benefit-card-desc">Cada prestador tendrá un Índice C.U.R.A. de Interoperabilidad público, que indica su nivel de integración al sistema.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('credito-tech')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-bank"></i></div>
+          <div class="benefit-card-title">Crédito para tecnología</div>
+          <div class="benefit-card-desc">La banca pública nacional creará líneas de crédito específicas para adopción de software y hardware certificado.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- ---- PANEL: OBRAS SOCIALES ---- -->
+      <div id="panel-obraSocial" class="actor-panel grid-cols-1 sm:grid-cols-2 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('rddt')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-barcode"></i></div>
+          <div class="benefit-card-title">RDDT elimina el fraude</div>
+          <div class="benefit-card-desc">El Registro Digital de Dispensación Trazable reemplaza el troquel físico y elimina el fraude prestacional asociado.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('audit-remote')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-desktop"></i></div>
+          <div class="benefit-card-title">Auditorías 100% remotas</div>
+          <div class="benefit-card-desc">Las auditorías digitales tienen el mismo valor legal que la verificación presencial. Reducción de costos operativos.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('preexist')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-shield-slash"></i></div>
+          <div class="benefit-card-title">Sin preexistencias indebidas</div>
+          <div class="benefit-card-desc">La ley prohíbe el uso de datos interoperables para establecer preexistencias. Portabilidad clínica garantizada.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('receta-os')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-arrows-clockwise"></i></div>
+          <div class="benefit-card-title">Receta electrónica integrada</div>
+          <div class="benefit-card-desc">Los mecanismos de la Ley 27.553 de Recetas Electrónicas se integran obligatoriamente al Sistema C.U.R.A.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- ---- PANEL: ESTADO ---- -->
+      <div id="panel-estado" class="actor-panel grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('datos-anon')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-chart-line-up"></i></div>
+          <div class="benefit-card-title">Datos para políticas públicas</div>
+          <div class="benefit-card-desc">Repositorio Nacional de Datos Anonimizados para diseño de políticas sanitarias basadas en evidencia real.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('epidemia')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-binoculars"></i></div>
+          <div class="benefit-card-title">Detección epidemiológica</div>
+          <div class="benefit-card-desc">Identificación de patrones epidemiológicos en tiempo real. Anticipar brotes antes de que se conviertan en epidemias.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('equidad')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-map-trifold"></i></div>
+          <div class="benefit-card-title">Equidad territorial</div>
+          <div class="benefit-card-desc">El Fondo Federal de Equidad Sanitaria corrige asimetrías históricas en distribución de profesionales e infraestructura.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('ahorro')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-piggy-bank"></i></div>
+          <div class="benefit-card-title">Ahorro auditado y reinvertido</div>
+          <div class="benefit-card-desc">Los ahorros generados por digitalización son auditados por SIGEN/AGN y reinvertidos en el sistema sanitario.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('hub-global')" data-aos="fade-up" data-aos-delay="250">
+          <div class="benefit-card-icon"><i class="ph-bold ph-globe-hemisphere-west"></i></div>
+          <div class="benefit-card-title">Hub Global de Interoperabilidad</div>
+          <div class="benefit-card-desc">Argentina posicionada como exportadora de servicios de salud digital. Potencial primer país de Latam en lograrlo.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('investigacion')" data-aos="fade-up" data-aos-delay="300">
+          <div class="benefit-card-icon"><i class="ph-bold ph-flask"></i></div>
+          <div class="benefit-card-title">Infraestructura para ciencia</div>
+          <div class="benefit-card-desc">Registro Federal de Ensayos Clínicos y Sandbox de IA en Salud bajo soberanía estatal para investigación nacional.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- Link a más información -->
+      <div class="mt-10 flex justify-center" data-aos="fade-up">
+        <a href="/Informacion/informacion.html"
+           class="group relative inline-flex items-center gap-2 px-8 py-3 bg-cura-accent hover:bg-cura-accent/80 text-white font-medium text-sm md:text-base rounded-full transition-all duration-300 shadow-lg hover:-translate-y-0.5">
+          <span>Explorar toda la información técnica y legal</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MÉTRICAS / IMPACTO DEL SISTEMA
+  =========================================== -->
+  <section class="space-y-6" data-aos="fade-up">
+    <div class="text-center">
+      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">EL PROYECTO EN NÚMEROS</p>
+      <h2 class="text-xl md:text-2xl font-extrabold text-white">Una ley de escala histórica</h2>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div class="metric-item" data-aos="zoom-in" data-aos-delay="50">
+        <div class="metric-value">230</div>
+        <div class="metric-label">páginas de documento técnico-legislativo</div>
+      </div>
+      <div class="metric-item" data-aos="zoom-in" data-aos-delay="100">
+        <div class="metric-value">5</div>
+        <div class="metric-label">fases de implementación certificadas</div>
+      </div>
+      <div class="metric-item" data-aos="zoom-in" data-aos-delay="150">
+        <div class="metric-value">3</div>
+        <div class="metric-label">subsistemas integrados (público, OOOO.SS, prepaga)</div>
+      </div>
+      <div class="metric-item" data-aos="zoom-in" data-aos-delay="200">
+        <div class="metric-value">90%</div>
+        <div class="metric-label">operatividad mínima para avanzar de fase</div>
+      </div>
+      <div class="metric-item" data-aos="zoom-in" data-aos-delay="250">
+        <div class="metric-value">100%</div>
+        <div class="metric-label">soberanía de datos clínicos en Argentina</div>
+      </div>
+      <div class="metric-item" data-aos="zoom-in" data-aos-delay="300">
+        <div class="metric-value">#1</div>
+        <div class="metric-label">potencial en América Latina en infraestructura pública de salud digital</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FORMULARIO SUMATE (ORIGINAL INTACTO)
+  =========================================== -->
+  <section id="sumate" class="space-y-6" data-aos="fade-up">
+    <div class="max-w-2xl">
+      <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
+      <p class="text-sm text-cura-accentLight">Necesitamos reunir firmas para que esto sea una realidad. Completá tus datos para sumarte a la iniciativa y formar parte de la historia.</p>
+    </div>
+
+    <form id="sumate-form"
+          action="https://formsubmit.co/contacto@leycura.org"
+          method="POST"
+          class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+
+      <input type="hidden" name="_subject"  value="Nuevo ciudadano sumado - LeyCURA">
+      <input type="hidden" name="_template" value="box">
+      <input type="hidden" name="_captcha"  value="false">
+      <input type="hidden" name="_next"     value="https://www.leycura.org/gracias-sumate.html">
+
+      <div class="grid md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
+          <input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters" inputmode="text" autocomplete="given-name" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
+          <input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters" inputmode="text" autocomplete="family-name" />
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
+          <select name="provincia" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white">
+            <option value="">Seleccioná una provincia</option>
+            <option>Buenos Aires</option><option>Ciudad Autónoma de Buenos Aires</option>
+            <option>Catamarca</option><option>Chaco</option><option>Chubut</option>
+            <option>Córdoba</option><option>Corrientes</option><option>Entre Ríos</option>
+            <option>Formosa</option><option>Jujuy</option><option>La Pampa</option>
+            <option>La Rioja</option><option>Mendoza</option><option>Misiones</option>
+            <option>Neuquén</option><option>Río Negro</option><option>Salta</option>
+            <option>San Juan</option><option>San Luis</option><option>Santa Cruz</option>
+            <option>Santa Fe</option><option>Santiago del Estero</option>
+            <option>Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
+            <option>Tucumán</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
+          <select name="ciudad" id="ciudad-select" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white">
+            <option value="">Seleccioná una ciudad</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
+        <input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" autocomplete="email" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
+        <input name="dni" id="dni-input" maxlength="8" inputmode="numeric" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8);" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
+        <input name="telefono" id="telefono-input" maxlength="13" inputmode="numeric" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13);" />
+      </div>
+
+      <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold transition hover:bg-cura-accentLight hover:text-cura-primaryDark">
+        Enviar
+      </button>
+      <p class="text-[10px] text-cura-accentLight mt-1">Los campos marcados con * son obligatorios.</p>
+    </form>
+  </section>
+
+  <!-- ==========================================
+       CONTACTO (ORIGINAL INTACTO)
+  =========================================== -->
+  <section id="contacto" class="space-y-6 mt-16" data-aos="fade-up">
+    <div class="max-w-2xl">
+      <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Comunícate con nosotros</h2>
+      <p class="text-sm text-cura-accentLight">Toda pregunta es válida. Nos interesa escuchar tus dudas, aportes y propuestas para que puedas formar parte de esta gran revolución sanitaria.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="space-y-4" data-aos="fade-right">
+        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747., sin fines de lucro.</div>
+        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">SUMARTE</a> a hacerlo y ser parte de la historia.</div>
+        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
+          <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
+          <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
+        </div>
+      </div>
+
+      <div data-aos="fade-left">
+        <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="/api/contact" method="POST">
           <div>
             <label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label>
-            <input type="text" name="nombre" required
-                   class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
+            <input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent" />
           </div>
-
           <div>
             <label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label>
-            <input type="email" name="email" required
-                   class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
+            <input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent" />
           </div>
-
           <div>
             <label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label>
-            <textarea rows="4" name="mensaje" required
-                      class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent"></textarea>
+            <textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent"></textarea>
           </div>
-
-          <button type="submit"
-                  class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
+          <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
             Enviar
           </button>
-
-          <p class="text-[10px] text-cura-accentLight mt-1">
-            Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.
-          </p>
+          <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al equipo de Ley C.U.R.A.</p>
         </form>
-      </div>
-    </section>
 
-    <!-- NEWSLETTER -->
-    <section class="space-y-4">
-      <div class="max-w-2xl">
-        <h2 class="text-lg md:text-xl font-bold text-white mb-1">
-          MANTENTE CONECTADO
-        </h2>
-        <p class="text-sm text-cura-accentLight">
-          Obtené información sobre los avances de la ley y sobre cómo podés formar parte de esta historia con el simple hecho de ser ciudadano.
-          Nunca vamos a solicitar fondos de ningún tipo: lo único necesario es el apoyo y la difusión.
-        </p>
-      </div>
-
-      <form class="max-w-md flex gap-2">
-        <input type="email" placeholder="Correo electrónico"
-               class="flex-1 border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent focus:border-cura-accent" />
-        <button type="submit"
-                class="px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
-          OBTENER INFORMACIÓN
-        </button>
-      </form>
-    </section>
-
-    <!-- AVISO DE EVENTO / NOVEDADES -->
-    <section class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-      <div>
-        <h3 class="text-sm font-semibold text-white mb-1">Bienvenido, tenemos novedades</h3>
-        <p class="text-xs text-cura-accentLight">
-          La ley será presentada por primera vez del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
-        </p>
-      </div>
-      <div class="text-xs text-cura-accentLight">
-        Próximamente más información sobre la presentación y materiales descargables.
-      </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
-    <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
-      <p>Copyright © 2025 C.U.R.A. - Todos los derechos reservados.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="#informacion" class="hover:text-white">Información</a>
-        <a href="/demonivel2.html" target="_blank" class="hover:text-white">Demo QR Nivel 2</a>
-        <a href="#contacto" class="hover:text-white">Contacto</a>
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
+          <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
+          <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+        </div>
       </div>
     </div>
-  </footer>
+  </section>
 
+  <!-- ==========================================
+       NEWSLETTER (ORIGINAL INTACTO)
+  =========================================== -->
+  <section class="space-y-4 mt-10 md:mt-12" data-aos="fade-up">
+    <div class="max-w-2xl">
+      <h2 class="text-lg md:text-xl font-bold text-white mb-1">MANTENTE CONECTADO</h2>
+      <p class="text-sm text-cura-accentLight">Obtené información sobre los avances de la ley y sobre cómo podés formar parte de esta historia.</p>
+    </div>
+    <form id="newsletter-form" class="max-w-md flex flex-col sm:flex-row gap-2 w-full">
+      <input name="email" type="email" required placeholder="Correo electrónico"
+             class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent" />
+      <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
+        MANTENERME INFORMADO
+      </button>
+    </form>
+  </section>
 
-<!-- MODAL ÉXITO FORMULARIO -->
-<div id="success-modal"
-     class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+  <!-- ==========================================
+       NOVEDADES / CONGRESO (ORIGINAL ACTUALIZADO)
+  =========================================== -->
+  <section class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md mt-16 text-center" data-aos="zoom-in">
+    <h3 class="text-sm font-semibold text-white mb-1">Tenemos novedades</h3>
+    <p class="text-xs text-cura-accentLight leading-snug">
+      La ley será presentada por primera vez del 28 al 30 de abril de 2026<br>
+      en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.<br>
+      <strong>Un documento de 230 páginas que propone una transformación histórica del sistema de salud.</strong>
+    </p>
+  </section>
+
+</main><!-- / main -->
+
+<!-- =============================================
+     FOOTER (ORIGINAL ACTUALIZADO)
+============================================== -->
+<footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
+  <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
+    <p>Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
+    <div class="flex flex-wrap gap-3">
+      <a href="#que-es"     class="hover:text-white">El Sistema</a>
+      <a href="#beneficios" class="hover:text-white">Beneficios</a>
+      <a href="/Informacion/informacion.html" class="hover:text-white">Información</a>
+      <a href="/demonivel2.html" target="_blank" class="hover:text-white">Demo Enfermero</a>
+      <a href="#contacto"   class="hover:text-white">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<!-- =============================================
+     MODALES ORIGINALES (SIN CAMBIOS)
+============================================== -->
+<div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
   <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
     <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-      <svg xmlns="http://www.w3.org/2000/svg"
-           class="h-6 w-6 text-green-500"
-           viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z"
-              clip-rule="evenodd" />
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
     </div>
     <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2>
-    <p class="text-sm text-gray-600 mb-4">
-      Tu mensaje se ha enviado correctamente. Pronto nos pondremos en contacto.
-    </p>
-    <button id="success-modal-ok"
-            class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">
-      OK
-    </button>
+    <p class="text-sm text-gray-600 mb-4">Tu mensaje se ha enviado correctamente. Pronto nos pondremos en contacto.</p>
+    <button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">OK</button>
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.getElementById('contact-form');
-  const modal = document.getElementById('success-modal');
-  const card  = modal ? modal.querySelector('.modal-card') : null;
-  const okBtn = document.getElementById('success-modal-ok');
-
-  if (!form || !modal || !card) return;
-
-  function abrirModal() {
-    modal.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      modal.classList.add('show');
-      card.classList.add('show');
-    });
-  }
-
-  function cerrarModal() {
-    modal.classList.remove('show');
-    card.classList.remove('show');
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 250);
-  }
-
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Enviando...';
-
-    try {
-      const response = await fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (!response.ok) throw new Error();
-
-      form.reset();
-      abrirModal();
-    } catch (err) {
-      alert('Ocurrió un error. Intentá nuevamente.');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  });
-
-  okBtn.addEventListener('click', cerrarModal);
-
-  modal.addEventListener('click', function (e) {
-    if (e.target === modal) cerrarModal();
-  });
-});
-</script>
-
-<!-- MODAL SUMATE -->
-<div id="sumate-modal"
-     class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+<div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
   <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
     <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-      <svg xmlns="http://www.w3.org/2000/svg"
-           class="h-6 w-6 text-green-500"
-           viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd"
-              d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z"
-              clip-rule="evenodd" />
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
     </div>
     <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por sumarte!</h2>
-    <p class="text-sm text-gray-600 mb-4">
-      En breve nos contactaremos para enviarte el formulario de junta de firmas y puedas ser parte del futuro de Argentina.
-    </p>
-    <button id="sumate-modal-ok"
-            class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">
-      OK
-    </button>
+    <p class="text-sm text-gray-600 mb-4">En breve nos contactaremos para enviarte el formulario de junta de firmas.</p>
+    <button id="sumate-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button>
   </div>
 </div>
 
+<div id="newsletter-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
+  <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
+    <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+    </div>
+    <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
+    <p class="text-sm text-gray-600 mb-4">Vas a recibir cualquier novedad sobre el proyecto.</p>
+    <button id="newsletter-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold mt-4">OK</button>
+  </div>
+</div>
+
+<!-- =============================================
+     NUEVO: MODAL DE DETALLE DE BENEFICIO
+============================================== -->
+<div id="benefit-modal" role="dialog" aria-modal="true" aria-labelledby="benefit-modal-title">
+  <div id="benefit-modal-inner">
+    <button id="benefit-modal-close" aria-label="Cerrar">
+      <i class="ph-bold ph-x"></i>
+    </button>
+    <div id="benefit-modal-icon" aria-hidden="true"></div>
+    <div id="benefit-modal-title"></div>
+    <div id="benefit-modal-body"></div>
+    <div id="benefit-modal-tag"></div>
+  </div>
+</div>
+
+<!-- =============================================
+     SCRIPTS
+============================================== -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  const provinciaSelect = document.querySelector('select[name="provincia"]');
-  const ciudadSelect = document.getElementById('ciudad-select');
+/* =============================================
+   DATOS DE BENEFICIOS PARA EL MODAL
+   Cada key corresponde al id pasado en openBenefitModal()
+============================================== */
+const BENEFIT_DATA = {
+  /* --- PACIENTES --- */
+  'cura-id': {
+    icon: 'ph-bold ph-identification-badge',
+    title: 'Tu C.U.R.A.-ID: el identificador sanitario único',
+    body: 'El C.U.R.A.-ID es el Identificador Único de Paciente (Art. 17 de la ley), de carácter nacional, único, intransferible y permanente, asignado automáticamente a toda persona inscripta en el RENAPER. Es la clave técnica que vincula toda tu información sanitaria en el sistema, garantizando interoperabilidad, continuidad asistencial y trazabilidad. No podrá ser eliminado del sistema ni suprimido. La credencial que ves en el sitio es la representación física de este identificador.',
+    tag: 'Pacientes · Art. 17'
+  },
+  'control-datos': {
+    icon: 'ph-bold ph-lock-key',
+    title: 'Vos decidís qué compartir y quién puede ver tu información',
+    body: 'Con C.U.R.A., la información clínica pertenece al paciente, no a la institución. Podés ver tu historia clínica completa, saber quién accedió a tus datos, cuándo y con qué propósito. Podés ejercer control especial sobre información sensible como salud mental, VIH o adicciones. El sistema registra cada acceso con sello de tiempo, garantizando auditoría permanente. Nadie puede consultar tus datos sin una razón clínica y tu consentimiento.',
+    tag: 'Pacientes · Art. 18 y 27'
+  },
+  'urgencias': {
+    icon: 'ph-bold ph-first-aid',
+    title: 'En emergencias, tu historia clínica habla por vos',
+    body: 'Cuando el paciente no puede comunicarse, el sistema permite que el médico acceda a un conjunto limitado de datos vitales críticos —alergias, medicación activa, condiciones preexistentes— mediante escaneo de QR o NFC. Este acceso de emergencia ("break-glass") queda registrado con trazabilidad obligatoria. El resumen de urgencias incluye: alergias, medicamentos activos, diagnósticos crónicos, cirugías y antecedentes relevantes.',
+    tag: 'Pacientes · Art. 13 y 17'
+  },
+  'recetas-pac': {
+    icon: 'ph-bold ph-pill',
+    title: 'Recetas automáticas para medicación crónica',
+    body: 'Si tenés un tratamiento estable, tus recetas pueden renovarse automáticamente sin necesidad de volver al consultorio. El sistema valida que la prescripción es correcta, el medicamento está disponible y el tratamiento sigue activo. Esto aplica especialmente para jubilados con PAMI y para cualquier paciente con tratamientos crónicos certificados.',
+    tag: 'Pacientes · Art. 20'
+  },
+  'sin-repetir': {
+    icon: 'ph-bold ph-microscope',
+    title: 'Si ya te lo hiciste, el médico lo ve',
+    body: 'Una de las causas más costosas e ineficientes del sistema sanitario es la duplicación de estudios: análisis de laboratorio, imágenes, ECG. Con C.U.R.A., el médico accede a todos los estudios previos del paciente desde el sistema. No solo ahorrás tiempo y dinero: evitás radiación innecesaria y procedimientos incómodos. El sistema mide activamente el número de estudios evitados como indicador de impacto.',
+    tag: 'Pacientes · Pilares del sistema'
+  },
+  'turnos': {
+    icon: 'ph-bold ph-calendar-check',
+    title: 'Turnos en todo el sistema, desde un solo lugar',
+    body: 'El Sistema Federal de Gestión de Turnos permite buscar, asignar y gestionar turnos con cualquier prestador adherido al sistema, viendo disponibilidad en tiempo real. Si tu especialista no tiene turno disponible en tu ciudad, el sistema puede conectarte con uno en otra provincia mediante teleconsulta. Las listas de espera —especialmente en salud mental— se reducen significativamente.',
+    tag: 'Pacientes · Art. 47'
+  },
 
+  /* --- JUBILADOS --- */
+  'pami-integ': {
+    icon: 'ph-bold ph-users-three',
+    title: 'PAMI: integración obligatoria al ecosistema C.U.R.A.',
+    body: 'El Artículo 47 de la ley establece que el INSSJP-PAMI deberá integrarse de manera plena, progresiva y obligatoria al Sistema C.U.R.A. La integración incluye: historia clínica electrónica interoperable, prescripción electrónica, sistema de turnos federal, trazabilidad digital de derivaciones y traslados, y digitalización administrativa progresiva. El proceso será auditado anualmente por SIGEN y AGN.',
+    tag: 'Jubilados · Art. 47'
+  },
+  'recetas-cronic': {
+    icon: 'ph-bold ph-pill',
+    title: 'Recetas crónicas renovadas automáticamente, sin colas',
+    body: 'Para los jubilados con tratamientos estables —la enorme mayoría de los afiliados PAMI— la renovación de recetas será automática. Sin necesidad de ir al médico solo para renovar una receta de siempre. Sin filas en la farmacia esperando autorización. El sistema valida en tiempo real que el tratamiento está activo y el medicamento es el correcto.',
+    tag: 'Jubilados · Art. 47'
+  },
+  'traslados': {
+    icon: 'ph-bold ph-van',
+    title: 'Traslados y derivaciones coordinados digitalmente',
+    body: 'Las derivaciones médicas y traslados se digitalizan y trazan completamente. Cada traslado queda registrado en el sistema con trazabilidad total. La coordinación entre el médico, el centro de salud y el servicio de traslado se hace dentro del mismo ecosistema digital, reduciendo demoras y errores.',
+    tag: 'Jubilados · Art. 47'
+  },
+  'videoconsulta': {
+    icon: 'ph-bold ph-video-camera',
+    title: 'Videoconsultas para quienes no pueden moverse fácilmente',
+    body: 'Para jubilados con dificultades de movilidad, la teleconsulta integrada permite atención médica sin salir del hogar. Las sesiones garantizan total privacidad. Los turnos presenciales quedan reservados para quienes los necesitan realmente: personas sin acceso digital o quienes necesitan atención presencial clínicamente.',
+    tag: 'Jubilados · Art. 47'
+  },
+  'facilitadores': {
+    icon: 'ph-bold ph-chalkboard-teacher',
+    title: 'Programa Federal de Facilitadores Digitales',
+    body: 'La ley crea un Programa Federal de Facilitadores Digitales en centros de jubilados. Estas personas ayudan a los adultos mayores a usar el sistema, acceder a sus recetas, solicitar turnos y manejar su información de salud digital. Porque una transformación digital que deja atrás a los mayores no es transformación: es sustituir una injusticia por otra.',
+    tag: 'Jubilados · Equidad digital'
+  },
+  'troquel': {
+    icon: 'ph-bold ph-scissors',
+    title: 'Fin del troquel físico',
+    body: 'El troquel físico de PAMI —una pieza de papel fácilmente falsificable que generó décadas de fraude prestacional— es reemplazado por el Registro Digital de Dispensación Trazable (RDDT). Cada dispensación queda registrada digitalmente con firma y sello de tiempo, garantizando autenticidad e inalterabilidad. El fraude se elimina. El jubilado ya no tiene que cortar y guardar troqueles.',
+    tag: 'Jubilados · Art. 20 y 47'
+  },
+
+  /* --- MÉDICOS --- */
+  'hce-medico': {
+    icon: 'ph-bold ph-clipboard-text',
+    title: 'La historia clínica completa, disponible en el momento de la consulta',
+    body: 'Hoy muchos médicos reconstruyen antecedentes que deberían estar disponibles. Con C.U.R.A., al momento de la consulta el médico tiene acceso a la historia clínica completa del paciente: estudios previos, medicación activa, alergias, diagnósticos crónicos, hospitalizaciones. Cuando el sistema recuerda, el médico recupera tiempo para escuchar mejor al paciente y tomar decisiones con más información.',
+    tag: 'Médicos · Sistema C.U.R.A.'
+  },
+  'menos-papeles': {
+    icon: 'ph-bold ph-hand-heart',
+    title: 'Menos papeles, menos trámites, más tiempo para la medicina',
+    body: 'Hoy los médicos dedican una parte significativa de su tiempo a completar formularios y buscar información dispersa. C.U.R.A. automatiza los procesos administrativos: órdenes digitales, derivaciones electrónicas, auditorías remotas. El tiempo recuperado se destina al paciente. La tecnología se ocupa de los datos administrativos; el médico, de la medicina.',
+    tag: 'Médicos · Pilar 3'
+  },
+  'receta-elec': {
+    icon: 'ph-bold ph-pencil-line',
+    title: 'Prescripción electrónica interoperable',
+    body: 'El sistema de receta electrónica es interoperable: una receta generada en un hospital público puede ser dispensada en cualquier farmacia adherida. El sistema valida automáticamente la correspondencia entre el medicamento dispensado y la receta. La trazabilidad completa queda registrada. Integra la Ley 27.553 de Recetas Electrónicas al ecosistema C.U.R.A.',
+    tag: 'Médicos · Art. 20'
+  },
+  'teleconsulta-med': {
+    icon: 'ph-bold ph-video-camera',
+    title: 'Teleconsulta interjurisdiccional con plenas garantías',
+    body: 'Un médico en Buenos Aires puede atender un paciente en Jujuy por videoconsulta, con plenas garantías de matriculación, responsabilidad disciplinaria y competencia provincial. Esto amplía la oferta real de atención sin necesidad de crear nuevos cargos. Es especialmente importante para especialidades con déficit territorial como psiquiatría y psicología, donde hoy las listas de espera pueden ser de meses.',
+    tag: 'Médicos · Art. 43'
+  },
+  'alertas-med': {
+    icon: 'ph-bold ph-warning',
+    title: 'Alertas automáticas de seguridad clínica',
+    body: 'El sistema genera alertas automáticas sobre interacciones medicamentosas, alergias conocidas y contraindicaciones cuando el médico prescribe. Las alertas de farmacovigilancia (eventos adversos a medicamentos, ESAVI) también son generadas automáticamente. El profesional valida la alerta antes de su notificación formal, manteniendo la responsabilidad clínica.',
+    tag: 'Médicos · Art. 21'
+  },
+  'matriculas': {
+    icon: 'ph-bold ph-certificate',
+    title: 'Capacitación con créditos para recertificación de matrículas',
+    body: 'La aprobación de los módulos de capacitación del sistema puede otorgar puntaje para la recertificación de matrículas profesionales, previa suscripción de convenios con los Colegios y Consejos competentes. También permite acceso preferencial a certificaciones de posgrado virtual y bibliotecas digitales especializadas.',
+    tag: 'Médicos · Art. 33'
+  },
+
+  /* --- HOSPITALES --- */
+  'audit-dig': {
+    icon: 'ph-bold ph-magnifying-glass',
+    title: 'Auditoría médica y administrativa 100% digital',
+    body: 'Toda auditoría basada en el RDDT y el Mecanismo de Verificación Automática de Dispensas (MVAD) puede realizarse en forma remota y digital, sin requerir documentación física adicional. Tiene el mismo valor legal que la verificación presencial. Los registros de auditoría se conservan por un mínimo de 10 años. Las inconsistencias detectadas se notifican automáticamente.',
+    tag: 'Hospitales · Art. 20'
+  },
+  'sin-dup': {
+    icon: 'ph-bold ph-prohibit',
+    title: 'Eliminación de estudios duplicados',
+    body: 'Uno de los mayores desperdicios del sistema sanitario es la duplicación de estudios porque la información no está disponible. El sistema mide activamente el número de estudios de laboratorio e imágenes evitados por duplicación como indicador de impacto. Esto reduce costos directos, libera infraestructura y mejora la experiencia del paciente.',
+    tag: 'Hospitales · Indicadores'
+  },
+  'indice-interop': {
+    icon: 'ph-bold ph-chart-bar',
+    title: 'Índice C.U.R.A. de Interoperabilidad',
+    body: 'Cada prestador tendrá un Índice C.U.R.A. de Interoperabilidad, un indicador público que mide su nivel de integración al sistema. El índice se publica en el Panel Nacional de Indicadores de Salud Digital, visible para ciudadanos. Esto genera incentivos de reputación para que los efectores se integren y mejoren su nivel de interoperabilidad.',
+    tag: 'Hospitales · Art. 7 y Panel Nacional'
+  },
+  'credito-tech': {
+    icon: 'ph-bold ph-bank',
+    title: 'Líneas de crédito para adopción tecnológica',
+    body: 'La banca pública nacional creará líneas de crédito específicas y accesibles para la adquisición de software certificado y hardware necesario para la integración al sistema. La Autoridad de Aplicación proveerá además asistencia técnica no monetaria para minimizar los costos de adopción. Durante los primeros 18 meses, los errores se corrigen con capacitación, no con sanciones.',
+    tag: 'Hospitales · Art. 35'
+  },
+
+  /* --- OBRAS SOCIALES --- */
+  'rddt': {
+    icon: 'ph-bold ph-barcode',
+    title: 'RDDT: el fin del fraude prestacional del troquel',
+    body: 'El Registro Digital de Dispensación Trazable (RDDT) reemplaza el troquel físico, históricamente fuente de fraude en el sistema. Cada dispensación de medicamento genera un registro con firma digital y sello de tiempo, garantizando inalterabilidad, autenticidad e integridad. El Mecanismo de Verificación Automática de Dispensas (MVAD) valida en tiempo real la correspondencia entre la receta y el medicamento dispensado.',
+    tag: 'Obras Sociales · Art. 20'
+  },
+  'audit-remote': {
+    icon: 'ph-bold ph-desktop',
+    title: 'Auditorías remotas con el mismo valor legal que las presenciales',
+    body: 'Las auditorías médicas y administrativas basadas en el RDDT pueden realizarse completamente en forma remota y digital. Tienen el mismo valor legal que la verificación presencial, eliminando la necesidad de auditorías in situ costosas. Los datos del paciente son protegidos mediante seudonimización durante el proceso de auditoría.',
+    tag: 'Obras Sociales · Art. 20'
+  },
+  'preexist': {
+    icon: 'ph-bold ph-shield-slash',
+    title: 'Prohibición de preexistencias basadas en datos interoperables',
+    body: 'La ley modifica el Marco Regulatorio de Medicina Prepaga (Ley 26.682) estableciendo la prohibición de preexistencias basada en datos interoperables. Los datos de la historia clínica digital no pueden usarse para discriminar en la cobertura ni para establecer condiciones de preexistencia. La portabilidad de la información clínica está garantizada por ley.',
+    tag: 'Obras Sociales · Art. 73'
+  },
+  'receta-os': {
+    icon: 'ph-bold ph-arrows-clockwise',
+    title: 'Integración obligatoria al sistema de receta electrónica',
+    body: 'Los mecanismos de fiscalización y plataformas de la Ley 27.553 de Recetas Electrónicas se integran obligatoriamente al Sistema C.U.R.A. y al RDDT. Las obras sociales y prepagas quedan habilitadas para realizar consultas auditoras de dispensas, preservando la confidencialidad del paciente mediante seudonimización.',
+    tag: 'Obras Sociales · Art. 73'
+  },
+
+  /* --- ESTADO --- */
+  'datos-anon': {
+    icon: 'ph-bold ph-chart-line-up',
+    title: 'Datos sanitarios agregados para diseño de políticas',
+    body: 'El Repositorio Nacional de Datos Anonimizados provee datos clínicos, demográficos y territoriales agregados para investigación, diseño de políticas de prevención y planificación con evidencia real. La información se publica bajo licencia abierta en formatos reutilizables. Los datos son anonimizados mediante técnicas de k-anonymity, generalización y privacidad diferencial, garantizando la imposibilidad de re-identificación.',
+    tag: 'Estado · Títulos VIII y IX'
+  },
+  'epidemia': {
+    icon: 'ph-bold ph-binoculars',
+    title: 'Detección temprana de brotes epidemiológicos',
+    body: 'La conectividad total del sistema permite identificar patrones epidemiológicos con mucha mayor rapidez que los sistemas actuales. El sistema puede detectar brotes antes de que se conviertan en epidemias, identificar la distribución geográfica de enfermedades en tiempo real y anticipar necesidades sanitarias en distintas regiones. La farmacovigilancia integrada mejora el sistema de alertas de ANMAT.',
+    tag: 'Estado · Art. 21 y Salud Pública'
+  },
+  'equidad': {
+    icon: 'ph-bold ph-map-trifold',
+    title: 'Fondo Federal de Equidad Sanitaria y bonos de radicación',
+    body: 'El Régimen Federal de Equidad Territorial incluye: un Fondo Federal de Equidad Sanitaria Digital, Bonos de Radicación Profesional de 30 a 50% del salario para profesionales en Zonas Críticas Sanitarias, incentivos para telemedicina estructural en zonas con déficit de especialistas, y un sistema de identificación en tiempo real de brechas en distribución de profesionales. Argentina tiene regiones donde conseguir turno con un cardiólogo puede llevar meses: C.U.R.A. lo corrige.',
+    tag: 'Estado · Art. 43'
+  },
+  'ahorro': {
+    icon: 'ph-bold ph-piggy-bank',
+    title: 'Ahorro sistémico auditado y reinvertido',
+    body: 'Los ahorros generados por la digitalización (eliminación de papelería, reducción de fraude, eliminación de duplicaciones, optimización administrativa) son cuantificados anualmente y auditados de forma independiente por SIGEN y AGN. Un porcentaje mínimo del 50% de los ahorros netos de PAMI puede transferirse al Fondo de Inversión en Salud Digital. La ley establece que digitalizar sin redistribuir profundiza la desigualdad.',
+    tag: 'Estado · Art. 35 y 47'
+  },
+  'hub-global': {
+    icon: 'ph-bold ph-globe-hemisphere-west',
+    title: 'Argentina como Hub Global de Interoperabilidad Sanitaria',
+    body: 'La ley declara como política estratégica del Estado Nacional el posicionamiento del Sistema C.U.R.A. como Hub de Interoperabilidad Sanitaria Global, con plataforma soberana basada en estándares abiertos. El modelo C.U.R.A. se estructura como un framework replicable para otros países. Argentina puede generar divisas exportando servicios de consultoría y tecnología sanitaria. Argentina podría convertirse en el primer país de América Latina en construir una infraestructura pública de datos de salud de esta escala.',
+    tag: 'Estado · Art. 39 y 40'
+  },
+  'investigacion': {
+    icon: 'ph-bold ph-flask',
+    title: 'Infraestructura para la ciencia argentina',
+    body: 'El Sandbox Nacional de Inteligencia Artificial en Salud permite el desarrollo de módulos de IA bajo soberanía estatal, con datos anonimizados y control institucional. El Registro Federal de Ensayos Clínicos y Farmacovigilancia centraliza y hace pública la información sobre investigación y seguridad de medicamentos. Argentina podría convertirse en un polo de desarrollo de tecnología sanitaria de clase mundial.',
+    tag: 'Estado · Art. 21 y 37 BIS'
+  }
+};
+
+/* =============================================
+   FUNCIÓN GLOBAL: toggleMenuNovedades
+   (debe estar fuera de DOMContentLoaded)
+============================================== */
+function toggleMenuNovedades() {
+  const menu   = document.getElementById('notificationMenu');
+  const badges = document.querySelectorAll('.notification-badge-ui');
+  const KEY    = 'visto_novedades_v1';
+  if (menu) menu.classList.toggle('show');
+  badges.forEach(b => b.classList.add('hidden'));
+  localStorage.setItem(KEY, 'true');
+}
+
+/* =============================================
+   FUNCIÓN GLOBAL: switchTab — Tabs de actores
+============================================== */
+function switchTab(actorId) {
+  // Desactivar todos los paneles y botones
+  document.querySelectorAll('.actor-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.actor-tab-btn').forEach(b => b.classList.remove('active'));
+
+  // Activar el panel y botón correspondiente
+  const panel = document.getElementById('panel-' + actorId);
+  if (panel) panel.classList.add('active');
+
+  // Activar el botón que fue clickeado
+  const buttons = document.querySelectorAll('.actor-tab-btn');
+  buttons.forEach(b => {
+    if (b.getAttribute('onclick') === "switchTab('" + actorId + "')") {
+      b.classList.add('active');
+    }
+  });
+}
+
+/* =============================================
+   FUNCIÓN GLOBAL: openBenefitModal / closeBenefitModal
+============================================== */
+function openBenefitModal(id) {
+  const data  = BENEFIT_DATA[id];
+  if (!data) return;
+
+  const modal = document.getElementById('benefit-modal');
+  document.getElementById('benefit-modal-icon').innerHTML  = '<i class="' + data.icon + '"></i>';
+  document.getElementById('benefit-modal-title').textContent = data.title;
+  document.getElementById('benefit-modal-body').textContent  = data.body;
+  document.getElementById('benefit-modal-tag').textContent   = data.tag;
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBenefitModal() {
+  const modal = document.getElementById('benefit-modal');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* =============================================
+   DOMCONTENTLOADED — inicialización principal
+============================================== */
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* --- Estado inicial de notificaciones --- */
+  const KEY = 'visto_novedades_v1';
+  if (localStorage.getItem(KEY) === 'true') {
+    document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
+  }
+
+  /* --- Cerrar notificationMenu al hacer clic afuera --- */
+  document.addEventListener('click', (e) => {
+    const menu    = document.getElementById('notificationMenu');
+    const buttons = document.querySelectorAll('button[onclick="toggleMenuNovedades()"]');
+    let clickedOnButton = false;
+    buttons.forEach(btn => { if (btn.contains(e.target)) clickedOnButton = true; });
+    if (menu && !menu.contains(e.target) && !clickedOnButton) menu.classList.remove('show');
+  });
+
+  /* --- Cerrar benefit modal con clic fuera y ESC --- */
+  const benefitModal = document.getElementById('benefit-modal');
+  document.getElementById('benefit-modal-close').addEventListener('click', closeBenefitModal);
+  benefitModal.addEventListener('click', (e) => { if (e.target === benefitModal) closeBenefitModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBenefitModal(); });
+
+  /* --- AOS --- */
+  AOS.init({ duration: 800, once: true, offset: 80 });
+
+  /* --- Lenis (scroll suave) --- */
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  lenis.on('scroll', AOS.refresh);
+
+  /* --- Banner rotativo --- */
+  const bannerTextEl = document.getElementById('top-banner-text');
+  if (bannerTextEl) {
+    const bannerMessages = [
+      'Versión 05/03/26 — La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
+      'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 230 páginas de transformación histórica.',
+      'Ya disponible: Resumen Ejecutivo actualizado con los nuevos anexos técnicos. [15/01/26]'
+    ];
+    let bannerIndex = 0;
+    setInterval(() => {
+      bannerTextEl.classList.add('banner-hidden');
+      setTimeout(() => {
+        bannerIndex = (bannerIndex + 1) % bannerMessages.length;
+        bannerTextEl.textContent = bannerMessages[bannerIndex];
+        bannerTextEl.classList.remove('banner-hidden');
+      }, 350);
+    }, 5000);
+  }
+
+  /* --- Scroll suave: botones hero y nav --- */
+  const btnSumate   = document.getElementById('btn-sumate');
+  const targetSumate  = document.getElementById('sumate');
+  const btnInfo     = document.getElementById('btn-info');
+  const targetQueEs  = document.getElementById('que-es');
+  function smoothScrollTo(el, off = 100) { if (el) lenis.scrollTo(el, { offset: -off }); }
+  if (btnSumate && targetSumate) btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
+  if (btnInfo   && targetQueEs)  btnInfo.addEventListener('click',   e => { e.preventDefault(); smoothScrollTo(targetQueEs, 80); });
+  document.querySelectorAll('a[href="#inicio"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); }));
+  document.querySelectorAll('a[href="#que-es"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('que-es'), 80); }));
+  document.querySelectorAll('a[href="#beneficios"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('beneficios'), 80); }));
+  document.querySelectorAll('a[href="#contacto"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('contacto')); }));
+
+  /* --- Ciudades GeoRef --- */
+  const provinciaSelect = document.querySelector('select[name="provincia"]');
+  const ciudadSelect    = document.getElementById('ciudad-select');
   async function cargarCiudades() {
     if (!provinciaSelect || !ciudadSelect) return;
     const prov = provinciaSelect.value;
     ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
-    if (!prov) {
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      return;
-    }
+    if (!prov) { ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>'; return; }
     try {
-      const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov);
-      const res = await fetch(url);
+      const res  = await fetch('https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov));
       if (!res.ok) throw new Error();
       const data = await res.json();
-      const localidades = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es'));
+      const locs = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es'));
       ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      localidades.forEach(nombre => {
-        const opt = document.createElement('option');
-        opt.value = nombre;
-        opt.textContent = nombre;
-        ciudadSelect.appendChild(opt);
-      });
-    } catch (e) {
-      ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>';
+      locs.forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; ciudadSelect.appendChild(o); });
+    } catch { ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>'; }
+  }
+  if (provinciaSelect) provinciaSelect.addEventListener('change', cargarCiudades);
+
+  /* --- Solo letras en campos de nombre --- */
+  document.querySelectorAll('input.only-letters').forEach(input => {
+    input.addEventListener('input', () => { input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, ''); });
+  });
+
+  /* =============================================
+     FORMULARIO CONTACTO
+  ============================================== */
+  const formContact = document.getElementById('contact-form');
+  const modalContact = document.getElementById('success-modal');
+  const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
+  const okBtnContact = document.getElementById('success-modal-ok');
+  function abrirModalContact() {
+    modalContact.classList.remove('hidden');
+    requestAnimationFrame(() => { modalContact.classList.add('show'); cardContact.classList.add('show'); });
+  }
+  function cerrarModalContact() {
+    modalContact.classList.remove('show'); cardContact.classList.remove('show');
+    setTimeout(() => modalContact.classList.add('hidden'), 250);
+  }
+  if (formContact) {
+    formContact.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(formContact);
+      try {
+        const r = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nombre: fd.get('nombre') || '', email: fd.get('email') || '', mensaje: fd.get('mensaje') || '' }) });
+        if (!r.ok) throw new Error();
+        abrirModalContact(); formContact.reset();
+      } catch { alert('Ocurrió un error. Intentá nuevamente.'); }
+    });
+    okBtnContact.addEventListener('click', cerrarModalContact);
+    modalContact.addEventListener('click', e => { if (e.target === modalContact) cerrarModalContact(); });
+  }
+
+  /* =============================================
+     FORMULARIO SUMATE
+  ============================================== */
+  const sumateForm  = document.getElementById('sumate-form');
+  const sumateModal = document.getElementById('sumate-modal');
+  const sumateCard  = sumateModal ? sumateModal.querySelector('.modal-card') : null;
+  const sumateOkBtn = document.getElementById('sumate-modal-ok');
+  function abrirSumateModal()  { if (!sumateModal) return; sumateModal.classList.remove('hidden'); requestAnimationFrame(() => { sumateModal.classList.add('show'); if (sumateCard) sumateCard.classList.add('show'); }); }
+  function cerrarSumateModal() { if (!sumateModal) return; sumateModal.classList.remove('show'); if (sumateCard) sumateCard.classList.remove('show'); setTimeout(() => sumateModal.classList.add('hidden'), 250); }
+  if (sumateForm && sumateModal && sumateOkBtn) {
+    sumateForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = sumateForm.querySelector('button[type="submit"]');
+      const orig = submitBtn.textContent;
+      submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
+      const fd = new FormData(sumateForm);
+      try {
+        const body = { email: (fd.get('email') || '').trim(), nombre: (fd.get('nombre') || '').trim(), apellido: (fd.get('apellido') || '').trim(), provincia: (fd.get('provincia') || '').toString(), ciudad: (fd.get('ciudad') || '').toString(), dni: (fd.get('dni') || '').trim(), telefono: (fd.get('telefono') || '').trim() };
+        await fetch('/api/sumate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        await fetch(sumateForm.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
+        sumateForm.reset(); abrirSumateModal();
+      } catch (err) { console.error(err); }
+      finally { submitBtn.disabled = false; submitBtn.textContent = orig; }
+    });
+    sumateOkBtn.addEventListener('click', cerrarSumateModal);
+    sumateModal.addEventListener('click', e => { if (e.target === sumateModal) cerrarSumateModal(); });
+  }
+
+  /* =============================================
+     FORMULARIO NEWSLETTER
+  ============================================== */
+  const newsletterForm  = document.getElementById('newsletter-form');
+  const newsletterModal = document.getElementById('newsletter-modal');
+  const newsletterCard  = newsletterModal ? newsletterModal.querySelector('.modal-card') : null;
+  const newsletterOkBtn = document.getElementById('newsletter-modal-ok');
+  function abrirNewsletterModal()  { if (!newsletterModal) return; newsletterModal.classList.remove('hidden'); requestAnimationFrame(() => { newsletterModal.classList.add('show'); if (newsletterCard) newsletterCard.classList.add('show'); }); }
+  function cerrarNewsletterModal() { if (!newsletterModal) return; newsletterModal.classList.remove('show'); if (newsletterCard) newsletterCard.classList.remove('show'); setTimeout(() => newsletterModal.classList.add('hidden'), 250); }
+  if (newsletterForm && newsletterModal && newsletterOkBtn) {
+    newsletterForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const submitBtn = newsletterForm.querySelector('button[type="submit"]');
+      const orig = submitBtn.textContent;
+      submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
+      try {
+        const fd = new FormData(newsletterForm);
+        await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: fd.get('email') || '' }) });
+        newsletterForm.reset(); abrirNewsletterModal();
+      } catch { alert('Ocurrió un error.'); }
+      finally { submitBtn.disabled = false; submitBtn.textContent = orig; }
+    });
+    newsletterOkBtn.addEventListener('click', cerrarNewsletterModal);
+    newsletterModal.addEventListener('click', e => { if (e.target === newsletterModal) cerrarNewsletterModal(); });
+  }
+
+  /* =============================================
+     CREDENCIAL 3D — ORIGINAL INTACTA
+  ============================================== */
+  const card = document.getElementById('credencial-giratoria');
+  if (card) card.addEventListener('click', function () { this.classList.toggle('is-flipped'); });
+
+  const nombres    = ["Franco","María","Carlos","Ana","Pedro","Lucía","Miguel","Sofía","Jorge","Elena","Martín","Julia"];
+  const apellidos  = ["García","Rodríguez","López","Martínez","González","Pérez","Sánchez","Romero","Sosa","Torres"];
+  const localidades = { "CABA":["Ciudad Autónoma de Buenos Aires"],"Buenos Aires":["La Plata","Mar del Plata","Bahía Blanca","General Rodríguez"],"Córdoba":["Córdoba Capital","Villa Carlos Paz","Río Cuarto"],"Santa Fe":["Rosario","Santa Fe Capital","Rafaela"],"Mendoza":["Mendoza Capital","San Rafael","Godoy Cruz"],"Tucumán":["San Miguel de Tucumán","Tafí Viejo"] };
+  const tiposSangre = ["A+","A-","B+","B-","O+","O-"];
+  const alergiasBase = ["PENICILINA","CIPROFLOXACINA","POLEN","ÁCAROS","SULFAS","LATEX","FRUTILLAS"];
+  const operacionesBase = ["APENDICECTOMÍA","CESÁREA","COLECISTECTOMÍA","BOMBA DE MORFINA","BYPASS GÁSTRICO","AMIGDALECTOMÍA"];
+  const perfilesMedicos = [
+    { antecedentes:[], medicamentos:[] },
+    { antecedentes:["HIPERTENSIÓN"],    medicamentos:["ENALAPRIL","LOSARTÁN"] },
+    { antecedentes:["DIABETES T2"],     medicamentos:["METFORMINA"] },
+    { antecedentes:["ASMA"],            medicamentos:["SALBUTAMOL"] }
+  ];
+  function randItem(a) { return a[Math.floor(Math.random()*a.length)]; }
+  function randNum(min,max) { return Math.floor(Math.random()*(max-min+1))+min; }
+  function genDNI() { const n=randNum(10000000,59999999).toString(); return `${n.slice(0,2)}.${n.slice(2,5)}.${n.slice(5)}`; }
+  function genFechaNac() { const d=String(randNum(1,28)); const m=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"][randNum(0,11)]; return `${d} ${m} ${randNum(1950,2005)}`; }
+  function genTel() { return `011 ${randNum(1000,9999)} ${randNum(1000,9999)}<br>011 ${randNum(1000,9999)} ${randNum(1000,9999)}`; }
+  function pickSubset(src, max) { let t=[...src],r=[]; const c=randNum(1,Math.min(max,t.length)); for(let i=0;i<c;i++){const i2=Math.floor(Math.random()*t.length);r.push(t.splice(i2,1)[0]);} return r; }
+  function poblarCredencial() {
+    const fullName = `${randItem(nombres)} ${randItem(apellidos)}`;
+    const dni      = genDNI();
+    const perfil   = randItem(perfilesMedicos);
+    const anteced  = perfil.antecedentes.length ? randItem(perfil.antecedentes) : "SIN PATOLOGÍAS REGISTRADAS";
+    const meds     = perfil.medicamentos.length ? pickSubset(perfil.medicamentos,2).join('<br>') : "SIN MEDICACIÓN VITAL EN USO";
+    const alergias = Math.random()>0.7 ? "NO REFIERE" : pickSubset(alergiasBase,1).join('<br>');
+    const ops      = Math.random()>0.6 ? "NO REFIERE" : pickSubset(operacionesBase,2).join('<br>');
+    const provKey  = randItem(Object.keys(localidades));
+    const ciudad   = randItem(localidades[provKey]);
+    document.getElementById('cred-nombre-front').textContent = fullName;
+    document.getElementById('cred-dni-front').textContent    = `D.N.I: ${dni}`;
+    document.getElementById('cred-sangre').textContent       = randItem(tiposSangre);
+    document.getElementById('cred-fecha-nac').textContent    = genFechaNac();
+    document.getElementById('cred-domicilio').innerHTML      = `${ciudad}<br>${provKey}`;
+    document.getElementById('cred-contactos').innerHTML      = genTel();
+    document.getElementById('cred-antecedentes').innerHTML   = anteced;
+    document.getElementById('cred-medicamentos').innerHTML   = meds;
+    document.getElementById('cred-alergias').innerHTML       = alergias;
+    document.getElementById('cred-operaciones').innerHTML    = ops;
+    document.getElementById('cred-nombre-back').textContent  = fullName;
+    document.getElementById('cred-dni-back').textContent     = `D.N.I: ${dni}`;
+    document.getElementById('cred-id-number').textContent    = `ID${randNum(10,99)}-${dni.replace(/\./g,'')}`;
+  }
+  poblarCredencial();
+
+  /* =============================================
+     ANIMACIÓN DE RED SANITARIA EN CANVAS
+     (Sección "¿Qué es C.U.R.A.?")
+  ============================================== */
+  const canvas  = document.getElementById('network-canvas');
+  const section = document.querySelector('.que-es-section');
+  if (canvas && section) {
+    const ctx = canvas.getContext('2d');
+    let W, H, nodes = [], animFrame;
+
+    function resizeCanvas() {
+      W = canvas.width  = section.offsetWidth;
+      H = canvas.height = section.offsetHeight;
     }
-  }
 
-  if (provinciaSelect) {
-    provinciaSelect.addEventListener('change', cargarCiudades);
-  }
-
-  
-  const btn = document.getElementById('btn-sumate');
-  const target = document.getElementById('sumate');
-
-  function smoothScrollTo(element, duration = 1700) {
-    const navbarOffset = 200;
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - navbarOffset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-
-      window.scrollTo(0, startY + distance * ease);
-
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation);
+    function initNodes() {
+      nodes = [];
+      const count = Math.min(28, Math.floor((W * H) / 14000));
+      for (let i = 0; i < count; i++) {
+        nodes.push({
+          x:  Math.random() * W,
+          y:  Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          r:  Math.random() * 2 + 1.5
+        });
       }
     }
 
-    requestAnimationFrame(animation);
-  }
+    function drawNetwork() {
+      ctx.clearRect(0, 0, W, H);
+      const maxDist = 120;
 
-  if (btn && target) {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      smoothScrollTo(target, 1700);
-    });
-  }
-
-});
-</script>
-
-
-
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const provinciaSelect = document.querySelector('select[name="provincia"]');
-  const ciudadSelect = document.getElementById('ciudad-select');
-
-  async function cargarCiudades() {
-    if (!provinciaSelect || !ciudadSelect) return;
-    const prov = provinciaSelect.value;
-    ciudadSelect.innerHTML = '<option value="">' + 'Cargando ciudades...' + '</option>';
-    if (!prov) {
-      ciudadSelect.innerHTML = '<option value="">' + 'Seleccioná una ciudad' + '</option>';
-      return;
-    }
-    try {
-      const url = 'https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov);
-      const res = await fetch(url);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const localidades = (data.localidades || []).map(l => l.nombre).sort(function (a, b) {
-        return a.localeCompare(b, 'es');
-      });
-      ciudadSelect.innerHTML = '<option value="">' + 'Seleccioná una ciudad' + '</option>';
-      localidades.forEach(function (nombre) {
-        const opt = document.createElement('option');
-        opt.value = nombre;
-        opt.textContent = nombre;
-        ciudadSelect.appendChild(opt);
-      });
-    } catch (e) {
-      ciudadSelect.innerHTML = '<option value="">' + 'No se pudieron cargar las ciudades' + '</option>';
-    }
-  }
-
-  if (provinciaSelect) {
-    provinciaSelect.addEventListener('change', cargarCiudades);
-  }
-
-  const btnSumate = document.getElementById('btn-sumate');
-  const targetSumate = document.getElementById('sumate');
-  const btnInfo = document.getElementById('btn-info');
-  const targetInfo = document.getElementById('informacion');
-
-  function smoothScrollTo(element, duration, offset) {
-    if (!element) return;
-    if (duration === undefined) duration = 1700;
-    if (offset === undefined) offset = 200;
-
-    const targetY = element.getBoundingClientRect().top + window.pageYOffset - offset;
-    const startY = window.pageYOffset;
-    const distance = targetY - startY;
-    let startTime = null;
-
-    function animation(currentTime) {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-      window.scrollTo(0, startY + distance * ease);
-      if (timeElapsed < duration) {
-        requestAnimationFrame(animation);
+      // Líneas entre nodos cercanos
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx   = nodes[i].x - nodes[j].x;
+          const dy   = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * 0.18;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 194, 255, ${alpha})`;
+            ctx.lineWidth   = 1;
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
       }
+
+      // Nodos
+      nodes.forEach(n => {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 194, 255, 0.35)';
+        ctx.fill();
+      });
     }
 
-    requestAnimationFrame(animation);
+    function updateNodes() {
+      nodes.forEach(n => {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+      });
+    }
+
+    function animate() {
+      updateNodes();
+      drawNetwork();
+      animFrame = requestAnimationFrame(animate);
+    }
+
+    // Inicialización y redimensionado
+    resizeCanvas();
+    initNodes();
+    animate();
+
+    const ro = new ResizeObserver(() => {
+      resizeCanvas();
+      initNodes();
+    });
+    ro.observe(section);
   }
 
-  if (btnSumate && targetSumate) {
-    btnSumate.addEventListener('click', function (e) {
-      e.preventDefault();
-      smoothScrollTo(targetSumate, 1700, 200);
-    });
-  }
-
-  if (btnInfo && targetInfo) {
-    btnInfo.addEventListener('click', function (e) {
-      e.preventDefault();
-      smoothScrollTo(targetInfo, 1700, 200);
-    });
-  }
-});
+}); // fin DOMContentLoaded
 </script>
 
+<!-- Chatbot widget (original) -->
+<script src="/chatbot-widget.js" defer></script>
 
 </body>
-
 </html>

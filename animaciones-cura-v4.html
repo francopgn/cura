@@ -105,31 +105,38 @@ function geoNorm(lon,lat){
 }
 
 function parseGeoJSON(gj){
-  // Compute actual bounding box from data
+  // Excluir Antártida e Islas del Atlántico Sur
+  const EXCLUDE=['antártida','antartica','antartida','atlántico sur','atlantico sur'];
+  const features=gj.features.filter(f=>{
+    const n=(f.properties.nombre||f.properties.name||'').toLowerCase();
+    return !EXCLUDE.some(ex=>n.includes(ex));
+  });
+
+  // Bounding box solo del territorio continental + TDF (lat > -56, sin Antártida)
   let x0=Infinity,x1=-Infinity,y0=Infinity,y1=-Infinity;
-  for(const f of gj.features){
+  for(const f of features){
     const geom=f.geometry;
     const polys=geom.type==='MultiPolygon'?geom.coordinates:
                 geom.type==='Polygon'?[geom.coordinates]:[];
     for(const poly of polys)
       for(const ring of poly)
         for(const [lon,lat] of ring){
+          if(lat < -56) continue; // descartar coordenadas antárticas residuales
           if(lon<x0)x0=lon;if(lon>x1)x1=lon;
           if(lat<y0)y0=lat;if(lat>y1)y1=lat;
         }
   }
   GEO_BBOX={lonMin:x0,lonMax:x1,latMin:y0,latMax:y1};
 
-  // Build normalized path arrays
+  // Construir paths normalizados (solo ring exterior, lat > -56)
   GEO_PATHS=[];
-  for(const f of gj.features){
+  for(const f of features){
     const geom=f.geometry;
     const polys=geom.type==='MultiPolygon'?geom.coordinates:
                 geom.type==='Polygon'?[geom.coordinates]:[];
     for(const poly of polys){
-      // Only outer ring (index 0); skip holes
-      const ring=poly[0];
-      GEO_PATHS.push(ring.map(([lon,lat])=>geoNorm(lon,lat)));
+      const ring=poly[0].filter(([,lat])=>lat>-56);
+      if(ring.length>2)GEO_PATHS.push(ring.map(([lon,lat])=>geoNorm(lon,lat)));
     }
   }
   GEO_READY=true;
@@ -214,7 +221,6 @@ function eio(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
 function drawMap(fa,sa,ga,prog){
   fa=fa||.05;sa=sa||.45;ga=ga||.12;prog=prog===undefined?1:prog;
   if(!GEO_READY){
-    // Muestra estado mientras carga
     ctx.save();
     ctx.font='700 11px JetBrains Mono,monospace';
     ctx.textAlign='center';ctx.textBaseline='middle';
@@ -228,30 +234,48 @@ function drawMap(fa,sa,ga,prog){
     ctx.restore();
     return;
   }
-  // Revelado progresivo: muestra provincias de a una (para animación "despertar")
+
+  /* ── Silueta unificada sin límites provinciales ──────────────────────
+     Todos los rings en UN SOLO beginPath → fill sólido y continuo.
+     No hay stroke individual por provincia → sin líneas interiores.
+     El shadowBlur sobre el fill solo "sangra" hacia el exterior:
+     los bordes internos compartidos quedan cubiertos por el fill
+     de la provincia adyacente. Solo el borde exterior produce glow.
+  ─────────────────────────────────────────────────────────────────── */
   const total=GEO_PATHS.length;
-  const show=prog>=1?total:Math.max(0,Math.floor(total*prog));
+  const show=prog>=1?total:Math.max(1,Math.floor(total*prog));
+
+  // Construir path unificado con todos los rings visibles
   ctx.save();
-  // Primero fill de todos los rings visibles
+  ctx.beginPath();
+  for(let i=0;i<show;i++){
+    const path=GEO_PATHS[i];if(path.length<2)continue;
+    const p0=txy(path[0].nx,path[0].ny);
+    ctx.moveTo(p0.x,p0.y);
+    for(let j=1;j<path.length;j++){const p=txy(path[j].nx,path[j].ny);ctx.lineTo(p.x,p.y);}
+    ctx.closePath();
+  }
+
+  // 1. Fill del territorio (sin bordes aún)
   ctx.fillStyle='rgba(0,78,133,'+fa+')';
-  for(let i=0;i<show;i++){
-    const path=GEO_PATHS[i];if(path.length<2)continue;
-    const p0=txy(path[0].nx,path[0].ny);
-    ctx.beginPath();ctx.moveTo(p0.x,p0.y);
-    for(let j=1;j<path.length;j++){const p=txy(path[j].nx,path[j].ny);ctx.lineTo(p.x,p.y);}
-    ctx.closePath();ctx.fill();
-  }
-  // Luego stroke (con glow) de todos los rings visibles
-  ctx.shadowColor='rgba(0,194,255,'+ga+')';ctx.shadowBlur=14;
-  ctx.strokeStyle='rgba(0,194,255,'+sa+')';ctx.lineWidth=1.2;
-  for(let i=0;i<show;i++){
-    const path=GEO_PATHS[i];if(path.length<2)continue;
-    const p0=txy(path[0].nx,path[0].ny);
-    ctx.beginPath();ctx.moveTo(p0.x,p0.y);
-    for(let j=1;j<path.length;j++){const p=txy(path[j].nx,path[j].ny);ctx.lineTo(p.x,p.y);}
-    ctx.closePath();ctx.stroke();
-  }
-  ctx.shadowBlur=0;ctx.restore();
+  ctx.fill();
+
+  // 2. Glow en borde exterior via shadowBlur sobre el fill.
+  //    El shadow solo aparece donde no hay fill adyacente = borde exterior.
+  ctx.shadowColor='rgba(0,194,255,'+sa+')';
+  ctx.shadowBlur=16;
+  ctx.fillStyle='rgba(0,78,133,0.01)'; // re-fill casi transparente activa el shadow
+  ctx.fill();
+  ctx.shadowBlur=0;
+
+  // 3. Capa de glow difuso adicional (más suave)
+  ctx.shadowColor='rgba(0,194,255,'+ga+')';
+  ctx.shadowBlur=32;
+  ctx.fillStyle='rgba(0,78,133,0.005)';
+  ctx.fill();
+  ctx.shadowBlur=0;
+
+  ctx.restore();
 }
 
 function drawN(n,opts){

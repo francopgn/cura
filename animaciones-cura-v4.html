@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>C.U.R.A. — Laboratorio Visual v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--ca:#00C2FF;--cg:rgba(0,194,255,0.12);--cw:#E8F4FF;--cd:rgba(232,244,255,0.45);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Space Grotesk',sans-serif;background:#001E38;color:#E8F4FF;height:100vh;overflow:hidden}
+.hdr{border-bottom:1px solid rgba(0,194,255,.18);padding:.65rem 1.4rem;display:flex;align-items:center;justify-content:space-between;background:rgba(0,18,36,.97);height:50px;position:sticky;top:0;z-index:100}
+.hl{display:flex;align-items:center;gap:.7rem}
+.badge{font-family:'JetBrains Mono',monospace;font-size:.63rem;font-weight:700;letter-spacing:.15em;color:#00C2FF;background:rgba(0,194,255,0.12);border:1px solid rgba(0,194,255,.28);border-radius:4px;padding:.2rem .5rem;text-transform:uppercase}
+.hdr h1{font-size:.85rem;font-weight:600}
+.hdr p{font-size:.62rem;color:rgba(232,244,255,.45)}
+.hr{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(232,244,255,.45);text-align:right;line-height:1.7}
+.layout{display:grid;grid-template-columns:265px 1fr;height:calc(100vh - 50px)}
+.sb{background:rgba(0,35,64,.72);border-right:1px solid rgba(0,194,255,.11);overflow-y:auto;padding:.6rem;display:flex;flex-direction:column;gap:.15rem;scrollbar-width:thin;scrollbar-color:rgba(0,194,255,.18) transparent}
+.gl{font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(0,194,255,.38);padding:.6rem .38rem .25rem;border-bottom:1px solid rgba(0,194,255,.07);margin-bottom:.1rem}
+.ab{display:flex;align-items:flex-start;gap:.5rem;padding:.52rem .56rem;border-radius:7px;border:1px solid transparent;background:transparent;cursor:pointer;text-align:left;transition:all .15s;width:100%;color:#E8F4FF}
+.ab:hover{background:rgba(0,194,255,0.1);border-color:rgba(0,194,255,.18)}
+.ab.on{background:rgba(0,194,255,.13);border-color:rgba(0,194,255,.42)}
+.an{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;color:rgba(0,194,255,.48);min-width:20px;padding-top:1px}
+.ab.on .an{color:#00C2FF}
+.at{flex:1}
+.aname{font-size:.74rem;font-weight:600;line-height:1.2;margin-bottom:.1rem}
+.ab.on .aname{color:#59D2FF}
+.adesc{font-size:.58rem;color:rgba(232,244,255,.45);line-height:1.3}
+.tag{font-family:'JetBrains Mono',monospace;font-size:.43rem;letter-spacing:.1em;text-transform:uppercase;padding:.07rem .28rem;border-radius:3px;margin-top:.14rem;display:inline-block;font-weight:700}
+.tg{color:rgba(0,255,168,.8);background:rgba(0,255,168,.07)}
+.tn{color:rgba(0,194,255,.8);background:rgba(0,194,255,.07)}
+.td{color:rgba(190,150,255,.9);background:rgba(190,150,255,.07)}
+.cw{position:relative;overflow:hidden;background:#000c1a;display:flex;align-items:center;justify-content:center}
+#mc{display:block}
+.ov{position:absolute;top:.85rem;left:.85rem;pointer-events:none}
+.ol{font-family:'JetBrains Mono',monospace;font-size:.56rem;font-weight:700;letter-spacing:.18em;color:rgba(0,194,255,.45);margin-bottom:.15rem}
+.ot{font-size:1rem;font-weight:700;letter-spacing:.04em;color:rgba(232,244,255,.9);text-shadow:0 0 16px rgba(0,194,255,.32)}
+.tbdg{position:absolute;top:.85rem;right:.85rem;font-family:'JetBrains Mono',monospace;font-size:.5rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.2rem .52rem;border-radius:4px;pointer-events:none}
+.tbg{color:rgba(0,255,168,.85);border:1px solid rgba(0,255,168,.2);background:rgba(0,255,168,.05)}
+.tbn{color:rgba(0,194,255,.85);border:1px solid rgba(0,194,255,.2);background:rgba(0,194,255,.05)}
+.tbd{color:rgba(190,150,255,.9);border:1px solid rgba(190,150,255,.17);background:rgba(190,150,255,.05)}
+.hint{position:absolute;bottom:.85rem;right:.85rem;font-family:'JetBrains Mono',monospace;font-size:.54rem;color:rgba(0,194,255,.3);pointer-events:none;text-align:right;line-height:1.6}
+#tip{position:absolute;pointer-events:none;background:rgba(0,26,50,.96);border:1px solid rgba(0,194,255,.3);border-radius:7px;padding:.38rem .65rem;font-size:.68rem;white-space:nowrap;display:none;z-index:50}
+#tip .tn2{font-weight:600;font-size:.76rem}
+#tip .ts{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:rgba(232,244,255,.45)}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hl">
+    <span class="badge">C.U.R.A.</span>
+    <div><h1>Laboratorio Visual</h1><p>Credencial Única de Registro de Afiliados · v2</p></div>
+  </div>
+  <div class="hr"><span id="hnum">ANIMACIÓN 01</span><br><span id="hname" style="color:#59D2FF">Argentina que Despierta</span></div>
+</header>
+<div class="layout">
+<aside class="sb">
+  <div class="gl">Tipo 1 — Geográfico</div>
+  <button class="ab on" onclick="go(0)"><div class="an">01</div><div class="at"><div class="aname">Argentina que Despierta</div><div class="adesc">El país emerge hacia la red sanitaria nacional.</div><span class="tag tg">Geo</span></div></button>
+  <button class="ab" onclick="go(1)"><div class="an">02</div><div class="at"><div class="aname">Red Sanitaria Nacional</div><div class="adesc">Datos fluyendo entre los 25 nodos federales.</div><span class="tag tg">Geo</span></div></button>
+  <button class="ab" onclick="go(2)"><div class="an">03</div><div class="at"><div class="aname">Pulso Federal</div><div class="adesc">Ondas de actividad desde Buenos Aires.</div><span class="tag tg">Geo</span></div></button>
+  <button class="ab" onclick="go(3)"><div class="an">04</div><div class="at"><div class="aname">Datos como Luz</div><div class="adesc">Estelas luminosas recorriendo el territorio.</div><span class="tag tg">Geo</span></div></button>
+  <div class="gl">Tipo 2 — Red Tecnológica</div>
+  <button class="ab" onclick="go(4)"><div class="an">05</div><div class="at"><div class="aname">Cloud Architecture</div><div class="adesc">Servicios C.U.R.A. orbitando el núcleo central.</div><span class="tag tn">Red</span></div></button>
+  <button class="ab" onclick="go(5)"><div class="an">06</div><div class="at"><div class="aname">Red Neuronal Sanitaria</div><div class="adesc">El sistema funciona como un cerebro vivo.</div><span class="tag tn">Red</span></div></button>
+  <button class="ab" onclick="go(6)"><div class="an">07</div><div class="at"><div class="aname">Infraestructura Hexagonal</div><div class="adesc">Grid hexagonal de nodos sanitarios digitales.</div><span class="tag tn">Red</span></div></button>
+  <div class="gl">Tipo 3 — Datos / Interoperabilidad</div>
+  <button class="ab" onclick="go(7)"><div class="an">08</div><div class="at"><div class="aname">Stack de Interoperabilidad</div><div class="adesc">Capas FHIR/HL7 transformando datos sanitarios.</div><span class="tag td">Datos</span></div></button>
+  <button class="ab" onclick="go(8)"><div class="an">09</div><div class="at"><div class="aname">Partículas de Información</div><div class="adesc">Miles de partículas formando la red sanitaria.</div><span class="tag td">Datos</span></div></button>
+  <button class="ab" onclick="go(9)"><div class="an">10</div><div class="at"><div class="aname">Data Stream</div><div class="adesc">Registros clínicos fluyendo en tiempo real.</div><span class="tag td">Datos</span></div></button>
+</aside>
+<div class="cw" id="cw">
+  <canvas id="mc"></canvas>
+  <div class="ov"><div class="ol" id="ol">ANIMACIÓN 01</div><div class="ot" id="ot">Argentina que Despierta</div></div>
+  <div class="tbdg tbg" id="tbdg">TIPO 1 · GEOGRÁFICO</div>
+  <div class="hint" id="hint">Hover sobre el mapa para interactuar</div>
+  <div id="tip"><div class="tn2" id="tn2">–</div><div class="ts" id="ts">–</div></div>
+</div>
+</div>
+<script>
+
+/* ═══ MAPA ARGENTINA — CONTORNO GEOGRÁFICO REAL ═══
+   ~115 puntos normalizados basados en datos geográficos
+   del territorio argentino. x=lon oeste→este, y=lat norte→sur
+   Aspect ratio real: ~20°lon x 33°lat = 1:2.1
+*/
+const AR_RATIO=1/2.1;
+
+/* ═══ GEOJSON — cargado desde ./data/provincias.geojson ═══
+   Fuente oficial: infra.datos.gob.ar/georef-dev/provincias.geojson
+   El archivo debe estar en /data/provincias.geojson junto al HTML.
+   Proyección: lon/lat → coordenadas normalizadas (0-1) → canvas via txy().
+   El bounding box se calcula dinámicamente desde los datos reales.
+*/
+let GEO_PATHS  = [];   // [{nx,ny}...] por cada ring de cada provincia
+let GEO_READY  = false;
+let GEO_ERROR  = null;
+let GEO_BBOX   = {lonMin:-73.58,lonMax:-53.57,latMin:-55.06,latMax:-21.78};
+
+function geoNorm(lon,lat){
+  const nx=(lon-GEO_BBOX.lonMin)/(GEO_BBOX.lonMax-GEO_BBOX.lonMin);
+  const ny=(GEO_BBOX.latMax-lat)/(GEO_BBOX.latMax-GEO_BBOX.latMin);
+  return{nx,ny};
+}
+
+function parseGeoJSON(gj){
+  // Compute actual bounding box from data
+  let x0=Infinity,x1=-Infinity,y0=Infinity,y1=-Infinity;
+  for(const f of gj.features){
+    const geom=f.geometry;
+    const polys=geom.type==='MultiPolygon'?geom.coordinates:
+                geom.type==='Polygon'?[geom.coordinates]:[];
+    for(const poly of polys)
+      for(const ring of poly)
+        for(const [lon,lat] of ring){
+          if(lon<x0)x0=lon;if(lon>x1)x1=lon;
+          if(lat<y0)y0=lat;if(lat>y1)y1=lat;
+        }
+  }
+  GEO_BBOX={lonMin:x0,lonMax:x1,latMin:y0,latMax:y1};
+
+  // Build normalized path arrays
+  GEO_PATHS=[];
+  for(const f of gj.features){
+    const geom=f.geometry;
+    const polys=geom.type==='MultiPolygon'?geom.coordinates:
+                geom.type==='Polygon'?[geom.coordinates]:[];
+    for(const poly of polys){
+      // Only outer ring (index 0); skip holes
+      const ring=poly[0];
+      GEO_PATHS.push(ring.map(([lon,lat])=>geoNorm(lon,lat)));
+    }
+  }
+  GEO_READY=true;
+}
+
+fetch('./data/provincias.geojson')
+  .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(parseGeoJSON)
+  .catch(e=>{GEO_ERROR='No se pudo cargar ./data/provincias.geojson\n'+e.message;});
+
+
+const NODES=[
+  {id:'caba',name:'Buenos Aires',short:'CABA',x:0.800,y:0.482,s:5.5},
+  {id:'ros', name:'Rosario',     short:'ROS', x:0.682,y:0.332,s:3.5},
+  {id:'cba', name:'Córdoba',     short:'CBA', x:0.510,y:0.288,s:4},
+  {id:'mza', name:'Mendoza',     short:'MZA', x:0.265,y:0.332,s:3.5},
+  {id:'tuc', name:'Tucumán',     short:'TUC', x:0.440,y:0.148,s:3},
+  {id:'sal', name:'Salta',       short:'SAL', x:0.412,y:0.085,s:2.5},
+  {id:'juj', name:'Jujuy',       short:'JUJ', x:0.398,y:0.038,s:2},
+  {id:'for', name:'Formosa',     short:'FOR', x:0.645,y:0.118,s:2},
+  {id:'cha', name:'Resistencia', short:'CHA', x:0.658,y:0.155,s:2.5},
+  {id:'cor', name:'Corrientes',  short:'COR', x:0.700,y:0.215,s:2.5},
+  {id:'mis', name:'Misiones',    short:'MIS', x:0.848,y:0.210,s:2},
+  {id:'cat', name:'Catamarca',   short:'CAT', x:0.402,y:0.210,s:2},
+  {id:'lri', name:'La Rioja',    short:'LRI', x:0.350,y:0.268,s:2},
+  {id:'ste', name:'Sgo. del Estero',short:'SGO',x:0.545,y:0.210,s:2.5},
+  {id:'eri', name:'Entre Ríos',  short:'ERI', x:0.705,y:0.408,s:2.5},
+  {id:'sfe', name:'Santa Fe',    short:'SFE', x:0.665,y:0.295,s:3},
+  {id:'sju', name:'San Juan',    short:'SJU', x:0.278,y:0.298,s:2},
+  {id:'slu', name:'San Luis',    short:'SLU', x:0.395,y:0.378,s:2},
+  {id:'neu', name:'Neuquén',     short:'NEU', x:0.225,y:0.522,s:2.5},
+  {id:'lpa', name:'La Pampa',    short:'LPA', x:0.475,y:0.465,s:2},
+  {id:'bbl', name:'Bahía Blanca',short:'BBA', x:0.600,y:0.518,s:3},
+  {id:'rne', name:'Río Negro',   short:'RNE', x:0.358,y:0.580,s:2},
+  {id:'chu', name:'Chubut',      short:'CHU', x:0.395,y:0.668,s:2},
+  {id:'scr', name:'Santa Cruz',  short:'SCR', x:0.340,y:0.822,s:2},
+  {id:'tdf', name:'T. del Fuego',short:'TDF', x:0.318,y:0.962,s:2},
+];
+const CONNS=[
+  ['caba','ros'],['caba','eri'],['caba','bbl'],['caba','sfe'],
+  ['ros','cba'],['ros','sfe'],['ros','eri'],
+  ['cba','tuc'],['cba','lri'],['cba','slu'],['cba','ste'],
+  ['mza','sju'],['mza','neu'],['mza','slu'],['mza','lri'],
+  ['tuc','sal'],['tuc','ste'],['tuc','cat'],
+  ['sal','juj'],['sal','cat'],
+  ['for','cha'],['cha','cor'],['cor','mis'],['cha','ste'],
+  ['ste','cat'],['sfe','eri'],['sfe','ste'],
+  ['bbl','lpa'],['bbl','rne'],['rne','neu'],['rne','chu'],
+  ['chu','scr'],['scr','tdf'],['neu','lpa'],['slu','lpa'],
+  ['eri','cor'],['caba','lpa'],
+];
+
+/* ═══ CANVAS ═══ */
+const canvas=document.getElementById('mc');
+const ctx=canvas.getContext('2d');
+let W=0,H=0,dpr=window.devicePixelRatio||1;
+let mx=-9,my=-9;
+
+function resize(){
+  const a=document.getElementById('cw');
+  W=a.clientWidth;H=a.clientHeight;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.width=W+'px';canvas.style.height=H+'px';
+  ctx.scale(dpr,dpr);
+  if(CA){CA.s={};CA.init(CA.s);}
+}
+window.addEventListener('resize',resize);
+
+/* ═══ MAP HELPERS ═══ */
+function mp(){
+  const px=W*.06,py=H*.05,aw=W-2*px,ah=H-2*py;
+  let mw=aw,mh=aw/AR_RATIO;
+  if(mh>ah){mh=ah;mw=ah*AR_RATIO;}
+  return{ox:px+(aw-mw)/2,oy:py+(ah-mh)/2,mw,mh};
+}
+function txy(nx,ny){const{ox,oy,mw,mh}=mp();return{x:ox+nx*mw,y:oy+ny*mh};}
+function npos(n){return txy(n.x,n.y);}
+function gn(id){return NODES.find(n=>n.id===id);}
+function lerp(a,b,t){return a+(b-a)*t;}
+function eio(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+
+function drawMap(fa,sa,ga,prog){
+  fa=fa||.05;sa=sa||.45;ga=ga||.12;prog=prog===undefined?1:prog;
+  if(!GEO_READY){
+    // Muestra estado mientras carga
+    ctx.save();
+    ctx.font='700 11px JetBrains Mono,monospace';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    if(GEO_ERROR){
+      ctx.fillStyle='rgba(255,80,80,.7)';
+      GEO_ERROR.split('\n').forEach((l,i)=>ctx.fillText(l,W/2,H/2-10+i*16));
+    } else {
+      ctx.fillStyle='rgba(0,194,255,.35)';
+      ctx.fillText('Cargando mapa…',W/2,H/2);
+    }
+    ctx.restore();
+    return;
+  }
+  // Revelado progresivo: muestra provincias de a una (para animación "despertar")
+  const total=GEO_PATHS.length;
+  const show=prog>=1?total:Math.max(0,Math.floor(total*prog));
+  ctx.save();
+  // Primero fill de todos los rings visibles
+  ctx.fillStyle='rgba(0,78,133,'+fa+')';
+  for(let i=0;i<show;i++){
+    const path=GEO_PATHS[i];if(path.length<2)continue;
+    const p0=txy(path[0].nx,path[0].ny);
+    ctx.beginPath();ctx.moveTo(p0.x,p0.y);
+    for(let j=1;j<path.length;j++){const p=txy(path[j].nx,path[j].ny);ctx.lineTo(p.x,p.y);}
+    ctx.closePath();ctx.fill();
+  }
+  // Luego stroke (con glow) de todos los rings visibles
+  ctx.shadowColor='rgba(0,194,255,'+ga+')';ctx.shadowBlur=14;
+  ctx.strokeStyle='rgba(0,194,255,'+sa+')';ctx.lineWidth=1.2;
+  for(let i=0;i<show;i++){
+    const path=GEO_PATHS[i];if(path.length<2)continue;
+    const p0=txy(path[0].nx,path[0].ny);
+    ctx.beginPath();ctx.moveTo(p0.x,p0.y);
+    for(let j=1;j<path.length;j++){const p=txy(path[j].nx,path[j].ny);ctx.lineTo(p.x,p.y);}
+    ctx.closePath();ctx.stroke();
+  }
+  ctx.shadowBlur=0;ctx.restore();
+}
+
+function drawN(n,opts){
+  const{r=n.s*1.4,col='#00C2FF',al=1,glow=.4,lbl=false,pulse=0}=opts||{};
+  const p=npos(n);ctx.save();
+  if(glow>0){
+    const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,r*3.5);
+    g.addColorStop(0,'rgba(0,194,255,'+(glow*al)+')');g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,r*3.5,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=al;ctx.shadowColor='rgba(0,194,255,.6)';ctx.shadowBlur=6;
+  ctx.fillStyle=col;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+  if(pulse>0){ctx.beginPath();ctx.arc(p.x,p.y,r+pulse*12,0,Math.PI*2);ctx.strokeStyle='rgba(0,194,255,'+(1-pulse)*.4+')';ctx.lineWidth=1;ctx.stroke();}
+  ctx.globalAlpha=1;
+  if(lbl){ctx.font='600 '+Math.max(8,n.s*1.6)+'px Space Grotesk,sans-serif';ctx.fillStyle='rgba(232,244,255,'+(al*.82)+')';ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(n.short,p.x,p.y+r+3);}
+  ctx.restore();
+}
+
+function drawConn(n1,n2,al,col){
+  const p1=npos(n1),p2=npos(n2);ctx.save();
+  ctx.strokeStyle=col||'rgba(0,194,255,'+(al||.15)+')';ctx.lineWidth=.8;
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();ctx.restore();
+}
+
+function pkt(sx,sy,ex,ey,spd,col){
+  return{x:sx,y:sy,sx,sy,ex,ey,t:0,spd:spd||(0.005+Math.random()*.005),
+    col:col||'rgba(0,194,255,'+(0.7+Math.random()*.3)+')',
+    sz:1.5+Math.random(),tr:[],done:false};
+}
+function tickP(p){
+  p.tr.push({x:p.x,y:p.y});if(p.tr.length>14)p.tr.shift();
+  p.t+=p.spd;const et=eio(Math.min(1,p.t));
+  p.x=lerp(p.sx,p.ex,et);p.y=lerp(p.sy,p.ey,et);
+  if(p.t>=1)p.done=true;
+}
+function drawP(p){
+  ctx.save();
+  for(let i=0;i<p.tr.length;i++){
+    const a=(i/p.tr.length)*.45;
+    ctx.fillStyle=p.col.replace(/[\d.]+\)$/,a+')');
+    ctx.beginPath();ctx.arc(p.tr[i].x,p.tr[i].y,(i/p.tr.length)*p.sz,0,Math.PI*2);ctx.fill();
+  }
+  ctx.shadowColor=p.col;ctx.shadowBlur=7;
+  ctx.fillStyle=p.col;ctx.beginPath();ctx.arc(p.x,p.y,p.sz,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;ctx.restore();
+}
+
+/* ═══════════════════════════════════════════
+   ANIMACIONES
+═══════════════════════════════════════════ */
+const ANIMS=[];
+
+/* ── 01 ARGENTINA QUE DESPIERTA ── */
+ANIMS.push({
+  name:'Argentina que Despierta',ns:'ANIMACIÓN 01',type:'geo',
+  hint:'El país emerge de la oscuridad hacia la red sanitaria',s:{},
+  init(s){s.ph=0;s.out=0;s.nA=NODES.map(()=>0);s.cR=0;s.br=0;s.pk=[];s.st=null;},
+  update(s,dt){
+    s.br+=dt;
+    if(s.ph===0){s.out=Math.min(1,s.out+dt*.32);if(s.out>=1)s.ph=1;}
+    else if(s.ph===1){
+      const ni=Math.floor(s.br/.25);
+      for(let i=0;i<Math.min(ni,NODES.length);i++)s.nA[i]=Math.min(1,s.nA[i]+dt*2.5);
+      if(ni>=NODES.length)s.ph=2;
+    }else if(s.ph===2){s.cR=Math.min(1,s.cR+dt*.55);if(s.cR>=1)s.ph=3;}
+    if(s.ph>=2&&Math.random()<.05){
+      const c=CONNS[Math.floor(Math.random()*CONNS.length)];
+      const n1=gn(c[0]),n2=gn(c[1]);
+      if(n1&&n2){const p1=npos(n1),p2=npos(n2);s.pk.push(pkt(p1.x,p1.y,p2.x,p2.y));}
+    }
+    s.pk.forEach(p=>tickP(p));s.pk=s.pk.filter(p=>!p.done);
+    if(s.pk.length>30)s.pk.splice(0,5);
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    if(!s.st)s.st=Array.from({length:80},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*.7}));
+    s.st.forEach(st=>{ctx.fillStyle='rgba(232,244,255,.1)';ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fill();});
+    const b=s.ph>=3?.35+Math.sin(s.br*.8)*.12:.35;
+    drawMap(.04,b*Math.min(1,s.out),.08,s.out);
+    if(s.cR>0){
+      const ci=Math.floor(s.cR*CONNS.length);
+      for(let i=0;i<ci;i++){const c=CONNS[i];const n1=gn(c[0]),n2=gn(c[1]);if(n1&&n2)drawConn(n1,n2,.13);}
+    }
+    NODES.forEach((n,i)=>{
+      if(s.nA[i]>0){
+        const pl=s.ph>=3?Math.max(0,Math.sin(s.br*.9+i*.4)*.45):0;
+        drawN(n,{r:n.s*1.4*(1+pl*.1),al:s.nA[i],glow:.38*s.nA[i],lbl:s.nA[i]>.8&&n.s>=3,pulse:pl});
+      }
+    });
+    s.pk.forEach(p=>drawP(p));
+  }
+});
+
+/* ── 02 RED SANITARIA NACIONAL ── */
+ANIMS.push({
+  name:'Red Sanitaria Nacional',ns:'ANIMACIÓN 02',type:'geo',
+  hint:'Datos fluyendo entre los 25 nodos federales en tiempo real',s:{},
+  init(s){s.t=0;s.pk=[];s.hp=NODES.map(()=>0);},
+  update(s,dt){
+    s.t+=dt;
+    if(Math.random()<.09){
+      const c=CONNS[Math.floor(Math.random()*CONNS.length)];
+      const n1=gn(c[0]),n2=gn(c[1]);
+      if(n1&&n2){
+        const p1=npos(n1),p2=npos(n2),rv=Math.random()<.5;
+        const col=n1.s+n2.s>7?'rgba(0,255,168,.9)':'rgba(0,194,255,.85)';
+        s.pk.push(pkt(rv?p2.x:p1.x,rv?p2.y:p1.y,rv?p1.x:p2.x,rv?p1.y:p2.y,undefined,col));
+      }
+    }
+    s.pk.forEach(p=>tickP(p));s.pk=s.pk.filter(p=>!p.done);
+    if(s.pk.length>55)s.pk.splice(0,10);
+    s.hp=s.hp.map((v,i)=>Math.max(0,Math.sin(s.t*1.5+i*.62)));
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    drawMap(.04,.25,.08);
+    const g=.1+Math.sin(s.t*.4)*.04;
+    CONNS.forEach(c=>{const n1=gn(c[0]),n2=gn(c[1]);if(n1&&n2)drawConn(n1,n2,.12+g*.5);});
+    NODES.forEach((n,i)=>{drawN(n,{r:n.s*1.4*(1+s.hp[i]*.15),al:.9,glow:.35+s.hp[i]*.3,lbl:n.s>=3.5,pulse:s.hp[i]*.4});});
+    s.pk.forEach(p=>drawP(p));
+  }
+});
+
+/* ── 03 PULSO FEDERAL ── */
+ANIMS.push({
+  name:'Pulso Federal',ns:'ANIMACIÓN 03',type:'geo',
+  hint:'Ondas de actividad sanitaria desde Buenos Aires',s:{},
+  init(s){s.t=0;s.wv=[];s.center=null;s.np=NODES.map(()=>0);},
+  update(s,dt){
+    s.t+=dt;
+    if(!s.center)s.center=npos(gn('caba'));
+    if(s.t%2.5<dt*1.05)s.wv.push({r:0,al:.7});
+    s.wv.forEach(w=>{w.r+=dt*175;w.al=Math.max(0,.7*Math.pow(1-w.r/(Math.max(W,H)*.9),1.5));});
+    s.wv=s.wv.filter(w=>w.al>.002);
+    s.np=s.np.map((ph,i)=>{
+      const np=npos(NODES[i]);const dist=Math.hypot(np.x-s.center.x,np.y-s.center.y);
+      let mx=0;s.wv.forEach(w=>{if(Math.abs(w.r-dist)<28)mx=Math.max(mx,1-Math.abs(w.r-dist)/28);});
+      return mx;
+    });
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    drawMap(.035,.28,.07);
+    s.wv.forEach(w=>{
+      ctx.save();
+      ctx.beginPath();ctx.arc(s.center.x,s.center.y,w.r,0,Math.PI*2);ctx.strokeStyle='rgba(0,194,255,'+w.al*.48+')';ctx.lineWidth=1.4;ctx.stroke();
+      ctx.beginPath();ctx.arc(s.center.x,s.center.y,w.r*.94,0,Math.PI*2);ctx.strokeStyle='rgba(0,194,255,'+w.al*.22+')';ctx.lineWidth=4;ctx.stroke();
+      ctx.restore();
+    });
+    CONNS.forEach(c=>{const n1=gn(c[0]),n2=gn(c[1]);if(n1&&n2)drawConn(n1,n2,.1);});
+    NODES.forEach((n,i)=>{
+      const lit=s.np[i];
+      drawN(n,{r:n.s*1.4*(1+lit*.3),al:.5+lit*.5,glow:.2+lit*.6,lbl:n.s>=3.5&&lit>.3,pulse:lit*.55});
+    });
+  }
+});
+
+/* ── 04 DATOS COMO LUZ ── */
+ANIMS.push({
+  name:'Datos como Luz',ns:'ANIMACIÓN 04',type:'geo',
+  hint:'Estelas luminosas recorriendo el territorio nacional',s:{},
+  init(s){s.t=0;s.tr=[];},
+  update(s,dt){
+    s.t+=dt;
+    if(s.tr.length<38&&Math.random()<.13){
+      const c=CONNS[Math.floor(Math.random()*CONNS.length)];
+      const n1=gn(c[0]),n2=gn(c[1]);
+      if(n1&&n2){
+        const p1=npos(n1),p2=npos(n2);
+        const hue=Math.random()<.7?'0,194,255':'0,255,168';
+        s.tr.push({sx:p1.x,sy:p1.y,ex:p2.x,ey:p2.y,t:0,spd:.006+Math.random()*.008,
+          col:'rgba('+hue+',',pts:[],sz:1+Math.random()*2,done:false});
+      }
+    }
+    s.tr.forEach(tr=>{
+      tr.t=Math.min(1,tr.t+tr.spd);const et=eio(tr.t);
+      tr.pts.push({x:lerp(tr.sx,tr.ex,et),y:lerp(tr.sy,tr.ey,et)});
+      if(tr.pts.length>20)tr.pts.shift();
+      if(tr.t>=1)tr.done=true;
+    });
+    s.tr=s.tr.filter(tr=>!tr.done);
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    drawMap(.03,.4,.12);
+    CONNS.forEach(c=>{const n1=gn(c[0]),n2=gn(c[1]);if(n1&&n2)drawConn(n1,n2,.07);});
+    s.tr.forEach(tr=>{
+      if(tr.pts.length<2)return;
+      for(let i=1;i<tr.pts.length;i++){
+        const a=(i/tr.pts.length)*.9,w=(i/tr.pts.length)*tr.sz*2;
+        ctx.save();ctx.shadowColor=tr.col+'.8)';ctx.shadowBlur=8;
+        ctx.strokeStyle=tr.col+a+')';ctx.lineWidth=w;
+        ctx.beginPath();ctx.moveTo(tr.pts[i-1].x,tr.pts[i-1].y);ctx.lineTo(tr.pts[i].x,tr.pts[i].y);
+        ctx.stroke();ctx.shadowBlur=0;ctx.restore();
+      }
+      const head=tr.pts[tr.pts.length-1];
+      ctx.save();const gr=ctx.createRadialGradient(head.x,head.y,0,head.x,head.y,tr.sz*6);
+      gr.addColorStop(0,tr.col+'.8)');gr.addColorStop(1,'transparent');
+      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(head.x,head.y,tr.sz*6,0,Math.PI*2);ctx.fill();ctx.restore();
+    });
+    NODES.forEach(n=>drawN(n,{r:n.s,al:.55,glow:.18}));
+  }
+});
+
+/* ── 05 CLOUD ARCHITECTURE ── */
+ANIMS.push({
+  name:'Cloud Architecture',ns:'ANIMACIÓN 05',type:'net',
+  hint:'Servicios C.U.R.A. orbitando el núcleo central',s:{},
+  init(s){
+    s.t=0;s.pk=[];
+    s.svcs=[
+      {lbl:'IDENTIDAD',  orb:.18,spd:.6, ph:0,   col:'rgba(0,255,168,', r:7},
+      {lbl:'PRESCR.',    orb:.18,spd:.6, ph:2.1, col:'rgba(0,255,168,', r:7},
+      {lbl:'HISTORIAL',  orb:.18,spd:.6, ph:4.2, col:'rgba(0,255,168,', r:7},
+      {lbl:'CREDENCIAL', orb:.30,spd:.38,ph:0,   col:'rgba(0,194,255,', r:6},
+      {lbl:'TURNOS',     orb:.30,spd:.38,ph:1.6, col:'rgba(0,194,255,', r:6},
+      {lbl:'LABORATORIO',orb:.30,spd:.38,ph:3.2, col:'rgba(0,194,255,', r:6},
+      {lbl:'FARMACIA',   orb:.30,spd:.38,ph:4.8, col:'rgba(0,194,255,', r:6},
+      {lbl:'OBRAS SOC.', orb:.44,spd:.22,ph:0,   col:'rgba(160,120,255,',r:5},
+      {lbl:'PAMI',       orb:.44,spd:.22,ph:1.1, col:'rgba(160,120,255,',r:5},
+      {lbl:'ANSES',      orb:.44,spd:.22,ph:2.2, col:'rgba(160,120,255,',r:5},
+      {lbl:'RENAPER',    orb:.44,spd:.22,ph:3.3, col:'rgba(160,120,255,',r:5},
+    ];
+  },
+  update(s,dt){
+    s.t+=dt;
+    const cx=W/2,cy=H/2;
+    s.svcs.forEach(sv=>{
+      const angle=s.t*sv.spd+sv.ph;
+      const orb=Math.min(W,H)*sv.orb;
+      sv.cx=cx+Math.cos(angle)*orb;sv.cy=cy+Math.sin(angle)*orb;
+    });
+    if(Math.random()<.06){
+      const sv=s.svcs[Math.floor(Math.random()*s.svcs.length)];
+      s.pk.push(pkt(cx,cy,sv.cx,sv.cy,.015,sv.col+'.9)'));
+    }
+    s.pk.forEach(p=>tickP(p));s.pk=s.pk.filter(p=>!p.done);
+    if(s.pk.length>22)s.pk.splice(0,5);
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    const cx=W/2,cy=H/2;
+    [.18,.30,.44].forEach((r,i)=>{
+      const orb=Math.min(W,H)*r;ctx.save();ctx.setLineDash([3,6]);
+      ctx.strokeStyle='rgba(0,194,255,'+(.07-i*.01)+')';ctx.lineWidth=.8;
+      ctx.beginPath();ctx.arc(cx,cy,orb,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    });
+    s.svcs.forEach(sv=>{
+      ctx.save();ctx.strokeStyle=sv.col+'.1)';ctx.lineWidth=.7;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(sv.cx,sv.cy);ctx.stroke();ctx.restore();
+    });
+    const beat=.5+.5*Math.sin(s.t*1.2);
+    const cR=Math.min(W,H)*.072;
+    ctx.save();
+    const g=ctx.createRadialGradient(cx,cy,0,cx,cy,cR*3);
+    g.addColorStop(0,'rgba(0,255,168,.22)');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,cR*3,0,Math.PI*2);ctx.fill();
+    ctx.shadowColor='rgba(0,255,168,.8)';ctx.shadowBlur=20;
+    ctx.beginPath();ctx.arc(cx,cy,cR*(1+beat*.1),0,Math.PI*2);
+    ctx.fillStyle='rgba(0,35,25,.95)';ctx.fill();
+    ctx.strokeStyle='rgba(0,255,168,.8)';ctx.lineWidth=2;ctx.stroke();ctx.shadowBlur=0;
+    ctx.font='700 '+Math.max(9,cR*.55)+'px JetBrains Mono,monospace';
+    ctx.fillStyle='rgba(0,255,168,.95)';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('C.U.R.A.',cx,cy-5);
+    ctx.font='400 '+Math.max(7,cR*.35)+'px Space Grotesk,sans-serif';
+    ctx.fillStyle='rgba(0,255,168,.5)';ctx.fillText('NÚCLEO',cx,cy+cR*.38);
+    ctx.restore();
+    s.svcs.forEach(sv=>{
+      ctx.save();
+      const g2=ctx.createRadialGradient(sv.cx,sv.cy,0,sv.cx,sv.cy,sv.r*4);
+      g2.addColorStop(0,sv.col+'.35)');g2.addColorStop(1,'transparent');
+      ctx.fillStyle=g2;ctx.beginPath();ctx.arc(sv.cx,sv.cy,sv.r*4,0,Math.PI*2);ctx.fill();
+      ctx.shadowColor=sv.col+'.7)';ctx.shadowBlur=8;
+      ctx.fillStyle=sv.col+'.9)';ctx.beginPath();ctx.arc(sv.cx,sv.cy,sv.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+      ctx.font='600 8px Space Grotesk,sans-serif';ctx.fillStyle='rgba(232,244,255,.7)';
+      ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(sv.lbl,sv.cx,sv.cy+sv.r+3);ctx.restore();
+    });
+    s.pk.forEach(p=>drawP(p));
+  }
+});
+
+/* ── 06 RED NEURONAL SANITARIA ── */
+ANIMS.push({
+  name:'Red Neuronal Sanitaria',ns:'ANIMACIÓN 06',type:'net',
+  hint:'El sistema funciona como un cerebro vivo y conectado',s:{},
+  init(s){
+    s.t=0;
+    s.ns2=Array.from({length:40},()=>({
+      x:.1+Math.random()*.8,y:.1+Math.random()*.8,
+      vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,
+      r:2+Math.random()*4,ph:Math.random()*Math.PI*2,act:0,fire:0,
+    }));
+    s.edges=[];
+    s.ns2.forEach((n,i)=>{
+      const ds=s.ns2.map((m,j)=>({j,d:Math.hypot(m.x-n.x,m.y-n.y)})).filter(o=>o.j!==i);
+      ds.sort((a,b)=>a.d-b.d);ds.slice(0,3).forEach(o=>{if(o.d<.35)s.edges.push([i,o.j]);});
+    });
+    s.pulses=[];
+  },
+  update(s,dt){
+    s.t+=dt;
+    s.ns2.forEach(n=>{
+      n.x=((n.x+n.vx*60*dt+1)%1);n.y=((n.y+n.vy*60*dt+1)%1);
+      n.act=.4+.4*Math.sin(s.t*1.5+n.ph);n.fire=Math.max(0,n.fire-dt*2);
+    });
+    if(Math.random()<.09){
+      const ni=Math.floor(Math.random()*s.ns2.length);
+      s.ns2[ni].fire=1;
+      s.edges.filter(e=>e[0]===ni||e[1]===ni).forEach(e=>{
+        s.pulses.push({from:ni,to:e[0]===ni?e[1]:e[0],t:0,spd:.015+Math.random()*.01});
+      });
+    }
+    s.pulses.forEach(p=>{p.t=Math.min(1,p.t+p.spd);});
+    s.pulses=s.pulses.filter(p=>{if(p.t>=1)s.ns2[p.to].fire=.8;return p.t<1;});
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    s.edges.forEach(([i,j])=>{
+      const n1=s.ns2[i],n2=s.ns2[j];const act=Math.min(n1.act,n2.act)*.25;
+      ctx.save();ctx.strokeStyle='rgba(0,194,255,'+act+')';ctx.lineWidth=.7;
+      ctx.beginPath();ctx.moveTo(n1.x*W,n1.y*H);ctx.lineTo(n2.x*W,n2.y*H);ctx.stroke();ctx.restore();
+    });
+    s.pulses.forEach(p=>{
+      const n1=s.ns2[p.from],n2=s.ns2[p.to];
+      const px=lerp(n1.x,n2.x,eio(p.t))*W,py=lerp(n1.y,n2.y,eio(p.t))*H;
+      ctx.save();ctx.shadowColor='rgba(0,255,168,.8)';ctx.shadowBlur=8;
+      ctx.fillStyle='rgba(0,255,168,.9)';ctx.beginPath();ctx.arc(px,py,2.5,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.restore();
+    });
+    s.ns2.forEach(n=>{
+      const px=n.x*W,py=n.y*H,fire=n.fire,act=n.act;
+      const col=fire>.5?'0,255,168':'0,194,255';
+      ctx.save();
+      const g=ctx.createRadialGradient(px,py,0,px,py,n.r*(3+fire*3));
+      g.addColorStop(0,'rgba('+col+','+(act*.7+fire*.3)+')');g.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,n.r*(3+fire*3),0,Math.PI*2);ctx.fill();
+      ctx.shadowColor='rgba('+col+',.7)';ctx.shadowBlur=fire>0?12:4;
+      ctx.fillStyle='rgba('+col+','+(0.7+fire*.3)+')';
+      ctx.beginPath();ctx.arc(px,py,n.r*(1+fire*.5),0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.restore();
+    });
+  }
+});
+
+/* ── 07 INFRAESTRUCTURA HEXAGONAL ── */
+ANIMS.push({
+  name:'Infraestructura Hexagonal',ns:'ANIMACIÓN 07',type:'net',
+  hint:'Grid hexagonal de nodos sanitarios activos',s:{},
+  init(s){
+    s.t=0;s.hexes=[];s.waves=[];
+    const size=Math.min(W,H)*.052;
+    const cols=Math.ceil(W/(size*1.732))+1,rows=Math.ceil(H/(size*1.5))+1;
+    for(let col=0;col<cols;col++)
+      for(let row=0;row<rows;row++){
+        const xOff=row%2===0?0:size*.866;
+        const cx=col*size*1.732+xOff+size*.5,cy=row*size*1.5+size*.5;
+        if(cx<W+size&&cy<H+size)
+          s.hexes.push({cx,cy,sz:size*.9,ph:Math.random()*Math.PI*2,spd:.4+Math.random()*.6,on:Math.random()<.3});
+      }
+  },
+  update(s,dt){
+    s.t+=dt;
+    if(s.t%3<dt*1.05)s.waves.push({x:Math.random()*W,y:Math.random()*H,r:0,done:false});
+    s.waves.forEach(w=>{w.r+=dt*200;if(w.r>Math.max(W,H)*.7)w.done=true;});
+    s.waves=s.waves.filter(w=>!w.done);
+    s.hexes.forEach(h=>{
+      const lit=s.waves.some(w=>Math.abs(Math.hypot(h.cx-w.x,h.cy-w.y)-w.r)<30);
+      if(lit)h.on=true;else h.on=h.on&&Math.random()>dt*.5;
+    });
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    s.hexes.forEach(h=>{
+      const act=.2+.5*Math.sin(s.t*h.spd+h.ph)*(h.on?1:.3);
+      ctx.save();ctx.beginPath();
+      for(let i=0;i<6;i++){
+        const a=Math.PI/180*60*i-Math.PI/2;
+        const px=h.cx+h.sz*Math.cos(a),py=h.cy+h.sz*Math.sin(a);
+        i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle='rgba(0,194,255,'+act*.8+')';ctx.lineWidth=h.on?1.2:.4;
+      if(h.on){ctx.fillStyle='rgba(0,78,133,'+act*.28+')';ctx.fill();}
+      ctx.stroke();
+      if(h.on){ctx.fillStyle='rgba(0,194,255,'+act*.8+')';ctx.beginPath();ctx.arc(h.cx,h.cy,2,0,Math.PI*2);ctx.fill();}
+      ctx.restore();
+    });
+  }
+});
+
+/* ── 08 STACK DE INTEROPERABILIDAD ── */
+ANIMS.push({
+  name:'Stack de Interoperabilidad',ns:'ANIMACIÓN 08',type:'data',
+  hint:'Capas FHIR/HL7 transformando datos sanitarios en tiempo real',s:{},
+  init(s){
+    s.t=0;s.pk=[];
+    s.layers=[
+      {lbl:'APLICACIONES CLÍNICAS',sub:'EMR · HIS · Farmacia · PAMI',col:'rgba(0,255,168,'},
+      {lbl:'API GATEWAY / FHIR R4', sub:'REST · GraphQL · OAuth2 · JWT',col:'rgba(0,220,200,'},
+      {lbl:'INTEROPERABILIDAD',     sub:'HL7 · IHE · SNOMED · CIE-10',col:'rgba(0,194,255,'},
+      {lbl:'SERVICIOS CORE C.U.R.A.',sub:'Identidad · Prescripción · Historia Clínica',col:'rgba(80,160,255,'},
+      {lbl:'INFRAESTRUCTURA CLOUD', sub:'AWS GovCloud · Backup · DR · CDN',col:'rgba(160,120,255,'},
+      {lbl:'SEGURIDAD / AUDITORÍA', sub:'Encryption · Blockchain · Compliance',col:'rgba(190,100,200,'},
+    ];
+    s.lh=0;
+  },
+  update(s,dt){
+    s.t+=dt;
+    const lh=(H*.7)/s.layers.length;s.lh=lh;
+    const ty=H*.12;
+    s.layers.forEach((l,i)=>{l.y=ty+i*lh;});
+    if(Math.random()<.05){
+      const f=Math.floor(Math.random()*s.layers.length);
+      const to=Math.floor(Math.random()*s.layers.length);
+      if(f!==to){
+        const fy=s.layers[f].y+lh*.5,ty2=s.layers[to].y+lh*.5;
+        const fx=W*(.15+Math.random()*.7);
+        s.pk.push(pkt(fx,fy,fx+(Math.random()-.5)*W*.3,ty2,.012,s.layers[f].col+'.9)'));
+      }
+    }
+    s.pk.forEach(p=>tickP(p));s.pk=s.pk.filter(p=>!p.done);
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='#000c1a';ctx.fillRect(0,0,W,H);
+    s.layers.forEach((l,i)=>{
+      const pulse=.5+.5*Math.sin(s.t*.8+i*.9);
+      ctx.save();
+      ctx.fillStyle=l.col+(.04+pulse*.03)+')';ctx.fillRect(W*.08,l.y+2,W*.84,s.lh-4);
+      ctx.strokeStyle=l.col+(.25+pulse*.15)+')';ctx.lineWidth=1;ctx.strokeRect(W*.08,l.y+2,W*.84,s.lh-4);
+      ctx.fillStyle=l.col+(.5+pulse*.3)+')';ctx.fillRect(W*.08,l.y+2,4,s.lh-4);
+      ctx.font='700 '+Math.min(13,s.lh*.28)+'px Space Grotesk,sans-serif';
+      ctx.fillStyle=l.col+'.9)';ctx.textAlign='left';ctx.textBaseline='middle';
+      ctx.fillText(l.lbl,W*.105,l.y+s.lh*.38);
+      ctx.font='400 '+Math.min(10,s.lh*.22)+'px JetBrains Mono,monospace';
+      ctx.fillStyle='rgba(232,244,255,.38)';ctx.fillText(l.sub,W*.105,l.y+s.lh*.65);
+      ctx.font='700 '+Math.min(9,s.lh*.2)+'px JetBrains Mono,monospace';
+      ctx.fillStyle=l.col+'.3)';ctx.textAlign='right';ctx.fillText('L'+(i+1),W*.90,l.y+s.lh*.5);
+      ctx.restore();
+    });
+    for(let i=0;i<s.layers.length-1;i++){
+      const y1=s.layers[i].y+s.lh-2,y2=s.layers[i+1].y+2;
+      ctx.save();ctx.setLineDash([2,3]);ctx.strokeStyle='rgba(0,194,255,.18)';ctx.lineWidth=.8;
+      ctx.beginPath();ctx.moveTo(W*.5,y1);ctx.lineTo(W*.5,y2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    }
+    s.pk.forEach(p=>drawP(p));
+  }
+});
+
+/* ── 09 PARTÍCULAS DE INFORMACIÓN ── */
+ANIMS.push({
+  name:'Partículas de Información',ns:'ANIMACIÓN 09',type:'data',
+  hint:'Miles de partículas formando la red sanitaria nacional',s:{},
+  init(s){
+    s.t=0;s.atTimer=0;s.ats=[];
+    s.parts=Array.from({length:500},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.8,vy:(Math.random()-.5)*.8,
+      r:.5+Math.random()*1.5,al:.2+Math.random()*.6,
+      col:Math.random()<.6?'0,194,255':'0,255,168',ph:Math.random()*Math.PI*2,
+    }));
+  },
+  update(s,dt){
+    s.t+=dt;s.atTimer+=dt;
+    if(s.atTimer>5){
+      s.atTimer=0;
+      s.ats=Array.from({length:4},()=>({x:W*.2+Math.random()*W*.6,y:H*.2+Math.random()*H*.6,str:900+Math.random()*700,life:4}));
+    }
+    s.ats.forEach(a=>{a.life-=dt;});s.ats=s.ats.filter(a=>a.life>0);
+    s.parts.forEach(p=>{
+      s.ats.forEach(a=>{
+        const dx=a.x-p.x,dy=a.y-p.y,dist=Math.hypot(dx,dy);
+        if(dist>5&&dist<250){const f=a.str/(dist*dist)*Math.min(1,a.life);p.vx+=dx/dist*f*dt;p.vy+=dy/dist*f*dt;}
+      });
+      p.vx*=.98;p.vy*=.98;p.x+=p.vx;p.y+=p.vy;
+      p.al=.3+.3*Math.sin(s.t*1.5+p.ph);
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    });
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(0,12,24,.96)';ctx.fillRect(0,0,W,H);
+    ctx.save();
+    const step=8;
+    for(let i=0;i<s.parts.length;i+=step)
+      for(let j=i+step;j<Math.min(i+80,s.parts.length);j+=step){
+        const a=s.parts[i],b=s.parts[j];const d=Math.hypot(b.x-a.x,b.y-a.y);
+        if(d<60){ctx.strokeStyle='rgba(0,194,255,'+(1-d/60)*.07+')';ctx.lineWidth=.4;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+      }
+    ctx.restore();
+    s.parts.forEach(p=>{ctx.fillStyle='rgba('+p.col+','+p.al+')';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();});
+    s.ats.forEach(a=>{
+      const lR=a.life/4;ctx.save();
+      const g=ctx.createRadialGradient(a.x,a.y,0,a.x,a.y,80);
+      g.addColorStop(0,'rgba(0,194,255,'+lR*.13+')');g.addColorStop(1,'transparent');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(a.x,a.y,80,0,Math.PI*2);ctx.fill();ctx.restore();
+    });
+  }
+});
+
+/* ── 10 DATA STREAM ── */
+ANIMS.push({
+  name:'Data Stream',ns:'ANIMACIÓN 10',type:'data',
+  hint:'Registros clínicos del sistema C.U.R.A. fluyendo en tiempo real',s:{},
+  init(s){
+    s.t=0;
+    const chars='0123456789ABCDEF:T+-#';
+    const recs=['CURA-','DNI:','HC-','RX:','ICD:','LAB-'];
+    const numCols=Math.floor(W/22);
+    s.cols=Array.from({length:numCols},()=>({
+      x:0,y:-Math.random()*H,spd:65+Math.random()*115,
+      ch:Array.from({length:Math.ceil(H/15)+2},()=>Math.random()<.2?recs[Math.floor(Math.random()*recs.length)]:chars[Math.floor(Math.random()*chars.length)]),
+      col:Math.random()<.15?'0,255,168':'0,194,255',
+      al:.3+Math.random()*.5,uTimer:0,uInt:.08+Math.random()*.2,
+    }));
+    s.cols.forEach((c,i)=>{c.x=(i+.5)*22;});
+  },
+  update(s,dt){
+    s.t+=dt;
+    const chars='0123456789ABCDEF:T+-#';
+    s.cols.forEach(col=>{
+      col.y+=col.spd*dt;
+      if(col.y>H+50)col.y=-H*.15-Math.random()*H*.3;
+      col.uTimer+=dt;
+      if(col.uTimer>col.uInt){
+        col.uTimer=0;
+        const idx=Math.floor(Math.random()*col.ch.length);
+        col.ch[idx]=chars[Math.floor(Math.random()*chars.length)];
+      }
+    });
+  },
+  draw(s){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle='rgba(0,12,24,.97)';ctx.fillRect(0,0,W,H);
+    s.cols.forEach(col=>{
+      col.ch.forEach((ch,i)=>{
+        const cy=col.y-i*15;if(cy<-15||cy>H+5)return;
+        const fade=Math.max(0,1-i/20),isHead=i===0;
+        ctx.save();
+        ctx.font=(isHead?'700':'400')+' 11px JetBrains Mono,monospace';
+        if(isHead){ctx.fillStyle='rgba(230,255,255,'+(fade*col.al+.3)+')';ctx.shadowColor='rgba('+col.col+',.8)';ctx.shadowBlur=8;}
+        else ctx.fillStyle='rgba('+col.col+','+fade*col.al*.7+')';
+        ctx.textAlign='center';ctx.textBaseline='top';ctx.fillText(ch,col.x,cy);
+        ctx.shadowBlur=0;ctx.restore();
+      });
+    });
+    const labels=['▶ PROCESANDO REGISTROS CLÍNICOS','▶ VERIFICANDO IDENTIDAD C.U.R.A.','▶ SINCRONIZANDO CON PAMI','▶ VALIDANDO PRESCRIPCIONES'];
+    const lbl=labels[Math.floor(s.t*.4)%labels.length];
+    ctx.save();ctx.font='700 '+Math.min(13,W*.016)+'px JetBrains Mono,monospace';
+    ctx.fillStyle='rgba(0,255,168,.5)';ctx.textAlign='center';ctx.textBaseline='bottom';
+    ctx.fillText(lbl,W/2,H-18);ctx.restore();
+  }
+});
+
+/* ═══ CONTROLLER ═══ */
+let CA=null,curIdx=0,lastT=0,raf=null;
+const TBDG={geo:{txt:'TIPO 1 · GEOGRÁFICO',cls:'tbdg tbg'},net:{txt:'TIPO 2 · RED TECNOLÓGICA',cls:'tbdg tbn'},data:{txt:'TIPO 3 · DATOS / INTEROP.',cls:'tbdg tbd'}};
+
+function go(idx){
+  if(raf)cancelAnimationFrame(raf);
+  curIdx=idx;CA=ANIMS[idx];CA.s={};CA.init(CA.s);
+  document.querySelectorAll('.ab').forEach((b,i)=>b.classList.toggle('on',i===idx));
+  document.getElementById('ol').textContent=CA.ns;
+  document.getElementById('ot').textContent=CA.name;
+  document.getElementById('hnum').textContent=CA.ns;
+  document.getElementById('hname').textContent=CA.name;
+  document.getElementById('hint').textContent=CA.hint;
+  const b=document.getElementById('tbdg');
+  const info=TBDG[CA.type];b.textContent=info.txt;b.className=info.cls;
+  lastT=performance.now();loop(lastT);
+}
+
+function loop(now){
+  const dt=Math.min((now-lastT)/1000,.05);lastT=now;
+  if(CA){CA.update(CA.s,dt);CA.draw(CA.s);}
+  raf=requestAnimationFrame(loop);
+}
+
+/* Tooltip */
+canvas.addEventListener('mousemove',e=>{
+  const r=canvas.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;
+  if(CA&&CA.type==='geo'){
+    let found=null;
+    NODES.forEach(n=>{const p=npos(n);if(Math.hypot(p.x-mx,p.y-my)<n.s*2.5)found=n;});
+    const tip=document.getElementById('tip');
+    if(found){
+      document.getElementById('tn2').textContent=found.name;
+      document.getElementById('ts').textContent='NODO · '+found.short;
+      tip.style.display='block';tip.style.left=(mx+12)+'px';tip.style.top=(my-10)+'px';
+    }else tip.style.display='none';
+  }else document.getElementById('tip').style.display='none';
+});
+canvas.addEventListener('mouseleave',()=>{document.getElementById('tip').style.display='none';});
+
+window.addEventListener('load',()=>{resize();go(0);});
+
+</script>
+</body>
+</html>

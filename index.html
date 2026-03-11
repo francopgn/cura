@@ -409,6 +409,14 @@
       background: transparent;
       display: block;
     }
+    /* ── CRÍTICO: sin position:absolute, positionSVG() no tiene efecto ── */
+    #ar-map {
+      position: absolute;
+      pointer-events: none;
+      transform-origin: top left;
+      z-index: 1;
+      filter: drop-shadow(0 0 12px rgba(0,194,255,.2)) drop-shadow(0 0 4px rgba(0,194,255,.1));
+    }
 
     /* --- CREDENCIAL EN SECCIÓN BENEFICIOS --- */
     .cred-showcase-wrapper {

@@ -50,15 +50,19 @@ function initSVGPaths(){
   } catch(e){ useNativePIP = false; }
 }
 
-function isInside(nx, ny){
-  if(nx<0||nx>1||ny<0||ny>1.02) return false;
-  if(useNativePIP && svgEl && svgPaths.length){
+function isInside(nx, ny) {
+  // LÍMITE DE SEGURIDAD: Si está muy a la izquierda de la cordillera, lo descartamos
+  if (nx < 0.18) return false; 
+  
+  if (nx < 0 || nx > 1 || ny < 0 || ny > 1.02) return false;
+  
+  if (useNativePIP && svgEl && svgPaths.length) {
     try {
-      const x = SVG_CX0 + nx*SVG_CW;
-      const y = SVG_CY0 + ny*SVG_MH;
+      const x = SVG_CX0 + nx * SVG_CW;
+      const y = SVG_CY0 + ny * SVG_MH;
       const pt = new DOMPoint(x, y);
       return svgPaths.some(p => p.isPointInFill(pt));
-    } catch(e){ /* fallthrough */ }
+    } catch (e) { /* fallthrough */ }
   }
   return polyPIP(nx, ny);
 }
@@ -778,6 +782,7 @@ window.addEventListener('load',()=>{
   initDespierta();
   rafId=requestAnimationFrame(loop);
 });
+
 
 
 

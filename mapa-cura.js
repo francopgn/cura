@@ -779,6 +779,11 @@ window.addEventListener('load',()=>{
   rafId=requestAnimationFrame(loop);
 });
 
+/* ── RESIZE: recalcula posición del mapa y nodos al cambiar tamaño ── */
+window.addEventListener('resize',()=>{
+  resize();
+});
+
 
 
 

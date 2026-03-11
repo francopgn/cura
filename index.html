@@ -2102,7 +2102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function initMapNodes() {
       mNodes = [];
       /* Pocas partículas, ambiente sutil */
-      const count = Math.min(16, Math.floor((mW * mH) / 20000));
+      const count = Math.min(20, Math.floor((mW * mH) / 20000));
       for (let i = 0; i < count; i++) {
         mNodes.push({
           x:  Math.random() * mW,
@@ -2127,7 +2127,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const dy   = mNodes[i].y - mNodes[j].y;
           const dist = Math.sqrt(dx*dx + dy*dy);
           if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.09;
+            const alpha = (1 - dist / maxDist) * 0.10;
             mCtx.beginPath();
             mCtx.strokeStyle = `rgba(0, 194, 255, ${alpha})`;
             mCtx.lineWidth   = 0.7;
@@ -2141,7 +2141,7 @@ document.addEventListener('DOMContentLoaded', function () {
       /* Nodos con brillo pulsante muy sutil */
       mNodes.forEach(n => {
         const pulse  = (Math.sin(t * 0.8 + n.phase) * 0.5 + 0.5);
-        const alpha  = 0.07 + pulse * 0.10;
+        const alpha  = 0.09 + pulse * 0.18;
         const radius = n.r * (0.85 + pulse * 0.25);
 
         /* Halo suave */

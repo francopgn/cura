@@ -1614,7 +1614,20 @@ function switchTab(actorId) {
 
   // Activar el panel y botón correspondiente
   const panel = document.getElementById('panel-' + actorId);
-  if (panel) panel.classList.add('active');
+  if (panel) {
+    panel.classList.add('active');
+    
+    // --- NUEVO: Reiniciar animaciones AOS de las tarjetas ---
+    const tarjetas = panel.querySelectorAll('[data-aos]');
+    
+    // 1. Le quitamos la clase que indica que ya se animaron
+    tarjetas.forEach(t => t.classList.remove('aos-animate'));
+    
+    // 2. Esperamos 50 milisegundos y se la volvemos a poner para forzar la re-animación
+    setTimeout(() => {
+      tarjetas.forEach(t => t.classList.add('aos-animate'));
+    }, 50);
+  }
 
   // Activar el botón que fue clickeado
   const buttons = document.querySelectorAll('.actor-tab-btn');

@@ -2102,7 +2102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function initMapNodes() {
       mNodes = [];
       /* Pocas partículas, ambiente sutil */
-      const count = Math.min(20, Math.floor((mW * mH) / 20000));
+      const count = Math.min(200, Math.floor((mW * mH) / 20000));
       for (let i = 0; i < count; i++) {
         mNodes.push({
           x:  Math.random() * mW,

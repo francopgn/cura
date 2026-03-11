@@ -410,6 +410,15 @@
       display: block;
     }
 
+    /* ── CRÍTICO: sin position:absolute, positionSVG() no tiene efecto ── */
+    #ar-map {
+      position: absolute;
+      pointer-events: none;
+      transform-origin: top left;
+      z-index: 1;
+      filter: drop-shadow(0 0 12px rgba(0,194,255,.2)) drop-shadow(0 0 4px rgba(0,194,255,.1));
+    }
+
     /* --- CREDENCIAL EN SECCIÓN BENEFICIOS --- */
     .cred-showcase-wrapper {
       background: linear-gradient(135deg, rgba(0,52,92,0.5) 0%, rgba(6,93,155,0.3) 100%);
@@ -2092,17 +2101,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function initMapNodes() {
       mNodes = [];
-      /* Más densidad que la sección CURA para que se vea bien
-         en un contenedor más pequeño */
-      const count = Math.min(38, Math.floor((mW * mH) / 8000));
+      /* Pocas partículas, ambiente sutil */
+      const count = Math.min(16, Math.floor((mW * mH) / 22000));
       for (let i = 0; i < count; i++) {
         mNodes.push({
           x:  Math.random() * mW,
           y:  Math.random() * mH,
-          vx: (Math.random() - 0.5) * 0.45,
-          vy: (Math.random() - 0.5) * 0.45,
-          r:  Math.random() * 1.8 + 1.0,
-          /* pulso de brillo propio */
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          r:  Math.random() * 1.4 + 0.8,
           phase: Math.random() * Math.PI * 2
         });
       }
@@ -2120,10 +2127,10 @@ document.addEventListener('DOMContentLoaded', function () {
           const dy   = mNodes[i].y - mNodes[j].y;
           const dist = Math.sqrt(dx*dx + dy*dy);
           if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.22;
+            const alpha = (1 - dist / maxDist) * 0.09;
             mCtx.beginPath();
             mCtx.strokeStyle = `rgba(0, 194, 255, ${alpha})`;
-            mCtx.lineWidth   = 0.8;
+            mCtx.lineWidth   = 0.7;
             mCtx.moveTo(mNodes[i].x, mNodes[i].y);
             mCtx.lineTo(mNodes[j].x, mNodes[j].y);
             mCtx.stroke();
@@ -2131,15 +2138,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
 
-      /* Nodos con brillo pulsante */
+      /* Nodos con brillo pulsante muy sutil */
       mNodes.forEach(n => {
-        const pulse = (Math.sin(t * 1.2 + n.phase) * 0.5 + 0.5); // 0..1
-        const alpha = 0.20 + pulse * 0.30;
-        const radius = n.r * (0.85 + pulse * 0.30);
+        const pulse  = (Math.sin(t * 0.8 + n.phase) * 0.5 + 0.5);
+        const alpha  = 0.07 + pulse * 0.10;
+        const radius = n.r * (0.85 + pulse * 0.25);
 
         /* Halo suave */
         const grad = mCtx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius * 3.5);
-        grad.addColorStop(0, `rgba(0, 194, 255, ${alpha * 0.55})`);
+        grad.addColorStop(0, `rgba(0, 194, 255, ${alpha * 0.50})`);
         grad.addColorStop(1, 'transparent');
         mCtx.beginPath();
         mCtx.arc(n.x, n.y, radius * 3.5, 0, Math.PI * 2);
@@ -2149,7 +2156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         /* Punto central */
         mCtx.beginPath();
         mCtx.arc(n.x, n.y, radius, 0, Math.PI * 2);
-        mCtx.fillStyle = `rgba(0, 194, 255, ${alpha + 0.15})`;
+        mCtx.fillStyle = `rgba(0, 194, 255, ${alpha + 0.08})`;
         mCtx.fill();
       });
     }

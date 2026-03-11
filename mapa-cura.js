@@ -72,9 +72,9 @@ let W=0, H=0, dpr=window.devicePixelRatio||1;
 let mx=-1, my=-1;
 
 function mp() {
-  // Ajustamos los márgenes internos (padding)
-  const px = W * 0.12; // Aumentamos margen lateral para centrar
-  const py = H * 0.05; 
+  // px: margen izquierdo/derecho, py: margen superior/inferior
+  const px = W * 0.11; 
+  const py = H * 0.04; 
   const aw = W - 2 * px;
   const ah = H - 2 * py;
   
@@ -86,10 +86,14 @@ function mp() {
     mw = ah * AR_RATIO; 
   }
   
-  // El secreto está aquí: centramos mw dentro del ancho disponible aw
-  return { ox: px + (aw - mw) / 2, oy: py + (ah - mh) / 2, mw, mh };
-}
+  // AJUSTE DE PRECISIÓN:
+  // ox: le sumamos un pequeño offset (mw * 0.02) para empujar los nodos a la derecha
+  // oy: le restamos un poco para subir los nodos si quedan bajos
+  const ox = px + (aw - mw) / 2 + (mw * 0.015); 
+  const oy = py + (ah - mh) / 2 - (mh * 0.01);
 
+  return { ox, oy, mw, mh };
+}
 function txy(nx, ny) { 
   const {ox, oy, mw, mh} = mp(); 
   return { x: ox + nx * mw, y: oy + ny * mh }; 
@@ -774,6 +778,7 @@ window.addEventListener('load',()=>{
   initDespierta();
   rafId=requestAnimationFrame(loop);
 });
+
 
 
 

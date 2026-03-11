@@ -6,10 +6,9 @@
    svgX = SVG_CX0 + nx * SVG_CW
    svgY = SVG_CY0 + ny * SVG_MH   (SVG_MH = SVG_CW / AR_RATIO)
 ═══════════════════════════════════════════════════════════════════ */
-const AR_RATIO = 464 / 1008; // Proporción exacta del mapa
-// Actualizamos el ancho de la vista (VW) y el alto (VH) a 464x1008
-const SVG_CX0=109.25, SVG_CY0=26.18, SVG_CW=245.50, SVG_VW=464, SVG_VH=1008;
-const SVG_MH = SVG_CW / AR_RATIO;
+const AR_RATIO = 1/2.1;
+const SVG_CX0=93.25, SVG_CY0=26.18, SVG_CW=245.50, SVG_VW=432, SVG_VH=576;
+const SVG_MH = SVG_CW / AR_RATIO; // 515.55
 
 /* ── Polígono de respaldo para point-in-polygon si isPointInFill falla ── */
 const AR_POLY=[
@@ -51,19 +50,15 @@ function initSVGPaths(){
   } catch(e){ useNativePIP = false; }
 }
 
-function isInside(nx, ny) {
-  // LÍMITE DE SEGURIDAD: Si está muy a la izquierda de la cordillera, lo descartamos
-  if (nx < 0.18) return false; 
-  
-  if (nx < 0 || nx > 1 || ny < 0 || ny > 1.02) return false;
-  
-  if (useNativePIP && svgEl && svgPaths.length) {
+function isInside(nx, ny){
+  if(nx<0||nx>1||ny<0||ny>1.02) return false;
+  if(useNativePIP && svgEl && svgPaths.length){
     try {
-      const x = SVG_CX0 + nx * SVG_CW;
-      const y = SVG_CY0 + ny * SVG_MH;
+      const x = SVG_CX0 + nx*SVG_CW;
+      const y = SVG_CY0 + ny*SVG_MH;
       const pt = new DOMPoint(x, y);
       return svgPaths.some(p => p.isPointInFill(pt));
-    } catch (e) { /* fallthrough */ }
+    } catch(e){ /* fallthrough */ }
   }
   return polyPIP(nx, ny);
 }
@@ -77,28 +72,28 @@ let W=0, H=0, dpr=window.devicePixelRatio||1;
 let mx=-1, my=-1;
 
 function mp() {
-  // Márgenes de seguridad
-  const px = W * 0.10; 
-  const py = H * 0.05; 
+  // px: margen izquierdo/derecho, py: margen superior/inferior
+  const px = W * 0.11; 
+  const py = H * 0.04; 
   const aw = W - 2 * px;
   const ah = H - 2 * py;
   
-  // Calculamos la escala real basada en el ancho disponible
-  let scale = aw / SVG_CW;
-  if (SVG_MH * scale > ah) {
-    scale = ah / SVG_MH;
+  let mw = aw;
+  let mh = aw / AR_RATIO;
+  
+  if (mh > ah) { 
+    mh = ah; 
+    mw = ah * AR_RATIO; 
   }
   
-  const mw = SVG_CW * scale;
-  const mh = SVG_MH * scale;
-  
-  // Centrado matemático perfecto
-  const ox = px + (aw - mw) / 2;
-  const oy = py + (ah - mh) / 2;
+  // AJUSTE DE PRECISIÓN:
+  // ox: le sumamos un pequeño offset (mw * 0.02) para empujar los nodos a la derecha
+  // oy: le restamos un poco para subir los nodos si quedan bajos
+  const ox = px + (aw - mw) / 2 + (mw * 0.015); 
+  const oy = py + (ah - mh) / 2 - (mh * 0.01);
 
-  return { ox, oy, mw, mh, scale };
+  return { ox, oy, mw, mh };
 }
-
 function txy(nx, ny) { 
   const {ox, oy, mw, mh} = mp(); 
   return { x: ox + nx * mw, y: oy + ny * mh }; 
@@ -108,9 +103,10 @@ function positionSVG() {
   const el = document.getElementById('ar-map'); 
   if (!el) return;
   
-  const {ox, oy, mw, scale} = mp(); 
+  const {ox, oy, mw} = mp(); 
+  const scale = mw / SVG_CW;
   
-  // Alineamos el origen del SVG con el origen de los puntos
+  // Sincronizamos el dibujo con el origen de los puntos (ox y oy)
   el.style.left = (ox - SVG_CX0 * scale) + 'px';
   el.style.top = (oy - SVG_CY0 * scale) + 'px';
   el.style.width = (SVG_VW * scale) + 'px';
@@ -782,8 +778,6 @@ window.addEventListener('load',()=>{
   initDespierta();
   rafId=requestAnimationFrame(loop);
 });
-
-
 
 
 

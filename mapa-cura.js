@@ -10,6 +10,12 @@ const AR_RATIO = 1/2.1;
 const SVG_CX0=93.25, SVG_CY0=26.18, SVG_CW=245.50, SVG_VW=432, SVG_VH=576;
 const SVG_MH = SVG_CW / AR_RATIO; // 515.55
 
+/* ── Detección mobile/low-end ── */
+const IS_MOBILE = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+/* ── Cache de mp() — evita recalcular en cada txy() ── */
+let _mpCache = null;
+
 /* ── Polígono de respaldo para point-in-polygon si isPointInFill falla ── */
 const AR_POLY=[
   [0.28,0.00],[0.34,0.00],[0.40,0.01],[0.47,0.02],[0.52,0.03],[0.58,0.03],[0.64,0.04],[0.70,0.06],[0.75,0.08],
@@ -40,9 +46,7 @@ let useNativePIP = false;
 function initSVGPaths(){
   svgEl = document.getElementById('ar-map');
   if(!svgEl) return;
-  // Tomar todos los paths sin filtrar por color
   svgPaths = Array.from(svgEl.querySelectorAll('path'));
-  // Verificar que isPointInFill funciona
   try {
     const pt = new DOMPoint(200, 200);
     svgPaths[0].isPointInFill(pt);
@@ -72,41 +76,30 @@ let W=0, H=0, dpr=window.devicePixelRatio||1;
 let mx=-1, my=-1;
 
 function mp() {
-  // px: margen izquierdo/derecho, py: margen superior/inferior
-  const px = W * 0.11; 
-  const py = H * 0.04; 
+  if(_mpCache) return _mpCache;
+  const px = W * 0.11;
+  const py = H * 0.04;
   const aw = W - 2 * px;
   const ah = H - 2 * py;
-  
   let mw = aw;
   let mh = aw / AR_RATIO;
-  
-  if (mh > ah) { 
-    mh = ah; 
-    mw = ah * AR_RATIO; 
-  }
-  
-  // AJUSTE DE PRECISIÓN:
-  // ox: le sumamos un pequeño offset (mw * 0.02) para empujar los nodos a la derecha
-  // oy: le restamos un poco para subir los nodos si quedan bajos
-  const ox = px + (aw - mw) / 2 + (mw * 0.015); 
+  if (mh > ah) { mh = ah; mw = ah * AR_RATIO; }
+  const ox = px + (aw - mw) / 2 + (mw * 0.015);
   const oy = py + (ah - mh) / 2 - (mh * 0.01);
-
-  return { ox, oy, mw, mh };
+  _mpCache = { ox, oy, mw, mh };
+  return _mpCache;
 }
-function txy(nx, ny) { 
-  const {ox, oy, mw, mh} = mp(); 
-  return { x: ox + nx * mw, y: oy + ny * mh }; 
+
+function txy(nx, ny) {
+  const {ox, oy, mw, mh} = mp();
+  return { x: ox + nx * mw, y: oy + ny * mh };
 }
 
 function positionSVG() {
-  const el = document.getElementById('ar-map'); 
+  const el = document.getElementById('ar-map');
   if (!el) return;
-  
-  const {ox, oy, mw} = mp(); 
+  const {ox, oy, mw} = mp();
   const scale = mw / SVG_CW;
-  
-  // Sincronizamos el dibujo con el origen de los puntos (ox y oy)
   el.style.left = (ox - SVG_CX0 * scale) + 'px';
   el.style.top = (oy - SVG_CY0 * scale) + 'px';
   el.style.width = (SVG_VW * scale) + 'px';
@@ -114,20 +107,16 @@ function positionSVG() {
 }
 
 function resize() {
-  const cw = document.getElementById('cw'); 
+  const cw = document.getElementById('cw');
   if (!cw) return;
-  
-  W = cw.clientWidth; 
+  W = cw.clientWidth;
   H = cw.clientHeight;
-  
-  canvas.width = W * dpr; 
+  canvas.width = W * dpr;
   canvas.height = H * dpr;
-  canvas.style.width = W + 'px'; 
+  canvas.style.width = W + 'px';
   canvas.style.height = H + 'px';
-  
-  ctx.scale(dpr, dpr); 
-  
-  // Primero calculamos posición y luego redibujamos
+  ctx.scale(dpr, dpr);
+  _mpCache = null; // invalidar cache al cambiar tamaño
   positionSVG();
 }
 
@@ -148,13 +137,11 @@ function poissonDisk(minDist, maxPts, seeds){
   }
   function addPt(x,y){ pts.push([x,y]); grid[key(x,y)]=[x,y]; active.push([x,y]); }
 
-  // Semillas distribuidas de norte a sur
   for(const s of seeds){
     if(pts.length>=maxPts) break;
     if(!isInside(s[0],s[1])) continue;
     if(!tooClose(s[0],s[1])) addPt(s[0],s[1]);
   }
-  // Semilla de emergencia si ninguna funcionó
   if(!active.length){
     for(let t=0;t<80;t++){
       const x=0.25+Math.random()*0.55, y=0.15+Math.random()*0.7;
@@ -183,9 +170,7 @@ function poissonDisk(minDist, maxPts, seeds){
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   NODOS PRIMARIOS — 11 ciudades (coordenadas geográficas calibradas)
-   Bounding box: 74°W–53°W (21°), 22°S–55.5°S (33.5°)
-   nx=(74-lon)/21  ny=(lat-22)/33.5
+   NODOS PRIMARIOS — 24 provincias
 ═══════════════════════════════════════════════════════════════════ */
 const PRIMARY=[
  {id:'caba', name:'CABA',                short:'CAB', x:0.743, y:0.376, s:5.5},
@@ -204,7 +189,7 @@ const PRIMARY=[
   {id:'mis',  name:'Misiones',           short:'MIS', x:0.962, y:0.162, s:3.0},
   {id:'neu',  name:'Neuquén',            short:'NEU', x:0.174, y:0.518, s:3.2},
   {id:'rng',  name:'Río Negro',          short:'RNE', x:0.312, y:0.566, s:2.8},
-  {id:'sal',  name:'Salta',              short:'SAL', x:0.492, y:0.094, s:3.2}, 
+  {id:'sal',  name:'Salta',              short:'SAL', x:0.492, y:0.094, s:3.2},
   {id:'sju',  name:'San Juan',           short:'SJN', x:0.232, y:0.270, s:3.0},
   {id:'slu',  name:'San Luis',           short:'SLU', x:0.380, y:0.350, s:3.0},
   {id:'scr',  name:'Santa Cruz',         short:'SCR', x:0.172, y:0.828, s:2.8},
@@ -218,14 +203,19 @@ const PRIMARY=[
    RED — Nodos secundarios + conexiones
 ═══════════════════════════════════════════════════════════════════ */
 let SECONDARY=[], ALL_NODES=[], CONNECTIONS=[];
+let NODES_SEC=[], NODES_PRI=[]; // listas pre-filtradas
 let nodePhase={};
-// --- Paquetes de datos en movimiento ---
-let packets = [];
-const PACKET_SPEED = 0.003;
-const MAX_PACKETS = 40;
+
+/* Límites según dispositivo */
+const MAX_PULSES  = IS_MOBILE ? 12 : 80;
+const MAX_PKTS    = IS_MOBILE ? 8  : 30;
+const SPAWN_PROB  = IS_MOBILE ? 0.02 : 0.04;
+
+let DATA_PKTS=[];
+let PKT_ENABLED_CONNS=new Set();
+let pktLastRefresh=0;
 
 function rebuildNetwork(){
-
   const SEEDS=[
     [0.55,0.07],[0.42,0.10],[0.48,0.18],[0.62,0.20],[0.38,0.22],
     [0.55,0.30],[0.67,0.33],[0.32,0.30],[0.73,0.42],[0.48,0.40],
@@ -235,20 +225,15 @@ function rebuildNetwork(){
     [0.27,0.83],[0.42,0.82],[0.36,0.88],[0.26,0.90],[0.30,0.94],
   ];
 
-  const raw = poissonDisk(0.068, 68, SEEDS);
-
+  const maxPts = IS_MOBILE ? 40 : 68;
+  const raw = poissonDisk(0.068, maxPts, SEEDS);
   const MIN_GAP = 0.058;
 
   SECONDARY = raw
     .filter(pt => !PRIMARY.some(p => Math.hypot(p.x-pt[0],p.y-pt[1]) < MIN_GAP))
     .map((pt,i)=>({
-      id:'s'+i,
-      name:null,
-      short:null,
-      x:pt[0],
-      y:pt[1],
-      s:1.55,
-      isPrimary:false
+      id:'s'+i, name:null, short:null,
+      x:pt[0], y:pt[1], s:1.55, isPrimary:false
     }));
 
   ALL_NODES=[
@@ -256,193 +241,72 @@ function rebuildNetwork(){
     ...SECONDARY
   ];
 
+  NODES_PRI = ALL_NODES.filter(n=> n.isPrimary);
+  NODES_SEC = ALL_NODES.filter(n=>!n.isPrimary);
+
   nodePhase={};
-  ALL_NODES.forEach(n=>{
-    nodePhase[n.id]=Math.random()*Math.PI*2;
-  });
+  ALL_NODES.forEach(n=>{ nodePhase[n.id]=Math.random()*Math.PI*2; });
 
   CONNECTIONS=[];
   const cSet=new Set();
+  const MAX_DIST=0.12, K=3;
 
-  const MAX_DIST = 0.12;
-  const K = 3;
-
-  // ─────────────────────────────
-  // red entre provincias
-  // ─────────────────────────────
   PRIMARY.forEach((a,i)=>{
-
     const near=PRIMARY
       .map((b,j)=>({j,d:Math.hypot(a.x-b.x,a.y-b.y)}))
       .filter(({j,d})=>j!==i && d<0.25)
-      .sort((a,b)=>a.d-b.d)
-      .slice(0,3);
-
+      .sort((a,b)=>a.d-b.d).slice(0,3);
     near.forEach(({j})=>{
-
       const ai=ALL_NODES.findIndex(n=>n.id===PRIMARY[i].id);
       const bi=ALL_NODES.findIndex(n=>n.id===PRIMARY[j].id);
-
       const k=Math.min(ai,bi)+'-'+Math.max(ai,bi);
-
-      if(!cSet.has(k)){
-        cSet.add(k);
-        CONNECTIONS.push({
-          a:ALL_NODES[ai],
-          b:ALL_NODES[bi],
-          type:'pp'
-        });
-      }
-
+      if(!cSet.has(k)){ cSet.add(k); CONNECTIONS.push({a:ALL_NODES[ai],b:ALL_NODES[bi],type:'pp'}); }
     });
-
   });
 
-  // ─────────────────────────────
-  // red secundaria mejorada
-  // ─────────────────────────────
   ALL_NODES.forEach((n,i)=>{
-
     if(n.isPrimary) return;
-
     const near=ALL_NODES
-      .map((m,j)=>{
-
-        const dx=n.x-m.x;
-        const dy=n.y-m.y;
-
-        let d=Math.sqrt(dx*dx+dy*dy);
-
-        d = d * (1 + Math.abs(n.y-m.y)*0.35);
-
-        return {j,d,isPrim:m.isPrimary};
-
-      })
-      .filter(({j})=>j!==i)
-      .sort((a,b)=>a.d-b.d)
-      .slice(0,K);
-
+      .map((m,j)=>{ const dx=n.x-m.x,dy=n.y-m.y; let d=Math.sqrt(dx*dx+dy*dy); d=d*(1+Math.abs(n.y-m.y)*0.35); return {j,d,isPrim:m.isPrimary}; })
+      .filter(({j})=>j!==i).sort((a,b)=>a.d-b.d).slice(0,K);
     near.forEach(({j,d,isPrim})=>{
-
       if(d>MAX_DIST) return;
-
       const k=Math.min(i,j)+'-'+Math.max(i,j);
-
-      if(!cSet.has(k)){
-        cSet.add(k);
-
-        CONNECTIONS.push({
-          a:ALL_NODES[i],
-          b:ALL_NODES[j],
-          type:isPrim?'sp':'ss'
-        });
-
-      }
-
+      if(!cSet.has(k)){ cSet.add(k); CONNECTIONS.push({a:ALL_NODES[i],b:ALL_NODES[j],type:isPrim?'sp':'ss'}); }
     });
-
   });
 
-  // ─────────────────────────────
-  // asegurar que ningún nodo quede aislado
-  // ─────────────────────────────
   ALL_NODES.forEach(n=>{
-
-    const hasConnection=CONNECTIONS.some(c =>
-      c.a.id===n.id || c.b.id===n.id
-    );
-
-    if(!hasConnection){
-
-      let nearest=null;
-      let best=Infinity;
-
-      ALL_NODES.forEach(o=>{
-
-        if(o.id===n.id) return;
-
-        const dx=n.x-o.x;
-        const dy=n.y-o.y;
-        const d=dx*dx+dy*dy;
-
-        if(d<best){
-          best=d;
-          nearest=o;
-        }
-
-      });
-
-      if(nearest){
-
-        CONNECTIONS.push({
-          a:n,
-          b:nearest,
-          type:(n.isPrimary||nearest.isPrimary)?'sp':'ss'
-        });
-
-      }
-
+    const hasConn=CONNECTIONS.some(c=>c.a.id===n.id||c.b.id===n.id);
+    if(!hasConn){
+      let nearest=null,best=Infinity;
+      ALL_NODES.forEach(o=>{ if(o.id===n.id) return; const d=(n.x-o.x)**2+(n.y-o.y)**2; if(d<best){best=d;nearest=o;} });
+      if(nearest) CONNECTIONS.push({a:n,b:nearest,type:(n.isPrimary||nearest.isPrimary)?'sp':'ss'});
     }
-
-  });
-function buildOuterHull(){
-
-  const cx = ALL_NODES.reduce((s,n)=>s+n.x,0)/ALL_NODES.length;
-  const cy = ALL_NODES.reduce((s,n)=>s+n.y,0)/ALL_NODES.length;
-
-  // calcular distancia al centro
-  const nodes = ALL_NODES.map(n=>{
-
-    const dx=n.x-cx;
-    const dy=n.y-cy;
-
-    return {
-      node:n,
-      angle:Math.atan2(dy,dx),
-      dist:Math.sqrt(dx*dx+dy*dy)
-    };
-
   });
 
-  // quedarse con los más exteriores
-  const outer = nodes
-    .sort((a,b)=>b.dist-a.dist)
-    .slice(0,26);   // cantidad de puntos del contorno
-
-  // ordenar en círculo
-  outer.sort((a,b)=>a.angle-b.angle);
-
-  for(let i=0;i<outer.length;i++){
-
-    const a=outer[i].node;
-    const b=outer[(i+1)%outer.length].node;
-
-   const dx=a.x-b.x;
-const dy=a.y-b.y;
-const d=Math.sqrt(dx*dx+dy*dy);
-
-// evitar líneas largas fuera del mapa
-if(d < 0.18){
-  CONNECTIONS.push({
-    a:a,
-    b:b,
-    type:'edge'
-  });
-}
-
+  function buildOuterHull(){
+    const cx=ALL_NODES.reduce((s,n)=>s+n.x,0)/ALL_NODES.length;
+    const cy=ALL_NODES.reduce((s,n)=>s+n.y,0)/ALL_NODES.length;
+    const nodes=ALL_NODES.map(n=>({node:n,angle:Math.atan2(n.y-cy,n.x-cx),dist:Math.hypot(n.x-cx,n.y-cy)}));
+    const outer=nodes.sort((a,b)=>b.dist-a.dist).slice(0,26);
+    outer.sort((a,b)=>a.angle-b.angle);
+    for(let i=0;i<outer.length;i++){
+      const a=outer[i].node,b=outer[(i+1)%outer.length].node;
+      if(Math.hypot(a.x-b.x,a.y-b.y)<0.18) CONNECTIONS.push({a,b,type:'edge'});
+    }
   }
+  buildOuterHull();
 
+  DATA_PKTS=[];
+  pktLastRefresh=0;
+  refreshActiveConns();
 }
- buildOuterHull();
 
-DATA_PKTS=[];
-pktLastRefresh=0;
-refreshActiveConns();
-}
 /* ═══════════════════════════════════════════════════════════════════
    FUNCIONES DE DIBUJO
 ═══════════════════════════════════════════════════════════════════ */
-function drawNode(n, alpha, time, boost=0){
+function drawNode(n, alpha, time){
   if(alpha<=0.01) return;
   const pos=txy(n.x,n.y);
   const bp=nodePhase[n.id]+time*1.1;
@@ -450,67 +314,90 @@ function drawNode(n, alpha, time, boost=0){
   const dist=mx>0?Math.hypot(mx-pos.x,my-pos.y):9999;
   const prox=n.isPrimary?Math.max(0,1-dist/90):Math.max(0,1-dist/50);
   const r=n.s*1.4+breathe*(n.isPrimary?2.0:0.65)+prox*(n.isPrimary?4.5:2.2);
-  const gI=(0.20+breathe*0.25+prox*0.42+boost*0.55)*alpha;
-  const col=(prox>0.3||boost>0.3)?'#88E8FF':'#00C2FF';
+  const gI=(0.20+breathe*0.25+prox*0.42)*alpha;
+  const col=(prox>0.3)?'#88E8FF':'#00C2FF';
   const nAl=(n.isPrimary?(0.72+breathe*0.28):(0.45+breathe*0.25))*alpha;
 
   ctx.save();
-  // Halo glow
-  const gR=r*(n.isPrimary?(2.8+prox*2.0):2.5);
-  const g=ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,gR);
-  g.addColorStop(0,`rgba(0,194,255,${gI*0.50})`);
-  g.addColorStop(1,'transparent');
-  ctx.beginPath();ctx.arc(pos.x,pos.y,gR,0,Math.PI*2);
-  ctx.fillStyle=g;ctx.fill();
-  // Cuerpo
+
+  if(!IS_MOBILE){
+    /* Halo radial — solo desktop */
+    const gR=r*(n.isPrimary?(2.8+prox*2.0):2.5);
+    const g=ctx.createRadialGradient(pos.x,pos.y,0,pos.x,pos.y,gR);
+    g.addColorStop(0,`rgba(0,194,255,${gI*0.50})`);
+    g.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(pos.x,pos.y,gR,0,Math.PI*2);
+    ctx.fillStyle=g;ctx.fill();
+  }
+
   ctx.globalAlpha=nAl;
-  ctx.shadowColor=col;ctx.shadowBlur=n.isPrimary?9:5;
+  if(!IS_MOBILE){ ctx.shadowColor=col; ctx.shadowBlur=n.isPrimary?9:5; }
   ctx.fillStyle=col;
   ctx.beginPath();ctx.arc(pos.x,pos.y,r,0,Math.PI*2);ctx.fill();
   if(n.isPrimary){
     ctx.strokeStyle=`rgba(255,255,255,${0.40*nAl})`;ctx.lineWidth=0.9;ctx.stroke();
   }
-  ctx.shadowBlur=0;
-  // Label primarios
+  if(!IS_MOBILE) ctx.shadowBlur=0;
+
   if(n.isPrimary&&alpha>0.15){
     const la=Math.min(1,alpha*0.9+prox*0.1);
     ctx.globalAlpha=la;
     ctx.fillStyle='#C8EAFF';
     ctx.font=`600 ${Math.max(9,n.s*1.7)}px 'Space Grotesk',sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='top';
-    ctx.shadowColor='rgba(0,3,16,0.92)';ctx.shadowBlur=6;
+    if(!IS_MOBILE){ ctx.shadowColor='rgba(0,3,16,0.92)';ctx.shadowBlur=6; }
     ctx.fillText(n.short,pos.x,pos.y+r+3);
-    ctx.shadowBlur=0;
+    if(!IS_MOBILE) ctx.shadowBlur=0;
   }
   ctx.globalAlpha=1;ctx.restore();
 }
 
-function spawnPacket() {
-  // CORREGIDO: Usamos tu variable CONNECTIONS
-  if(CONNECTIONS.length === 0) return;
-
-  const c = CONNECTIONS[Math.floor(Math.random() * CONNECTIONS.length)];
-
-  packets.push({
-    conn: c,
-    t: Math.random()
-  });
-
-  if(packets.length > MAX_PACKETS){
-    packets.shift();
+function drawConn(c, alpha=1){
+  if(alpha<=0) return;
+  const p1=txy(c.a.x,c.a.y),p2=txy(c.b.x,c.b.y);
+  const midX=(p1.x+p2.x)/2,midY=(p1.y+p2.y)/2;
+  const dist=mx>0?Math.hypot(mx-midX,my-midY):9999;
+  const maxD=c.type==='pp'?W*0.22:W*0.15;
+  const prox=Math.max(0,1-dist/maxD);
+  const baseAl=c.type==='pp'?0.42:0.22;
+  const al=Math.min(0.92,(baseAl+prox*0.45)*alpha);
+  const lw=c.type==='pp'?(1.4+prox*1.8):(0.9+prox*0.9);
+  const col=(prox>0.25)?`rgba(100,228,255,${al})`:`rgba(41,211,255,${al})`;
+  ctx.save();
+  if(!IS_MOBILE && c.type==='pp'){
+    ctx.shadowColor='rgba(41,211,255,0.35)';
+    ctx.shadowBlur=4;
   }
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
+  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.stroke();
+  if(!IS_MOBILE) ctx.shadowBlur=0;
+  ctx.restore();
+}
+
+function drawNeuralPulse(p){
+  if(p.trail.length<2) return;
+  ctx.save();
+  const trailStart = IS_MOBILE ? Math.max(0, p.trail.length-5) : 1;
+  for(let i=trailStart+1;i<p.trail.length;i++){
+    const r=i/p.trail.length;
+    ctx.beginPath();
+    ctx.moveTo(p.trail[i-1].x,p.trail[i-1].y);
+    ctx.lineTo(p.trail[i].x,p.trail[i].y);
+    ctx.strokeStyle=p.col.replace(/[\d.]+\)$/,r*0.55+')');
+    ctx.lineWidth=p.size*r;ctx.stroke();
+  }
+  const h=p.trail[p.trail.length-1];
+  if(!IS_MOBILE){ ctx.shadowColor=p.col;ctx.shadowBlur=10; }
+  ctx.fillStyle='#fff';ctx.globalAlpha=0.92;
+  ctx.beginPath();ctx.arc(h.x,h.y,p.size,0,Math.PI*2);ctx.fill();
+  if(!IS_MOBILE) ctx.shadowBlur=0;
+  ctx.globalAlpha=1;ctx.restore();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAQUETES DE DATOS — pequeñas partículas en ~15% de conexiones
-   Movimiento intermitente, tamaño pequeño, velocidad lenta
+   PAQUETES DE DATOS
 ═══════════════════════════════════════════════════════════════════ */
-let DATA_PKTS=[];
-let PKT_ENABLED_CONNS=new Set(); // índices de conexiones con tráfico activo
-let pktLastRefresh=0;
-
 function refreshActiveConns(){
-  // Elegir ~15% de conexiones al azar como "activas con tráfico"
   PKT_ENABLED_CONNS.clear();
   const total=Math.max(1,Math.floor(CONNECTIONS.length*0.15));
   const pool=[...Array(CONNECTIONS.length).keys()].sort(()=>Math.random()-0.5);
@@ -518,11 +405,9 @@ function refreshActiveConns(){
 }
 
 function tickDataPackets(dt){
-  // Refrescar qué conexiones tienen tráfico cada ~8s
   if(br-pktLastRefresh>8){ refreshActiveConns(); pktLastRefresh=br; }
 
-  // Spawn nuevos paquetes de vez en cuando
-  if(Math.random()<0.04 && DATA_PKTS.length<45){
+  if(Math.random()<SPAWN_PROB && DATA_PKTS.length<MAX_PKTS){
     const ci=[...PKT_ENABLED_CONNS][Math.floor(Math.random()*PKT_ENABLED_CONNS.size)];
     if(ci===undefined) return;
     const c=CONNECTIONS[ci];
@@ -532,121 +417,71 @@ function tickDataPackets(dt){
     const p1=txy(fr.x,fr.y), p2=txy(to.x,to.y);
     DATA_PKTS.push({
       sx:p1.x,sy:p1.y,ex:p2.x,ey:p2.y,
-      t:0, speed:0.003+Math.random()*0.004,  // lento
-      size:1.5+Math.random()*0.8,            // pequeño
+      t:0, speed:0.003+Math.random()*0.004,
+      size:1.5+Math.random()*0.8,
       col:Math.random()<0.6?'rgba(41,211,255,0.85)':'rgba(0,255,180,0.75)',
-      trail:[],trailMax:7,done:false
+      trail:[],trailMax: IS_MOBILE ? 4 : 7,done:false
     });
   }
 
-  // Avanzar y dibujar
-  DATA_PKTS.forEach(p=>{
+  for(let i=DATA_PKTS.length-1;i>=0;i--){
+    const p=DATA_PKTS[i];
     p.t=Math.min(1,p.t+p.speed);
     const e=p.t<0.5?2*p.t*p.t:1-Math.pow(-2*p.t+2,2)/2;
     const cx=p.sx+(p.ex-p.sx)*e, cy=p.sy+(p.ey-p.sy)*e;
     p.trail.push({x:cx,y:cy});
     if(p.trail.length>p.trailMax)p.trail.shift();
-    if(p.t>=1)p.done=true;
+    if(p.t>=1){DATA_PKTS.splice(i,1);continue;}
 
-    // Dibujar trail tenue + cabeza
     ctx.save();
-    for(let i=1;i<p.trail.length;i++){
-      const r=i/p.trail.length;
-      ctx.beginPath();
-      ctx.moveTo(p.trail[i-1].x,p.trail[i-1].y);
-      ctx.lineTo(p.trail[i].x,p.trail[i].y);
-      ctx.strokeStyle=p.col.replace(/[\d.]+\)$/,r*0.45+')');
-      ctx.lineWidth=p.size*r*0.7;
-      ctx.stroke();
+    if(!IS_MOBILE){
+      for(let j=1;j<p.trail.length;j++){
+        const r=j/p.trail.length;
+        ctx.beginPath();
+        ctx.moveTo(p.trail[j-1].x,p.trail[j-1].y);
+        ctx.lineTo(p.trail[j].x,p.trail[j].y);
+        ctx.strokeStyle=p.col.replace(/[\d.]+\)$/,r*0.45+')');
+        ctx.lineWidth=p.size*r*0.7;ctx.stroke();
+      }
     }
     const h=p.trail[p.trail.length-1]||{x:cx,y:cy};
-    ctx.shadowColor=p.col;ctx.shadowBlur=5;
+    if(!IS_MOBILE){ ctx.shadowColor=p.col;ctx.shadowBlur=5; }
     ctx.fillStyle='rgba(255,255,255,0.9)';ctx.globalAlpha=0.88;
     ctx.beginPath();ctx.arc(h.x,h.y,p.size,0,Math.PI*2);ctx.fill();
-    ctx.shadowBlur=0;ctx.globalAlpha=1;ctx.restore();
-  });
-  DATA_PKTS=DATA_PKTS.filter(p=>!p.done);
-  if(DATA_PKTS.length>60)DATA_PKTS.splice(0,10);
-}
-
-function drawConn(c, alpha=1, flash=0){
-  if(alpha<=0) return;
-  const p1=txy(c.a.x,c.a.y),p2=txy(c.b.x,c.b.y);
-  const midX=(p1.x+p2.x)/2,midY=(p1.y+p2.y)/2;
-  const dist=mx>0?Math.hypot(mx-midX,my-midY):9999;
-  const maxD=c.type==='pp'?W*0.22:W*0.15;
-  const prox=Math.max(0,1-dist/maxD);
-  // Líneas claramente visibles: alpha base aumentado sustancialmente
-  const baseAl=c.type==='pp'?0.42:0.22;
-  const al=Math.min(0.92,(baseAl+prox*0.45+flash*0.45)*alpha);
-  const lw=c.type==='pp'?(1.4+prox*1.8+flash*1.2):(0.9+prox*0.9+flash*0.8);
-  // Cian luminoso visible
-  const col=(prox>0.25||flash>0.25)?`rgba(100,228,255,${al})`:`rgba(41,211,255,${al})`;
-  ctx.save();
-  if(c.type==='pp'){
-    // Glow extra en conexiones primarias
-    ctx.shadowColor='rgba(41,211,255,0.35)';
-    ctx.shadowBlur=4;
+    if(!IS_MOBILE) ctx.shadowBlur=0;
+    ctx.globalAlpha=1;ctx.restore();
   }
-  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);
-  ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.stroke();
-  ctx.shadowBlur=0;
-  ctx.restore();
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   ANIMACIÓN 1 — Argentina que Despierta
-   Fase 1: nodos emergen N→S (0.09s por nodo)
-   Fase 2: conexiones se revelan progresivamente
-   Fase 3: red viva con pulsos neurales
+   ANIMACION — Argentina que Despierta
 ═══════════════════════════════════════════════════════════════════ */
 let D={};
 function initDespierta(){
   D={ph:1,connReveal:0,nA:{},order:[],pulses:[]};
- D.order=[...ALL_NODES]
-  .sort((a,b)=>{
-    if(a.isPrimary && !b.isPrimary) return -1;
-    if(!a.isPrimary && b.isPrimary) return 1;
-    return a.y - b.y;
-  })
-  .map(n=>n.id);
+  D.order=[...ALL_NODES]
+    .sort((a,b)=>{
+      if(a.isPrimary && !b.isPrimary) return -1;
+      if(!a.isPrimary && b.isPrimary) return 1;
+      return a.y - b.y;
+    })
+    .map(n=>n.id);
   ALL_NODES.forEach(n=>{ D.nA[n.id]=0; });
-}
-
-function drawNeuralPulse(p){
-  if(p.trail.length<2) return;
-  ctx.save();
-  for(let i=1;i<p.trail.length;i++){
-    const r=i/p.trail.length;
-    ctx.beginPath();
-    ctx.moveTo(p.trail[i-1].x,p.trail[i-1].y);
-    ctx.lineTo(p.trail[i].x,p.trail[i].y);
-    ctx.strokeStyle=p.col.replace(/[\d.]+\)$/,r*0.55+')');
-    ctx.lineWidth=p.size*r;ctx.stroke();
-  }
-  const h=p.trail[p.trail.length-1];
-  ctx.shadowColor=p.col;ctx.shadowBlur=10;
-  ctx.fillStyle='#fff';ctx.globalAlpha=0.92;
-  ctx.beginPath();ctx.arc(h.x,h.y,p.size,0,Math.PI*2);ctx.fill();
-  ctx.shadowBlur=0;ctx.globalAlpha=1;ctx.restore();
 }
 
 function tickDespierta(dt){
   const ni=Math.floor(br/0.05);
-  // Fase 1
   if(D.ph===1){
     for(let i=0;i<Math.min(ni,D.order.length);i++)
       D.nA[D.order[i]]=Math.min(1,(D.nA[D.order[i]]||0)+dt*5.5);
     if(ni>=D.order.length) D.ph=2;
   }
-  // Fase 2
   if(D.ph===2){
     D.connReveal=Math.min(1,D.connReveal+dt*0.65);
     if(D.connReveal>=1) D.ph=3;
   }
-  // Fase 3: pulsos vivos
   if(D.ph>=3){
-    if(Math.random()<0.04){
+    if(Math.random()<0.04 && D.pulses.length<MAX_PULSES){
       const pool=CONNECTIONS.filter(c=>c.type==='pp');
       if(pool.length){
         const c=pool[Math.floor(Math.random()*pool.length)];
@@ -656,16 +491,15 @@ function tickDespierta(dt){
         D.pulses.push({sx:p1.x,sy:p1.y,ex:p2.x,ey:p2.y,
           t:0,speed:0.005+Math.random()*0.005,
           size:2.0,col:'rgba(136,232,255,0.90)',
-          trail:[],trailMax:16,done:false});
+          trail:[],trailMax: IS_MOBILE ? 8 : 16,done:false});
       }
     }
-    // Pulsos extra al hover
-    if(mx>0&&Math.random()<0.08){
+    /* Pulsos hover — solo desktop */
+    if(!IS_MOBILE && mx>0 && Math.random()<0.08){
       let bN=null,bD=Infinity;
       PRIMARY.forEach(n=>{ const p=txy(n.x,n.y),d=Math.hypot(mx-p.x,my-p.y); if(d<bD){bD=d;bN=n;} });
       if(bN&&bD<85){
-        const tgts=CONNECTIONS.filter(c=>c.a.id===bN.id||c.b.id===bN.id)
-          .map(c=>c.a.id===bN.id?c.b:c.a);
+        const tgts=CONNECTIONS.filter(c=>c.a.id===bN.id||c.b.id===bN.id).map(c=>c.a.id===bN.id?c.b:c.a);
         if(tgts.length){
           const to=tgts[Math.floor(Math.random()*tgts.length)];
           const p1=txy(bN.x,bN.y),p2=txy(to.x,to.y);
@@ -677,85 +511,45 @@ function tickDespierta(dt){
       }
     }
   }
-  // Draw connections con alpha completo
+
   const vis=D.ph>=2?Math.floor(D.connReveal*CONNECTIONS.length):0;
   for(let i=0;i<vis;i++) drawConn(CONNECTIONS[i],1.0);
-  // Draw nodes
-  ALL_NODES.filter(n=>!n.isPrimary).forEach(n=>drawNode(n,D.nA[n.id]||0,br));
-  ALL_NODES.filter(n=> n.isPrimary).forEach(n=>drawNode(n,D.nA[n.id]||0,br));
-  // Draw pulses neurales
-  D.pulses.forEach(p=>{
+
+  /* Usar listas pre-filtradas — sin crear arrays nuevos por frame */
+  for(let i=0;i<NODES_SEC.length;i++) drawNode(NODES_SEC[i],D.nA[NODES_SEC[i].id]||0,br);
+  for(let i=0;i<NODES_PRI.length;i++) drawNode(NODES_PRI[i],D.nA[NODES_PRI[i].id]||0,br);
+
+  for(let i=D.pulses.length-1;i>=0;i--){
+    const p=D.pulses[i];
     p.t=Math.min(1,p.t+p.speed);
     const e=p.t<0.5?2*p.t*p.t:1-Math.pow(-2*p.t+2,2)/2;
     const cx=p.sx+(p.ex-p.sx)*e,cy=p.sy+(p.ey-p.sy)*e;
     p.trail.push({x:cx,y:cy});
     if(p.trail.length>p.trailMax)p.trail.shift();
-    if(p.t>=1)p.done=true;
+    if(p.t>=1){D.pulses.splice(i,1);continue;}
     drawNeuralPulse(p);
-  });
-  D.pulses=D.pulses.filter(p=>!p.done);
-  if(D.pulses.length>80)D.pulses.splice(0,15);
-  // Paquetes de datos en fase 3
+  }
+
   if(D.ph>=3) tickDataPackets(dt);
 }
 
-
-
 /* ═══════════════════════════════════════════════════════════════════
-   LOOP PRINCIPAL
+   LOOP PRINCIPAL — pausa cuando el mapa no es visible en pantalla
 ═══════════════════════════════════════════════════════════════════ */
 let ANIM=0;
 let rafId=null, lastTs=null, br=0;
+let isVisible=true;
 
 function loop(ts){
+  rafId=requestAnimationFrame(loop);
+  if(!isVisible){ lastTs=null; return; } // pausa el render, sin cancelar rAF
+
   if(!lastTs)lastTs=ts;
   const dt=Math.min((ts-lastTs)/1000,0.05);
   lastTs=ts; br+=dt;
   ctx.clearRect(0,0,W,H);
   if(ANIM===0) tickDespierta(dt);
-
-  
-  // --- Actualizar y dibujar paquetes ---
-  // Calculamos el tiempo en segundos desde que arrancó la animación
-  const animTime = (ts - lastTs) / 1000; 
-
-  // Solo empezamos a generar paquetes después del segundo 5 (cuando ya hay nodos visibles)
-  if(animTime > 5 && Math.random() < 0.08) {
-    spawnPacket();
-  }
-
-  for(let i = packets.length - 1; i >= 0; i--) {
-    const p = packets[i];
-    p.t += PACKET_SPEED;
-
-    if(p.t >= 1) {
-      packets.splice(i, 1);
-      continue;
-    }
-
-    const x = p.conn.a.x + (p.conn.b.x - p.conn.a.x) * p.t;
-    const y = p.conn.a.y + (p.conn.b.y - p.conn.a.y) * p.t;
-    const pos = txy(x, y);
-
-    // Fade-in suave: la opacidad sube de 0 a 0.9 entre el segundo 5 y el 9 de la animación
-    let pAlpha = Math.min(0.9, (animTime - 5) * 0.2);
-    if(pAlpha < 0) pAlpha = 0;
-
-    // Solo los dibujamos si ya tienen algo de brillo
-    if (pAlpha > 0) {
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 2.2, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(120, 240, 255, ${pAlpha})`;
-      ctx.shadowColor = `rgba(120, 240, 255, ${pAlpha})`;
-      ctx.shadowBlur = 6;
-      ctx.fill();
-      ctx.shadowBlur = 0; // Reseteamos sombra
-    }
-  }
-  rafId=requestAnimationFrame(loop);
 }
-
-
 
 /* ── Mouse ── */
 canvas.addEventListener('mousemove',e=>{
@@ -770,20 +564,20 @@ canvas.addEventListener('mousemove',e=>{
 });
 canvas.addEventListener('mouseleave',()=>{ mx=-1;my=-1;document.getElementById('tip').style.display='none'; });
 
+/* ── IntersectionObserver: pausa render cuando el mapa está fuera de pantalla ── */
+const _observer = new IntersectionObserver(entries=>{
+  isVisible = entries[0].isIntersecting;
+}, { threshold: 0.05 });
+
+/* ── Resize ── */
+window.addEventListener('resize', ()=>{ resize(); });
+
 /* ── INICIO ── */
 window.addEventListener('load',()=>{
   initSVGPaths();
   resize();
   rebuildNetwork();
   initDespierta();
+  _observer.observe(document.getElementById('cw'));
   rafId=requestAnimationFrame(loop);
 });
-
-/* ── RESIZE: recalcula posición del mapa y nodos al cambiar tamaño ── */
-window.addEventListener('resize',()=>{
-  resize();
-});
-
-
-
-

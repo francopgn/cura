@@ -1,4 +1,3 @@
-<script>
 
 /* ═══════════════════════════════════════════════════════════════════
    CONSTANTES DE COORDENADAS
@@ -749,4 +748,3 @@ window.addEventListener('load',()=>{
 });
 
 
-</script>

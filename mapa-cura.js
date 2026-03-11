@@ -71,31 +71,59 @@ const ctx = canvas.getContext('2d');
 let W=0, H=0, dpr=window.devicePixelRatio||1;
 let mx=-1, my=-1;
 
-function mp(){
-  const px=W*.055, py=H*.04, aw=W-2*px, ah=H-2*py;
-  let mw=aw, mh=aw/AR_RATIO;
-  if(mh>ah){ mh=ah; mw=ah*AR_RATIO; }
-  return {ox:px+(aw-mw)/2, oy:py+(ah-mh)/2, mw, mh};
+function mp() {
+  // Ajustamos los márgenes internos (padding)
+  const px = W * 0.12; // Aumentamos margen lateral para centrar
+  const py = H * 0.05; 
+  const aw = W - 2 * px;
+  const ah = H - 2 * py;
+  
+  let mw = aw;
+  let mh = aw / AR_RATIO;
+  
+  if (mh > ah) { 
+    mh = ah; 
+    mw = ah * AR_RATIO; 
+  }
+  
+  // El secreto está aquí: centramos mw dentro del ancho disponible aw
+  return { ox: px + (aw - mw) / 2, oy: py + (ah - mh) / 2, mw, mh };
 }
-function txy(nx,ny){ const{ox,oy,mw,mh}=mp(); return{x:ox+nx*mw, y:oy+ny*mh}; }
 
-function positionSVG(){
-  const el=document.getElementById('ar-map');
-  if(!el) return;
-  const{ox,oy,mw}=mp();
-  const scale=mw/SVG_CW;
-  el.style.left=(ox-SVG_CX0*scale)+'px';
-  el.style.top=(oy-SVG_CY0*scale)+'px';
-  el.style.width=(SVG_VW*scale)+'px';
-  el.style.height=(SVG_VH*scale)+'px';
+function txy(nx, ny) { 
+  const {ox, oy, mw, mh} = mp(); 
+  return { x: ox + nx * mw, y: oy + ny * mh }; 
 }
 
-function resize(){
-  const cw=document.getElementById('cw');
-  W=cw.clientWidth; H=cw.clientHeight;
-  canvas.width=W*dpr; canvas.height=H*dpr;
-  canvas.style.width=W+'px'; canvas.style.height=H+'px';
-  ctx.scale(dpr,dpr);
+function positionSVG() {
+  const el = document.getElementById('ar-map'); 
+  if (!el) return;
+  
+  const {ox, oy, mw} = mp(); 
+  const scale = mw / SVG_CW;
+  
+  // Sincronizamos el dibujo con el origen de los puntos (ox y oy)
+  el.style.left = (ox - SVG_CX0 * scale) + 'px';
+  el.style.top = (oy - SVG_CY0 * scale) + 'px';
+  el.style.width = (SVG_VW * scale) + 'px';
+  el.style.height = (SVG_VH * scale) + 'px';
+}
+
+function resize() {
+  const cw = document.getElementById('cw'); 
+  if (!cw) return;
+  
+  W = cw.clientWidth; 
+  H = cw.clientHeight;
+  
+  canvas.width = W * dpr; 
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; 
+  canvas.style.height = H + 'px';
+  
+  ctx.scale(dpr, dpr); 
+  
+  // Primero calculamos posición y luego redibujamos
   positionSVG();
 }
 
@@ -746,5 +774,6 @@ window.addEventListener('load',()=>{
   initDespierta();
   rafId=requestAnimationFrame(loop);
 });
+
 
 

@@ -389,6 +389,54 @@
     /* --- SCROLL REVEAL (complementa AOS) --- */
     .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* --- MAPA ARGENTINA HERO --- */
+    .argentina-map-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      /* Proporción vertical: Argentina es más alta que ancha */
+      aspect-ratio: 3 / 4.2;
+      margin: 0 auto;
+      /* Máscara radial para fusión suave con el fondo oscuro */
+      mask-image: radial-gradient(ellipse 82% 78% at 50% 50%, black 45%, rgba(0,0,0,0.6) 65%, transparent 88%);
+      -webkit-mask-image: radial-gradient(ellipse 82% 78% at 50% 50%, black 45%, rgba(0,0,0,0.6) 65%, transparent 88%);
+    }
+    .argentina-map-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      display: block;
+    }
+
+    /* --- CREDENCIAL EN SECCIÓN BENEFICIOS --- */
+    .cred-showcase-wrapper {
+      background: linear-gradient(135deg, rgba(0,52,92,0.5) 0%, rgba(6,93,155,0.3) 100%);
+      border: 1px solid rgba(0,194,255,0.2);
+      border-radius: 1.25rem;
+      padding: 1.5rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .cred-showcase-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(89,210,255,0.8);
+    }
+    /* En la sección de beneficios la credencial es más pequeña */
+    .cred-showcase-wrapper .card-container {
+      max-width: 340px;
+    }
+    /* Alias para el card-container dentro del showcase */
+    .cred-showcase-wrapper-inner {
+      max-width: 380px !important;
+      margin: 0 auto;
+    }
   </style>
 </head>
 
@@ -514,9 +562,9 @@
         Un sistema interoperable que une hospitales, farmacias, laboratorios, obras sociales y pacientes bajo un mismo lenguaje digital — con soberanía estatal y control del ciudadano.
       </p>
 
-      <!-- REENMARCADO DE LA CREDENCIAL -->
+      <!-- REFERENCIA AL MAPA -->
       <p class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic">
-        La credencial que ves a la derecha es la llave de acceso a esta infraestructura — el C.U.R.A.-ID que identifica tu historia clínica en todo el sistema sanitario nacional.
+        Lo que ves a la derecha es la Red Sanitaria Nacional desplegándose sobre el mapa de Argentina — cada nodo, un punto de acceso a la infraestructura C.U.R.A.
       </p>
 
       <div class="flex flex-col gap-3">
@@ -548,43 +596,26 @@
       </div>
     </div>
 
-    <!-- Columna derecha: CREDENCIAL 3D ORIGINAL INTACTA -->
-    <div class="relative w-full flex justify-center items-center perspective-container" data-aos="zoom-in" data-aos-delay="300">
-      <div class="absolute inset-0 bg-cura-accent/40 blur-3xl rounded-full -z-10 transform scale-90"></div>
+    <!-- Columna derecha: MAPA ANIMADO DE ARGENTINA -->
+    <div class="relative w-full flex justify-center items-center" data-aos="zoom-in" data-aos-delay="300">
 
-      <div class="card-container animate-float">
-        <div id="credencial-giratoria" class="card-inner">
-          <div class="card-face card-front">
-            <img src="credencial-frente-base.png" alt="Credencial Frente" class="card-bg-img">
-            <div class="card-data-layer">
-              <div class="pos-nombre-front" id="cred-nombre-front"></div>
-              <div class="pos-dni-front"    id="cred-dni-front"></div>
-              <div class="pos-sangre"       id="cred-sangre"></div>
-              <div class="data-block block-alergias"     id="cred-alergias"></div>
-              <div class="data-block block-operaciones"  id="cred-operaciones"></div>
-              <div class="data-block block-fecha-nac"    id="cred-fecha-nac"></div>
-              <div class="data-block block-medicamentos" id="cred-medicamentos"></div>
-              <div class="data-block block-domicilio"    id="cred-domicilio"></div>
-              <div class="data-block block-antecedentes" id="cred-antecedentes"></div>
-              <div class="data-block block-contactos"    id="cred-contactos"></div>
-              <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
-            </div>
-          </div>
-          <div class="card-face card-back">
-            <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
-            <div class="card-data-layer">
-              <div class="pos-nombre-back" id="cred-nombre-back"></div>
-              <div class="pos-dni-back"    id="cred-dni-back"></div>
-              <div class="pos-id-number"   id="cred-id-number"></div>
-              <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
-            </div>
-          </div>
-        </div>
+      <!-- Halo de resplandor de fondo, alineado con la paleta CURA -->
+      <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+        <div style="width:70%;padding-top:70%;border-radius:50%;background:radial-gradient(circle, rgba(0,194,255,0.18) 0%, transparent 70%);"></div>
       </div>
 
-      <p class="absolute -bottom-10 text-center text-[11px] text-cura-accentLight animate-pulse opacity-80">
-        (Hacé click en la credencial para girarla)
-      </p>
+      <!-- Wrapper con máscara de difuminado para integración estética -->
+      <div class="argentina-map-wrapper">
+        <iframe
+          src="ar-map-animation-paganini.html"
+          allowtransparency="true"
+          scrolling="no"
+          frameborder="0"
+          class="argentina-map-iframe"
+          title="Red Sanitaria Nacional — C.U.R.A."
+        ></iframe>
+      </div>
+
     </div>
   </section>
 
@@ -818,6 +849,45 @@
 
       <!-- ---- PANEL: PACIENTES ---- -->
       <div id="panel-pacientes" class="actor-panel active grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <!-- Credencial C.U.R.A.-ID — Ejemplo visual del beneficio -->
+        <div class="sm:col-span-2 lg:col-span-3 cred-showcase-wrapper" data-aos="fade-up">
+          <p class="cred-showcase-label">Así se ve tu C.U.R.A.-ID · Identificador Sanitario Nacional</p>
+          <div class="perspective-container w-full">
+            <div class="card-container animate-float cred-showcase-wrapper-inner">
+              <div id="credencial-giratoria" class="card-inner">
+                <div class="card-face card-front">
+                  <img src="credencial-frente-base.png" alt="Credencial Frente" class="card-bg-img">
+                  <div class="card-data-layer">
+                    <div class="pos-nombre-front" id="cred-nombre-front"></div>
+                    <div class="pos-dni-front"    id="cred-dni-front"></div>
+                    <div class="pos-sangre"       id="cred-sangre"></div>
+                    <div class="data-block block-alergias"     id="cred-alergias"></div>
+                    <div class="data-block block-operaciones"  id="cred-operaciones"></div>
+                    <div class="data-block block-fecha-nac"    id="cred-fecha-nac"></div>
+                    <div class="data-block block-medicamentos" id="cred-medicamentos"></div>
+                    <div class="data-block block-domicilio"    id="cred-domicilio"></div>
+                    <div class="data-block block-antecedentes" id="cred-antecedentes"></div>
+                    <div class="data-block block-contactos"    id="cred-contactos"></div>
+                    <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
+                  </div>
+                </div>
+                <div class="card-face card-back">
+                  <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
+                  <div class="card-data-layer">
+                    <div class="pos-nombre-back" id="cred-nombre-back"></div>
+                    <div class="pos-dni-back"    id="cred-dni-back"></div>
+                    <div class="pos-id-number"   id="cred-id-number"></div>
+                    <div class="pos-ficticios">DATOS FICTICIOS Y ALEATORIOS</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-center text-[11px] text-cura-accentLight/70 animate-pulse">
+            (Hacé click en la credencial para girarla)
+          </p>
+        </div>
         <button class="benefit-card" onclick="openBenefitModal('cura-id')" data-aos="fade-up" data-aos-delay="50">
           <div class="benefit-card-icon"><i class="ph-bold ph-identification-badge"></i></div>
           <div class="benefit-card-title">Tu C.U.R.A.-ID</div>

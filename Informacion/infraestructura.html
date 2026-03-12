@@ -67,56 +67,138 @@
         Infraestructura Nacional
       </h1>
       <p class="text-cura-accentLight max-w-2xl">
-        Resiliencia, soberanía y disponibilidad continua mediante el respaldo de la infraestructura tecnológica estatal.
+        Arquitectura híbrida federada, soberana y resiliente: nodos distribuidos en macro-regiones, capa de intercambio federada y repositorios nacionales bajo control del Estado argentino.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
+
+      <!-- 1. ARSAT y nodos soberanos -->
       <div data-aos="fade-up" data-aos-delay="100">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
             <i class="ph-bold ph-hard-drives text-cura-accent text-2xl"></i>
-            1. Nodos Soberanos de ARSAT
+            1. Nodos Soberanos de ARSAT S.E.
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            La infraestructura física reside en el corazón tecnológico de la Nación. Se utilizan los centros de datos de <strong>ARSAT</strong> para garantizar que la información sensible nunca salga de jurisdicción argentina.
+            El sistema se aloja exclusivamente en los centros de datos nacionales de <strong>ARSAT S.E.</strong>, con <strong>redundancia geográfica mínima en tres nodos</strong> ubicados en macro-regiones federales diferenciadas: NOA, NEA, Cuyo, Patagonia, Región Centro y AMBA. Los nodos deben encontrarse físicamente separados en infraestructuras independientes y distintas áreas metropolitanas o provincias; no se permite alojar múltiples nodos en un mismo edificio o complejo. La información sensible de los argentinos nunca sale de jurisdicción argentina.
           </p>
         </div>
       </div>
 
+      <!-- 2. Arquitectura híbrida -->
       <div data-aos="fade-up" data-aos-delay="200">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-shield-checkered text-cura-accent text-2xl"></i>
-            2. Alta Disponibilidad y Redundancia
+            <i class="ph-bold ph-graph text-cura-accent text-2xl"></i>
+            2. Arquitectura Híbrida con Capa de Intercambio Federada
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Diseñado con una arquitectura de <strong>Alta Disponibilidad (Tier III+)</strong>. Existen múltiples respaldos activos: si un nodo falla, el sistema conmuta automáticamente al siguiente sin pérdida de servicio.
+            El sistema adopta una <strong>arquitectura híbrida federada</strong>: repositorios nacionales para datos críticos y repositorios jurisdiccionales o institucionales para las historias clínicas completas. Ambos están interconectados mediante la <strong>Capa de Intercambio Federada (CIF)</strong>, que asegura la comunicación entre sistemas provinciales, municipales y privados mediante APIs seguras autenticadas bajo <strong>OAuth 2.0</strong>, con cifrado extremo a extremo y registro sellado digitalmente de todas las transacciones.
           </p>
         </div>
       </div>
 
+      <!-- 3. Cliente liviano -->
       <div data-aos="fade-up" data-aos-delay="300">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-cube text-cura-accent text-2xl"></i>
-            3. Blockchain para la Integridad de Datos
+            <i class="ph-bold ph-monitor text-cura-accent text-2xl"></i>
+            3. Arquitectura de Cliente Liviano (Sin Hardware Local)
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Capa de <strong>Blockchain Gubernamental</strong> para blindar los registros. Cada transacción médica genera un registro inmutable, impidiendo alteraciones y otorgando seguridad jurídica absoluta.
+            El sistema se implementa bajo una arquitectura web de <strong>cliente liviano</strong>: no requiere servidores locales ni hardware específico en hospitales o consultorios. Todo establecimiento accede a la totalidad de las funcionalidades desde cualquier dispositivo estándar con navegador web —computadoras, tabletas o celulares—, maximizando el uso de la capacidad instalada existente y reduciendo costos de adopción a cero para los efectores.
           </p>
         </div>
       </div>
 
+      <!-- 4. Repositorios nacionales -->
       <div data-aos="fade-up" data-aos-delay="400">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-broadcast text-cura-accent text-2xl"></i>
-            4. Conectividad Federal (REFEFO)
+            <i class="ph-bold ph-database text-cura-accent text-2xl"></i>
+            4. Repositorios Nacionales Obligatorios
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Aprovecha la <strong>Red Federal de Fibra Óptica (REFEFO)</strong> y los <strong>satélites ARSAT</strong> para zonas remotas, asegurando que la salud digital sea un derecho federal efectivo en todo el país.
+            Los repositorios nacionales incluyen como mínimo: el <strong>Resumen Clínico de Urgencias</strong> (alergias, medicamentos activos, diagnósticos crónicos, cirugías), el <strong>Registro Nacional de Receta Electrónica y Tratamientos Activos</strong>, el <strong>Registro Federal de Vacunación e Inmunizaciones</strong> y el <strong>C.U.R.A.-ID</strong>. Cada jurisdicción y prestador adherido mantiene la soberanía sobre los datos originados en su ámbito; la información solo circula con razón clínica y consentimiento del paciente.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5. Residencia de datos -->
+      <div data-aos="fade-up" data-aos-delay="500">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-map-trifold text-cura-accent text-2xl"></i>
+            5. Tres Categorías de Residencia de Datos
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La ley establece un régimen diferenciado de residencia según la sensibilidad de los datos. <strong>Categoría A</strong> (datos clínicos sensibles: historias clínicas, diagnósticos, datos de salud mental): almacenamiento exclusivo en territorio nacional. <strong>Categoría B</strong> (datos administrativos: agendas, facturación, estadísticas operativas): arquitectura híbrida controlada, siempre bajo soberanía jurídica argentina. <strong>Categoría C</strong> (estadísticos anonimizados para investigación): sin restricciones de residencia física, sujetos a prohibición de re-identificación.
+          </p>
+        </div>
+      </div>
+
+      <!-- 6. AI-Ready y sistemas legados -->
+      <div data-aos="fade-up" data-aos-delay="600">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-cube text-cura-accent text-2xl"></i>
+            6. Arquitectura Modular, Escalable y AI-Ready
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            El sistema se diseña como <strong>AI-Ready</strong>: permite incorporar módulos de Inteligencia Artificial de forma progresiva mediante APIs estandarizadas y contenedores de software independientes, sin modificar la ley. Para la migración desde sistemas preexistentes, la Autoridad de Aplicación provee herramientas de <strong>extracción, transformación y carga (ETL)</strong> asistidas por IA para la limpieza, estandarización y mapeo semántico de datos legados, sin costos de licenciamiento para las jurisdicciones.
+          </p>
+        </div>
+      </div>
+
+      <!-- 7. REFEFO y satélites -->
+      <div data-aos="fade-up" data-aos-delay="700">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-broadcast text-cura-accent text-2xl"></i>
+            7. Conectividad Federal: REFEFO y Satélites ARSAT
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La conectividad troncal se garantiza mediante la <strong>Red Federal de Fibra Óptica (REFEFO)</strong> y los <strong>satélites ARSAT</strong> para zonas remotas, asegurando que la salud digital sea un derecho federal efectivo en todo el territorio. La infraestructura de conectividad sanitaria puede complementarse con hasta el <strong>20% anual del Fondo del Servicio Universal (FSU)</strong> —Ley 27.078— para despliegue de redes y acceso digital en establecimientos públicos, previo informe de ENACOM que certifique que no afecta los programas tradicionales de conectividad universal.
+          </p>
+        </div>
+      </div>
+
+      <!-- 8. Respaldos y DRP -->
+      <div data-aos="fade-up" data-aos-delay="800">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-shield-checkered text-cura-accent text-2xl"></i>
+            8. Respaldos, Alta Disponibilidad y Plan de Recuperación
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Los <strong>respaldos diarios cifrados</strong> se conservan durante un mínimo de <strong>10 años</strong> con verificación mensual de integridad. El sistema cuenta con un <strong>Plan Nacional de Recuperación ante Desastres (DRP)</strong> con pruebas semestrales de restauración y continuidad del servicio. La redundancia geográfica en tres nodos macro-regionales independientes garantiza que ante falla de un nodo el sistema continúe operando sin pérdida de servicio ni de datos.
+          </p>
+        </div>
+      </div>
+
+      <!-- 9. Convenios colaboración -->
+      <div data-aos="fade-up" data-aos-delay="900">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-buildings text-cura-accent text-2xl"></i>
+            9. Colaboración con Universidades y Sistema Científico
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La Autoridad de Aplicación puede celebrar <strong>convenios de colaboración técnica sin transferencia de fondos</strong> con universidades públicas, institutos tecnológicos, organismos nacionales, provinciales o municipales y entidades del sistema científico estatal (CONICET, INTA, INTI y equivalentes) para el desarrollo y mejora del sistema. Estos acuerdos aprovechan el capital intelectual del Estado sin generar nueva erogación, y los aportes en especie se contabilizan en el FIISD conforme normas de contabilidad gubernamental.
+          </p>
+        </div>
+      </div>
+
+      <!-- 10. wide - soberanía de datos -->
+      <div class="md:col-span-2" data-aos="zoom-in" data-aos-delay="1000">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-2 hover:shadow-cura-accent/10">
+          <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+            <i class="ph-bold ph-lock-key text-cura-accent text-3xl"></i>
+            10. Soberanía de Datos: Infraestructura Complementaria Bajo Control Nacional
+          </h3>
+          <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
+            Solo en caso de insuficiencia técnica de ARSAT S.E. —certificada por la UESC mediante informe técnico aprobado por el Consejo Nacional del Sistema C.U.R.A.— puede contratarse capacidad complementaria de infraestructura cloud. Esta contratación está sujeta a condiciones acumulativas estrictas: <strong>(1)</strong> el proveedor debe garantizar almacenamiento y procesamiento exclusivamente en territorio argentino o bajo soberanía jurídica nacional; <strong>(2)</strong> proceso de selección conforme el Decreto 1023/01; <strong>(3)</strong> dictamen previo de la ONTI sobre condiciones de soberanía de datos; y <strong>(4)</strong> publicación íntegra del contrato en el portal oficial del Sistema C.U.R.A. La insuficiencia de ARSAT S.E. debe ser verificada anualmente por la SIGEN.
           </p>
         </div>
       </div>

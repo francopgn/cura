@@ -66,85 +66,163 @@
       <h1 class="text-3xl md:text-5xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-cura-accentLight">
         Implementación por Hitos
       </h1>
-      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-10">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
         <p class="text-sm md:text-base leading-relaxed text-white/90">
-            El despliegue de C.U.R.A. se basa en un modelo de <strong>"Hitos de Salida"</strong> y no en fechas calendario rígidas. No se avanzará a una nueva fase hasta que la anterior esté tecnológicamente estabilizada.
+          El despliegue de C.U.R.A. se basa en un modelo de <strong>Hitos de Salida</strong> y no en fechas calendario rígidas. No se avanza a una nueva fase hasta que la anterior esté tecnológicamente verificada y certificada por el <strong>Consejo Nacional del Sistema C.U.R.A.</strong>, con auditoría independiente de la <strong>AGN</strong>. La implementación completa hasta la Fase 3 no podrá exceder el plazo máximo de <strong>7 años</strong> desde la promulgación de la ley (Art. 14).
+        </p>
+      </div>
+      <!-- Mecanismo de tandas provinciales -->
+      <div class="bg-white/5 border border-cura-accent/20 rounded-2xl p-5 mb-2">
+        <h2 class="text-cura-accentLight font-bold uppercase tracking-wider text-xs mb-3">Mecanismo de Implementación Territorial</h2>
+        <p class="text-sm text-white/80 leading-relaxed">
+          El despliegue territorial se realiza en <strong>tandas de 3 a 5 provincias</strong> sucesivas. La selección prioriza jurisdicciones con mayores déficits sanitarios verificables (mortalidad infantil, acceso a especialidades críticas, IDH provincial) para evitar que la implementación progresiva amplíe brechas preexistentes. Cada provincia dispone de <strong>6 a 9 meses</strong> para alcanzar su Hito de Salida. Para habilitar una fase funcional superior a nivel nacional se requiere que provincias que representen al menos el <strong>60% de las jurisdicciones</strong> o el <strong>70% de la población nacional</strong> hayan alcanzado el Hito de Salida de la fase anterior.
         </p>
       </div>
     </div>
 
     <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-cura-accent before:via-cura-accent/30 before:to-transparent">
       
+      <!-- FASE 1 -->
       <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active" data-aos="fade-right">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-gear"></i>
         </div>
         <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="font-bold text-white">Fase 0: Cimientos y Estandarización</h3>
-            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 1-6</span>
+            <h3 class="font-bold text-white">Fase 1: Sistema Base</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">AÑOS 1–2</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            ● Despliegue de la infraestructura central y Guías de Implementación.<br>
-            ● Homologación de catálogos (SNOMED CT) y adecuación normativa nacional.<br>
-            ● <strong>Sin impacto operativo:</strong> Los prestadores operan como siempre mientras adecuan sus interfaces.
+            ● <strong>Historia Clínica Electrónica Federal</strong> con interoperabilidad básica (HL7 FHIR).<br>
+            ● <strong>Sistema Federal de Gestión de Turnos</strong> en modalidad presencial y virtual.<br>
+            ● <strong>Trazabilidad Digital de Medicamentos</strong> (RDDT) y receta electrónica integrada.<br>
+            ● Sin activación de módulos de IA clínica compleja.<br>
+            ● <strong>Hito de salida:</strong> disponibilidad ≥98% del sistema, integración de laboratorios ≥85%, adopción médica activa ≥40%, sin vulnerabilidades críticas sin parchear en más de 72 horas.
           </p>
         </div>
       </div>
 
+      <!-- FASE 2 -->
       <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-left">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-test-tube"></i>
         </div>
         <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="font-bold text-white">Fase 1: Sandbox Regulatorio</h3>
-            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 6-18</span>
+            <h3 class="font-bold text-white">Fase 2: IA de Bajo Riesgo</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">AÑOS 2–3</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            ● <strong>Selección Estratégica:</strong> Jurisdicciones piloto basadas en madurez tecnológica.<br>
-            ● <strong>Respeto al Legado:</strong> Coexistencia con sistemas actuales; sin migraciones forzadas.<br>
-            ● <strong>Régimen de Puerto Seguro:</strong> Acompañamiento educativo y amnistía técnica.
+            ● Módulos de <strong>optimización logística</strong> y limpieza automática de datos.<br>
+            ● Implementación obligatoria de la <strong>videoconsulta integrada</strong> (Art. 19 QUINQUIES).<br>
+            ● <strong>Accesibilidad digital asistida por IA</strong> para personas mayores y con discapacidad (Art. 21 BIS).<br>
+            ● Herramientas administrativas inteligentes.<br>
+            ● <strong>Hito de salida:</strong> receta electrónica integrada estable en ≥60% de las provincias; Credencial C.U.R.A. disponible a nivel nacional; interoperabilidad con Mi Argentina, ANSES y AFIP.
           </p>
         </div>
       </div>
 
+      <!-- FASE 2 BIS / Integración PAMI -->
       <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-right">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+          <i class="ph-bold ph-users"></i>
+        </div>
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-white">Fase 2 BIS: Integración PAMI</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">AÑOS 2–3</span>
+          </div>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            ● Implementación del <strong>Portal PAMI–C.U.R.A.</strong> en al menos el 80% de las jurisdicciones.<br>
+            ● Activación del módulo de <strong>gestión electrónica de medicamentos PAMI</strong>: eliminación del troquel físico, recetas crónicas automáticas y traslados digitalizados.<br>
+            ● Integración estable con los sistemas de <strong>RENAPER y ANSES</strong>.<br>
+            ● Programa Federal de <strong>Facilitadores Digitales PAMI</strong> para reducir la brecha digital en adultos mayores.
+          </p>
+        </div>
+      </div>
+
+      <!-- FASE 3 -->
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-left">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
           <i class="ph-bold ph-map-trifold"></i>
         </div>
         <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="font-bold text-white">Fase 2: Expansión Regional</h3>
-            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MESES 18-36</span>
+            <h3 class="font-bold text-white">Fase 3: IA de Riesgo Moderado</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">AÑOS 3–5</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            ● Despliegue progresivo por regiones geográficas (NOA, NEA, Centro, Cuyo, Patagonia).<br>
-            ● Se habilita la <strong>portabilidad interjurisdiccional plena</strong> para atención federal.
+            ● <strong>Historia Clínica Integral</strong>: portabilidad interjurisdiccional plena con cobertura nacional.<br>
+            ● <strong>Vigilancia epidemiológica predictiva</strong> con análisis de patrones y detección temprana de brotes.<br>
+            ● Soporte a la <strong>codificación clínica</strong> y herramientas de asistencia administrativa avanzada.<br>
+            ● <strong>Motor predictivo de demanda sanitaria</strong> para optimización de agendas y distribución de especialistas.<br>
+            ● Análisis sanitario avanzado para el diseño de políticas públicas de salud.
           </p>
         </div>
       </div>
 
-      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-left">
+      <!-- FASE 4 -->
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-right">
         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
-          <i class="ph-bold ph-check-circle"></i>
+          <i class="ph-bold ph-brain"></i>
         </div>
         <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="font-bold text-white">Fase 3: Régimen Definitivo</h3>
-            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">MES 36+</span>
+            <h3 class="font-bold text-white">Fase 4: IA de Alto Impacto</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">AÑO 5+</span>
           </div>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            ● Plena vigencia nacional en todos los subsectores.<br>
-            ● <strong>Distinción de Faltas:</strong> Diferenciación entre errores de fe y actos de dolo.<br>
-            ● <strong>Castigo al Fraude:</strong> Multas severas por uso comercial o robo de identidad.
+            ● Evaluación y despliegue de <strong>sistemas de soporte a decisiones clínicas</strong>, personalización de tratamientos y predictores de riesgo individual.<br>
+            ● Todos los módulos de IA bajo <strong>estricta supervisión humana obligatoria</strong>: prohibida la automatización sustitutiva del juicio clínico profesional.<br>
+            ● Cada módulo requiere certificación expresa del Consejo Nacional, validación técnica y clínica, evaluación ética y aprobación del Comité Ético.<br>
+            ● <strong>Hito de salida:</strong> cobertura geográfica ≥90% de las provincias y CABA, calidad de datos clínicos ≥98%, estabilidad comprobada de HCE integral durante al menos 6 meses consecutivos.
+          </p>
+        </div>
+      </div>
+
+      <!-- FASE 5 -->
+      <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group" data-aos="fade-left">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-cura-accent/40 bg-cura-primaryDark text-cura-accent shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+          <i class="ph-bold ph-globe-hemisphere-west"></i>
+        </div>
+        <div class="w-[calc(100%-4rem)] md:w-[45%] bg-cura-card p-6 rounded-2xl border border-cura-accent/30 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-1">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-bold text-white">Fase 5: Proyección Global</h3>
+            <span class="text-[10px] font-mono py-1 px-2 bg-cura-accent/20 text-cura-accent rounded text-nowrap">AÑO 5+</span>
+          </div>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            ● Implementación del <strong>Hub de Interoperabilidad Sanitaria Global</strong> como política estratégica del Estado Nacional (Art. 39).<br>
+            ● Activación del <strong>Resumen Internacional del Paciente (IPS)</strong> conforme HL7 FHIR, garantizando la continuidad asistencial de ciudadanos argentinos en el exterior.<br>
+            ● Conexión transfronteriza con países socios y exportación de servicios de consultoría y tecnología sanitaria.<br>
+            ● Cooperación técnica con <strong>OPS, BID, CAF, PNUD y UIT</strong>, consolidando a Argentina como referente regional en soberanía sanitaria digital.<br>
+            ● Condición: cobertura nacional funcional consolidada.
           </p>
         </div>
       </div>
 
     </div>
 
-    
+    <!-- Criterios generales de avance -->
+    <div class="mt-10 bg-white/5 border border-cura-accent/20 rounded-2xl p-6" data-aos="fade-up">
+      <h2 class="text-cura-accentLight font-bold uppercase tracking-wider text-xs mb-4">Criterios Transversales de Avance (Art. 14 y Disposición Transitoria Octava)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4">
+          <i class="ph-bold ph-certificate text-cura-accent text-xl mb-2 block"></i>
+          <h4 class="text-xs font-bold text-white uppercase mb-1">Certificación Independiente</h4>
+          <p class="text-[11px] text-cura-accentLight leading-relaxed">El Consejo Nacional certifica cada hito de salida. La AGN audita anualmente y publica informe público de avance. La estabilidad técnica prevalece sobre la consecutividad temporal.</p>
+        </div>
+        <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4">
+          <i class="ph-bold ph-shield-warning text-cura-accent text-xl mb-2 block"></i>
+          <h4 class="text-xs font-bold text-white uppercase mb-1">Sin Sanciones Prematuras</h4>
+          <p class="text-[11px] text-cura-accentLight leading-relaxed">Ninguna obligación tecnológica, financiera u organizacional puede exigirse antes de que la fase respectiva esté habilitada y las condiciones técnicas mínimas garantizadas.</p>
+        </div>
+        <div class="bg-cura-primaryDark/50 border border-cura-accent/20 rounded-xl p-4">
+          <i class="ph-bold ph-clock-countdown text-cura-accent text-xl mb-2 block"></i>
+          <h4 class="text-xs font-bold text-white uppercase mb-1">Plazo Máximo: 7 Años</h4>
+          <p class="text-[11px] text-cura-accentLight leading-relaxed">La implementación completa hasta la Fase 3 no puede exceder 7 años desde la promulgación. A los 24 meses, la Fase 1 debe estar operativa en al menos una jurisdicción piloto.</p>
+        </div>
+      </div>
+    </div>
 
     <div class="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
       <p class="text-cura-accentLight text-sm italic" data-aos="fade-in">Hitos de salida: estabilidad antes que velocidad.</p>

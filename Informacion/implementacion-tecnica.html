@@ -67,92 +67,151 @@
         Implementación Técnica
       </h1>
       <p class="text-cura-accentLight max-w-2xl">
-        Arquitectura nacional de alta disponibilidad, soberana e inmutable para la seguridad de los datos sanitarios.
+        Arquitectura nacional soberana, modular y escalable: cinco fases de despliegue progresivo, estándares abiertos internacionales y gobernanza técnica independiente.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
+
+      <!-- 1. Fases -->
       <div data-aos="fade-up" data-aos-delay="100">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-cloud-arrow-up text-cura-accent text-2xl"></i>
-            1. Arquitectura de "Hardware Cero"
+            <i class="ph-bold ph-steps text-cura-accent text-2xl"></i>
+            1. Implementación Escalonada en Cinco Fases
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            El sistema opera bajo un modelo de <strong>Cliente Liviano (Thin Client)</strong>, permitiendo que cualquier hospital funcione desde un navegador. Elimina servidores locales, centralizando el procesamiento en la <strong>Cloud-H</strong> de <strong>ARSAT</strong>.
+            La ley establece <strong>cinco fases funcionales obligatorias y secuenciales</strong>, con plazo máximo de 7 años para completar las primeras tres. <strong>Fase 1 (Años 1-2):</strong> Historia Clínica Federal, turnos, recetas, trazabilidad básica e interoperabilidad FHIR, sin IA clínica. <strong>Fase 2 (Años 2-3):</strong> IA de bajo riesgo, videoconsulta integrada, herramientas administrativas. <strong>Fase 3 (Años 3-5):</strong> Vigilancia epidemiológica predictiva. <strong>Fase 4 (Año 5+):</strong> Soporte a decisiones clínicas bajo supervisión humana. <strong>Fase 5 (Año 5+):</strong> Hub Global e IPS. El avance entre fases requiere certificación de hitos por el Consejo Nacional del Sistema C.U.R.A. y auditoría de la AGN.
           </p>
         </div>
       </div>
 
+      <!-- 2. Arquitectura SaaS soberana -->
       <div data-aos="fade-up" data-aos-delay="200">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-fingerprint text-cura-accent text-2xl"></i>
-            2. Inmutabilidad y Audit Trail
+            <i class="ph-bold ph-cloud-arrow-up text-cura-accent text-2xl"></i>
+            2. Arquitectura SaaS Soberana sobre ARSAT
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Implementa un <strong>Audit Trail</strong> bajo norma FDA 21 CFR Parte 11. Cada modificación genera un hash criptográfico inmutable, permitiendo auditorías forenses con validez legal por 10 años.
+            Las jurisdicciones adherentes acceden al sistema bajo un <strong>modelo SaaS gratuito</strong> provisto por el Estado Nacional. La infraestructura se aloja en centros de datos de <strong>ARSAT S.E.</strong> con redundancia geográfica mínima en tres nodos en macro-regiones federales diferenciadas. Los establecimientos de salud acceden a través de la interfaz web oficial o mediante integración nativa vía APIs seguras con sus propios sistemas HIS/EMR. Solo ante insuficiencia técnica certificada puede contratarse capacidad complementaria, siempre en territorio argentino o bajo soberanía jurídica nacional.
           </p>
         </div>
       </div>
 
+      <!-- 3. Interoperabilidad CMBD -->
       <div data-aos="fade-up" data-aos-delay="300">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-cpu text-cura-accent text-2xl"></i>
-            3. Inteligencia Artificial Soberana
+            <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
+            3. Interoperabilidad Técnica y Semántica Universal
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Módulos de <strong>IA Predictiva</strong> entrenados localmente con datos anonimizados. Actúa como motor de <strong>Vigilancia Epidemiológica Proactiva</strong> para el beneficio público estatal.
+            Los estándares <strong>HL7 FHIR R4</strong> (o superior), <strong>SNOMED CT</strong> y <strong>LOINC</strong> son obligatorios y de orden público. La Autoridad de Aplicación publica dentro de los 6 meses el <strong>Conjunto Mínimo Básico de Datos (CMBD)</strong>: la lista priorizada de códigos SNOMED CT y LOINC para diagnósticos, procedimientos, alergias, medicación y resultados de mayor prevalencia y criticidad. La expansión progresiva al universo completo de terminologías se completa en hasta 48 meses. Las APIs seguras conectan hospitales, obras sociales, laboratorios, farmacias y los sistemas provinciales existentes.
           </p>
         </div>
       </div>
 
+      <!-- 4. C.U.R.A.-ID -->
       <div data-aos="fade-up" data-aos-delay="400">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
-            4. Interoperabilidad Universal
+            <i class="ph-bold ph-fingerprint text-cura-accent text-2xl"></i>
+            4. C.U.R.A.-ID: Identificador Único de Paciente
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Eleva a estándar obligatorio los protocolos <strong>HL7 FHIR y SNOMED CT</strong>. Mediante <strong>APIs de Alta Velocidad</strong>, conecta sistemas de provincias, obras sociales y laboratorios.
+            Se crea el <strong>C.U.R.A.-ID</strong>: identificador único, nacional, intransferible y permanente, asignado automáticamente a toda persona inscripta en el RENAPER. Constituye la clave técnica de vinculación seudonimizada de toda la información sanitaria de cada persona, garantizando interoperabilidad, trazabilidad y continuidad asistencial. La <strong>Credencial Única de Salud (C.U.S.)</strong> lo integra junto con el QR dinámico que permite el acceso a Datos Vitales Críticos en emergencias. El C.U.R.A.-ID es infraestructura pública sanitaria esencial: no puede ser eliminado del sistema.
           </p>
         </div>
       </div>
 
+      <!-- 5. Audit Trail -->
       <div data-aos="fade-up" data-aos-delay="500">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-qr-code text-cura-accent text-2xl"></i>
-            5. Tokenización y Seguridad
+            <i class="ph-bold ph-magnifying-glass text-cura-accent text-2xl"></i>
+            5. Módulo de Trazabilidad y Audit Trail
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Protección mediante <strong>Tokenización y QR Dinámico</strong>. El ciudadano dispone de un <strong>Panel de Transparencia</strong> para auditar y revocar permisos de acceso instantáneamente.
+            El <strong>Módulo Nacional de Trazabilidad y Auditoría</strong> implementa un <strong>Audit Trail</strong> bajo norma <strong>FDA 21 CFR Parte 11</strong>: registro cronológico, íntegro e inalterable de todos los accesos, modificaciones y operaciones sobre datos de salud. Los respaldos diarios cifrados se conservan por un mínimo de <strong>10 años</strong> con verificación mensual de integridad. La <strong>Ventana de Corrección</strong> permite al profesional modificar una carga en la primera hora sin sanción, quedando igualmente registrada. Toda modificación posterior requiere justificación fundada. El paciente puede consultar su propio historial de accesos en tiempo real.
           </p>
         </div>
       </div>
 
+      <!-- 6. Consentimiento granular -->
       <div data-aos="fade-up" data-aos-delay="600">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-wifi-slash text-cura-accent text-2xl"></i>
-            6. Resiliencia y Modo Offline
+            <i class="ph-bold ph-qr-code text-cura-accent text-2xl"></i>
+            6. Consentimiento Granular por Episodio Asistencial
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            <strong>Módulo de Resiliencia</strong> para zonas con conectividad intermitente. Permite la carga offline y sincronización automática segura con la historia clínica nacional al detectar conexión.
+            El acceso a la historia clínica es <strong>temporal, específico y caduca automáticamente</strong> al alta o egreso del paciente. Para atención ambulatoria o guardia el acceso se limita al episodio en curso, con extensión automática de hasta 24 horas para resultados pendientes. En tratamientos crónicos con el mismo profesional puede otorgarse consentimiento por hasta 6 meses renovables. El protocolo <strong>Break-Glass</strong> habilita el acceso en emergencias con riesgo vital, sujeto a auditoría posterior obligatoria. El paciente puede revocar el consentimiento en cualquier momento y el sistema registra la revocación automáticamente.
           </p>
         </div>
       </div>
 
-      <div class="md:col-span-2" data-aos="zoom-in" data-aos-delay="700">
+      <!-- 7. Datos Vitales Críticos -->
+      <div data-aos="fade-up" data-aos-delay="700">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-first-aid text-cura-accent text-2xl"></i>
+            7. Datos Vitales Críticos y Validación Profesional
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Los <strong>Datos Vitales Críticos</strong> son de carga voluntaria para el titular pero de ofrecimiento obligatorio en la primera consulta. Incluyen: grupo sanguíneo y factor RH, alergias severas, medicación crónica activa, implantes y dispositivos médicos, patologías de riesgo vital, hasta 2 contactos de emergencia y localidad de residencia. Todo dato debe ser <strong>validado electrónicamente por un profesional con matrícula vigente</strong> antes de ser utilizable en emergencias. Hasta la validación, el dato no tiene efecto clínico operativo.
+          </p>
+        </div>
+      </div>
+
+      <!-- 8. Validación de matrícula -->
+      <div data-aos="fade-up" data-aos-delay="800">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-stethoscope text-cura-accent text-2xl"></i>
+            8. Registro y Validación Automática de Profesionales
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Los profesionales acceden con autenticación multifactor vía <strong>Mi Argentina, Mi AFIP o Mi ANSES</strong>. El sistema ejecuta una <strong>revalidación automática diaria</strong> de la vigencia de la matrícula. Si la verificación detecta suspensión o inhabilitación, se produce bloqueo preventivo automático con notificación al profesional y al establecimiento: dispone de 48 horas para acreditar regularidad. Las sesiones tienen cierre automático por inactividad de 10 minutos y tiempo máximo de vida de 24 horas. En guardias o emergencias activas, el establecimiento puede solicitar habilitación temporal extraordinaria de hasta 12 horas.
+          </p>
+        </div>
+      </div>
+
+      <!-- 9. IA governance -->
+      <div data-aos="fade-up" data-aos-delay="900">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-cpu text-cura-accent text-2xl"></i>
+            9. Gobernanza de Inteligencia Artificial en Salud
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Todo módulo de IA requiere, antes de operar: validación técnica y clínica, evaluación de impacto ético y de sesgos, clasificación por nivel de riesgo (I, II o III), aprobación del Comité Ético y certificación del Consejo Nacional. El <strong>Registro Nacional de Módulos de IA (RENIA-Salud)</strong> centraliza el inventario de todos los sistemas activos. El <strong>Subcomité de Ética e IA en Salud</strong> audita en forma continua los algoritmos. La IA opera estrictamente como herramienta de soporte: la <strong>supervisión humana significativa</strong> es obligatoria y la automatización sustitutiva del juicio clínico está expresamente prohibida.
+          </p>
+        </div>
+      </div>
+
+      <!-- 10. Resiliencia offline -->
+      <div data-aos="fade-up" data-aos-delay="1000">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-wifi-slash text-cura-accent text-2xl"></i>
+            10. Resiliencia, Contingencia y Modo Offline
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La ley prevé mecanismos de <strong>contingencia offline</strong> para garantizar la continuidad operativa en zonas con conectividad intermitente. La sesión profesional implementa un <strong>Cierre de Sesión Inteligente</strong> que pausa el temporizador de inactividad durante edición activa y guarda automáticamente el trabajo en curso antes de cualquier cierre, recuperable tras re-autenticación. El sistema cuenta con un <strong>Plan Nacional de Recuperación ante Desastres (DRP)</strong> con pruebas semestrales de restauración. No constituye incumplimiento sancionable la falta transitoria de interoperabilidad por fallas acreditadas, falta de conectividad o caso fortuito.
+          </p>
+        </div>
+      </div>
+
+      <!-- 11. CSIRT - wide -->
+      <div class="md:col-span-2" data-aos="zoom-in" data-aos-delay="1100">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-2 hover:shadow-cura-accent/10">
           <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
             <i class="ph-bold ph-shield-checkered text-cura-accent text-3xl"></i>
-            7. Ciberdefensa Activa y CSIRT-C.U.R.A.
+            11. Ciberdefensa Activa: Zero Trust y CSIRT-C.U.R.A.
           </h3>
           <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
-            Infraestructura protegida 24/7 por el <strong>CSIRT-C.U.R.A.</strong> especializado en salud. Se aplican protocolos de defensa proactiva y encriptación de grado militar para custodiar el activo más valioso de la Nación.
+            El sistema opera bajo el modelo de <strong>Cero Confianza (Zero Trust)</strong>: verificación explícita de toda solicitud de acceso, mínimo privilegio, microsegmentación de la red y monitoreo continuo mediante una plataforma de <strong>Detección y Respuesta Extendidas (XDR)</strong>. Los estándares de seguridad son <strong>ISO/IEC 27001, 27701 y 22301</strong>, con cifrado bajo recomendaciones del <strong>NIST y la ONTI</strong>. El <strong>CSIRT-C.U.R.A.</strong> —integrado por el Ministerio de Salud, la ONTI y la AAIP— tiene plazo de 24 horas hábiles para iniciar investigación ante un incidente confirmado y 72 horas para implementar medidas de contención. Toda brecha de seguridad es comunicada a la Autoridad de Aplicación, al establecimiento involucrado y, cuando corresponda, al titular de los datos afectados. El sistema es auditado anualmente por ONTI, SIGEN y AAIP, con resultados publicados en formato abierto.
           </p>
         </div>
       </div>

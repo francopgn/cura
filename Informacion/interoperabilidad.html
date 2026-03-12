@@ -9,7 +9,6 @@
   <link rel="manifest" href="site.webmanifest">
   <title>Interoperabilidad | Ley C.U.R.A.</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,16 +18,14 @@
         extend: {
           colors: {
             cura: {
-              primary: '#004E85',       
-              primaryDark: '#00345C',   
-              card: '#065D9B',         
-              accent: '#00C2FF',       
-              accentLight: '#59D2FF'   
+              primary: '#004E85',
+              primaryDark: '#00345C',
+              card: '#065D9B',
+              accent: '#00C2FF',
+              accentLight: '#59D2FF'
             }
           },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
     }
@@ -37,7 +34,7 @@
 </head>
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
 
- <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
       <div class="flex items-center gap-2">
         <img src="/Informacion/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
@@ -47,8 +44,8 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
         <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
@@ -67,20 +64,20 @@
         Interoperabilidad Universal
       </h1>
       <p class="text-cura-accentLight max-w-2xl text-lg">
-        Sistemas que hablan el mismo idioma técnico para garantizar la fluidez de la información clínica nacional.
+        Estándares abiertos obligatorios, capa de intercambio federada y conectividad global: todos los sistemas del país hablan el mismo idioma técnico y semántico.
       </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
+
       <div data-aos="fade-up" data-aos-delay="100">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
             <i class="ph-bold ph-chats text-cura-accent text-2xl"></i>
-            1. El Idioma Común de la Salud
+            1. HL7 FHIR R4: El Protocolo Obligatorio
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            La Ley C.U.R.A. termina con las "torres de Babel" informáticas. Se establece el estándar internacional <strong>HL7 FHIR</strong> como protocolo obligatorio, garantizando que los datos clínicos viajen sin fricciones entre diferentes plataformas de todo el país.
+            La ley establece <strong>HL7 FHIR R4</strong> (o versión superior) como protocolo de interoperabilidad técnica de orden público en todo el territorio nacional. Cada efector de salud —público, privado y de la seguridad social— debe garantizar la compatibilidad de sus sistemas con este estándar. La <strong>Capa de Intercambio Federada (CIF)</strong> utiliza APIs seguras con autenticación <strong>OAuth 2.0</strong> y cifrado extremo a extremo para la circulación de datos clínicos entre todos los subsistemas del país.
           </p>
         </div>
       </div>
@@ -89,10 +86,10 @@
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
             <i class="ph-bold ph-tree-structure text-cura-accent text-2xl"></i>
-            2. Ontología Clínica con SNOMED CT
+            2. SNOMED CT y LOINC: Terminología Clínica Unificada
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Se adopta <strong>SNOMED CT</strong> como terminología de referencia nacional. Esta ontología asegura que un diagnóstico sea codificado de forma unívoca, facilitando la investigación científica y la precisión absoluta en recetas digitales.
+            <strong>SNOMED CT</strong> y <strong>LOINC</strong> son los estándares terminológicos obligatorios. SNOMED CT garantiza que un diagnóstico o procedimiento tenga el mismo código en cualquier punto del país. LOINC estandariza los resultados de laboratorio e imágenes diagnósticas. El <strong>Conjunto Mínimo Básico de Datos (CMBD)</strong>, publicado dentro de los 6 meses de la reglamentación, establece la lista priorizada de códigos para diagnósticos, alergias, medicación y resultados de mayor criticidad clínica. La expansión al universo completo de terminologías se completa en hasta 48 meses.
           </p>
         </div>
       </div>
@@ -100,11 +97,11 @@
       <div data-aos="fade-up" data-aos-delay="300">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-intersect text-cura-accent text-2xl"></i>
-            3. Bus Federal de Datos y APIs
+            <i class="ph-bold ph-arrows-out text-cura-accent text-2xl"></i>
+            3. Portabilidad Interjurisdiccional en Tiempo Real
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            C.U.R.A. integra sistemas locales mediante un <strong>Bus Federal</strong>. A través de APIs modernas y seguras, todos los prestadores se conectan al nodo central para validar identidades sin necesidad de cambiar su software actual.
+            Cualquier paciente puede solicitar la transferencia inmediata de su información clínica desde cualquier efector del país, sin importar la provincia o subsistema al que pertenezca. El <strong>Resumen Clínico Federal</strong> se genera y transfiere en tiempo real mediante mecanismos digitales automatizados. El Estado Nacional provee —sin costo— la capa técnica mínima de interoperabilidad para que incluso las jurisdicciones no adheridas al sistema puedan garantizar esta portabilidad, sin necesidad de desarrollar infraestructura propia adicional.
           </p>
         </div>
       </div>
@@ -112,18 +109,88 @@
       <div data-aos="fade-up" data-aos-delay="400">
         <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
           <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
-            <i class="ph-bold ph-microscope text-cura-accent text-2xl"></i>
-            4. Estandarización de Laboratorios (LOINC)
+            <i class="ph-bold ph-pill text-cura-accent text-2xl"></i>
+            4. Trazabilidad Digital de Medicamentos (RDDT)
           </h3>
           <p class="text-sm text-cura-accentLight leading-relaxed">
-            Uso del estándar <strong>LOINC</strong> para medios de diagnóstico. Asegura que resultados, valores de referencia y estudios de imágenes sean comparables y legibles por cualquier profesional autorizado en la red.
+            El <strong>Registro Digital de Dispensación Trazable (RDDT)</strong> reemplaza al troquel físico. Se integra en tiempo real con el <strong>Sistema Nacional de Trazabilidad de la ANMAT</strong> y registra: código GTIN, número de serie, lote, vencimiento, C.U.R.A.-ID del paciente, farmacia dispensadora, farmacéutico interviniente y receta electrónica asociada. Las obras sociales y prepagas no pueden exigir troqueles físicos cuando la dispensación esté registrada en el RDDT. Cada jurisdicción tiene un período de convivencia de 12 meses antes de la obligatoriedad exclusiva del registro digital.
+          </p>
+        </div>
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="500">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-globe text-cura-accent text-2xl"></i>
+            5. Resumen Internacional del Paciente (IPS)
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            El <strong>IPS</strong> es un extracto digital normalizado bajo el estándar <strong>HL7 FHIR International Patient Summary</strong>, que facilita la continuidad asistencial en el extranjero. Contiene: problemas activos, medicación, alergias, vacunaciones, cirugías, implantes, grupo sanguíneo y contactos de emergencia. El paciente puede descargarlo como PDF con QR verificable o en formato XML/JSON estructurado, y generar un código de acceso temporal de 24 horas de un solo uso para compartirlo con un profesional extranjero. Datos de salud mental, VIH y salud sexual y reproductiva están deshabilitados por defecto y requieren habilitación expresa del titular.
+          </p>
+        </div>
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="600">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-chart-line-up text-cura-accent text-2xl"></i>
+            6. Vigilancia Epidemiológica Federal Asistida por IA
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            El <strong>Sistema Federal de Vigilancia Epidemiológica</strong> analiza en tiempo real datos anonimizados de efectores, laboratorios, urgencias y registros oficiales para detectar brotes y anomalías sanitarias. Ningún paciente puede ser identificado individualmente sin acto fundado de autoridad epidemiológica competente. Toda alerta automática debe ser validada por la autoridad sanitaria antes de activar investigaciones o medidas. No pueden adoptarse medidas restrictivas de derechos basadas exclusivamente en decisiones algorítmicas. Los modelos son certificados anualmente por el Subcomité de Ética e IA en Salud.
+          </p>
+        </div>
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="700">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-map-pin text-cura-accent text-2xl"></i>
+            7. Red Federal de Farmacias de Turno
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            Los colegios profesionales y entidades responsables de los cronogramas de guardia farmacéutica deben proveer obligatoriamente al Sistema C.U.R.A. los datos de disponibilidad, ubicación y geolocalización en tiempo real de farmacias de turno. La información se publica en el portal oficial del sistema, en <strong>Mi Argentina</strong> y en el visor integrado de la <strong>Credencial Única de Salud</strong>. La integración se implementa en un plazo máximo de 12 meses desde la vigencia de la ley. Los datos se consideran información sanitaria de interés público.
+          </p>
+        </div>
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="800">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-wifi-slash text-cura-accent text-2xl"></i>
+            8. Operación Offline-First para Zonas sin Conectividad
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            La ley implementa el principio <strong>Offline-First</strong>: los datos ingresados por el profesional se persisten automáticamente en el dispositivo local durante su carga, impidiendo su pérdida ante cortes de conectividad. Al restablecerse la conexión, el sistema sincroniza automáticamente todos los registros pendientes con el servidor central y luego los elimina del almacenamiento local de forma irreversible. Todo dato almacenado localmente está cifrado. El sistema prevé borrado remoto seguro ante pérdida o robo del dispositivo.
+          </p>
+        </div>
+      </div>
+
+      <div data-aos="fade-up" data-aos-delay="900">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/30 p-6 shadow-xl transition-all duration-300 hover:border-cura-accent/70 hover:-translate-y-2 hover:shadow-cura-accent/20 h-full">
+          <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-3">
+            <i class="ph-bold ph-hand-heart text-cura-accent text-2xl"></i>
+            9. Accesibilidad Digital Universal Asistida por IA
+          </h3>
+          <p class="text-sm text-cura-accentLight leading-relaxed">
+            El sistema provee mecanismos de accesibilidad basados en IA: asistentes virtuales 24/7, lectura de pantalla, conversión voz-texto, simplificación automática de lenguaje clínico e interfaces adaptativas para personas con discapacidades visuales, auditivas, cognitivas o con alfabetización digital limitada. También incluye línea telefónica gratuita y atención presencial en establecimientos habilitados. La accesibilidad es un componente esencial del servicio de salud digital y no puede restringirse por razones técnicas o presupuestarias.
+          </p>
+        </div>
+      </div>
+
+      <div class="md:col-span-2" data-aos="zoom-in" data-aos-delay="1000">
+        <div class="bg-cura-card rounded-2xl border border-cura-accent/40 p-8 shadow-xl transition-all duration-300 hover:border-cura-accent hover:-translate-y-2 hover:shadow-cura-accent/10">
+          <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+            <i class="ph-bold ph-intersect text-cura-accent text-3xl"></i>
+            10. Hub Global de Interoperabilidad Sanitaria
+          </h3>
+          <p class="text-sm md:text-base text-cura-accentLight leading-relaxed">
+            La ley proyecta al Sistema C.U.R.A. como <strong>Hub Global de Interoperabilidad Sanitaria</strong> para la región: en la <strong>Fase 5</strong> (Año 5+), una vez consolidada la cobertura nacional, se habilitará la conexión transfronteriza y la exportación de servicios digitales de salud a otros países. Las alianzas internacionales de cooperación técnica están sujetas a control parlamentario obligatorio y publicación íntegra de convenios. Toda transferencia de datos clínicos a sistemas extranjeros solo es posible bajo tres condiciones acumulativas: país con nivel adecuado de protección reconocido por la AAIP, consentimiento específico del titular, o urgencia vital documentada con datos mínimos. Los datos de salud mental, VIH y salud sexual y reproductiva nunca pueden transferirse internacionalmente sin consentimiento explícito adicional del titular.
           </p>
         </div>
       </div>
 
     </div>
-
-    
 
     <div class="mt-12 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
       <p class="text-cura-accentLight text-sm italic" data-aos="fade-left">Sistemas que hablan el mismo idioma técnico.</p>
@@ -138,33 +205,18 @@
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
   <script>
-    // Inicializar Lenis (Scroll Suave)
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true
     });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
     requestAnimationFrame(raf);
-
-    // Inicializar AOS con sincronización
     document.addEventListener('DOMContentLoaded', function() {
-      AOS.init({
-        duration: 800,
-        once: true,
-        offset: 50,
-        anchorPlacement: 'top-bottom'
-      });
-
-      // Refresca AOS en cada frame de scroll de Lenis
+      AOS.init({ duration: 800, once: true, offset: 50, anchorPlacement: 'top-bottom' });
       lenis.on('scroll', AOS.refresh);
     });
   </script>

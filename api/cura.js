@@ -14,7 +14,7 @@ const CONFIG = {
   MIN_SCORE: 0.08,         // score mínimo para considerar un chunk relevante
   PRIORITY_ARTICULO: 1.4,  // boost para chunks de tipo 'articulo'
   PRIORITY_TEMA: 1.2,      // boost para chunks temáticos con coincidencia de tema
- DEEPSEEK_MODEL: 'deepseek-reasoner',
+ DEEPSEEK_MODEL: 'deepseek-chat',
   MAX_TOKENS: 1024,
   TEMPERATURE: 0.3,        // baja temperatura para respuestas más precisas y legales
 };
@@ -246,23 +246,22 @@ export async function askDeepseek(userQuestion, context, history = []) {
     { role: 'user', content: userMessage }
   ];
 
-  const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: CONFIG.DEEPSEEK_MODEL,
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        ...messages,
-      ],
-      max_tokens: CONFIG.MAX_TOKENS,
-      temperature: CONFIG.TEMPERATURE,
-      stream: false,
-    }),
-  });
+const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    "Content-Type": "application/json",
+    "HTTP-Referer": "https://leycura.org",
+    "X-Title": "LeyCura Chatbot"
+  },
+  body: JSON.stringify({
+    model: "deepseek/deepseek-chat",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: message }
+    ]
+  })
+});
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));

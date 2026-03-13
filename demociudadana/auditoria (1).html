@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auditoría de Accesos - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    /* ESTADO TRAZABILIDAD */
+    .traza-status { background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2); border-radius:24px; padding:18px; display:flex; align-items:center; gap:15px; margin-bottom:25px; }
+    .traza-icon { color:#10b981; font-size:28px; flex-shrink:0; }
+    .traza-text { font-size:12px; opacity:0.9; line-height:1.5; font-weight:500; }
+    .traza-text strong { color:#10b981; }
+
+    /* FILTRO */
+    .filter-bar { display:flex; gap:8px; margin-bottom:20px; overflow-x:auto; padding-bottom:4px; }
+    .filter-btn { font-size:11px; font-weight:800; padding:8px 16px; border-radius:12px; border:1px solid var(--glass-border); background:var(--glass); color:rgba(255,255,255,0.6); white-space:nowrap; cursor:pointer; transition:all 0.2s; }
+    .filter-btn.active { background:var(--accent); color:var(--bg-dark); border-color:var(--accent); }
+
+    /* LOG ITEM */
+    .log-item { background:var(--glass); backdrop-filter:blur(15px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:14px; position:relative; transition:0.3s; cursor:pointer; }
+    .log-item:active { transform:scale(0.98); background:rgba(255,255,255,0.1); }
+    .log-item.emergency { border-left:4px solid #ef4444; box-shadow:inset 10px 0 20px rgba(239,68,68,0.05); }
+
+    .log-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+    .log-date { font-size:11px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; }
+    .log-prof { font-size:16px; font-weight:800; color:white; margin-top:2px; }
+    .log-mat  { font-size:11px; opacity:0.5; margin-bottom:3px; }
+    .log-inst { font-size:12px; opacity:0.6; margin-bottom:10px; }
+
+    .log-reason { font-size:12px; background:rgba(255,255,255,0.05); padding:10px 14px; border-radius:14px; border:1px solid var(--glass-border); color:rgba(255,255,255,0.8); margin-bottom:10px; }
+    .log-reason.emergency { border-color:rgba(239,68,68,0.3); color:#fca5a5; }
+
+    .log-hash { font-family:'Courier New',monospace; font-size:9px; color:rgba(255,255,255,0.25); display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    /* BADGES */
+    .badge { font-size:9px; font-weight:900; padding:4px 10px; border-radius:8px; white-space:nowrap; }
+    .badge-emergency { background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.2); }
+    .badge-normal    { background:rgba(0,194,255,0.1); color:var(--accent); border:1px solid rgba(0,194,255,0.2); }
+    .badge-dispensa  { background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+    .badge-paciente  { background:rgba(251,191,36,0.15); color:#fbbf24; border:1px solid rgba(251,191,36,0.2); }
+
+    /* FOOTER */
+    .report-btn { width:100%; padding:16px; border-radius:22px; border:1px solid rgba(239,68,68,0.3); background:rgba(239,68,68,0.08); color:#f87171; font-size:14px; font-weight:800; cursor:pointer; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
+    .report-btn:hover { background:rgba(239,68,68,0.15); }
+
+    .muted-footer { font-size:10px; color:white; opacity:0.35; text-align:center; margin-top:20px; padding:0 20px; line-height:1.6; }
+
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .modal-section { background:#f8fafc; border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .modal-section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#64748b; margin-bottom:6px; }
+    .modal-section-value { font-size:13px; font-weight:600; color:#0d2b52; line-height:1.5; }
+    .btn-modal-danger { width:100%; padding:14px; border-radius:16px; border:none; background:#ef4444; color:white; font-size:14px; font-weight:800; cursor:pointer; margin-top:8px; }
+    .btn-modal-secondary { width:100%; padding:14px; border-radius:16px; border:1px solid #e2e8f0; background:white; color:#0d2b52; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+
+    .empty-state { text-align:center; padding:40px 20px; opacity:0.5; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Auditoría de Accesos</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <div class="mb-5 px-1">
+        <h1 class="text-2xl font-extrabold mb-1">Registro de Trazabilidad</h1>
+        <p class="text-xs opacity-50 font-semibold tracking-wider uppercase">Art. 2k — Ley C.U.R.A.</p>
+      </div>
+
+      <!-- ESTADO TRAZABILIDAD -->
+      <div class="traza-status">
+        <i class="ph-fill ph-shield-check traza-icon"></i>
+        <p class="traza-text">
+          <strong>Sistema activo.</strong> Toda consulta a tu historia clínica queda registrada de forma inalterable. Podés auditar cada acceso en cualquier momento.
+        </p>
+      </div>
+
+      <!-- FILTROS -->
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" onclick="filtrar('todos', this)">Todos</button>
+        <button class="filter-btn" onclick="filtrar('consulta', this)">Consultas</button>
+        <button class="filter-btn" onclick="filtrar('dispensacion', this)">Dispensaciones</button>
+        <button class="filter-btn" onclick="filtrar('paciente', this)">Mis accesos</button>
+        <button class="filter-btn" onclick="filtrar('break-glass', this)">Break-Glass</button>
+      </div>
+
+      <!-- REGISTROS -->
+      <div id="logList"></div>
+
+      <div id="emptyState" class="empty-state" style="display:none">
+        <i class="ph-bold ph-magnifying-glass" style="font-size:36px;color:var(--accent);opacity:0.5;"></i>
+        <p class="mt-3 text-sm">No hay registros con ese filtro.</p>
+      </div>
+
+      <!-- BOTÓN DENUNCIA -->
+      <button class="report-btn" onclick="abrirModalDenuncia()">
+        <i class="ph-bold ph-warning-octagon"></i> Reportar acceso no autorizado
+      </button>
+
+      <p class="muted-footer">
+        Los registros de trazabilidad son inmutables conforme al Art. 2k de la Ley C.U.R.A.<br>
+        Auditados por la Autoridad de Aplicación (AAIP).
+      </p>
+    </main>
+
+    <!-- BOTTOM BAR — links corregidos, ningún ítem activo (auditoría es sub-pantalla del menú) -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Detalle del acceso</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-base" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const logs = [
+      {
+        id: "log1",
+        tipo: "consulta",
+        fecha: "9 ENE 2026",
+        hora: "10:15hs",
+        prof: "Dr. Carlos González",
+        mat: "Mat. 52.341 — Cardiología",
+        inst: "Hospital General de Agudos",
+        motivo: "Control Clínico Programado",
+        accion: "Lectura de historia clínica",
+        hash: "0x8f2a4b1c9d3e7f2a4b1c9d3e7f2a4b1c...c3e9",
+        autoridad: "ARSAT"
+      },
+      {
+        id: "log2",
+        tipo: "break-glass",
+        fecha: "18 DIC 2025",
+        hora: "22:45hs",
+        prof: "Guardia Médica Nocturna",
+        mat: "Mat. 61.020 — Medicina de Urgencias",
+        inst: "Hospital Municipal Local",
+        motivo: "Emergencia — Acceso sin consentimiento previo (Art. 2l excepción vital)",
+        accion: "Acceso completo a historia clínica",
+        hash: "0x11b53f8a2d4c6e1b9a7f3c2e5d8b4a...7a2d",
+        autoridad: "AAIP"
+      },
+      {
+        id: "log3",
+        tipo: "dispensacion",
+        fecha: "06 DIC 2025",
+        hora: "09:30hs",
+        prof: "Farm. Ana Martínez",
+        mat: "Mat. Farm. 18.442",
+        inst: "Farmacia Central PAMI",
+        motivo: "Retiro de Metformina 850 mg y Enalapril 10 mg",
+        accion: "Validación de receta electrónica RX-CURA-20241205-00847",
+        hash: "0x4d91a3f5b7c2e8d1a3f5b7c2e8d1a3...b11f",
+        autoridad: "PAI"
+      },
+      {
+        id: "log4",
+        tipo: "consulta",
+        fecha: "05 DIC 2025",
+        hora: "09:20hs",
+        prof: "Dra. Laura Ramírez",
+        mat: "Mat. 29.010 — Clínica Médica",
+        inst: "Consultorio Externo — Efector Habitual",
+        motivo: "Renovación de medicación crónica",
+        accion: "Lectura de historia clínica + emisión de receta",
+        hash: "0xf3c2e5d8b4a1c9d3e7f2a4b1c9d3e7...a91c",
+        autoridad: "ARSAT"
+      },
+      {
+        id: "log5",
+        tipo: "paciente",
+        fecha: "03 DIC 2025",
+        hora: "20:15hs",
+        prof: "Titular (Acceso propio)",
+        mat: "CURA-ID verificado · DNI autenticado",
+        inst: "App Mi Argentina",
+        motivo: "Consulta de resultados de laboratorio",
+        accion: "Visualización de informe de laboratorio — Laboratorio Central PAMI",
+        hash: "0x2a4b1c9d3e7f2a4b1c9d3e7f2a4b1c...d4f7",
+        autoridad: "ARSAT"
+      },
+      {
+        id: "log6",
+        tipo: "consulta",
+        fecha: "18 FEB 2025",
+        hora: "15:30hs",
+        prof: "Dra. Sofía Herrera",
+        mat: "Mat. 41.198 — Psiquiatría",
+        inst: "Hospital General — Salud Mental",
+        motivo: "Seguimiento psiquiátrico",
+        accion: "Acceso a sección de Salud Mental (dato sensible — consentimiento previo)",
+        hash: "0x9d3e7f2a4b1c9d3e7f2a4b1c9d3e7f...c8b3",
+        autoridad: "AAIP"
+      }
+    ];
+
+    let filtroActual = "todos";
+
+    function badgeClass(tipo) {
+      if (tipo === "break-glass") return "badge badge-emergency";
+      if (tipo === "dispensacion") return "badge badge-dispensa";
+      if (tipo === "paciente") return "badge badge-paciente";
+      return "badge badge-normal";
+    }
+    function badgeLabel(tipo) {
+      if (tipo === "break-glass") return "Break-Glass";
+      if (tipo === "dispensacion") return "Dispensación";
+      if (tipo === "paciente") return "Mi acceso";
+      return "Consulta";
+    }
+
+    function render(lista) {
+      const container = document.getElementById("logList");
+      container.innerHTML = "";
+      document.getElementById("emptyState").style.display = lista.length ? "none" : "block";
+      lista.forEach(l => {
+        const div = document.createElement("div");
+        div.className = "log-item" + (l.tipo === "break-glass" ? " emergency" : "");
+        div.onclick = () => abrirDetalle(l.id);
+        div.innerHTML = `
+          <div class="log-header">
+            <div>
+              <div class="log-date">${l.fecha} · ${l.hora}</div>
+              <div class="log-prof">${l.prof}</div>
+            </div>
+            <span class="${badgeClass(l.tipo)}">${badgeLabel(l.tipo)}</span>
+          </div>
+          <div class="log-mat">${l.mat}</div>
+          <div class="log-inst">${l.inst}</div>
+          <div class="log-reason ${l.tipo === 'break-glass' ? 'emergency' : ''}">
+            <i class="ph ph-info" style="font-size:11px;margin-right:4px;"></i>${l.motivo}
+          </div>
+          <span class="log-hash">Hash: ${l.hash} · Auditado: ${l.autoridad}</span>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function filtrar(tipo, btn) {
+      filtroActual = tipo;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const filtered = tipo === "todos" ? logs : logs.filter(l => l.tipo === tipo);
+      render(filtered);
+    }
+
+    function abrirDetalle(id) {
+      const l = logs.find(x => x.id === id);
+      if (!l) return;
+      document.getElementById("modal-title").innerText = "Detalle del acceso";
+      document.getElementById("modal-body").innerHTML = `
+        ${l.tipo === "break-glass" ? `
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
+            <i class="ph-bold ph-warning-octagon" style="color:#ef4444;font-size:18px;flex-shrink:0"></i>
+            <div style="font-size:12px;font-weight:700;color:#ef4444;line-height:1.4">Acceso de emergencia (Break-Glass) — Art. 2l excepción vital. Auditado por la AAIP.</div>
+          </div>` : ""}
+        <div class="modal-section">
+          <div class="modal-section-label">Profesional / Entidad</div>
+          <div class="modal-section-value">${l.prof}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:2px">${l.mat}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Efector</div>
+          <div class="modal-section-value">${l.inst}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Fecha y hora</div>
+          <div class="modal-section-value">${l.fecha} · ${l.hora}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Acción realizada</div>
+          <div class="modal-section-value">${l.accion}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Registro de Trazabilidad · Art. 2k</div>
+          <div style="font-family:'Courier New',monospace;font-size:10px;color:#64748b;line-height:1.6;word-break:break-all">${l.hash}</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:4px">Autoridad de validación: ${l.autoridad}</div>
+        </div>
+        ${l.tipo !== "break-glass" ? "" : `<button class="btn-modal-danger" onclick="cerrarModal(); setTimeout(abrirModalDenuncia, 200)"><i class="ph-bold ph-flag"></i> Iniciar denuncia formal</button>`}
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cerrar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalDenuncia() {
+      document.getElementById("modal-title").innerText = "Reportar acceso no autorizado";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;gap:12px;align-items:flex-start;background:#fff5f5;border-radius:14px;padding:14px;margin-bottom:16px;">
+          <i class="ph-bold ph-warning" style="color:#ef4444;font-size:22px;flex-shrink:0"></i>
+          <p style="font-size:13px;color:#7f1d1d;line-height:1.5">Si detectás un acceso que no reconocés o que no autorizaste, podés iniciar una denuncia formal ante la Autoridad de Aplicación (AAIP).</p>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">¿Qué pasa al denunciar?</div>
+          <div style="font-size:13px;color:#475569;line-height:1.6">
+            1. La AAIP recibe tu denuncia con el registro de trazabilidad.<br>
+            2. Se inicia una investigación formal.<br>
+            3. El acceso queda bloqueado preventivamente.<br>
+            4. Recibirás una notificación con el estado de la causa.
+          </div>
+        </div>
+        <button class="btn-modal-danger" onclick="alert('En producción: redirige al módulo de denuncias de la AAIP'); cerrarModal()">
+          <i class="ph-bold ph-flag"></i> Iniciar denuncia formal
+        </button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Auditoría de Accesos";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Registro de Trazabilidad (Art. 2k):</strong> Cada consulta a tu historia clínica queda registrada de forma inalterable: profesional, matrícula, efector, fecha, hora y tipo de acción. Nadie puede borrar ni modificar esos registros.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-warning-octagon" style="color:#ef4444;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Break-Glass:</strong> Es un acceso de emergencia que los médicos pueden activar cuando tu vida corre peligro y no podés dar consentimiento (Art. 2l). Queda registrado y auditado por la AAIP.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-scales" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Tus derechos:</strong> Este registro es tu herramienta legal para controlar la privacidad de tu salud. Si detectás un acceso no autorizado, podés denunciarlo directamente desde esta pantalla.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+
+    render(logs);
+  </script>
+</body>
+</html>

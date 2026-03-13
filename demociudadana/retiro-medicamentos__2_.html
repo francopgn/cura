@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Retiro de Medicamentos - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+    .top-section { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:28px; padding:24px; margin-bottom:25px; }
+    .btn-farmacias { width:100%; padding:16px; border-radius:20px; border:none; background:linear-gradient(135deg,var(--cura-blue),#002d4d); color:#fff; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer; box-shadow:0 10px 20px rgba(0,0,0,0.2); margin-bottom:20px; transition:transform 0.2s; }
+    .btn-farmacias:active { transform:scale(0.98); }
+    .pickup-list { display:flex; flex-direction:column; gap:16px; }
+    .rx-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; transition:all 0.3s ease; }
+    .rx-card.disponible { border-left:3px solid var(--accent); }
+    .rx-card.parcial     { border-left:3px solid #fbbf24; }
+    .rx-card.sensible    { border-left:3px solid #f87171; }
+    .rx-card.historial   { border-left:3px solid rgba(255,255,255,0.15); opacity:0.75; }
+    .estado-badge { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:800; padding:4px 10px; border-radius:8px; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; }
+    .badge-disponible { background:rgba(0,194,255,0.15); color:var(--accent); border:1px solid rgba(0,194,255,0.3); }
+    .badge-parcial    { background:rgba(251,191,36,0.15); color:#fbbf24; border:1px solid rgba(251,191,36,0.3); }
+    .badge-sensible   { background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3); }
+    .badge-historial  { background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+    .rx-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap:8px; }
+    .rx-name { font-size:18px; font-weight:800; color:white; }
+    .rx-dose { font-size:12px; font-weight:700; padding:4px 12px; border-radius:10px; background:var(--accent); color:var(--bg-dark); white-space:nowrap; flex-shrink:0; }
+    .rx-meta-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin:10px 0 14px; background:rgba(255,255,255,0.03); border-radius:14px; padding:12px; border:1px solid var(--glass-border); }
+    .rx-meta-item { font-size:10px; }
+    .rx-meta-label { color:var(--accent); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:2px; }
+    .rx-meta-value { color:rgba(255,255,255,0.85); font-weight:600; font-size:11px; }
+    .chip-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+    .chip { font-size:11px; font-weight:700; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,0.1); color:white; }
+    .chip-green  { background:rgba(34,197,94,0.2); color:#4ade80; border:1px solid rgba(34,197,94,0.2); }
+    .chip-blue   { background:rgba(0,194,255,0.1); color:var(--accent); border:1px solid rgba(0,194,255,0.2); }
+    .chip-red    { background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.2); }
+    .chip-yellow { background:rgba(251,191,36,0.2); color:#fbbf24; border:1px solid rgba(251,191,36,0.2); }
+    .chip-gray   { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.5); }
+    .actions { display:flex; flex-direction:column; gap:10px; }
+    .btn-primary { width:100%; padding:14px; border-radius:16px; border:none; background:var(--accent); color:var(--bg-dark); font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform 0.2s; }
+    .btn-primary:active { transform:scale(0.97); }
+    .btn-secondary { width:100%; padding:12px; border-radius:16px; border:1px solid var(--glass-border); background:rgba(255,255,255,0.05); color:white; font-size:13px; font-weight:600; cursor:pointer; transition:background 0.2s; }
+    .btn-secondary:hover { background:rgba(255,255,255,0.1); }
+    .dispensacion-info { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.2); border-radius:14px; padding:12px; margin-bottom:12px; font-size:11px; color:#10b981; line-height:1.6; }
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Retiro de Medicamentos</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <div class="top-section">
+        <button class="btn-farmacias" onclick="location.href='farmacias__9_.html'">
+          <i class="ph-bold ph-map-pin"></i> Ver farmacias cercanas
+        </button>
+        <h2 class="text-xl font-bold mb-1">Disponibles para retiro</h2>
+        <p class="text-sm opacity-60 leading-relaxed">Recetas electrónicas habilitadas para retiro inmediato mediante tu CURA-ID.</p>
+      </div>
+
+      <div class="pickup-list">
+
+        <!-- Metformina — disponible -->
+        <article class="rx-card disponible"
+          data-codigo="RX-CURA-20250605-00482" data-medicamento="Metformina 850 mg"
+          data-posologia="1 comprimido con desayuno y 1 con cena."
+          data-prescriptor="Dra. Ana López · MP 38.712"
+          data-emision="05/06/2025" data-vencimiento="05/09/2025"
+          data-cantidad="30 comprimidos" data-dispensaciones="0 de 3 retiradas"
+          data-diagnostico="Diabetes tipo 2">
+          <span class="estado-badge badge-disponible"><i class="ph-bold ph-check-circle"></i> Disponible para retiro</span>
+          <div class="rx-header"><div class="rx-name">Metformina</div><div class="rx-dose">850 mg</div></div>
+          <div class="rx-meta-grid">
+            <div class="rx-meta-item"><span class="rx-meta-label">Prescriptor</span><span class="rx-meta-value">Dra. López · MP 38.712</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Código</span><span class="rx-meta-value">…-00482</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Emisión</span><span class="rx-meta-value">05/06/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Vence</span><span class="rx-meta-value">05/09/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Cantidad</span><span class="rx-meta-value">30 comprimidos</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Dispensaciones</span><span class="rx-meta-value">0 de 3 retiradas</span></div>
+          </div>
+          <div class="chip-row"><span class="chip chip-blue">Diabetes tipo 2</span><span class="chip chip-green">Crónico</span></div>
+          <div class="actions">
+            <button class="btn-primary" onclick="mostrarCodigo(this.closest('.rx-card'))"><i class="ph-bold ph-qr-code"></i> Retirar con CURA-ID</button>
+            <button class="btn-secondary" onclick="verDetalle(this.closest('.rx-card'))">Ver receta</button>
+          </div>
+        </article>
+
+        <!-- Enalapril — parcialmente retirado -->
+        <article class="rx-card parcial"
+          data-codigo="RX-CURA-20250510-00371" data-medicamento="Enalapril 10 mg"
+          data-posologia="1 comprimido por día en ayunas."
+          data-prescriptor="Dr. Juan González · MP 42.391"
+          data-emision="10/05/2025" data-vencimiento="10/08/2025"
+          data-cantidad="15 comprimidos pendientes" data-dispensaciones="1 de 2 retiradas"
+          data-diagnostico="Hipertensión arterial">
+          <span class="estado-badge badge-parcial"><i class="ph-bold ph-package"></i> Parcialmente retirado</span>
+          <div class="rx-header"><div class="rx-name">Enalapril</div><div class="rx-dose">10 mg</div></div>
+          <div class="rx-meta-grid">
+            <div class="rx-meta-item"><span class="rx-meta-label">Prescriptor</span><span class="rx-meta-value">Dr. González · MP 42.391</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Código</span><span class="rx-meta-value">…-00371</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Emisión</span><span class="rx-meta-value">10/05/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Vence</span><span class="rx-meta-value">10/08/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Pendientes</span><span class="rx-meta-value">15 comprimidos</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Dispensaciones</span><span class="rx-meta-value">1 de 2 retiradas</span></div>
+          </div>
+          <div class="chip-row"><span class="chip chip-blue">Hipertensión arterial</span><span class="chip chip-yellow">Saldo pendiente</span></div>
+          <div class="actions">
+            <button class="btn-primary" onclick="mostrarCodigo(this.closest('.rx-card'))"><i class="ph-bold ph-qr-code"></i> Retirar restantes</button>
+            <button class="btn-secondary" onclick="verDetalle(this.closest('.rx-card'))">Ver receta</button>
+          </div>
+        </article>
+
+        <!-- Sertralina — dato sensible -->
+        <article class="rx-card sensible"
+          data-codigo="RX-CURA-20250218-00217" data-medicamento="Sertralina 50 mg"
+          data-posologia="1 comprimido por la mañana."
+          data-prescriptor="Eq. Salud Mental · MP 51.204"
+          data-emision="18/02/2025" data-vencimiento="18/08/2025"
+          data-cantidad="30 comprimidos" data-dispensaciones="2 de 6 retiradas"
+          data-diagnostico="Dato sensible — Salud Mental">
+          <span class="estado-badge badge-sensible"><i class="ph-bold ph-lock-key"></i> Dato sensible</span>
+          <div class="rx-header"><div class="rx-name">Sertralina</div><div class="rx-dose">50 mg</div></div>
+          <div class="rx-meta-grid">
+            <div class="rx-meta-item"><span class="rx-meta-label">Prescriptor</span><span class="rx-meta-value">Eq. Salud Mental · MP 51.204</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Código</span><span class="rx-meta-value">…-00217</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Emisión</span><span class="rx-meta-value">18/02/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Vence</span><span class="rx-meta-value">18/08/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Cantidad</span><span class="rx-meta-value">30 comprimidos</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Dispensaciones</span><span class="rx-meta-value">2 de 6 retiradas</span></div>
+          </div>
+          <div class="chip-row"><span class="chip chip-red">🔒 Salud Mental</span><span class="chip chip-green">Disponible</span></div>
+          <div class="actions">
+            <button class="btn-primary" onclick="mostrarCodigo(this.closest('.rx-card'))"><i class="ph-bold ph-qr-code"></i> Retirar con CURA-ID</button>
+            <button class="btn-secondary" onclick="verDetalle(this.closest('.rx-card'))">Ver receta</button>
+          </div>
+        </article>
+
+        <!-- Amoxicilina — historial -->
+        <article class="rx-card historial"
+          data-codigo="RX-CURA-20250112-00093" data-medicamento="Amoxicilina 875 mg"
+          data-posologia="1 cápsula cada 8 horas por 7 días."
+          data-prescriptor="Dr. Juan González · MP 42.391"
+          data-emision="12/01/2025" data-vencimiento="12/02/2025"
+          data-cantidad="21 cápsulas" data-dispensaciones="1 de 1 retiradas"
+          data-diagnostico="Infección respiratoria aguda">
+          <span class="estado-badge badge-historial"><i class="ph-bold ph-check-fat"></i> Retiro completado</span>
+          <div class="rx-header"><div class="rx-name">Amoxicilina</div><div class="rx-dose">875 mg</div></div>
+          <!-- Registro de dispensación — Art. 2k Ley C.U.R.A. -->
+          <div class="dispensacion-info">
+            <i class="ph-bold ph-storefront"></i>
+            Retirado el <strong>12/01/2025 · 11:32hs</strong><br>
+            Farmacia del Pueblo · Farm. Carlos Ruiz · MF 4.812
+          </div>
+          <div class="chip-row"><span class="chip chip-gray">Tratamiento agudo</span><span class="chip chip-gray">Historial</span></div>
+          <button class="btn-secondary" onclick="verDetalle(this.closest('.rx-card'))">Ver detalle</button>
+        </article>
+
+      </div>
+    </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='retiro-medicamentos__2_.html'" title="Retiro"><i class="ph-bold ph-package"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Título</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-lg" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mostrarCodigo(card) {
+      const d = card.dataset;
+      document.getElementById('modal-title').innerText = "Código de retiro";
+      document.getElementById('modal-body').innerHTML = `
+        <p style="font-size:12px;color:#64748b;margin-bottom:14px;">Presentá este código al farmacéutico. El retiro quedará registrado automáticamente.</p>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;background:white;border-radius:20px;padding:16px;margin-bottom:14px;">
+          <div style="width:72px;height:72px;background:#0d2b52;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="ph-bold ph-qr-code" style="color:white;font-size:36px;"></i>
+          </div>
+          <div>
+            <div style="font-family:monospace;font-size:12px;font-weight:800;color:#0d2b52;word-break:break-all;">${d.codigo}</div>
+            <div style="font-size:11px;color:#64748b;margin-top:4px;">${d.medicamento}</div>
+            <div style="font-size:11px;color:#64748b;">Vence: ${d.vencimiento}</div>
+          </div>
+        </div>
+        <div style="background:#f8fafc;border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Prescriptor</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.prescriptor}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Posología</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.posologia}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Cantidad</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.cantidad}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Dispensaciones</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.dispensaciones}</div></div>
+          </div>
+        </div>
+        <p style="font-size:10px;color:#94a3b8;text-align:center;font-style:italic;">Cada retiro queda registrado · Art. 2k Ley C.U.R.A.</p>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function verDetalle(card) {
+      const d = card.dataset;
+      document.getElementById('modal-title').innerText = "Detalle de receta";
+      document.getElementById('modal-body').innerHTML = `
+        <div style="background:#f8fafc;border-radius:16px;padding:16px;margin-bottom:14px;">
+          <div style="font-size:16px;font-weight:800;color:#0d2b52;margin-bottom:12px;">${d.medicamento}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Prescriptor</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.prescriptor}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Diagnóstico</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.diagnostico}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Posología</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.posologia}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Emisión</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.emision}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Vencimiento</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.vencimiento}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Dispensaciones</div><div style="font-size:12px;font-weight:600;color:#0d2b52;margin-top:2px;">${d.dispensaciones}</div></div>
+          </div>
+          <div style="margin-top:12px;padding-top:10px;border-top:1px solid #e2e8f0;">
+            <div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;">Código de receta</div>
+            <div style="font-family:monospace;font-size:12px;font-weight:800;color:#0d2b52;margin-top:2px;">${d.codigo}</div>
+          </div>
+        </div>
+        <p style="font-size:10px;color:#94a3b8;text-align:center;font-style:italic;">Trazabilidad garantizada · Art. 2k Ley C.U.R.A.</p>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById('modal-title').innerText = "Ayuda: Retiro";
+      document.getElementById('modal-body').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-qr-code" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Retirar con CURA-ID:</strong> Generá el QR y presentalo al farmacéutico. También podés identificarte con tu DNI.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-calendar-x" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Vencimiento:</strong> Si la receta vence antes del retiro, deberás solicitar renovación a tu médico.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-package" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Retiro parcial:</strong> Si no hay stock completo, podés retirar lo disponible y el saldo queda pendiente.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Trazabilidad:</strong> Cada retiro se registra con fecha, hora, farmacia y farmacéutico (Art. 2k Ley C.U.R.A.).</p></div>
+        </div>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
+  </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Salud - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5px;
+      margin-bottom: 25px;
+    }
+
+    .header-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+
+    .credencial-wallet {
+      background: linear-gradient(135deg, #004E85 0%, #065D9B 100%);
+      border-radius: 28px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      margin-bottom: 30px;
+      text-decoration: none;
+      display: block;
+      transition: all 0.3s ease;
+      touch-action: manipulation;
+    }
+    
+    .credencial-wallet.clicked {
+      animation: tap-pulse 0.3s ease-out;
+      filter: brightness(1.2);
+    }
+
+    .credencial-wallet::after {
+      content: ''; position: absolute; top: -50%; right: -20%; width: 150px; height: 150px;
+      background: rgba(0, 194, 255, 0.1); filter: blur(40px); border-radius: 50%;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .menu-item {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center; 
+      text-align: center;   
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      touch-action: manipulation;
+    }
+
+    .menu-item.clicked {
+      animation: tap-pulse 0.3s ease-out;
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent);
+    }
+
+    .menu-item.clicked .icon-box {
+      background: var(--accent);
+      color: var(--bg-dark);
+      transform: scale(1.1) rotate(-8deg);
+      transition: all 0.15s ease;
+    }
+
+    .icon-box {
+      width: 48px; height: 48px;
+      background: rgba(0, 194, 255, 0.15);
+      color: var(--accent);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .menu-text { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
+
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px;
+      background: rgba(6, 93, 155, 0.7);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; transition: 0.2s; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn { 
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px;
+      box-shadow: 0 8px 20px rgba(0, 194, 255, 0.4);
+      cursor: pointer;
+    }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 52, 92, 0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+    }
+    .help-icon { color: var(--cura-blue); font-size: 22px; flex-shrink: 0; }
+
+    @keyframes tap-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.94); }
+      100% { transform: scale(1); }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <header class="header-bar">
+      <div class="header-title">C.U.R.A. Salud</div>
+      <i class="ph-bold ph-bell text-2xl text-cura-accent"></i>
+    </header>
+
+    <main>
+      <div class="mb-6">
+        <h1 class="text-3xl font-extrabold">Hola, Franco</h1>
+        <p class="text-muted text-sm opacity-60">¿Qué gestión necesitás hacer hoy?</p>
+      </div>
+
+      <!-- CREDENCIAL ÚNICA DE SALUD DIGITAL (C.U.S.) — Art. 2b Ley C.U.R.A. -->
+      <a href="credencial__3_.html" class="credencial-wallet" onclick="navegar(event, this.href)">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-[10px] uppercase tracking-widest opacity-60 mb-1">CREDENCIAL ÚNICA DE SALUD DIGITAL</p>
+            <h3 class="text-xl font-bold">Franco Paganini</h3>
+            <p class="text-xs opacity-80">CURAID-01-41316202</p>
+            <p class="text-[11px] font-medium mt-1 text-white opacity-90">Toca para ver el token de seguridad</p>
+          </div>
+          <div class="bg-white p-1.5 rounded-xl shadow-sm">
+            <img src="qr_menu.png" alt="QR" class="w-12 h-12">
+          </div>
+        </div>
+      </a>
+
+      <div class="menu-grid">
+
+        <!-- RECETAS DIGITALES — Art. 1d(3) Ley C.U.R.A. (trazabilidad de prescripciones) -->
+        <a href="prescripciones__2_.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-pill"></i></div>
+          <span class="menu-text">Recetas<br>Digitales</span>
+        </a>
+
+        <!-- RETIRO DE MEDICAMENTOS — Art. 1d(3) Ley C.U.R.A. (trazabilidad de dispensaciones) -->
+        <a href="retiro-medicamentos__2_.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-package"></i></div>
+          <span class="menu-text">Retiro de<br>Medicamentos</span>
+        </a>
+
+        <!-- GESTIÓN DE TURNOS — Art. 1d(4) Ley C.U.R.A. (gestión unificada de turnos) -->
+        <a href="solicitar-turno__1_.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-calendar-check"></i></div>
+          <span class="menu-text">Gestionar<br>Turnos</span>
+        </a>
+
+        <!-- HISTORIA CLÍNICA — Art. 1c(1) y Art. 2a Ley C.U.R.A. (historia clínica digital unificada) -->
+        <a href="historia-salud__1_.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-clipboard-text"></i></div>
+          <span class="menu-text">Historia<br>Clínica</span>
+        </a>
+
+        <!-- ALERTAS Y RECORDATORIOS — Art. 1e(6) Ley C.U.R.A. (sistema de alertas automáticas) -->
+        <a href="recordatorios__1_.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-clock-clockwise"></i></div>
+          <span class="menu-text">Alertas y<br>Recordatorios</span>
+        </a>
+
+        <!-- CARTILLA MÉDICA — Art. 1d Ley C.U.R.A. (ecosistema de prestadores adherentes) -->
+        <a href="cartilla.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-map-trifold"></i></div>
+          <span class="menu-text">Cartilla<br>Médica</span>
+        </a>
+
+        <!-- ESTUDIOS MÉDICOS — Art. 2m Ley C.U.R.A. (Estudio Médico Digital) -->
+        <a href="documentos-estudios__1_.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-test-tube"></i></div>
+          <span class="menu-text">Estudios<br>Médicos</span>
+        </a>
+
+        <!-- AUDITORÍA / TRAZABILIDAD — Art. 2k Ley C.U.R.A. (derecho del paciente a ver log de accesos) -->
+        <a href="auditoria.html" class="menu-item" onclick="navegar(event, this.href)">
+          <div class="icon-box"><i class="ph-bold ph-shield-check"></i></div>
+          <span class="menu-text">Auditoría<br>de Accesos</span>
+        </a>
+
+      </div>
+    </main>
+
+    <!-- BARRA DE NAVEGACIÓN INFERIOR -->
+    <!-- NOTA: chats.html y perfil.html no existen en el proyecto. Se reemplazaron provisionalmente
+         por mis-turnos.html y auditoria.html hasta recibir esos archivos. -->
+    <nav class="bottom-bar">
+      <button class="nav-btn active" onclick="location.href='menu__15_.html'" title="Inicio">
+        <i class="ph-bold ph-house-line"></i>
+      </button>
+      <button class="nav-btn" onclick="location.href='mis-turnos.html'" title="Mis Turnos">
+        <i class="ph-bold ph-calendar-blank"></i>
+      </button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias de Turno">
+        <i class="ph-bold ph-heartbeat"></i>
+      </button>
+      <button class="nav-btn" onclick="location.href='auditoria.html'" title="Auditoría">
+        <i class="ph-bold ph-shield-check"></i>
+      </button>
+    </nav>
+  </div>
+
+  <!-- MODAL DE AYUDA -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="modal-title" class="text-xl font-extrabold">Bienvenido a C.U.R.A.</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      
+      <div id="modal-body" class="space-y-5">
+      </div>
+
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 text-cura-blue font-bold text-lg">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function navegar(event, url) {
+      event.preventDefault();
+      const el = event.currentTarget;
+      el.classList.add('clicked');
+      
+      setTimeout(() => {
+        window.location.href = url;
+      }, 300);
+    }
+
+    // Limpia el estado de animación al volver atrás
+    window.onpageshow = function(event) {
+      document.querySelectorAll('.clicked').forEach(el => {
+        el.classList.remove('clicked');
+      });
+    };
+
+    function abrirModalAyuda() {
+      const modal = document.getElementById('modal-container');
+      const body = document.getElementById('modal-body');
+      
+      body.innerHTML = `
+        <div class="flex gap-4">
+          <i class="ph-bold ph-heartbeat help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Ecosistema de Salud:</strong> Esta sección unifica toda tu información médica federal bajo la Ley C.U.R.A. (Conectividad Unificada para Redes y Asistencia Sanitaria).</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-fingerprint help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Credencial Única de Salud:</strong> Tu credencial digital y QR permiten que cualquier prestador autorizado del país acceda a tu información de forma segura y autenticada.</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-grid-four help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Herramientas:</strong> Gestioná turnos, recetas, estudios y recordatorios de medicación. Toda tu historia clínica y el registro de accesos están disponibles en un solo lugar.</p>
+        </div>
+        <div class="flex gap-4">
+          <i class="ph-bold ph-shield-check help-icon"></i>
+          <p class="text-sm text-gray-600"><strong>Trazabilidad:</strong> Podés ver en todo momento quién accedió a tu información clínica, conforme lo establece la Ley C.U.R.A.</p>
+        </div>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal-container').style.display = "none";
+    }
+  </script>
+
+</body>
+</html>

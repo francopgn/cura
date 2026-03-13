@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prescripciones - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --bg-dark: #00345C;
+      --cura-blue: #004E85;
+      --accent: #00C2FF;
+      --glass: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at top right, rgba(0, 78, 133, 0.5), transparent),
+        radial-gradient(circle at bottom left, rgba(0, 194, 255, 0.05), transparent);
+      color: white;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 414px;
+      padding: 20px;
+      padding-bottom: 120px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 5px; margin-bottom: 25px;
+    }
+    .back-btn {
+      width: 40px; height: 40px; border-radius: 12px; background: var(--glass);
+      border: 1px solid var(--glass-border); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 20px; cursor: pointer;
+    }
+
+    .filter-section {
+      background: var(--glass); backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); border-radius: 28px;
+      padding: 24px; margin-bottom: 25px;
+    }
+
+    .input-text, .select-field {
+      background: rgba(255,255,255,0.07); border: 1px solid var(--glass-border);
+      color: white; padding: 12px 16px; border-radius: 16px; font-size: 14px;
+      outline: none; width: 100%; margin-bottom: 10px; box-sizing: border-box;
+    }
+    .select-field option { background: #004E85; color: white; }
+    .select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .toggle-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 10px; padding-top: 15px; border-top: 1px solid var(--glass-border);
+    }
+    .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background-color: rgba(255,255,255,0.2); border-radius: 999px; transition: 0.3s;
+    }
+    .slider::before {
+      content: ""; position: absolute; height: 18px; width: 18px;
+      left: 3px; top: 3px; background-color: #fff; border-radius: 50%; transition: 0.3s;
+    }
+    .toggle input:checked + .slider { background-color: var(--accent); }
+    .toggle input:checked + .slider::before { transform: translateX(20px); }
+
+    .rx-card {
+      background: var(--glass); backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 15px; transition: all 0.3s ease;
+    }
+    .rx-card.disponible { border-left: 3px solid var(--accent); }
+    .rx-card.dispensada { border-left: 3px solid rgba(255,255,255,0.15); opacity: 0.75; }
+    .rx-card.vencida    { border-left: 3px solid #ef4444; }
+
+    .estado-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px;
+      margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .estado-disponible { background: rgba(0,194,255,0.15); color: var(--accent); border: 1px solid rgba(0,194,255,0.3); }
+    .estado-retirada   { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .estado-vencida    { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+    .rx-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
+    .rx-name { font-size: 18px; font-weight: 800; color: white; }
+    .rx-dose { font-size: 12px; font-weight: 700; background: var(--accent); color: var(--bg-dark); padding: 4px 12px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+    .rx-body { font-size: 13px; opacity: 0.8; line-height: 1.5; margin-bottom: 10px; }
+
+    .rx-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px;
+      background: rgba(255,255,255,0.03); border-radius: 14px; padding: 12px;
+      border: 1px solid var(--glass-border);
+    }
+    .rx-meta-item { font-size: 10px; }
+    .rx-meta-label { color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+    .rx-meta-value { color: rgba(255,255,255,0.8); font-weight: 600; }
+
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.1); }
+    .chip-green  { background: rgba(34,197,94,0.2); color: #4ade80; }
+    .chip-red    { background: rgba(239,68,68,0.2); color: #f87171; }
+    .chip-gray   { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+
+    .mini-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .mini-btn {
+      padding: 10px; border-radius: 14px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.05); font-size: 12px; font-weight: 700;
+      color: white; cursor: pointer; transition: background 0.2s;
+    }
+    .mini-btn:hover { background: rgba(255,255,255,0.1); }
+    .mini-btn.primary-btn { background: rgba(0,194,255,0.15); border-color: rgba(0,194,255,0.3); color: var(--accent); }
+
+    .qr-block {
+      display: grid; grid-template-columns: auto 1fr; gap: 16px;
+      align-items: center; margin-bottom: 16px;
+      background: white; border-radius: 20px; padding: 16px;
+    }
+    .qr-placeholder {
+      width: 72px; height: 72px; background: #0d2b52;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .qr-code-text { font-family: monospace; font-size: 13px; font-weight: 800; color: #0d2b52; word-break: break-all; }
+    .qr-sub { font-size: 11px; color: #64748b; margin-top: 4px; }
+
+    .bottom-bar {
+      position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+      width: 85%; max-width: 350px; background: rgba(6,93,155,0.7);
+      backdrop-filter: blur(20px); border-radius: 30px; height: 70px;
+      display: flex; align-items: center; justify-content: space-around;
+      border: 1px solid var(--glass-border); z-index: 1000;
+    }
+    .nav-btn { color: rgba(255,255,255,0.4); font-size: 24px; background: none; border: none; cursor: pointer; }
+    .nav-btn.active { color: var(--accent); }
+    .center-btn {
+      width: 60px; height: 60px; background: var(--accent); color: var(--bg-dark);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold; margin-top: -40px;
+      box-shadow: 0 8px 20px rgba(0,194,255,0.4); cursor: pointer;
+    }
+
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,52,92,0.4); backdrop-filter: blur(10px);
+      display: none; justify-content: center; align-items: center; padding: 20px; z-index: 2000;
+    }
+    .modal {
+      background: #ffffff; width: 100%; max-width: 360px; border-radius: 35px;
+      padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); color: #0d2b52;
+      max-height: 85vh; overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Prescripciones</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <div class="filter-section">
+        <h2 class="text-xl font-bold mb-1">Mis medicamentos</h2>
+        <p class="text-sm opacity-60 mb-6">Recetas electrónicas vinculadas a tu CURA-ID.</p>
+
+        <input type="text" id="buscadorRx" class="input-text" placeholder="Buscar medicamento o profesional..." oninput="filtrarRx()">
+        
+        <div class="select-grid">
+          <select id="filtroEstado" class="select-field" onchange="filtrarRx()">
+            <option value="todas">Estado: Todas</option>
+            <option value="disponible">Para retirar</option>
+            <option value="retirada">Retiradas</option>
+            <option value="vencida">Vencidas</option>
+          </select>
+          <select id="filtroTipo" class="select-field" onchange="filtrarRx()">
+            <option value="todos">Tipo: Todos</option>
+            <option value="cronico">Crónico</option>
+            <option value="agudo">Agudo</option>
+          </select>
+        </div>
+
+        <!-- Consentimiento Informado Granular — Art. 2l Ley C.U.R.A. -->
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="toggleSensiblesRx" checked onchange="filtrarRx()">
+            <span class="slider"></span>
+          </label>
+          <span class="text-[11px] opacity-70 leading-tight">Mostrar medicación de salud mental y datos sensibles.</span>
+        </div>
+      </div>
+
+      <div id="prescriptionList">
+
+        <!-- RECETA 1 — Disponible para retiro -->
+        <article class="rx-card disponible"
+          data-estado="disponible" data-tipo="cronico" data-sensible="no"
+          data-texto="metformina 850 mg diabetes lopez"
+          data-codigo="RX-CURA-20250605-00482"
+          data-medicamento="Metformina 850 mg"
+          data-posologia="1 comprimido con el desayuno y 1 con la cena."
+          data-prescriptor="Dra. Ana López · MP 38.712"
+          data-emision="05/06/2025" data-vencimiento="05/09/2025"
+          data-dispensaciones="0 de 3 retiradas" data-diagnostico="Diabetes tipo 2">
+          <span class="estado-badge estado-disponible"><i class="ph-bold ph-check-circle"></i> Disponible para retiro</span>
+          <div class="rx-header">
+            <div class="rx-name">Metformina</div>
+            <div class="rx-dose">850 mg</div>
+          </div>
+          <div class="rx-body">1 comprimido con el desayuno y 1 con la cena.</div>
+          <div class="rx-meta-grid">
+            <div class="rx-meta-item"><span class="rx-meta-label">Prescriptor</span><span class="rx-meta-value">Dra. López · MP 38.712</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Emisión</span><span class="rx-meta-value">05/06/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Vence</span><span class="rx-meta-value">05/09/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Dispensaciones</span><span class="rx-meta-value">0 de 3 retiradas</span></div>
+          </div>
+          <div class="chip-row">
+            <span class="chip">Diabetes tipo 2</span>
+            <span class="chip chip-green">Tratamiento crónico</span>
+          </div>
+          <div class="mini-actions">
+            <button class="mini-btn primary-btn" onclick="verReceta(this.closest('.rx-card'))"><i class="ph-bold ph-qr-code"></i> Ver código</button>
+            <button class="mini-btn" onclick="verInteracciones('Metformina')">Interacciones</button>
+          </div>
+        </article>
+
+        <!-- RECETA 2 — Dato sensible (Salud Mental) -->
+        <article class="rx-card disponible"
+          data-estado="disponible" data-tipo="cronico" data-sensible="si"
+          data-texto="sertralina 50 mg salud mental"
+          data-codigo="RX-CURA-20250218-00217"
+          data-medicamento="Sertralina 50 mg"
+          data-posologia="1 comprimido por la mañana."
+          data-prescriptor="Eq. Salud Mental · MP 51.204"
+          data-emision="18/02/2025" data-vencimiento="18/08/2025"
+          data-dispensaciones="2 de 6 retiradas" data-diagnostico="Dato sensible — Salud Mental">
+          <span class="estado-badge estado-disponible"><i class="ph-bold ph-check-circle"></i> Disponible para retiro</span>
+          <div class="rx-header">
+            <div class="rx-name">Sertralina</div>
+            <div class="rx-dose">50 mg</div>
+          </div>
+          <div class="rx-body">1 comprimido por la mañana.</div>
+          <div class="rx-meta-grid">
+            <div class="rx-meta-item"><span class="rx-meta-label">Prescriptor</span><span class="rx-meta-value">Eq. Salud Mental · MP 51.204</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Emisión</span><span class="rx-meta-value">18/02/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Vence</span><span class="rx-meta-value">18/08/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Dispensaciones</span><span class="rx-meta-value">2 de 6 retiradas</span></div>
+          </div>
+          <div class="chip-row">
+            <span class="chip chip-red">🔒 Dato sensible</span>
+            <span class="chip chip-red">Salud Mental</span>
+          </div>
+          <div class="mini-actions">
+            <button class="mini-btn primary-btn" onclick="verReceta(this.closest('.rx-card'))"><i class="ph-bold ph-qr-code"></i> Ver código</button>
+            <button class="mini-btn" onclick="verPrivacidad()"><i class="ph-bold ph-lock-key"></i> Privacidad</button>
+          </div>
+        </article>
+
+        <!-- RECETA 3 — Retirada (histórico) -->
+        <article class="rx-card dispensada"
+          data-estado="retirada" data-tipo="agudo" data-sensible="no"
+          data-texto="amoxicilina 500 mg infeccion gonzalez"
+          data-codigo="RX-CURA-20250112-00093"
+          data-medicamento="Amoxicilina 500 mg"
+          data-posologia="1 cápsula cada 8 horas por 7 días."
+          data-prescriptor="Dr. Juan González · MP 42.391"
+          data-emision="12/01/2025" data-vencimiento="12/02/2025"
+          data-dispensaciones="1 de 1 retiradas" data-diagnostico="Infección respiratoria aguda">
+          <span class="estado-badge estado-retirada"><i class="ph-bold ph-check-fat"></i> Completamente retirada</span>
+          <div class="rx-header">
+            <div class="rx-name">Amoxicilina</div>
+            <div class="rx-dose">500 mg</div>
+          </div>
+          <div class="rx-body">1 cápsula cada 8 horas por 7 días.</div>
+          <div class="rx-meta-grid">
+            <div class="rx-meta-item"><span class="rx-meta-label">Prescriptor</span><span class="rx-meta-value">Dr. González · MP 42.391</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Emisión</span><span class="rx-meta-value">12/01/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Vence</span><span class="rx-meta-value">12/02/2025</span></div>
+            <div class="rx-meta-item"><span class="rx-meta-label">Dispensaciones</span><span class="rx-meta-value">1 de 1 retiradas</span></div>
+          </div>
+          <div class="chip-row">
+            <span class="chip">Infección respiratoria</span>
+            <span class="chip chip-gray">Tratamiento agudo</span>
+          </div>
+          <div class="mini-actions">
+            <button class="mini-btn" onclick="verReceta(this.closest('.rx-card'))">Ver detalle</button>
+            <button class="mini-btn" onclick="verInteracciones('Amoxicilina')">Interacciones</button>
+          </div>
+        </article>
+
+      </div>
+    </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='prescripciones__2_.html'" title="Prescripciones"><i class="ph-bold ph-pill"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Título</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-lg" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function filtrarRx() {
+      const texto       = document.getElementById("buscadorRx").value.toLowerCase();
+      const estado      = document.getElementById("filtroEstado").value;
+      const tipo        = document.getElementById("filtroTipo").value;
+      const mostrarSens = document.getElementById("toggleSensiblesRx").checked;
+      document.querySelectorAll("#prescriptionList .rx-card").forEach(item => {
+        let ok = true;
+        if (estado !== "todas" && item.dataset.estado !== estado) ok = false;
+        if (tipo   !== "todos"  && item.dataset.tipo   !== tipo)  ok = false;
+        if (!mostrarSens && item.dataset.sensible === "si")        ok = false;
+        if (texto && !(item.dataset.texto||"").includes(texto))    ok = false;
+        item.style.display = ok ? "block" : "none";
+      });
+    }
+
+    function verReceta(card) {
+      const d = card.dataset;
+      document.getElementById('modal-title').innerText = "Detalle de Receta";
+      document.getElementById('modal-body').innerHTML = `
+        <p style="font-size:12px;color:#64748b;margin-bottom:14px;">Presentá este código en cualquier farmacia adherida al Sistema C.U.R.A.</p>
+        <div class="qr-block">
+          <div class="qr-placeholder"><i class="ph-bold ph-qr-code" style="color:white;font-size:36px;"></i></div>
+          <div>
+            <div class="qr-code-text">${d.codigo}</div>
+            <div class="qr-sub">${d.medicamento}</div>
+            <div class="qr-sub">Vence: ${d.vencimiento}</div>
+          </div>
+        </div>
+        <div style="background:#f8fafc;border-radius:16px;padding:14px;margin-bottom:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;letter-spacing:0.5px;">Prescriptor</div><div style="font-size:12px;font-weight:600;color:#0d2b52;">${d.prescriptor}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;letter-spacing:0.5px;">Diagnóstico</div><div style="font-size:12px;font-weight:600;color:#0d2b52;">${d.diagnostico}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;letter-spacing:0.5px;">Posología</div><div style="font-size:12px;font-weight:600;color:#0d2b52;">${d.posologia}</div></div>
+            <div><div style="font-size:10px;font-weight:800;color:#004E85;text-transform:uppercase;letter-spacing:0.5px;">Dispensaciones</div><div style="font-size:12px;font-weight:600;color:#0d2b52;">${d.dispensaciones}</div></div>
+          </div>
+        </div>
+        <p style="font-size:10px;color:#94a3b8;text-align:center;font-style:italic;">Trazabilidad garantizada · Art. 2k Ley C.U.R.A.</p>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function verInteracciones(med) {
+      document.getElementById('modal-title').innerText = "Interacciones · " + med;
+      document.getElementById('modal-body').innerHTML = `
+        <p style="font-size:13px;color:#475569;margin-bottom:14px;">Verificación con el resto de tu medicación activa registrada en C.U.R.A.</p>
+        <div style="background:#f0fdf4;border-radius:14px;padding:14px;border:1px solid #bbf7d0;margin-bottom:12px;">
+          <p style="font-size:13px;font-weight:700;color:#15803d;">✓ Sin interacciones críticas detectadas</p>
+          <p style="font-size:11px;color:#166534;margin-top:4px;">Con Enalapril · Levotiroxina · resto de medicación activa</p>
+        </div>
+        <p style="font-size:11px;color:#94a3b8;font-style:italic;">Este chequeo es orientativo. Consultá siempre con tu médico o farmacéutico.</p>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function verPrivacidad() {
+      document.getElementById('modal-title').innerText = "Privacidad · Dato sensible";
+      document.getElementById('modal-body').innerHTML = `
+        <p style="font-size:13px;color:#475569;margin-bottom:14px;">Esta receta contiene información de salud mental, clasificada como dato sensible según el <strong>Art. 2l Ley C.U.R.A.</strong></p>
+        <div style="background:#eff6ff;border-radius:14px;padding:14px;margin-bottom:12px;">
+          <p style="font-size:12px;font-weight:700;color:#1e40af;margin-bottom:6px;">¿Quién puede ver esta receta?</p>
+          <ul style="font-size:12px;color:#1e3a8a;padding-left:16px;line-height:2;">
+            <li>El profesional prescriptor</li>
+            <li>El farmacéutico al momento del retiro</li>
+            <li>Profesionales a quienes hayas dado acceso explícito</li>
+          </ul>
+        </div>
+        <p style="font-size:11px;color:#94a3b8;font-style:italic;">Para modificar estos permisos ingresá a Perfil → Privacidad y Accesos.</p>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById('modal-title').innerText = "Ayuda: Prescripciones";
+      document.getElementById('modal-body').innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-pill" style="color:#004E85;font-size:22px;flex-shrink:0;margin-top:2px;"></i><p style="font-size:13px;color:#475569;"><strong>Mis Recetas:</strong> Figuran todas las prescripciones emitidas por profesionales habilitados en la red C.U.R.A., con matrícula, código y estado de dispensación.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-qr-code" style="color:#004E85;font-size:22px;flex-shrink:0;margin-top:2px;"></i><p style="font-size:13px;color:#475569;"><strong>Retiro en farmacia:</strong> Tocá "Ver código" y presentá el código en cualquier farmacia adherida. También podés usar tu DNI.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0;margin-top:2px;"></i><p style="font-size:13px;color:#475569;"><strong>Datos sensibles:</strong> La medicación de salud mental puede ocultarse con el interruptor (Art. 2l Ley C.U.R.A.).</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-arrows-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0;margin-top:2px;"></i><p style="font-size:13px;color:#475569;"><strong>Trazabilidad:</strong> Cada retiro queda registrado automáticamente con fecha, hora y farmacia (Art. 2k).</p></div>
+        </div>
+      `;
+      document.getElementById('modal-container').style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById('modal-container').style.display = "none"; }
+  </script>
+</body>
+</html>

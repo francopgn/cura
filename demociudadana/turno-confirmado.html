@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Turno Confirmado - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    /* BANNER ÉXITO */
+    .success-banner {
+      background:rgba(16,185,129,0.12);
+      border:1px solid rgba(16,185,129,0.25);
+      border-radius:28px;
+      padding:22px 20px;
+      display:flex;
+      gap:16px;
+      align-items:center;
+      margin-bottom:20px;
+    }
+    .success-icon { width:48px; height:48px; border-radius:50%; background:rgba(16,185,129,0.2); display:flex; align-items:center; justify-content:center; font-size:24px; color:#10b981; flex-shrink:0; }
+    .success-title { font-size:17px; font-weight:900; color:white; }
+    .success-sub   { font-size:11px; opacity:0.65; margin-top:3px; line-height:1.4; }
+
+    /* CHIP ROW */
+    .chip-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+    .chip { font-size:10px; font-weight:800; padding:5px 12px; border-radius:8px; }
+    .chip-green  { background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+    .chip-blue   { background:rgba(0,194,255,0.1); color:var(--accent); border:1px solid rgba(0,194,255,0.2); }
+    .chip-gray   { background:rgba(255,255,255,0.07); color:rgba(255,255,255,0.6); border:1px solid var(--glass-border); }
+
+    /* SECTION CARD */
+    .sec-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:16px; }
+    .sec-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:14px; display:block; }
+
+    .data-row { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:10px; }
+    .data-row:last-child { margin-bottom:0; }
+    .data-key { font-size:12px; opacity:0.5; flex-shrink:0; }
+    .data-val { font-size:13px; font-weight:700; text-align:right; }
+    .data-divider { height:1px; background:var(--glass-border); margin:12px 0; }
+
+    /* CÓDIGO TURNO */
+    .code-box { background:rgba(0,194,255,0.06); border:1px dashed rgba(0,194,255,0.25); border-radius:18px; padding:16px; }
+    .code-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:1px; opacity:0.5; margin-bottom:8px; }
+    .code-value { font-size:22px; font-weight:900; color:var(--accent); letter-spacing:3px; margin-bottom:10px; }
+    .code-hint  { font-size:11px; opacity:0.55; line-height:1.5; }
+    .copy-btn { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:800; padding:7px 14px; border-radius:10px; background:rgba(0,194,255,0.15); color:var(--accent); border:1px solid rgba(0,194,255,0.2); cursor:pointer; margin-top:10px; transition:all 0.2s; }
+    .copy-btn.done { background:rgba(16,185,129,0.15); color:#10b981; border-color:rgba(16,185,129,0.3); }
+
+    /* TELEMEDICINA */
+    .tele-banner { background:rgba(0,194,255,0.08); border:1px solid rgba(0,194,255,0.2); border-radius:18px; padding:14px 16px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:all 0.2s; margin-bottom:16px; }
+    .tele-banner:hover { background:rgba(0,194,255,0.14); }
+
+    /* ACCIONES */
+    .actions-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+    .action-btn { padding:13px 10px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border); font-size:11px; font-weight:800; color:white; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; transition:all 0.2s; }
+    .action-btn i { font-size:20px; color:var(--accent); }
+    .action-btn.danger i { color:#f87171; }
+    .action-btn.danger { border-color:rgba(239,68,68,0.2); }
+    .action-btn:active { transform:scale(0.97); }
+
+    /* BOTONES PRIMARIOS */
+    .btn-primary { width:100%; padding:17px; border-radius:22px; border:none; background:var(--cura-blue); color:white; font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px; transition:all 0.2s; }
+    .btn-secondary { width:100%; padding:15px; border-radius:22px; border:1px solid var(--glass-border); background:var(--glass); color:white; font-size:14px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
+    .btn-primary:active, .btn-secondary:active { transform:scale(0.97); }
+
+    .muted-footer { font-size:10px; color:white; opacity:0.35; text-align:center; margin-top:20px; line-height:1.6; }
+
+    /* BOTTOM BAR */
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .modal-section { background:#f8fafc; border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .modal-section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#64748b; margin-bottom:6px; }
+    .modal-section-value { font-size:13px; font-weight:600; color:#0d2b52; line-height:1.5; }
+    .btn-modal-primary { width:100%; padding:14px; border-radius:16px; border:none; background:#004E85; color:white; font-size:14px; font-weight:800; cursor:pointer; margin-top:8px; }
+    .btn-modal-secondary { width:100%; padding:14px; border-radius:16px; border:1px solid #e2e8f0; background:white; color:#0d2b52; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+    .btn-modal-danger { width:100%; padding:14px; border-radius:16px; border:none; background:#fee2e2; color:#b91c1c; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Turno Confirmado</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+
+      <!-- BANNER ÉXITO -->
+      <div class="success-banner">
+        <div class="success-icon"><i class="ph-bold ph-check-fat"></i></div>
+        <div>
+          <div class="success-title">Tu turno fue registrado</div>
+          <div class="success-sub">Vinculado a tu Historia de Salud interoperable C.U.R.A. (Art. 1d(4))</div>
+        </div>
+      </div>
+
+      <!-- CHIPS ESTADO -->
+      <div class="chip-row">
+        <span class="chip chip-green"><i class="ph-bold ph-check" style="font-size:9px"></i> Confirmado</span>
+        <span class="chip chip-blue">Turno programado</span>
+        <span class="chip chip-gray">Acceso registrado — Art. 2k</span>
+      </div>
+
+      <!-- RESUMEN DEL TURNO -->
+      <div class="sec-card">
+        <span class="sec-label">Resumen del turno</span>
+        <div class="data-row">
+          <span class="data-key">Establecimiento</span>
+          <span class="data-val">Hospital General de Agudos</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Especialidad</span>
+          <span class="data-val">Cardiología</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Profesional</span>
+          <span class="data-val">Dr. Carlos González</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Matrícula</span>
+          <span class="data-val" style="opacity:0.6">Mat. 52.341</span>
+        </div>
+        <div class="data-divider"></div>
+        <div class="data-row">
+          <span class="data-key">Fecha</span>
+          <span class="data-val">10/03/2026</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Horario</span>
+          <span class="data-val">09:00hs</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Modalidad</span>
+          <span class="data-val">Presencial</span>
+        </div>
+        <div class="data-row">
+          <span class="data-key">Cobertura</span>
+          <span class="data-val">PAMI</span>
+        </div>
+      </div>
+
+      <!-- CÓDIGO DEL TURNO -->
+      <div class="sec-card">
+        <span class="sec-label">Código de identificación</span>
+        <div class="code-box">
+          <div class="code-label">Código del turno</div>
+          <div class="code-value" id="codeTurno">CURA-26AB7Q</div>
+          <div class="code-hint">Presentá este código o tu credencial C.U.S. (QR) el día del turno para verificar tu identidad en el mostrador.</div>
+          <button class="copy-btn" id="copyBtn" onclick="copiarCodigo()">
+            <i class="ph-bold ph-copy"></i> Copiar código
+          </button>
+        </div>
+        <div style="font-size:11px;opacity:0.5;margin-top:12px;line-height:1.5">
+          Si cargaste estudios recientes, el profesional podrá verlos antes del turno según tu configuración de privacidad (Art. 2l).
+        </div>
+      </div>
+
+      <!-- VIDEOCONSULTA -->
+      <div class="tele-banner" onclick="abrirModalTele()">
+        <i class="ph-bold ph-video-camera" style="font-size:22px;color:var(--accent);flex-shrink:0"></i>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:800;color:var(--accent)">También disponible como videoconsulta</div>
+          <div style="font-size:10px;opacity:0.65;margin-top:2px">El enlace C.U.R.A. estará disponible 24hs antes del turno</div>
+        </div>
+        <i class="ph-bold ph-caret-right" style="font-size:16px;opacity:0.4"></i>
+      </div>
+
+      <!-- ACCIONES -->
+      <div class="sec-card">
+        <span class="sec-label">Acciones</span>
+        <div class="actions-grid">
+          <button class="action-btn" onclick="abrirModalCalendario()">
+            <i class="ph-bold ph-calendar-plus"></i>
+            Agregar al calendario
+          </button>
+          <button class="action-btn" onclick="abrirModalMapa()">
+            <i class="ph-bold ph-navigation-arrow"></i>
+            Cómo llegar
+          </button>
+          <button class="action-btn" onclick="abrirModalReprogramar()">
+            <i class="ph-bold ph-pencil"></i>
+            Reprogramar
+          </button>
+          <button class="action-btn danger" onclick="abrirModalCancelar()">
+            <i class="ph-bold ph-trash"></i>
+            Cancelar turno
+          </button>
+        </div>
+      </div>
+
+      <!-- BOTONES NAVEGACIÓN -->
+      <button class="btn-primary" onclick="location.href='historia-salud__1_.html'">
+        <i class="ph-bold ph-heart"></i> Volver a Historia de Salud
+      </button>
+      <button class="btn-secondary" onclick="location.href='mis-turnos.html'">
+        <i class="ph-bold ph-calendar-blank"></i> Ver todos mis turnos
+      </button>
+
+      <p class="muted-footer">
+        Cada cambio sobre este turno queda registrado en el módulo de Trazabilidad C.U.R.A.<br>
+        Art. 1d(4) · Art. 2k — Ley C.U.R.A.
+      </p>
+    </main>
+
+    <!-- BOTTOM BAR -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn active" onclick="location.href='mis-turnos.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Información</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-base" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copiarCodigo() {
+      const codigo = document.getElementById("codeTurno").innerText;
+      navigator.clipboard?.writeText(codigo).catch(() => {});
+      const btn = document.getElementById("copyBtn");
+      btn.classList.add("done");
+      btn.innerHTML = '<i class="ph-bold ph-check-fat"></i> ¡Copiado!';
+      setTimeout(() => {
+        btn.classList.remove("done");
+        btn.innerHTML = '<i class="ph-bold ph-copy"></i> Copiar código';
+      }, 2500);
+    }
+
+    function abrirModalTele() {
+      document.getElementById("modal-title").innerText = "Videoconsulta — C.U.R.A.";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section">
+          <div class="modal-section-label">Turno</div>
+          <div class="modal-section-value">Dr. Carlos González · Cardiología<br>10/03/2026 · 09:00hs</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Enlace de videoconsulta</div>
+          <div style="font-size:13px;color:#64748b;line-height:1.5">El enlace estará disponible <strong>24 horas antes</strong> del turno a través del módulo C.U.R.A. Recibirás una notificación en la app con el acceso directo.</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Requisitos</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.7">· Conexión a internet estable<br>· Cámara y micrófono habilitados<br>· CURA-ID activo para verificación de identidad</div>
+        </div>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Entendido</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalCalendario() {
+      document.getElementById("modal-title").innerText = "Agregar al calendario";
+      document.getElementById("modal-body").innerHTML = `
+        <p style="font-size:13px;color:#475569;margin-bottom:16px">Podés agregar este turno a tu calendario para recibir un recordatorio automático el día anterior.</p>
+        <div class="modal-section">
+          <div class="modal-section-label">Evento</div>
+          <div class="modal-section-value">Cardiología · Dr. Carlos González<br>10/03/2026 · 09:00hs · Hospital General de Agudos</div>
+        </div>
+        <button class="btn-modal-primary" onclick="cerrarModal()"><i class="ph-bold ph-calendar-plus"></i> Agregar</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalMapa() {
+      document.getElementById("modal-title").innerText = "Cómo llegar";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section">
+          <div class="modal-section-label">Dirección</div>
+          <div class="modal-section-value">Hospital General de Agudos<br>Av. Rivadavia 1234, Buenos Aires</div>
+        </div>
+        <button class="btn-modal-primary" onclick="window.open('https://www.google.com/maps/search/Hospital+General+de+Agudos','_blank'); cerrarModal()"><i class="ph-bold ph-navigation-arrow"></i> Abrir en Google Maps</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalReprogramar() {
+      document.getElementById("modal-title").innerText = "Reprogramar turno";
+      document.getElementById("modal-body").innerHTML = `
+        <p style="font-size:13px;color:#475569;margin-bottom:16px">Para reprogramar este turno serás redirigido al módulo de solicitud de turnos del sistema C.U.R.A.</p>
+        <button class="btn-modal-primary" onclick="location.href='solicitar-turno__1_.html'">Ir a solicitar turno</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalCancelar() {
+      document.getElementById("modal-title").innerText = "Cancelar turno";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="background:#fff5f5;border-radius:14px;padding:14px;margin-bottom:16px;">
+          <p style="font-size:13px;color:#7f1d1d;line-height:1.5">¿Confirmás la cancelación del turno de <strong>Cardiología</strong> del 10/03/2026 a las 09:00hs con el Dr. Carlos González?</p>
+        </div>
+        <div style="font-size:12px;color:#64748b;margin-bottom:16px">La cancelación quedará registrada en el sistema C.U.R.A. Si necesitás un nuevo turno podés solicitarlo desde la app.</div>
+        <button class="btn-modal-danger" onclick="cerrarModal(); setTimeout(() => location.href='mis-turnos.html', 300)">Confirmar cancelación</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Mantener turno</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Turno Confirmado";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-calendar-check" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Gestión de turnos (Art. 1d(4)):</strong> Tu turno queda registrado en el sistema C.U.R.A. y vinculado a tu historia clínica. Podés gestionarlo desde esta pantalla o desde "Mis Turnos".</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-video-camera" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Videoconsulta:</strong> Si el prestador ofrece atención remota, el enlace del módulo C.U.R.A. estará disponible 24hs antes del turno.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Trazabilidad (Art. 2k):</strong> Toda modificación del turno (reprogramación, cancelación, acceso del prestador) queda registrada en el historial de accesos.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+  </script>
+</body>
+</html>

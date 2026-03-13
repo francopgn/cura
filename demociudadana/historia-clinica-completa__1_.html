@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Historia Clínica Completa - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    .btn-secondary-action { width:100%; padding:16px; border-radius:20px; border:1px solid var(--glass-border); background:rgba(0,194,255,0.1); color:var(--accent); font-size:14px; font-weight:700; cursor:pointer; margin-bottom:20px; text-align:center; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .btn-secondary-action:active { transform:scale(0.98); }
+
+    .filter-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:28px; padding:24px; margin-bottom:25px; }
+    .section-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:12px; display:block; }
+
+    .input-text, .select-field { background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); color:white; padding:14px 16px; border-radius:18px; font-size:14px; outline:none; width:100%; margin-bottom:12px; box-sizing:border-box; }
+    select option { background:var(--bg-dark); color:white; }
+
+    .toggle-row { display:flex; align-items:center; gap:12px; padding-top:15px; border-top:1px solid var(--glass-border); }
+    .toggle { position:relative; width:44px; height:24px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background-color:rgba(255,255,255,0.2); border-radius:999px; transition:0.3s; }
+    .slider::before { content:""; position:absolute; height:18px; width:18px; left:3px; top:3px; background-color:#fff; border-radius:50%; transition:0.3s; }
+    .toggle input:checked + .slider { background-color:var(--accent); }
+    .toggle input:checked + .slider::before { transform:translateX(20px); }
+
+    .timeline-container { display:flex; flex-direction:column; gap:14px; }
+
+    .timeline-item { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; transition:all 0.3s ease; cursor:pointer; }
+    .timeline-item:active { transform:scale(0.97); background:rgba(255,255,255,0.1); }
+    .timeline-item.sensible { border-left:3px solid #f87171; }
+
+    .timeline-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; }
+    .timeline-date { font-size:11px; font-weight:700; color:white; opacity:0.6; flex-shrink:0; }
+    .badge-tipo { font-size:10px; font-weight:800; padding:4px 12px; border-radius:10px; background:var(--accent); color:var(--bg-dark); text-transform:uppercase; white-space:nowrap; }
+    .badge-tipo.guardia    { background:rgba(251,191,36,0.2); color:#fbbf24; }
+    .badge-tipo.laboratorio { background:rgba(16,185,129,0.2); color:#10b981; }
+    .badge-tipo.receta      { background:rgba(139,92,246,0.2); color:#a78bfa; }
+    .badge-tipo.imagen      { background:rgba(0,194,255,0.2); color:var(--accent); }
+
+    .timeline-prof { font-size:14px; font-weight:800; color:white; margin-bottom:2px; }
+    .timeline-mat  { font-size:10px; opacity:0.45; margin-bottom:8px; }
+    .timeline-text { font-size:13px; opacity:0.8; line-height:1.5; margin-bottom:12px; }
+
+    .chip-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .chip { font-size:10px; font-weight:800; padding:5px 12px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); }
+    .chip-red    { background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.2); display:inline-flex; align-items:center; gap:4px; }
+    .chip-blue   { background:rgba(0,194,255,0.1); color:var(--accent); border-color:rgba(0,194,255,0.2); }
+    .chip-green  { background:rgba(16,185,129,0.1); color:#10b981; border-color:rgba(16,185,129,0.2); }
+    .chip-purple { background:rgba(139,92,246,0.1); color:#a78bfa; border-color:rgba(139,92,246,0.2); }
+
+    .empty-state { text-align:center; padding:40px 20px; opacity:0.5; }
+
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .modal-section { background:#f8fafc; border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .modal-section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#64748b; margin-bottom:6px; }
+    .modal-section-value { font-size:13px; font-weight:600; color:#0d2b52; line-height:1.5; }
+    .traza-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid #f1f5f9; }
+    .traza-row:last-child { border-bottom:none; }
+    .traza-dot { width:8px; height:8px; border-radius:50%; background:#00C2FF; margin-top:5px; flex-shrink:0; }
+    .badge-sensible-modal { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:800; padding:5px 12px; border-radius:8px; background:rgba(239,68,68,0.1); color:#ef4444; border:1px solid rgba(239,68,68,0.2); margin-bottom:12px; }
+    .btn-modal-primary { width:100%; padding:14px; border-radius:16px; border:none; background:#004E85; color:white; font-size:14px; font-weight:800; cursor:pointer; margin-top:8px; }
+    .btn-modal-secondary { width:100%; padding:14px; border-radius:16px; border:1px solid #e2e8f0; background:white; color:#0d2b52; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Historia Clínica</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <!-- link corregido: documentos-estudios__1_.html -->
+      <button class="btn-secondary-action" onclick="location.href='documentos-estudios__1_.html'">
+        <i class="ph-bold ph-folder-open"></i> Ver documentos y estudios vinculados
+      </button>
+
+      <div class="filter-card">
+        <label class="section-label">Filtros de búsqueda</label>
+        <input type="text" id="buscador" class="input-text" placeholder="Buscar síntoma, profesional..." oninput="filtrar()">
+        <select id="filtroTipo" class="select-field" onchange="filtrar()">
+          <option value="todos">Todos los tipos</option>
+          <option value="consulta">Consultas</option>
+          <option value="guardia">Guardia</option>
+          <option value="laboratorio">Laboratorio</option>
+          <option value="imagen">Imágenes</option>
+          <option value="receta">Recetas</option>
+        </select>
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="toggleSensibles" checked onchange="filtrar()">
+            <span class="slider"></span>
+          </label>
+          <span class="text-[11px] opacity-70 leading-tight ml-1">Mostrar registros de salud mental y datos sensibles (Art. 2l).</span>
+        </div>
+      </div>
+
+      <label class="section-label" style="margin-left:4px;margin-bottom:16px">Línea de tiempo · Art. 1c(1)</label>
+
+      <div class="timeline-container" id="timeline"></div>
+      <div id="emptyState" class="empty-state" style="display:none">
+        <i class="ph-bold ph-magnifying-glass" style="font-size:36px;color:var(--accent);opacity:0.5"></i>
+        <p class="mt-3 text-sm">No se encontraron registros con ese filtro.</p>
+      </div>
+    </main>
+
+    <!-- BOTTOM BAR — links corregidos, ícono heartbeat, sin activo (sub-pantalla) -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn active" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Detalle del registro</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-base" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── DATOS — coherentes con toda la demo ──
+    const registros = [
+      {
+        id: "r1",
+        tipo: "consulta",
+        sensible: false,
+        fecha: "09/01/2026",
+        prof: "Dr. Carlos González",
+        mat: "Mat. 52.341 — Cardiología",
+        efector: "Hospital General de Agudos",
+        texto: "consulta cardiologia dolor pecho carlos gonzalez",
+        chips: [{ label:"Cardiología", cls:"chip-blue" }, { label:"Seguimiento", cls:"" }],
+        resumen: "Consulta por dolor torácico inespecífico. ECG sin cambios agudos. Se solicitan estudios complementarios.",
+        detalle: "ECG con ritmo sinusal regular. Se solicita ergometría y ecocardiograma para evaluación funcional. Paciente con antecedente de HTA controlada con Enalapril 10 mg."
+      },
+      {
+        id: "r2",
+        tipo: "guardia",
+        sensible: true,
+        fecha: "18/02/2025",
+        prof: "Dra. Sofía Herrera",
+        mat: "Mat. 41.198 — Psiquiatría",
+        efector: "Hospital General — Salud Mental",
+        texto: "salud mental crisis angustia guardia herrera psiquiatria",
+        chips: [{ label:"Salud Mental", cls:"chip-red" }, { label:"Sensible", cls:"chip-red", icon:"ph-lock-key" }],
+        resumen: "Registro de Salud Mental. Detalle visible según configuración de privacidad (Art. 2l).",
+        detalle: "Evaluación psiquiátrica de urgencia. Episodio de crisis de angustia. Se inicia tratamiento con Sertralina 50 mg. Seguimiento ambulatorio indicado."
+      },
+      {
+        id: "r3",
+        tipo: "laboratorio",
+        sensible: false,
+        fecha: "03/03/2025",
+        prof: "Lic. Beatriz Torres",
+        mat: "Mat. Bio. 8.821 — Bioquímica",
+        efector: "Laboratorio Central PAMI",
+        texto: "laboratorio glucemia hba1c lipidos diabetes torres",
+        chips: [{ label:"Diabetes T2", cls:"chip-green" }, { label:"Bioquímica", cls:"" }],
+        resumen: "HbA1c: 6.8%. Perfil lipídico dentro de rango. Se mantiene esquema de Metformina 850 mg.",
+        detalle: "Glucemia: 108 mg/dl · HbA1c: 6.8% · Colesterol total: 195 mg/dl · LDL: 118 mg/dl · HDL: 52 mg/dl. Función renal conservada."
+      },
+      {
+        id: "r4",
+        tipo: "imagen",
+        sensible: false,
+        fecha: "10/01/2025",
+        prof: "Dr. Martín Sosa",
+        mat: "Mat. 38.775 — Radiología",
+        efector: "Diagnóstico Norte",
+        texto: "radiografia torax rx imagen pulmones sosa",
+        chips: [{ label:"Radiología", cls:"chip-blue" }, { label:"Control", cls:"" }],
+        resumen: "Rx de tórax frente y perfil. Sin imágenes patológicas. Silueta cardíaca normal.",
+        detalle: "Campos pulmonares libres. Sin infiltrados ni consolidaciones. Índice cardiotorácico normal. Sin derrame pleural."
+      },
+      {
+        id: "r5",
+        tipo: "consulta",
+        sensible: false,
+        fecha: "05/12/2024",
+        prof: "Dra. Laura Ramírez",
+        mat: "Mat. 29.010 — Clínica Médica",
+        efector: "Consultorio Externo — Efector Habitual",
+        texto: "consulta clinica medica ramirez renovacion receta cronica",
+        chips: [{ label:"Crónico", cls:"chip-purple" }, { label:"Clínica Médica", cls:"" }],
+        resumen: "Control de HTA y DBT2. TA 130/80. Renovación de receta crónica: Metformina 850 mg + Enalapril 10 mg.",
+        detalle: "Paciente estable. Peso 72 kg. IMC 25.4. TA 130/80 mmHg. Se renueva medicación crónica por 6 meses. Próximo control en 3 meses."
+      },
+      {
+        id: "r6",
+        tipo: "receta",
+        sensible: false,
+        fecha: "05/12/2024",
+        prof: "Dra. Laura Ramírez",
+        mat: "Mat. 29.010 — Clínica Médica",
+        efector: "Consultorio Externo",
+        texto: "receta electronica metformina enalapril cronica ramirez",
+        chips: [{ label:"Electrónica", cls:"chip-purple" }, { label:"Crónica", cls:"" }],
+        resumen: "Receta electrónica crónica. Metformina 850 mg (2x/día) + Enalapril 10 mg (1x/día). Código: RX-CURA-20241205-00847.",
+        detalle: "Dispensaciones: 4 de 6. Vigente hasta 10/08/2025. Última dispensación: Farmacia Central PAMI — 06/12/2024."
+      }
+    ];
+
+    function badgeClass(tipo) {
+      const map = { guardia:"guardia", laboratorio:"laboratorio", receta:"receta", imagen:"imagen" };
+      return "badge-tipo " + (map[tipo] || "");
+    }
+    function badgeLabel(tipo) {
+      const map = { consulta:"Consulta", guardia:"Guardia", laboratorio:"Laboratorio", receta:"Receta", imagen:"Imagen" };
+      return map[tipo] || tipo;
+    }
+
+    function renderTimeline(lista) {
+      const container = document.getElementById("timeline");
+      container.innerHTML = "";
+      document.getElementById("emptyState").style.display = lista.length ? "none" : "block";
+      lista.forEach(r => {
+        const art = document.createElement("article");
+        art.className = "timeline-item" + (r.sensible ? " sensible" : "");
+        art.dataset.tipo    = r.tipo;
+        art.dataset.sensible = r.sensible ? "si" : "no";
+        art.dataset.texto   = r.texto;
+        art.onclick = () => abrirDetalle(r.id);
+
+        const chipsHtml = r.chips.map(c =>
+          `<span class="chip ${c.cls}">${c.icon ? `<i class="ph-bold ${c.icon}" style="font-size:10px"></i>` : ""}${c.label}</span>`
+        ).join("");
+
+        art.innerHTML = `
+          <div class="timeline-header">
+            <span class="timeline-date">${r.fecha}</span>
+            <span class="${badgeClass(r.tipo)}">${badgeLabel(r.tipo)}</span>
+          </div>
+          <div class="timeline-prof">${r.prof}</div>
+          <div class="timeline-mat">${r.mat} · ${r.efector}</div>
+          <p class="timeline-text">${r.resumen}</p>
+          <div class="chip-row">${chipsHtml}</div>
+        `;
+        container.appendChild(art);
+      });
+    }
+
+    function filtrar() {
+      const texto = document.getElementById("buscador").value.toLowerCase();
+      const tipo  = document.getElementById("filtroTipo").value;
+      const mostrarSensibles = document.getElementById("toggleSensibles").checked;
+      const filtered = registros.filter(r => {
+        if (tipo !== "todos" && r.tipo !== tipo) return false;
+        if (!mostrarSensibles && r.sensible) return false;
+        if (texto && !r.texto.includes(texto) && !r.prof.toLowerCase().includes(texto)) return false;
+        return true;
+      });
+      renderTimeline(filtered);
+    }
+
+    function abrirDetalle(id) {
+      const r = registros.find(x => x.id === id);
+      if (!r) return;
+      document.getElementById("modal-title").innerText = badgeLabel(r.tipo) + " · " + r.fecha;
+      document.getElementById("modal-body").innerHTML = `
+        ${r.sensible ? `<div class="badge-sensible-modal"><i class="ph-bold ph-lock-key"></i> Dato sensible — Salud Mental · Art. 2l</div>` : ""}
+        <div class="modal-section">
+          <div class="modal-section-label">Profesional</div>
+          <div class="modal-section-value">${r.prof}</div>
+          <div style="font-size:11px;color:#64748b;margin-top:2px">${r.mat}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Efector · Fecha</div>
+          <div class="modal-section-value">${r.efector} · ${r.fecha}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Detalle del registro</div>
+          <div class="modal-section-value">${r.detalle}</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Trazabilidad · Art. 2k</div>
+          <div class="traza-row">
+            <div class="traza-dot"></div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#0d2b52">${r.prof}</div>
+              <div style="font-size:11px;color:#64748b">Carga del registro · ${r.fecha}</div>
+            </div>
+          </div>
+          <div class="traza-row">
+            <div class="traza-dot"></div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#0d2b52">Paciente (CURA-ID verificado)</div>
+              <div style="font-size:11px;color:#64748b">Visualización · App Mi Argentina</div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-modal-primary" onclick="location.href='detalle-registro__5_.html'; cerrarModal()">
+          <i class="ph-bold ph-arrow-square-out"></i> Ver registro completo
+        </button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cerrar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Historia Clínica";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-counter-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Historia unificada (Art. 1c(1)):</strong> El sistema C.U.R.A. consolida todos tus registros de hospitales públicos y privados del país en una línea de tiempo cronológica única.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-eye-slash" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Privacidad (Art. 2l):</strong> Los registros de Salud Mental y datos sensibles están protegidos. Podés ocultarlos con el interruptor o gestionar quién puede verlos desde la sección de privacidad.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Trazabilidad (Art. 2k):</strong> Cada vez que un profesional accede a tu historia clínica queda registrado con su matrícula, efector y fecha. Lo podés verificar en Auditoría de Accesos.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+
+    renderTimeline(registros);
+  </script>
+</body>
+</html>

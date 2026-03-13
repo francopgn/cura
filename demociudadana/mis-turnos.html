@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mis Turnos - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    /* TABS */
+    .tabs-wrapper { background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); border-radius:999px; display:flex; gap:4px; padding:4px; margin-bottom:24px; }
+    .tab { flex:1; text-align:center; padding:9px 8px; border-radius:999px; font-size:12px; font-weight:700; color:rgba(255,255,255,0.5); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+    .tab.active { background:var(--accent); color:var(--bg-dark); }
+
+    /* SECCIÓN HEADER */
+    .sec-header { margin-bottom:16px; }
+    .sec-title { font-size:15px; font-weight:800; color:white; }
+    .sec-hint  { font-size:11px; opacity:0.5; margin-top:3px; }
+
+    /* TURNO CARD */
+    .turno-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:18px; margin-bottom:14px; transition:all 0.2s; }
+
+    .tc-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:8px; }
+    .tc-fecha { font-size:15px; font-weight:800; color:white; }
+    .tc-sub   { font-size:12px; opacity:0.65; margin-top:2px; }
+    .tc-meta  { font-size:11px; opacity:0.45; margin-top:2px; }
+
+    /* BADGES */
+    .badge { font-size:10px; font-weight:800; padding:4px 10px; border-radius:8px; white-space:nowrap; flex-shrink:0; }
+    .badge-green  { background:rgba(16,185,129,0.2); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+    .badge-yellow { background:rgba(251,191,36,0.2); color:#fbbf24; border:1px solid rgba(251,191,36,0.2); }
+    .badge-red    { background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.2); }
+    .badge-blue   { background:rgba(0,194,255,0.15); color:var(--accent); border:1px solid rgba(0,194,255,0.2); }
+    .badge-gray   { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.6); border:1px solid var(--glass-border); }
+
+    .chip-row { display:flex; flex-wrap:wrap; gap:6px; margin:10px 0; }
+    .chip { font-size:10px; font-weight:700; padding:4px 10px; border-radius:8px; background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:rgba(255,255,255,0.7); }
+
+    /* TELEMEDICINA BANNER */
+    .tele-banner { background:rgba(0,194,255,0.08); border:1px solid rgba(0,194,255,0.2); border-radius:14px; padding:10px 14px; display:flex; align-items:center; gap:10px; margin:10px 0; cursor:pointer; transition:all 0.2s; }
+    .tele-banner:hover { background:rgba(0,194,255,0.15); }
+
+    /* ACCIONES */
+    .tc-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .tc-btn { padding:9px 14px; border-radius:12px; font-size:11px; font-weight:800; cursor:pointer; transition:all 0.2s; white-space:nowrap; display:inline-flex; align-items:center; gap:5px; }
+    .tc-btn.primary   { background:var(--accent); color:var(--bg-dark); border:none; }
+    .tc-btn.secondary { background:rgba(255,255,255,0.06); color:white; border:1px solid var(--glass-border); }
+    .tc-btn.danger    { background:rgba(239,68,68,0.1); color:#f87171; border:1px solid rgba(239,68,68,0.2); }
+    .tc-btn:active { transform:scale(0.97); }
+
+    /* NUEVO TURNO */
+    .btn-nuevo { width:100%; padding:16px; border-radius:22px; background:var(--cura-blue); color:white; font-size:14px; font-weight:800; cursor:pointer; border:none; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px; transition:all 0.2s; }
+    .btn-nuevo:active { transform:scale(0.97); }
+
+    .view-panel { display:none; }
+    .view-panel.active { display:block; }
+
+    .muted-footer { font-size:10px; color:white; opacity:0.35; text-align:center; margin-top:24px; line-height:1.6; }
+    .empty-state { text-align:center; padding:40px 20px; opacity:0.5; }
+
+    /* BOTTOM BAR */
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .modal-section { background:#f8fafc; border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .modal-section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#64748b; margin-bottom:6px; }
+    .modal-section-value { font-size:13px; font-weight:600; color:#0d2b52; line-height:1.5; }
+    .btn-modal-primary { width:100%; padding:14px; border-radius:16px; border:none; background:#004E85; color:white; font-size:14px; font-weight:800; cursor:pointer; margin-top:8px; }
+    .btn-modal-secondary { width:100%; padding:14px; border-radius:16px; border:1px solid #e2e8f0; background:white; color:#0d2b52; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+    .btn-modal-danger { width:100%; padding:14px; border-radius:16px; border:none; background:#fee2e2; color:#b91c1c; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Mis Turnos</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <!-- TABS -->
+      <div class="tabs-wrapper">
+        <div class="tab active" data-view="proximos">Próximos</div>
+        <div class="tab" data-view="pasados">Pasados</div>
+        <div class="tab" data-view="todos">Todos</div>
+      </div>
+
+      <!-- ══════════ PRÓXIMOS ══════════ -->
+      <section id="view-proximos" class="view-panel active">
+        <div class="sec-header">
+          <div class="sec-title">Próximos turnos</div>
+          <div class="sec-hint">Turnos futuros registrados en el sistema C.U.R.A. o sincronizados desde prestadores adheridos.</div>
+        </div>
+
+        <!-- Turno 1: Cardiología mañana -->
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">10/03/2026 · 09:00hs</div>
+              <div class="tc-sub">Hospital General de Agudos · Cardiología</div>
+              <div class="tc-meta">Dr. Carlos González · Mat. 52.341 · Presencial</div>
+            </div>
+            <span class="badge badge-green">Confirmado</span>
+          </div>
+          <div class="chip-row">
+            <span class="chip">PAMI</span>
+            <span class="chip">Control clínico</span>
+          </div>
+          <!-- Banner telemedicina -->
+          <div class="tele-banner" onclick="abrirModalTele()">
+            <i class="ph-bold ph-video-camera" style="font-size:18px;color:var(--accent);flex-shrink:0"></i>
+            <div>
+              <div style="font-size:12px;font-weight:800;color:var(--accent)">También disponible como videoconsulta</div>
+              <div style="font-size:10px;opacity:0.65;margin-top:1px">El enlace estará disponible 24hs antes · módulo C.U.R.A.</div>
+            </div>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary" onclick="location.href='turno-confirmado.html'"><i class="ph-bold ph-eye"></i> Ver detalle</button>
+            <button class="tc-btn secondary" onclick="abrirModalReprogramar()"><i class="ph-bold ph-calendar-blank"></i> Reprogramar</button>
+            <button class="tc-btn danger" onclick="abrirModalCancelar()"><i class="ph-bold ph-x"></i> Cancelar</button>
+          </div>
+        </article>
+
+        <!-- Turno 2: Laboratorio -->
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">15/03/2026 · 07:30hs</div>
+              <div class="tc-sub">Laboratorio Central PAMI · Análisis de sangre</div>
+              <div class="tc-meta">Modalidad: Presencial · Cobertura PAMI</div>
+            </div>
+            <span class="badge badge-yellow">Pend. confirmación</span>
+          </div>
+          <div class="chip-row">
+            <span class="chip">HbA1c · Glucemia</span>
+            <span class="chip">En ayunas</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary"><i class="ph-bold ph-eye"></i> Ver detalle</button>
+            <button class="tc-btn secondary"><i class="ph-bold ph-check"></i> Confirmar</button>
+            <button class="tc-btn danger"><i class="ph-bold ph-x"></i> Cancelar</button>
+          </div>
+        </article>
+
+        <button class="btn-nuevo" onclick="location.href='solicitar-turno__1_.html'">
+          <i class="ph-bold ph-plus-circle"></i> Solicitar nuevo turno
+        </button>
+      </section>
+
+      <!-- ══════════ PASADOS ══════════ -->
+      <section id="view-pasados" class="view-panel">
+        <div class="sec-header">
+          <div class="sec-title">Turnos pasados</div>
+          <div class="sec-hint">Turnos realizados vinculados a tu Historia Clínica (Art. 1c(1)).</div>
+        </div>
+
+        <!-- Pasado 1: Control clínico Ramírez -->
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">05/12/2024 · 09:20hs</div>
+              <div class="tc-sub">Consultorio Externo · Clínica Médica</div>
+              <div class="tc-meta">Dra. Laura Ramírez · Mat. 29.010 · Presencial</div>
+            </div>
+            <span class="badge badge-blue">Realizado</span>
+          </div>
+          <div class="chip-row">
+            <span class="chip">HTA · DBT2</span>
+            <span class="chip">Renovación de receta</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver registro clínico</button>
+            <button class="tc-btn secondary" onclick="location.href='documentos-estudios__1_.html'"><i class="ph-bold ph-folder-open"></i> Ver estudios</button>
+          </div>
+        </article>
+
+        <!-- Pasado 2: Guardia salud mental (sensible) -->
+        <article class="turno-card" style="border-left:3px solid #f87171">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">18/02/2025 · 22:45hs</div>
+              <div class="tc-sub">Hospital General · Guardia · Salud Mental</div>
+              <div class="tc-meta">Dra. Sofía Herrera · Mat. 41.198 · Acceso de emergencia</div>
+            </div>
+            <span class="badge badge-red">Break-Glass</span>
+          </div>
+          <div class="chip-row">
+            <span class="chip" style="background:rgba(239,68,68,0.15);color:#f87171;border-color:rgba(239,68,68,0.2)"><i class="ph-bold ph-lock-key" style="font-size:9px"></i> Dato sensible</span>
+            <span class="chip">Salud Mental</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary" onclick="location.href='historia-salud__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver historia de salud</button>
+            <button class="tc-btn secondary" onclick="location.href='auditoria.html'"><i class="ph-bold ph-clock-clockwise"></i> Ver registro de accesos</button>
+          </div>
+        </article>
+
+        <!-- Pasado 3: Laboratorio -->
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">03/03/2025 · 07:30hs</div>
+              <div class="tc-sub">Laboratorio Central PAMI · Análisis de sangre</div>
+              <div class="tc-meta">Lic. Beatriz Torres · Mat. Bio. 8.821</div>
+            </div>
+            <span class="badge badge-blue">Realizado</span>
+          </div>
+          <div class="chip-row">
+            <span class="chip">HbA1c · Lipídico</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver registro clínico</button>
+            <button class="tc-btn secondary" onclick="location.href='documentos-estudios__1_.html'"><i class="ph-bold ph-folder-open"></i> Ver estudios</button>
+          </div>
+        </article>
+
+        <button class="btn-nuevo" onclick="location.href='solicitar-turno__1_.html'">
+          <i class="ph-bold ph-plus-circle"></i> Solicitar nuevo turno
+        </button>
+      </section>
+
+      <!-- ══════════ TODOS ══════════ -->
+      <section id="view-todos" class="view-panel">
+        <div class="sec-header">
+          <div class="sec-title">Todos los turnos</div>
+          <div class="sec-hint">Vista integrada — futuros y pasados.</div>
+        </div>
+
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">10/03/2026 · 09:00hs</div>
+              <div class="tc-sub">Hospital General · Cardiología · Dr. Carlos González</div>
+            </div>
+            <span class="badge badge-green">Confirmado</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary" onclick="location.href='turno-confirmado.html'"><i class="ph-bold ph-eye"></i> Ver detalle</button>
+          </div>
+        </article>
+
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">15/03/2026 · 07:30hs</div>
+              <div class="tc-sub">Laboratorio Central PAMI · Análisis de sangre</div>
+            </div>
+            <span class="badge badge-yellow">Pend. confirmación</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary"><i class="ph-bold ph-eye"></i> Ver detalle</button>
+          </div>
+        </article>
+
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">05/12/2024 · 09:20hs</div>
+              <div class="tc-sub">Consultorio Externo · Clínica Médica · Dra. Ramírez</div>
+            </div>
+            <span class="badge badge-blue">Realizado</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver registro</button>
+          </div>
+        </article>
+
+        <article class="turno-card">
+          <div class="tc-top">
+            <div>
+              <div class="tc-fecha">18/02/2025 · 22:45hs</div>
+              <div class="tc-sub">Hospital General · Guardia · Salud Mental</div>
+            </div>
+            <span class="badge badge-red">Break-Glass</span>
+          </div>
+          <div class="tc-actions">
+            <button class="tc-btn secondary" onclick="location.href='auditoria.html'"><i class="ph-bold ph-clock-clockwise"></i> Ver accesos</button>
+          </div>
+        </article>
+
+        <button class="btn-nuevo" onclick="location.href='solicitar-turno__1_.html'">
+          <i class="ph-bold ph-plus-circle"></i> Solicitar nuevo turno
+        </button>
+      </section>
+
+      <p class="muted-footer">
+        Cada turno se vincula a tu Historia Clínica y al Registro de Trazabilidad<br>
+        según Art. 1d(4) y Art. 2k de la Ley C.U.R.A.
+      </p>
+    </main>
+
+    <!-- BOTTOM BAR -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn active" onclick="location.href='mis-turnos.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Ayuda</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-base" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── TABS ──
+    const tabs = document.querySelectorAll(".tab");
+    const views = {
+      proximos: document.getElementById("view-proximos"),
+      pasados:  document.getElementById("view-pasados"),
+      todos:    document.getElementById("view-todos"),
+    };
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        const v = tab.dataset.view;
+        Object.keys(views).forEach(k => views[k].classList.toggle("active", k === v));
+      });
+    });
+
+    // ── MODALES ──
+    function abrirModalTele() {
+      document.getElementById("modal-title").innerText = "Videoconsulta — C.U.R.A.";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section">
+          <div class="modal-section-label">Turno</div>
+          <div class="modal-section-value">Dr. Carlos González · Cardiología<br>10/03/2026 · 09:00hs</div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Enlace de videoconsulta</div>
+          <div style="font-size:13px;color:#64748b;line-height:1.5">
+            El enlace estará disponible <strong>24 horas antes</strong> del turno a través del módulo C.U.R.A. Recibirás una notificación en la app con el acceso directo.
+          </div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Requisitos</div>
+          <div style="font-size:12px;color:#64748b;line-height:1.6">
+            · Conexión a internet estable<br>
+            · Cámara y micrófono habilitados<br>
+            · CURA-ID activo para verificación de identidad
+          </div>
+        </div>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Entendido</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalReprogramar() {
+      document.getElementById("modal-title").innerText = "Reprogramar turno";
+      document.getElementById("modal-body").innerHTML = `
+        <p style="font-size:13px;color:#475569;margin-bottom:16px">Para reprogramar este turno serás redirigido al módulo de solicitud de turnos del sistema C.U.R.A.</p>
+        <button class="btn-modal-primary" onclick="location.href='solicitar-turno__1_.html'">Ir a solicitar turno</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalCancelar() {
+      document.getElementById("modal-title").innerText = "Cancelar turno";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="background:#fff5f5;border-radius:14px;padding:14px;margin-bottom:16px;">
+          <p style="font-size:13px;color:#7f1d1d;line-height:1.5">¿Confirmás la cancelación del turno de <strong>Cardiología</strong> del 10/03/2026 a las 09:00hs?</p>
+        </div>
+        <div style="font-size:12px;color:#64748b;margin-bottom:16px">Si necesitás un nuevo turno con el mismo profesional podés solicitarlo desde "Solicitar turno".</div>
+        <button class="btn-modal-danger" onclick="cerrarModal()">Confirmar cancelación</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Mantener turno</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Mis Turnos";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-calendar-check" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Gestión unificada (Art. 1d(4)):</strong> Todos tus turnos del sistema de salud público y privado adherido aparecen en un solo lugar, ordenados y con estado en tiempo real.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-video-camera" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Videoconsulta:</strong> Si tu prestador ofrece atención remota, el enlace de videoconsulta aparece directamente en el turno, disponible 24hs antes.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Historial vinculado:</strong> Cada turno realizado genera un registro en tu Historia Clínica. Podés acceder al registro clínico, estudios y accesos directamente desde cada turno pasado.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+  </script>
+</body>
+</html>

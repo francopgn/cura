@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Detalle del Registro - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    .card { background:var(--glass); backdrop-filter:blur(15px); border:1px solid var(--glass-border); border-radius:28px; padding:24px; margin-bottom:18px; }
+
+    .section-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:12px; display:block; }
+
+    .info-box { background:rgba(255,255,255,0.03); border-radius:18px; padding:16px; border:1px solid var(--glass-border); }
+    .info-title { font-size:13px; font-weight:800; color:var(--accent); margin-bottom:5px; }
+    .info-text  { font-size:13px; opacity:0.9; line-height:1.6; }
+
+    .meta-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+    .meta-field label { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; opacity:0.45; display:block; margin-bottom:3px; }
+    .meta-field span  { font-size:12px; font-weight:700; color:white; }
+
+    /* CHIPS */
+    .chip-row { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+    .chip { font-size:10px; font-weight:800; padding:5px 12px; border-radius:8px; background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); }
+    .chip-blue   { background:rgba(0,194,255,0.1); color:var(--accent); border-color:rgba(0,194,255,0.2); }
+    .chip-green  { background:rgba(16,185,129,0.1); color:#10b981; border-color:rgba(16,185,129,0.2); }
+    .chip-red    { background:rgba(239,68,68,0.15); color:#f87171; border-color:rgba(239,68,68,0.2); display:inline-flex; align-items:center; gap:4px; }
+    .chip-purple { background:rgba(139,92,246,0.1); color:#a78bfa; border-color:rgba(139,92,246,0.2); }
+
+    /* LISTA */
+    .reg-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+    .reg-list li { font-size:13px; opacity:0.85; line-height:1.5; padding-left:14px; position:relative; }
+    .reg-list li::before { content:"·"; position:absolute; left:0; color:var(--accent); font-weight:900; }
+
+    /* TOGGLE SENSIBLE */
+    .toggle-row { display:flex; align-items:center; gap:14px; padding:14px 16px; background:rgba(239,68,68,0.08); border-radius:18px; border:1px solid rgba(239,68,68,0.2); }
+    .toggle { position:relative; width:44px; height:24px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background-color:rgba(255,255,255,0.2); border-radius:999px; transition:0.3s; }
+    .slider::before { content:""; position:absolute; height:18px; width:18px; left:3px; top:3px; background-color:#fff; border-radius:50%; transition:0.3s; }
+    .toggle input:checked + .slider { background-color:#ef4444; }
+    .toggle input:checked + .slider::before { transform:translateX(20px); }
+
+    /* TRAZABILIDAD */
+    .traza-row { display:flex; gap:12px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--glass-border); }
+    .traza-row:last-child { border-bottom:none; }
+    .traza-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); margin-top:5px; flex-shrink:0; }
+    .traza-quien { font-size:12px; font-weight:800; color:white; }
+    .traza-que   { font-size:11px; opacity:0.5; margin-top:1px; }
+
+    /* BOTONES */
+    .btn-outline { width:100%; padding:15px; border-radius:20px; border:1px solid var(--glass-border); background:var(--glass); color:white; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px; transition:all 0.2s; cursor:pointer; }
+    .btn-outline:active { transform:scale(0.97); background:rgba(255,255,255,0.1); }
+    .btn-outline.done { background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.3); color:#4ade80; }
+
+    .btn-primary { width:100%; padding:17px; border-radius:22px; border:none; background:var(--accent); color:var(--bg-dark); font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
+    .btn-primary:active { transform:scale(0.97); }
+
+    .feedback-msg { font-size:11px; font-weight:700; text-align:center; padding:8px; border-radius:10px; background:rgba(16,185,129,0.15); color:#4ade80; display:none; margin-bottom:10px; }
+    .feedback-msg.show { display:block; }
+
+    /* BOTTOM BAR */
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .modal-section { background:#f8fafc; border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .modal-section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#64748b; margin-bottom:6px; }
+    .modal-section-value { font-size:13px; font-weight:600; color:#0d2b52; line-height:1.5; }
+    .btn-modal-primary { width:100%; padding:14px; border-radius:16px; border:none; background:#004E85; color:white; font-size:14px; font-weight:800; cursor:pointer; margin-top:8px; }
+    .btn-modal-secondary { width:100%; padding:14px; border-radius:16px; border:1px solid #e2e8f0; background:white; color:#0d2b52; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Detalle del Registro</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+
+      <!-- ENCABEZADO DEL REGISTRO -->
+      <div class="card">
+        <span class="section-label">Registro Clínico · Art. 1c(1)</span>
+        <h2 style="font-size:19px;font-weight:900;margin-bottom:6px;line-height:1.2">
+          Consulta Ambulatoria
+          <span style="color:var(--accent)">· 09/01/2026</span>
+        </h2>
+        <div class="meta-grid">
+          <div class="meta-field">
+            <label>Profesional</label>
+            <span>Dr. Carlos González</span>
+          </div>
+          <div class="meta-field">
+            <label>Matrícula</label>
+            <span>Mat. 52.341</span>
+          </div>
+          <div class="meta-field">
+            <label>Especialidad</label>
+            <span>Cardiología</span>
+          </div>
+          <div class="meta-field">
+            <label>Efector</label>
+            <span>Hospital General de Agudos</span>
+          </div>
+        </div>
+        <div class="chip-row">
+          <span class="chip chip-blue">Consulta ambulatoria</span>
+          <span class="chip chip-green">PAMI</span>
+        </div>
+      </div>
+
+      <!-- MOTIVO DE CONSULTA -->
+      <div class="card">
+        <span class="section-label">Motivo de consulta</span>
+        <div class="info-box" style="border-left:4px solid var(--accent)">
+          <p class="info-text">
+            Paciente consulta por dolor torácico de 3 días de evolución, localizado en hemitórax izquierdo, que aumenta con el movimiento y la palpación. Sin irradiación. Sin disnea asociada.
+          </p>
+        </div>
+      </div>
+
+      <!-- DIAGNÓSTICOS -->
+      <div class="card">
+        <span class="section-label">Diagnósticos</span>
+        <div class="info-box">
+          <div class="info-title">Principal</div>
+          <p class="info-text">Dolor torácico inespecífico — posible origen musculoesquelético. Se descarta origen coronario agudo.</p>
+        </div>
+      </div>
+
+      <!-- ESTUDIOS SOLICITADOS -->
+      <div class="card">
+        <span class="section-label">Estudios solicitados</span>
+        <div class="info-box">
+          <ul class="reg-list">
+            <li>ECG de 12 derivaciones — resultado normal, sin cambios del ST.</li>
+            <li>Laboratorio: glucemia, perfil lipídico y troponinas según protocolo.</li>
+            <li>Control clínico en 7 días o antes si empeoran los síntomas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- MEDICACIONES INDICADAS -->
+      <div class="card">
+        <span class="section-label">Medicaciones indicadas</span>
+        <div class="info-box" style="background:rgba(0,194,255,0.04)">
+          <ul class="reg-list">
+            <li><strong>Ibuprofeno 400 mg:</strong> cada 8hs por 5 días con alimento.</li>
+            <li><strong>Metformina 850 mg:</strong> continuar esquema previo (2 veces por día).</li>
+            <li><strong>Enalapril 10 mg:</strong> continuar esquema previo (1 vez por día en ayunas).</li>
+          </ul>
+        </div>
+        <p style="font-size:10px;opacity:0.4;text-align:center;margin-top:12px">
+          Vinculado a tus recetas electrónicas interoperables C.U.R.A.
+        </p>
+      </div>
+
+      <!-- PRIVACIDAD / DATO SENSIBLE -->
+      <div class="card">
+        <span class="section-label">Privacidad · Art. 2l</span>
+        <div class="toggle-row" style="margin-bottom:14px">
+          <label class="toggle">
+            <input type="checkbox" id="toggleDetalle" checked>
+            <span class="slider"></span>
+          </label>
+          <span style="font-size:12px;font-weight:700;color:#f87171">
+            <i class="ph-bold ph-lock-key" style="font-size:11px"></i> Mostrar antecedente sensible
+          </span>
+        </div>
+        <div id="boxSensible" class="info-box" style="border:1px dashed rgba(239,68,68,0.3)">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+            <i class="ph-bold ph-lock-key" style="font-size:12px;color:#f87171"></i>
+            <span style="font-size:10px;font-weight:800;color:#f87171;text-transform:uppercase;letter-spacing:0.5px">Dato sensible — Salud Mental</span>
+          </div>
+          <p class="info-text" style="font-style:italic;opacity:0.75">
+            Antecedentes de crisis de angustia en seguimiento psiquiátrico. Medicación: Sertralina 50 mg. Visible solo a profesionales autorizados por la paciente.
+          </p>
+        </div>
+      </div>
+
+      <!-- TRAZABILIDAD DEL REGISTRO -->
+      <div class="card">
+        <span class="section-label">Registro de Trazabilidad · Art. 2k</span>
+        <div class="traza-row">
+          <div class="traza-dot"></div>
+          <div>
+            <div class="traza-quien">Dr. Carlos González — Mat. 52.341</div>
+            <div class="traza-que">Carga del registro · 09/01/2026 · 10:15hs · Hospital General de Agudos</div>
+          </div>
+        </div>
+        <div class="traza-row">
+          <div class="traza-dot" style="background:#10b981"></div>
+          <div>
+            <div class="traza-quien">Paciente (CURA-ID verificado)</div>
+            <div class="traza-que">Visualización · 15/01/2026 · 20:42hs · App Mi Argentina</div>
+          </div>
+        </div>
+        <div class="traza-row">
+          <div class="traza-dot" style="background:#a78bfa"></div>
+          <div>
+            <div class="traza-quien">Dra. Laura Ramírez — Mat. 29.010</div>
+            <div class="traza-que">Lectura para renovación de receta · 05/12/2024 · 09:20hs</div>
+          </div>
+        </div>
+        <div style="font-size:10px;opacity:0.35;margin-top:10px;text-align:center">
+          Hash: 0x9f3a...c8e1 · Auditado por ARSAT
+        </div>
+      </div>
+
+      <!-- ACCIONES -->
+      <div style="margin-bottom:24px">
+        <button class="btn-outline" id="btnFhir" onclick="descargarFhir()">
+          <i class="ph-bold ph-download-simple"></i> Descargar Registro FHIR
+        </button>
+        <div class="feedback-msg" id="fbFhir">✓ Archivo FHIR preparado para descarga</div>
+
+        <button class="btn-outline" id="btnCompartir" onclick="abrirModalCompartir()">
+          <i class="ph-bold ph-link"></i> Compartir Acceso Temporal
+        </button>
+
+        <button class="btn-primary" onclick="history.back()">
+          <i class="ph-bold ph-arrow-left"></i> Volver a la Historia Clínica
+        </button>
+      </div>
+
+    </main>
+
+    <!-- BOTTOM BAR — links corregidos, ícono heartbeat -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn active" onclick="location.href='historia-clinica-completa__1_.html'" title="Historia"><i class="ph-bold ph-file-medical"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Información</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-base" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // TOGGLE SENSIBLE
+    document.getElementById("toggleDetalle").addEventListener("change", function() {
+      document.getElementById("boxSensible").style.display = this.checked ? "block" : "none";
+    });
+
+    // DESCARGA FHIR — feedback visual sin alert()
+    function descargarFhir() {
+      const btn = document.getElementById("btnFhir");
+      btn.classList.add("done");
+      btn.innerHTML = '<i class="ph-bold ph-check-fat"></i> Descargado';
+      btn.disabled = true;
+      document.getElementById("fbFhir").classList.add("show");
+      setTimeout(() => {
+        btn.classList.remove("done");
+        btn.innerHTML = '<i class="ph-bold ph-download-simple"></i> Descargar Registro FHIR';
+        btn.disabled = false;
+        document.getElementById("fbFhir").classList.remove("show");
+      }, 3000);
+    }
+
+    // MODAL COMPARTIR ACCESO TEMPORAL
+    function abrirModalCompartir() {
+      document.getElementById("modal-title").innerText = "Compartir Acceso Temporal";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section">
+          <div class="modal-section-label">¿Qué es el acceso temporal?</div>
+          <div class="modal-section-value" style="font-size:13px;color:#475569;line-height:1.6">
+            Podés generar un enlace de acceso temporal para que un profesional de salud fuera del sistema C.U.R.A. pueda ver este registro durante un tiempo limitado, sin necesidad de que lo acceda directamente desde la plataforma.
+          </div>
+        </div>
+        <div class="modal-section">
+          <div class="modal-section-label">Duración del acceso</div>
+          <div style="display:flex;gap:8px;margin-top:4px">
+            <button style="flex:1;padding:10px;border-radius:12px;border:2px solid #004E85;background:#EEF4FF;color:#004E85;font-size:12px;font-weight:800;cursor:pointer">24 horas</button>
+            <button style="flex:1;padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:white;color:#64748b;font-size:12px;font-weight:700;cursor:pointer">48 horas</button>
+            <button style="flex:1;padding:10px;border-radius:12px;border:1px solid #e2e8f0;background:white;color:#64748b;font-size:12px;font-weight:700;cursor:pointer">7 días</button>
+          </div>
+        </div>
+        <div class="modal-section" style="background:#f0fdf4">
+          <div class="modal-section-label" style="color:#166534">Enlace generado</div>
+          <div style="font-family:'Courier New',monospace;font-size:11px;color:#166534;word-break:break-all;line-height:1.6">
+            https://cura.gob.ar/acceso/tmp/R09X1/ZkT3p...
+          </div>
+          <div style="font-size:10px;color:#64748b;margin-top:6px">Válido por 24 horas · Se registrará en la trazabilidad del registro (Art. 2k)</div>
+        </div>
+        <button class="btn-modal-primary" onclick="cerrarModal()"><i class="ph-bold ph-copy"></i> Copiar enlace</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    // MODAL AYUDA
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Detalle del Registro";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-file-text" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Detalle clínico (Art. 1c(1)):</strong> Contiene exactamente lo que el profesional cargó en el sistema C.U.R.A., incluyendo motivo, diagnóstico, estudios y medicación indicada.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-lock-key" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Dato sensible (Art. 2l):</strong> El interruptor rojo oculta temporalmente los antecedentes de salud mental de la pantalla, sin eliminarlos del sistema.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Trazabilidad (Art. 2k):</strong> Cada acceso a este registro queda registrado con el profesional, matrícula, efector y hora exacta.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-link" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Acceso temporal:</strong> Podés compartir este registro con un profesional externo mediante un enlace de tiempo limitado, que queda auditado automáticamente.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+  </script>
+</body>
+</html>

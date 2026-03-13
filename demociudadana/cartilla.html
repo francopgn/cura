@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cartilla Federal - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:20px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    /* BUSCADOR */
+    .search-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:14px 20px; display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .search-card input { background:transparent; border:none; outline:none; color:white; width:100%; font-size:15px; }
+    .search-card input::placeholder { color:rgba(255,255,255,0.4); }
+
+    /* FILTROS */
+    .filters-scroll { display:flex; gap:10px; overflow-x:auto; padding-bottom:20px; }
+    .filters-scroll::-webkit-scrollbar { display:none; }
+    .filter-chip { background:var(--glass); border:1px solid var(--glass-border); color:white; padding:10px 18px; border-radius:16px; font-size:13px; font-weight:600; white-space:nowrap; transition:0.3s; cursor:pointer; }
+    .filter-chip.active { background:var(--accent); color:var(--bg-dark); border-color:var(--accent); }
+
+    /* PRESTADOR CARDS */
+    .prestador-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:28px; padding:20px; margin-bottom:16px; display:flex; gap:16px; align-items:center; transition:all 0.3s ease; cursor:pointer; }
+    .prestador-card:active { transform:scale(0.97); background:rgba(255,255,255,0.1); }
+
+    .prestador-icon { width:60px; height:60px; background:rgba(0,194,255,0.15); border-radius:18px; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0; color:var(--accent); }
+    .prestador-icon.guard { background:rgba(239,68,68,0.15); color:#f87171; }
+    .prestador-icon.lab   { background:rgba(16,185,129,0.15); color:#10b981; }
+    .prestador-icon.doc   { background:rgba(251,191,36,0.15); color:#fbbf24; }
+
+    .badge-cura { display:inline-flex; align-items:center; gap:4px; font-size:9px; font-weight:800; background:rgba(34,197,94,0.2); color:#4ade80; padding:3px 8px; border-radius:6px; margin-top:5px; text-transform:uppercase; letter-spacing:0.5px; border:1px solid rgba(34,197,94,0.2); }
+    .badge-receta { display:inline-flex; align-items:center; gap:4px; font-size:9px; font-weight:800; background:rgba(0,194,255,0.15); color:var(--accent); padding:3px 8px; border-radius:6px; margin-top:5px; margin-left:4px; text-transform:uppercase; letter-spacing:0.5px; border:1px solid rgba(0,194,255,0.2); }
+
+    .prestador-meta { display:flex; align-items:center; gap:12px; margin-top:10px; font-size:12px; font-weight:700; color:var(--accent); }
+
+    /* Sin resultados */
+    .empty-state { text-align:center; padding:40px 20px; opacity:0.5; }
+
+    /* BOTTOM BAR */
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    /* MODAL */
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+
+    .modal-prestador-icon { width:64px; height:64px; border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:30px; margin-bottom:16px; }
+    .modal-badge { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:800; padding:4px 10px; border-radius:8px; margin-right:4px; margin-bottom:8px; }
+    .modal-badge.cura   { background:#dcfce7; color:#166534; }
+    .modal-badge.receta { background:#e0f2fe; color:#0369a1; }
+    .modal-meta-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:14px 0; }
+    .modal-meta-item { background:#f8fafc; border-radius:14px; padding:12px; }
+    .modal-meta-label { font-size:10px; font-weight:800; color:#004E85; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:3px; }
+    .modal-meta-value { font-size:13px; font-weight:600; color:#0d2b52; }
+    .btn-turno { width:100%; padding:16px; border-radius:18px; border:none; background:#004E85; color:white; font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:4px; transition:background 0.2s; }
+    .btn-turno:hover { background:#003a6e; }
+    .btn-ver-mapa { width:100%; padding:12px; border-radius:16px; border:1px solid #e2e8f0; background:transparent; color:#475569; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Cartilla Federal</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <div class="mb-6 px-1">
+        <h1 style="font-size:28px;font-weight:800;letter-spacing:-0.5px;">Encontrá atención</h1>
+        <p class="text-sm opacity-60">Red nacional interoperable · Ley C.U.R.A.</p>
+      </div>
+
+      <!-- BUSCADOR -->
+      <div class="search-card">
+        <i class="ph-bold ph-magnifying-glass opacity-50"></i>
+        <input type="text" id="buscadorCartilla" placeholder="Especialidad, nombre o centro..." oninput="filtrarPrestadores()">
+      </div>
+
+      <!-- FILTROS -->
+      <div class="filters-scroll" id="filtrosCartilla">
+        <button class="filter-chip active" data-filtro="todos" onclick="setFiltro(this, 'todos')">Todos</button>
+        <button class="filter-chip" data-filtro="hospital"     onclick="setFiltro(this, 'hospital')">Hospitales</button>
+        <button class="filter-chip" data-filtro="guardia"      onclick="setFiltro(this, 'guardia')">Guardias 24h</button>
+        <button class="filter-chip" data-filtro="medico"       onclick="setFiltro(this, 'medico')">Médicos</button>
+        <button class="filter-chip" data-filtro="laboratorio"  onclick="setFiltro(this, 'laboratorio')">Laboratorios</button>
+        <button class="filter-chip" data-filtro="farmacia"     onclick="setFiltro(this, 'farmacia')">Farmacias</button>
+      </div>
+
+      <!-- LISTADO DE PRESTADORES -->
+      <div id="listadoPrestadores"></div>
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <i class="ph-bold ph-magnifying-glass" style="font-size:40px;margin-bottom:10px;display:block;"></i>
+        <p class="font-bold">Sin resultados</p>
+        <p class="text-sm opacity-60">Probá con otro término o filtro</p>
+      </div>
+    </main>
+
+    <!-- BOTTOM BAR — links corregidos -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='cartilla.html'" title="Cartilla"><i class="ph-bold ph-map-trifold"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="modal-title" class="text-xl font-extrabold">Detalle</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-lg" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── DATOS DE PRESTADORES ──
+    const prestadores = [
+      {
+        id: 1, tipo: "hospital",
+        nombre: "Hospital de Alta Complejidad",
+        subtitulo: "Nodo Federal · Efector Público",
+        iconClass: "", iconName: "ph-hospital",
+        integrado: true, recetaDigital: false,
+        distancia: "1.2 km", estado: "Abierto ahora", estadoColor: "#4ade80",
+        direccion: "Av. San Martín 1200, CABA",
+        horario: "Guardia permanente · Consultorios 8:00–18:00",
+        especialidades: "Clínica Médica · Cardiología · Cirugía · Guardia",
+        descripcion: "Centro de referencia integrado al Sistema C.U.R.A. con acceso a historia clínica federal, emisión de prescripciones digitales y envío automático de estudios.",
+        turno: true
+      },
+      {
+        id: 2, tipo: "guardia",
+        nombre: "Centro de Urgencias 24h",
+        subtitulo: "Guardia permanente · Público",
+        iconClass: "guard", iconName: "ph-siren",
+        integrado: true, recetaDigital: false,
+        distancia: "0.5 km", estado: "Abierto 24h", estadoColor: "#f87171",
+        direccion: "Calle Corrientes 850, CABA",
+        horario: "Atención permanente · 24hs · 365 días",
+        especialidades: "Urgencias · Emergencias · Traumatología",
+        descripcion: "Guardia integrada al Sistema C.U.R.A. con acceso al Resumen Clínico Federal del paciente para atención de urgencias.",
+        turno: false
+      },
+      {
+        id: 3, tipo: "medico",
+        nombre: "Dr. Julián Martínez",
+        subtitulo: "Cardiología · Mat. Nac. 123456",
+        iconClass: "doc", iconName: "ph-user-circle",
+        integrado: true, recetaDigital: true,
+        distancia: "2.5 km", estado: "⭐ 4.9 (230 opiniones)", estadoColor: "#fbbf24",
+        direccion: "Consultorio: Av. Las Heras 2400, piso 3, CABA",
+        horario: "Lun a Vie · 9:00 a 17:00hs · Con turno previo",
+        especialidades: "Cardiología · Medicina Interna",
+        descripcion: "Profesional habilitado para emitir prescripciones digitales vinculadas al CURA-ID. Los estudios indicados se incorporan automáticamente a la historia clínica del paciente.",
+        turno: true
+      },
+      {
+        id: 4, tipo: "laboratorio",
+        nombre: "Laboratorio Bio-Salud",
+        subtitulo: "Análisis Clínicos · Red PAMI / IOMA",
+        iconClass: "lab", iconName: "ph-test-tube",
+        integrado: true, recetaDigital: false,
+        distancia: "0.8 km", estado: "Cierra 18:00", estadoColor: "rgba(255,255,255,0.5)",
+        direccion: "Tucumán 430, CABA",
+        horario: "Lun a Sáb · 7:00 a 18:00hs",
+        especialidades: "Hematología · Bioquímica · Inmunología · Microbiología",
+        descripcion: "Laboratorio integrado al sistema. Los resultados se envían automáticamente a la historia clínica digital del paciente mediante el CURA-ID.",
+        turno: false
+      },
+      {
+        id: 5, tipo: "farmacia",
+        nombre: "Farmacia del Pueblo",
+        subtitulo: "Farmacia adherida · Dispensación digital",
+        iconClass: "", iconName: "ph-prescription",
+        integrado: true, recetaDigital: false,
+        distancia: "0.3 km", estado: "Abierto ahora", estadoColor: "#4ade80",
+        direccion: "Rivadavia 1100, CABA",
+        horario: "Lun a Dom · 8:00 a 22:00hs",
+        especialidades: "Medicación crónica · Oncológicos · Dermocosmética",
+        descripcion: "Farmacia adherida al Sistema C.U.R.A. habilitada para recibir prescripciones digitales y registrar dispensaciones mediante el CURA-ID del paciente.",
+        turno: false
+      },
+      {
+        id: 6, tipo: "medico",
+        nombre: "Dra. Ana López",
+        subtitulo: "Endocrinología · Mat. Nac. 38712",
+        iconClass: "doc", iconName: "ph-user-circle",
+        integrado: true, recetaDigital: true,
+        distancia: "3.1 km", estado: "⭐ 4.8 (147 opiniones)", estadoColor: "#fbbf24",
+        direccion: "Consultorio: Pueyrredón 560, piso 2, CABA",
+        horario: "Mar y Jue · 10:00 a 16:00hs · Con turno previo",
+        especialidades: "Endocrinología · Diabetes · Tiroides",
+        descripcion: "Profesional habilitada para emitir prescripciones digitales. Prescriptora habitual del paciente para tratamiento de Diabetes e Hipotiroidismo.",
+        turno: true
+      }
+    ];
+
+    let filtroActivo = "todos";
+    let textoBusqueda = "";
+
+    // ── RENDER ──
+    function render() {
+      const container = document.getElementById("listadoPrestadores");
+      const empty     = document.getElementById("emptyState");
+      container.innerHTML = "";
+
+      const visibles = prestadores.filter(p => {
+        const matchFiltro = filtroActivo === "todos" || p.tipo === filtroActivo;
+        const matchTexto  = !textoBusqueda ||
+          p.nombre.toLowerCase().includes(textoBusqueda) ||
+          p.subtitulo.toLowerCase().includes(textoBusqueda) ||
+          p.especialidades.toLowerCase().includes(textoBusqueda);
+        return matchFiltro && matchTexto;
+      });
+
+      if (!visibles.length) {
+        empty.style.display = "block";
+        return;
+      }
+      empty.style.display = "none";
+
+      visibles.forEach(p => {
+        const iconName = p.iconName === "ph-prescription" ? "ph-first-aid" : p.iconName;
+        const card = document.createElement("div");
+        card.className = "prestador-card";
+        card.onclick = () => abrirDetalle(p);
+        card.innerHTML = `
+          <div class="prestador-icon ${p.iconClass}">
+            <i class="ph-bold ${iconName}"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-bold text-white">${p.nombre}</p>
+            <p class="text-xs opacity-60">${p.subtitulo}</p>
+            <div style="margin-top:5px;">
+              ${p.integrado  ? '<span class="badge-cura"><i class="ph-bold ph-check-circle" style="font-size:9px;"></i> Integrado C.U.R.A.</span>' : ''}
+              ${p.recetaDigital ? '<span class="badge-receta"><i class="ph-bold ph-pill" style="font-size:9px;"></i> Receta Digital</span>' : ''}
+            </div>
+            <div class="prestador-meta">
+              <span><i class="ph-bold ph-map-pin" style="font-size:11px;"></i> ${p.distancia}</span>
+              <span style="color:${p.estadoColor};">${p.estado}</span>
+            </div>
+          </div>
+          <i class="ph-bold ph-caret-right" style="color:rgba(255,255,255,0.3);font-size:18px;flex-shrink:0;"></i>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ── FILTROS ──
+    function setFiltro(el, filtro) {
+      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+      el.classList.add("active");
+      filtroActivo = filtro;
+      render();
+    }
+
+    function filtrarPrestadores() {
+      textoBusqueda = document.getElementById("buscadorCartilla").value.toLowerCase();
+      render();
+    }
+
+    // ── DETALLE PRESTADOR ──
+    function abrirDetalle(p) {
+      document.getElementById("modal-title").innerText = p.nombre;
+      const iconName = p.iconName === "ph-prescription" ? "ph-first-aid" : p.iconName;
+      const bgColor  = p.iconClass === "guard" ? "#fef2f2" : p.iconClass === "lab" ? "#f0fdf4" : p.iconClass === "doc" ? "#fffbeb" : "#eff6ff";
+      const icColor  = p.iconClass === "guard" ? "#ef4444" : p.iconClass === "lab" ? "#10b981" : p.iconClass === "doc" ? "#f59e0b" : "#004E85";
+
+      document.getElementById("modal-body").innerHTML = `
+        <div style="background:${bgColor};width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:12px;color:${icColor};">
+          <i class="ph-bold ${iconName}"></i>
+        </div>
+        <p style="font-size:13px;color:#64748b;margin-bottom:10px;">${p.subtitulo}</p>
+
+        <div style="margin-bottom:10px;">
+          ${p.integrado     ? '<span class="modal-badge cura"><i class="ph-bold ph-check-circle" style="font-size:10px;"></i> Integrado al Sistema C.U.R.A.</span>' : ''}
+          ${p.recetaDigital ? '<span class="modal-badge receta"><i class="ph-bold ph-pill" style="font-size:10px;"></i> Receta Digital habilitada</span>' : ''}
+        </div>
+
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin-bottom:14px;">${p.descripcion}</p>
+
+        <div class="modal-meta-row">
+          <div class="modal-meta-item">
+            <span class="modal-meta-label">Dirección</span>
+            <span class="modal-meta-value">${p.direccion}</span>
+          </div>
+          <div class="modal-meta-item">
+            <span class="modal-meta-label">Horario</span>
+            <span class="modal-meta-value">${p.horario}</span>
+          </div>
+          <div class="modal-meta-item" style="grid-column:1/-1;">
+            <span class="modal-meta-label">Especialidades / Servicios</span>
+            <span class="modal-meta-value">${p.especialidades}</span>
+          </div>
+        </div>
+
+        ${p.turno ? `
+          <button class="btn-turno" onclick="location.href='solicitar-turno__1_.html'">
+            <i class="ph-bold ph-calendar-check"></i> Solicitar turno
+          </button>
+        ` : ''}
+        <button class="btn-ver-mapa">
+          <i class="ph-bold ph-map-pin"></i> Ver en mapa
+        </button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    // ── AYUDA ──
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Cartilla";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;">
+            <i class="ph-bold ph-globe" style="color:#004E85;font-size:22px;flex-shrink:0;"></i>
+            <p style="font-size:13px;color:#475569;"><strong>Red interoperable:</strong> Los centros y profesionales integrados al Sistema C.U.R.A. pueden acceder a tu historia clínica federal de forma segura y autorizada.</p>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <i class="ph-bold ph-pill" style="color:#004E85;font-size:22px;flex-shrink:0;"></i>
+            <p style="font-size:13px;color:#475569;"><strong>Receta Digital:</strong> Los médicos con este sello emiten recetas electrónicas vinculadas directamente a tu CURA-ID, disponibles en tu sección de Prescripciones.</p>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <i class="ph-bold ph-calendar-check" style="color:#004E85;font-size:22px;flex-shrink:0;"></i>
+            <p style="font-size:13px;color:#475569;"><strong>Solicitar turno:</strong> Desde el detalle de cada prestador podés iniciar la solicitud de turno directamente.</p>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <i class="ph-bold ph-check-circle" style="color:#10b981;font-size:22px;flex-shrink:0;"></i>
+            <p style="font-size:13px;color:#475569;"><strong>Integrado C.U.R.A.:</strong> Indica que el efector opera bajo los estándares de interoperabilidad de la Ley C.U.R.A., garantizando continuidad asistencial federal.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+
+    render();
+  </script>
+</body>
+</html>

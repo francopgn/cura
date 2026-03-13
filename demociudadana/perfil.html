@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mi Perfil – C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:20px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    /* HERO PERFIL */
+    .hero { background:linear-gradient(135deg,#004E85,#00345C); border:1px solid rgba(0,194,255,0.15); border-radius:28px; padding:24px 20px; margin-bottom:16px; display:flex; gap:16px; align-items:center; }
+    .avatar { width:62px; height:62px; border-radius:50%; background:linear-gradient(135deg,var(--accent),#0085b3); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:900; color:var(--bg-dark); flex-shrink:0; border:2px solid rgba(0,194,255,0.4); }
+    .hero-info-name  { font-size:18px; font-weight:900; }
+    .hero-info-cura  { font-size:11px; color:var(--accent); font-weight:800; margin-top:2px; }
+    .hero-info-meta  { font-size:11px; opacity:0.5; margin-top:2px; }
+
+    /* SECCIÓN CARD */
+    .sec-card { background:var(--glass); backdrop-filter:blur(15px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:14px; }
+    .sec-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:14px; display:block; }
+
+    /* DATA GRID */
+    .data-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .data-field label { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; opacity:0.4; display:block; margin-bottom:3px; }
+    .data-field span  { font-size:13px; font-weight:700; }
+    .data-field.full  { grid-column:1/-1; }
+
+    /* SEPARADOR */
+    .divider { height:1px; background:var(--glass-border); margin:14px 0; }
+
+    /* ITEM DE CONFIGURACIÓN */
+    .config-item { display:flex; align-items:center; gap:14px; padding:13px 0; border-bottom:1px solid var(--glass-border); cursor:pointer; transition:all 0.15s; }
+    .config-item:last-child { border-bottom:none; padding-bottom:0; }
+    .config-item:active { opacity:0.7; }
+    .config-icon { width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+    .ci-blue   { background:rgba(0,194,255,0.1); color:var(--accent); }
+    .ci-green  { background:rgba(16,185,129,0.1); color:#10b981; }
+    .ci-yellow { background:rgba(251,191,36,0.1); color:#fbbf24; }
+    .ci-purple { background:rgba(139,92,246,0.1); color:#a78bfa; }
+    .ci-red    { background:rgba(239,68,68,0.1);  color:#f87171; }
+    .config-text { flex:1; }
+    .config-title { font-size:13px; font-weight:700; }
+    .config-sub   { font-size:11px; opacity:0.45; margin-top:1px; }
+
+    /* TOGGLE SWITCH */
+    .toggle { position:relative; width:40px; height:22px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background:rgba(255,255,255,0.2); border-radius:999px; transition:0.3s; }
+    .slider::before { content:""; position:absolute; height:16px; width:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:0.3s; }
+    .toggle input:checked + .slider { background:var(--accent); }
+    .toggle input:checked + .slider::before { transform:translateX(18px); }
+
+    /* PRIVACIDAD — CATEGORÍAS */
+    .priv-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--glass-border); }
+    .priv-item:last-child { border-bottom:none; }
+    .priv-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .priv-info { flex:1; }
+    .priv-title{ font-size:12px; font-weight:700; }
+    .priv-sub  { font-size:10px; opacity:0.45; margin-top:1px; }
+
+    /* COBERTURA */
+    .cob-row { display:flex; align-items:center; gap:12px; }
+    .cob-logo { width:42px; height:42px; border-radius:14px; background:rgba(0,194,255,0.1); border:1px solid rgba(0,194,255,0.2); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+    /* BOTÓN CERRAR SESIÓN */
+    .btn-logout { width:100%; padding:16px; border-radius:22px; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:#f87171; font-size:14px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:all 0.2s; margin-bottom:10px; }
+    .btn-logout:active { transform:scale(0.97); }
+
+    /* BOTTOM BAR */
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    /* MODAL */
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .modal-section { background:#f8fafc; border-radius:16px; padding:14px 16px; margin-bottom:12px; }
+    .modal-section-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#64748b; margin-bottom:6px; }
+    .modal-section-value { font-size:13px; font-weight:600; color:#0d2b52; line-height:1.6; }
+    .priv-toggle-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9; }
+    .priv-toggle-row:last-child { border-bottom:none; }
+    .priv-toggle-label { font-size:13px; font-weight:600; color:#0d2b52; }
+    .priv-toggle-sub   { font-size:11px; color:#94a3b8; margin-top:1px; }
+    .toggle-sm { position:relative; width:40px; height:22px; flex-shrink:0; }
+    .toggle-sm input { opacity:0; width:0; height:0; }
+    .slider-sm { position:absolute; cursor:pointer; inset:0; background:#cbd5e1; border-radius:999px; transition:0.3s; }
+    .slider-sm::before { content:""; position:absolute; height:16px; width:16px; left:3px; top:3px; background:#fff; border-radius:50%; transition:0.3s; }
+    .toggle-sm input:checked + .slider-sm { background:#004E85; }
+    .toggle-sm input:checked + .slider-sm::before { transform:translateX(18px); }
+    .btn-modal-primary   { width:100%; padding:14px; border-radius:16px; border:none; background:#004E85; color:white; font-size:14px; font-weight:800; cursor:pointer; margin-top:8px; }
+    .btn-modal-secondary { width:100%; padding:14px; border-radius:16px; border:1px solid #e2e8f0; background:white; color:#0d2b52; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+    .btn-modal-danger    { width:100%; padding:14px; border-radius:16px; border:none; background:#fee2e2; color:#b91c1c; font-size:14px; font-weight:700; cursor:pointer; margin-top:8px; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Mi Perfil</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+
+      <!-- HERO -->
+      <div class="hero">
+        <div class="avatar">MG</div>
+        <div>
+          <div class="hero-info-name">GARCÍA, María Laura</div>
+          <div class="hero-info-cura"><i class="ph-bold ph-shield-check" style="font-size:10px"></i> CURAID-41316202</div>
+          <div class="hero-info-meta">DNI 41.316.202 · Nac. 12/04/1972 · Grupo A+</div>
+        </div>
+      </div>
+
+      <!-- DATOS PERSONALES -->
+      <div class="sec-card">
+        <span class="sec-label">Datos Personales</span>
+        <div class="data-grid">
+          <div class="data-field">
+            <label>Apellido y nombre</label>
+            <span>GARCÍA, María Laura</span>
+          </div>
+          <div class="data-field">
+            <label>DNI</label>
+            <span>41.316.202</span>
+          </div>
+          <div class="data-field">
+            <label>Fecha de nacimiento</label>
+            <span>12/04/1972</span>
+          </div>
+          <div class="data-field">
+            <label>Grupo sanguíneo</label>
+            <span style="color:var(--accent)">A Rh+</span>
+          </div>
+          <div class="data-field full">
+            <label>Efector habitual</label>
+            <span>Consultorio Externo · Dra. Laura Ramírez (Mat. 29.010)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COBERTURA -->
+      <div class="sec-card">
+        <span class="sec-label">Cobertura de Salud</span>
+        <div class="cob-row">
+          <div class="cob-logo"><i class="ph-bold ph-heartbeat" style="font-size:22px;color:var(--accent)"></i></div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:800">PAMI</div>
+            <div style="font-size:11px;opacity:0.5;margin-top:1px">N° Beneficiario: 4131-6202-01</div>
+          </div>
+          <span style="font-size:10px;font-weight:800;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:4px 10px">Activa</span>
+        </div>
+        <div class="divider"></div>
+        <div style="font-size:11px;opacity:0.4;line-height:1.5">
+          Interoperabilidad C.U.R.A. certificada · Art. 2a — Sistema Nacional de Información Sanitaria
+        </div>
+      </div>
+
+      <!-- PRIVACIDAD GRANULAR -->
+      <div class="sec-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <span class="sec-label" style="margin-bottom:0">Consentimiento Informado · Art. 2l</span>
+          <button onclick="abrirModalPrivacidad()" style="font-size:10px;font-weight:800;color:var(--accent);background:rgba(0,194,255,0.1);border:1px solid rgba(0,194,255,0.2);border-radius:8px;padding:4px 10px;cursor:pointer">Gestionar</button>
+        </div>
+        <div class="priv-item">
+          <div class="priv-dot" style="background:#10b981"></div>
+          <div class="priv-info">
+            <div class="priv-title">Historia Clínica General</div>
+            <div class="priv-sub">Acceso habilitado para profesionales autorizados</div>
+          </div>
+          <i class="ph-bold ph-check-circle" style="color:#10b981;font-size:18px"></i>
+        </div>
+        <div class="priv-item">
+          <div class="priv-dot" style="background:#10b981"></div>
+          <div class="priv-info">
+            <div class="priv-title">Medicación Crónica</div>
+            <div class="priv-sub">Visible para prescriptores y farmacéuticos</div>
+          </div>
+          <i class="ph-bold ph-check-circle" style="color:#10b981;font-size:18px"></i>
+        </div>
+        <div class="priv-item">
+          <div class="priv-dot" style="background:#f87171"></div>
+          <div class="priv-info">
+            <div class="priv-title">Salud Mental</div>
+            <div class="priv-sub" style="display:flex;align-items:center;gap:4px"><i class="ph-bold ph-lock-key" style="font-size:9px;color:#f87171"></i> Solo profesionales autorizados explícitamente</div>
+          </div>
+          <i class="ph-bold ph-lock-key" style="color:#f87171;font-size:18px"></i>
+        </div>
+        <div class="priv-item">
+          <div class="priv-dot" style="background:#10b981"></div>
+          <div class="priv-info">
+            <div class="priv-title">Estudios e Imágenes</div>
+            <div class="priv-sub">Acceso habilitado para profesionales del sistema</div>
+          </div>
+          <i class="ph-bold ph-check-circle" style="color:#10b981;font-size:18px"></i>
+        </div>
+        <div class="priv-item">
+          <div class="priv-dot" style="background:#fbbf24"></div>
+          <div class="priv-info">
+            <div class="priv-title">Prescripciones Activas</div>
+            <div class="priv-sub">Visible para farmacias adheridas C.U.R.A.</div>
+          </div>
+          <i class="ph-bold ph-check-circle" style="color:#fbbf24;font-size:18px"></i>
+        </div>
+        <div class="priv-item" style="border-bottom:none">
+          <div class="priv-dot" style="background:#a78bfa"></div>
+          <div class="priv-info">
+            <div class="priv-title">Urgencia Vital (Break-Glass)</div>
+            <div class="priv-sub">Habilitado · Acceso de emergencia con notificación automática</div>
+          </div>
+          <i class="ph-bold ph-warning" style="color:#a78bfa;font-size:18px"></i>
+        </div>
+      </div>
+
+      <!-- CONFIGURACIÓN -->
+      <div class="sec-card">
+        <span class="sec-label">Configuración</span>
+
+        <div class="config-item" onclick="location.href='credencial__3_.html'">
+          <div class="config-icon ci-blue"><i class="ph-bold ph-identification-card"></i></div>
+          <div class="config-text">
+            <div class="config-title">Credencial Única de Salud</div>
+            <div class="config-sub">Ver, compartir o descargar · Art. 2b</div>
+          </div>
+          <i class="ph-bold ph-caret-right" style="opacity:0.3"></i>
+        </div>
+
+        <div class="config-item" onclick="location.href='auditoria.html'">
+          <div class="config-icon ci-green"><i class="ph-bold ph-clock-clockwise"></i></div>
+          <div class="config-text">
+            <div class="config-title">Registro de Trazabilidad</div>
+            <div class="config-sub">Quién accedió a tu información · Art. 2k</div>
+          </div>
+          <i class="ph-bold ph-caret-right" style="opacity:0.3"></i>
+        </div>
+
+        <div class="config-item" onclick="abrirModalNotificaciones()">
+          <div class="config-icon ci-yellow"><i class="ph-bold ph-bell"></i></div>
+          <div class="config-text">
+            <div class="config-title">Notificaciones</div>
+            <div class="config-sub">Recordatorios, alertas del sistema y más</div>
+          </div>
+          <label class="toggle" onclick="event.stopPropagation()">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="config-item" onclick="abrirModalIdioma()">
+          <div class="config-icon ci-purple"><i class="ph-bold ph-translate"></i></div>
+          <div class="config-text">
+            <div class="config-title">Idioma</div>
+            <div class="config-sub">Español (Argentina)</div>
+          </div>
+          <i class="ph-bold ph-caret-right" style="opacity:0.3"></i>
+        </div>
+
+        <div class="config-item" onclick="abrirModalAccesibilidad()">
+          <div class="config-icon ci-blue" style="background:rgba(99,102,241,0.1);color:#818cf8"><i class="ph-bold ph-eye"></i></div>
+          <div class="config-text">
+            <div class="config-title">Accesibilidad</div>
+            <div class="config-sub">Texto grande, alto contraste, lector</div>
+          </div>
+          <i class="ph-bold ph-caret-right" style="opacity:0.3"></i>
+        </div>
+      </div>
+
+      <!-- CERRAR SESIÓN -->
+      <button class="btn-logout" onclick="abrirModalLogout()">
+        <i class="ph-bold ph-sign-out"></i> Cerrar sesión
+      </button>
+
+      <p style="font-size:10px;opacity:0.3;text-align:center;line-height:1.6;margin-top:8px">
+        Mi Argentina · C.U.R.A. v1.0 · Ley C.U.R.A. — Sistema Nacional de Información Sanitaria
+      </p>
+
+    </main>
+
+    <!-- BOTTOM BAR -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='mis-turnos.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn active" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Información</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-base" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalPrivacidad() {
+      document.getElementById("modal-title").innerText = "Consentimiento Informado Granular";
+      document.getElementById("modal-body").innerHTML = `
+        <p style="font-size:13px;color:#475569;margin-bottom:16px;line-height:1.5">Controlá qué categorías de tu información de salud son accesibles por profesionales del sistema C.U.R.A. <strong>(Art. 2l)</strong>.</p>
+        <div class="modal-section" style="padding:6px 16px">
+          ${[
+            ["Historia Clínica General", "Consultas, diagnósticos y evolución", true],
+            ["Medicación Crónica", "Prescripciones activas y renovaciones", true],
+            ["Salud Mental", "Solo profesionales autorizados explícitamente", false],
+            ["Estudios e Imágenes", "Laboratorio, RX, ecografías", true],
+            ["Prescripciones Activas", "Farmacias adheridas C.U.R.A.", true],
+            ["Urgencia Vital (Break-Glass)", "Acceso de emergencia con notificación automática", true],
+          ].map(([title, sub, checked]) => `
+            <div class="priv-toggle-row">
+              <div><div class="priv-toggle-label">${title}</div><div class="priv-toggle-sub">${sub}</div></div>
+              <label class="toggle-sm"><input type="checkbox" ${checked ? "checked" : ""}><span class="slider-sm"></span></label>
+            </div>
+          `).join("")}
+        </div>
+        <div style="background:#fff7ed;border-radius:12px;padding:12px;font-size:12px;color:#92400e;line-height:1.5;margin-top:4px">
+          <strong>Excepción por urgencia vital:</strong> ante riesgo de vida, los profesionales de guardia pueden acceder a tu historia con notificación automática a vos y al Registro de Trazabilidad.
+        </div>
+        <button class="btn-modal-primary" onclick="cerrarModal()">Guardar preferencias</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalNotificaciones() {
+      document.getElementById("modal-title").innerText = "Notificaciones";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section" style="padding:6px 16px">
+          ${[
+            ["Recordatorio de medicación", "Alertas diarias según tu esquema", true],
+            ["Próximos turnos", "24hs antes de cada turno programado", true],
+            ["Recetas por vencer", "Cuando una receta esté a 7 días de expirar", true],
+            ["Accesos a tu historia", "Cuando un profesional acceda a tus datos", true],
+            ["Medicación disponible en farmacia", "Aviso de retiro disponible", true],
+            ["Novedades del sistema C.U.R.A.", "Actualizaciones y nuevas funciones", false],
+          ].map(([title, sub, checked]) => `
+            <div class="priv-toggle-row">
+              <div><div class="priv-toggle-label">${title}</div><div class="priv-toggle-sub">${sub}</div></div>
+              <label class="toggle-sm"><input type="checkbox" ${checked ? "checked" : ""}><span class="slider-sm"></span></label>
+            </div>
+          `).join("")}
+        </div>
+        <button class="btn-modal-primary" onclick="cerrarModal()">Guardar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalIdioma() {
+      document.getElementById("modal-title").innerText = "Idioma";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section">
+          <div class="modal-section-label">Idioma seleccionado</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+            ${[["🇦🇷 Español (Argentina)", true],["🇧🇷 Portugués (Brasil)", false],["🏴󠁧󠁢󠁥󠁮󠁧󠁿 English", false]].map(([l,a])=>`
+              <div style="padding:12px;border-radius:12px;border:2px solid ${a?"#004E85":"#e2e8f0"};background:${a?"#EEF4FF":"white"};font-size:13px;font-weight:${a?800:600};color:${a?"#004E85":"#64748b"};cursor:pointer">${l}</div>
+            `).join("")}
+          </div>
+        </div>
+        <button class="btn-modal-primary" onclick="cerrarModal()">Confirmar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAccesibilidad() {
+      document.getElementById("modal-title").innerText = "Accesibilidad";
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-section" style="padding:6px 16px">
+          ${[
+            ["Texto grande", "Aumenta el tamaño de fuente en toda la app", false],
+            ["Alto contraste", "Mejora la visibilidad para baja visión", false],
+            ["Lector de pantalla", "Compatibilidad con TalkBack / VoiceOver", false],
+            ["Reducir animaciones", "Menos movimiento en la interfaz", false],
+          ].map(([title, sub, checked]) => `
+            <div class="priv-toggle-row">
+              <div><div class="priv-toggle-label">${title}</div><div class="priv-toggle-sub">${sub}</div></div>
+              <label class="toggle-sm"><input type="checkbox" ${checked ? "checked" : ""}><span class="slider-sm"></span></label>
+            </div>
+          `).join("")}
+        </div>
+        <button class="btn-modal-primary" onclick="cerrarModal()">Guardar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalLogout() {
+      document.getElementById("modal-title").innerText = "Cerrar sesión";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="background:#fff5f5;border-radius:14px;padding:14px;margin-bottom:16px">
+          <p style="font-size:13px;color:#7f1d1d;line-height:1.5">¿Confirmás que querés cerrar la sesión de <strong>GARCÍA, María Laura</strong> en Mi Argentina?</p>
+        </div>
+        <div style="font-size:12px;color:#64748b;margin-bottom:16px">Tu sesión se cerrará en este dispositivo. Los datos de tu Historia Clínica permanecerán seguros en el sistema C.U.R.A.</div>
+        <button class="btn-modal-danger" onclick="cerrarModal(); setTimeout(()=>location.href='menu__15_.html',300)">Cerrar sesión</button>
+        <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Mi Perfil";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-user-circle" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Tu perfil:</strong> Contiene tus datos personales vinculados al CURA-ID y la Credencial Única de Salud (C.U.S.) registrada en el sistema federal.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Consentimiento granular (Art. 2l):</strong> Podés habilitar o restringir el acceso a cada categoría de tu historia clínica. La excepción de urgencia vital (Break-Glass) siempre deja un registro automático.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-clock-clockwise" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Trazabilidad (Art. 2k):</strong> En "Registro de Trazabilidad" podés ver quién accedió a tu información, cuándo y desde qué efector.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+  </script>
+</body>
+</html>

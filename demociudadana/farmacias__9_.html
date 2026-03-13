@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Farmacias Cercanas - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    .search-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:28px; padding:24px; margin-bottom:20px; }
+    .section-accent { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:2px; color:var(--accent); margin-bottom:14px; display:block; }
+
+    .location-box { background:rgba(0,194,255,0.1); border:1px solid rgba(0,194,255,0.2); border-radius:20px; padding:15px; display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+    .status-dot { width:10px; height:10px; background:var(--accent); border-radius:50%; box-shadow:0 0 10px var(--accent); flex-shrink:0; }
+    .status-dot.red   { background:#f87171; box-shadow:0 0 10px #f87171; }
+
+    /* ACCESO RÁPIDO RETIRO */
+    .retiro-banner { background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2); border-radius:20px; padding:14px 16px; display:flex; align-items:center; gap:12px; margin-bottom:18px; cursor:pointer; transition:all 0.2s; }
+    .retiro-banner:hover { background:rgba(16,185,129,0.18); }
+
+    .pill-scroll-container { width:100%; overflow-x:auto; display:flex; padding-bottom:4px; }
+    .pill-scroll-container::-webkit-scrollbar { display:none; }
+    .pill-wrapper { display:flex; gap:10px; }
+    .pill { flex-shrink:0; padding:10px 20px; background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); border-radius:999px; font-size:12px; font-weight:600; color:white; cursor:pointer; transition:0.3s; }
+    .pill.active { background:var(--accent); color:var(--bg-dark); border-color:var(--accent); }
+
+    .results-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:2px; color:var(--accent); margin-bottom:14px; margin-left:4px; display:block; }
+
+    .pharmacy-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:15px; }
+    .ph-name { font-size:17px; font-weight:800; color:white; }
+    .status-badge { font-size:10px; font-weight:800; padding:4px 10px; border-radius:8px; text-transform:uppercase; white-space:nowrap; }
+
+    .ph-meta { font-size:12px; opacity:0.55; margin:6px 0 10px; line-height:1.5; }
+    .ph-cura-badge { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:800; padding:4px 10px; border-radius:8px; background:rgba(0,194,255,0.1); color:var(--accent); border:1px solid rgba(0,194,255,0.2); margin-bottom:12px; }
+
+    .ph-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .btn-ph { width:100%; padding:13px; border-radius:16px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:7px; cursor:pointer; transition:all 0.2s; text-decoration:none; }
+    .btn-ph.primary { background:var(--accent); color:var(--bg-dark); border:none; }
+    .btn-ph.secondary { background:rgba(255,255,255,0.06); color:white; border:1px solid var(--glass-border); }
+    .btn-ph:active { transform:scale(0.97); }
+
+    /* SPINNER */
+    @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+    .spinner { width:24px; height:24px; border:3px solid rgba(255,255,255,0.1); border-top:3px solid var(--accent); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto; }
+
+    .empty-state { text-align:center; padding:40px 20px; opacity:0.5; }
+
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Farmacias Cercanas</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <div class="search-card">
+        <span class="section-accent">Red Federal · Art. 1d(9) Ley C.U.R.A.</span>
+
+        <!-- UBICACIÓN -->
+        <div class="location-box">
+          <div class="status-dot" id="locDot"></div>
+          <div>
+            <p id="loc-status" class="text-xs font-bold">Ubicación Actual</p>
+            <p id="loc-ciudad" class="text-[11px] opacity-70">Detectando...</p>
+          </div>
+        </div>
+
+        <!-- ACCESO RÁPIDO RETIRO -->
+        <div class="retiro-banner" onclick="location.href='retiro-medicamentos__2_.html'">
+          <i class="ph-bold ph-package" style="font-size:22px;color:#10b981;flex-shrink:0"></i>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:#10b981">Retiro de medicamentos</div>
+            <div style="font-size:11px;opacity:0.7;margin-top:2px">Presentá tu QR o CURA-ID en cualquier farmacia adherida</div>
+          </div>
+          <i class="ph-bold ph-caret-right" style="font-size:16px;opacity:0.5;margin-left:auto"></i>
+        </div>
+
+        <!-- FILTROS -->
+        <div class="pill-scroll-container">
+          <div class="pill-wrapper">
+            <div class="pill active" data-filter="all">Todas</div>
+            <div class="pill" data-filter="open">Abiertas ahora</div>
+            <div class="pill" data-filter="guardia">Guardia 24hs</div>
+            <div class="pill" data-filter="cura">Adheridas C.U.R.A.</div>
+          </div>
+        </div>
+      </div>
+
+      <span class="results-label">Resultados</span>
+      <div id="resultsList">
+        <div style="text-align:center;padding:40px"><div class="spinner"></div></div>
+      </div>
+    </main>
+
+    <!-- BOTTOM BAR — links corregidos, ícono activo ph-heartbeat -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn active" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-6">
+        <h3 id="modal-title" class="text-xl font-extrabold">Ayuda: Farmacias</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body" class="space-y-5 text-sm text-gray-600 leading-relaxed"></div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-lg" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const resultsList = document.getElementById('resultsList');
+    let allPharmacies = [];
+    let currentFilter = 'all';
+    let userLat = null, userLon = null;
+
+    // ── FALLBACK DEMO (cuando no hay geo o falla la API) ──
+    const demoPharmacies = [
+      { id:1, tags:{ name:"Farmacia Central PAMI", "addr:street":"Av. Rivadavia 4502", opening_hours:"24/7", cura:true },  dist:0.3, lat:-34.609, lon:-58.437 },
+      { id:2, tags:{ name:"Farmacia del Pueblo",   "addr:street":"Gral. Paz 1102",     opening_hours:"Mo-Fr 08:00-21:00", cura:true }, dist:0.6, lat:-34.611, lon:-58.442 },
+      { id:3, tags:{ name:"Farmacia San Martín",   "addr:street":"San Martín 780",     opening_hours:"Mo-Sa 08:00-20:00", cura:false }, dist:1.1, lat:-34.614, lon:-58.435 },
+      { id:4, tags:{ name:"Farmacia La Salud",     "addr:street":"Mitre 235",          opening_hours:"24/7", cura:true }, dist:1.4, lat:-34.606, lon:-58.448 },
+      { id:5, tags:{ name:"Farmacia Saavedra",     "addr:street":"Saavedra 910",       opening_hours:"Mo-Fr 09:00-19:00", cura:false }, dist:2.1, lat:-34.617, lon:-58.441 },
+    ];
+
+    function getDist(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2-lat1)*Math.PI/180;
+      const dLon = (lon2-lon1)*Math.PI/180;
+      const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+      return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
+    }
+
+    function renderFiltered() {
+      const now = new Date().getHours();
+      let filtered = allPharmacies;
+
+      if (currentFilter === 'open')    filtered = allPharmacies.filter(f => (f.tags.opening_hours||"").includes("24/7") || (now>=8 && now<21));
+      if (currentFilter === 'guardia') filtered = allPharmacies.filter(f => (f.tags.opening_hours||"").includes("24/7"));
+      if (currentFilter === 'cura')    filtered = allPharmacies.filter(f => f.tags.cura);
+
+      if (!filtered.length) {
+        resultsList.innerHTML = `<div class="empty-state"><i class="ph-bold ph-magnifying-glass" style="font-size:36px;color:var(--accent);opacity:0.5"></i><p class="mt-3 text-sm">No se encontraron farmacias con este filtro.</p></div>`;
+        return;
+      }
+
+      resultsList.innerHTML = "";
+      filtered.forEach(ph => {
+        const is24hs = (ph.tags.opening_hours||"").includes("24/7");
+        const status = is24hs
+          ? { label:"Guardia 24hs", cls:"background:rgba(251,191,36,0.2);color:#fbbf24" }
+          : (now<8||now>=21)
+            ? { label:"Cerrado",    cls:"background:rgba(239,68,68,0.2);color:#f87171" }
+            : { label:"Abierto",    cls:"background:rgba(16,185,129,0.2);color:#10b981" };
+
+        const distStr = ph.dist > 1 ? ph.dist.toFixed(1)+"km" : (ph.dist*1000).toFixed(0)+"m";
+        const mapLat = ph.lat || userLat || -34.609;
+        const mapLon = ph.lon || userLon || -58.437;
+        const mapUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapLat},${mapLon}`;
+
+        const card = document.createElement("article");
+        card.className = "pharmacy-card";
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <h3 class="ph-name">${ph.tags.name || "Farmacia"}</h3>
+            <span class="status-badge" style="${status.cls}">${status.label}</span>
+          </div>
+          <div class="ph-meta">${ph.tags["addr:street"] || "Dirección disponible"} · <strong>${distStr}</strong></div>
+          ${ph.tags.cura ? `<div class="ph-cura-badge"><i class="ph-bold ph-shield-check"></i> Adherida C.U.R.A.</div>` : ""}
+          <div class="ph-actions">
+            <a href="${mapUrl}" target="_blank" class="btn-ph primary">
+              <i class="ph-bold ph-navigation-arrow"></i> Llegar
+            </a>
+            <button class="btn-ph secondary" onclick="location.href='retiro-medicamentos__2_.html'">
+              <i class="ph-bold ph-package"></i> Retirar
+            </button>
+          </div>
+        `;
+        resultsList.appendChild(card);
+      });
+    }
+
+    function usarDemoData(ciudad) {
+      document.getElementById("loc-ciudad").innerText = ciudad || "Merlo, Buenos Aires";
+      allPharmacies = demoPharmacies;
+      renderFiltered();
+    }
+
+    // ── GEO ──
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          userLat = pos.coords.latitude;
+          userLon = pos.coords.longitude;
+
+          // Reverse geocoding
+          try {
+            const geo = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userLat}&lon=${userLon}`);
+            const gData = await geo.json();
+            const city = gData.address?.city || gData.address?.town || gData.address?.suburb || "Cerca tuyo";
+            document.getElementById("loc-ciudad").innerText = city + ", " + (gData.address?.state || "Argentina");
+          } catch(e) { document.getElementById("loc-ciudad").innerText = "Ubicación detectada"; }
+
+          // Overpass
+          try {
+            const query = `[out:json][timeout:15];node(around:5000,${userLat},${userLon})["amenity"="pharmacy"];out;`;
+            const resp = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
+            const data = await resp.json();
+            if (data.elements?.length) {
+              allPharmacies = data.elements.map(ph => ({ ...ph, tags:{ ...ph.tags, cura: Math.random() > 0.4 }, dist:getDist(userLat,userLon,ph.lat,ph.lon) })).sort((a,b)=>a.dist-b.dist);
+              renderFiltered();
+            } else { usarDemoData(); }
+          } catch(e) { usarDemoData(); }
+        },
+        (err) => {
+          // Permiso denegado o error → usar demo
+          document.getElementById("locDot").className = "status-dot red";
+          document.getElementById("loc-status").innerText = "Ubicación no disponible";
+          usarDemoData("Merlo, Buenos Aires (ejemplo)");
+        },
+        { timeout: 8000 }
+      );
+    } else {
+      usarDemoData();
+    }
+
+    // Timeout fallback por si la geo tarda demasiado
+    setTimeout(() => {
+      if (!allPharmacies.length) usarDemoData();
+    }, 10000);
+
+    // ── FILTROS ──
+    document.querySelectorAll('.pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentFilter = pill.dataset.filter;
+        if (allPharmacies.length) renderFiltered();
+      });
+    });
+
+    // ── MODALES ──
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Farmacias";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-map-trifold" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p><strong>Red Federal (Art. 1d(9)):</strong> El sistema C.U.R.A. integra una red federal de farmacias de turno y guardias, actualizada en tiempo real y accesible desde cualquier punto del país.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p><strong>Adheridas C.U.R.A.:</strong> Las farmacias con este sello pueden leer tu QR o CURA-ID para validar recetas electrónicas y registrar dispensaciones en el sistema federal.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-package" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p><strong>Retiro de medicamentos:</strong> En cualquier farmacia adherida podés retirar tu medicación crónica presentando el QR de tu credencial o ingresando tu CURA-ID.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-navigation-arrow" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p><strong>Navegación:</strong> Al pulsar "Llegar" se abrirá el mapa de tu dispositivo con la ruta hasta la farmacia seleccionada.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+  </script>
+</body>
+</html>

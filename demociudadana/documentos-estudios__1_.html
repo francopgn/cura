@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Documentos y Estudios - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+    .filter-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:28px; padding:24px; margin-bottom:25px; }
+    .section-label { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:12px; display:block; }
+    .input-text, .select-field { background:rgba(255,255,255,0.07); border:1px solid var(--glass-border); color:white; padding:14px 16px; border-radius:18px; font-size:14px; outline:none; width:100%; margin-bottom:12px; box-sizing:border-box; }
+    select option { background:var(--bg-dark); color:white; }
+    .toggle-row { display:flex; align-items:center; gap:12px; padding-top:15px; border-top:1px solid var(--glass-border); }
+    .toggle { position:relative; width:44px; height:24px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background-color:rgba(255,255,255,0.2); border-radius:999px; transition:0.3s; }
+    .slider::before { content:""; position:absolute; height:18px; width:18px; left:3px; top:3px; background-color:#fff; border-radius:50%; transition:0.3s; }
+    .toggle input:checked + .slider { background-color:var(--accent); }
+    .toggle input:checked + .slider::before { transform:translateX(20px); }
+    .group-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin:0 0 15px 10px; opacity:0.8; }
+    .doc-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:18px; display:flex; gap:14px; align-items:center; margin-bottom:12px; transition:all 0.3s ease; cursor:pointer; }
+    .doc-card:active { transform:scale(0.97); background:rgba(255,255,255,0.1); }
+    .doc-card.sensible { border-left:3px solid #f87171; }
+    .thumb { width:52px; height:52px; border-radius:16px; background:rgba(0,194,255,0.15); display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; color:var(--accent); }
+    .thumb.red   { background:rgba(239,68,68,0.12); color:#f87171; }
+    .thumb.green { background:rgba(16,185,129,0.12); color:#10b981; }
+    .thumb.amber { background:rgba(251,191,36,0.12); color:#fbbf24; }
+    .doc-main { flex:1; min-width:0; }
+    .doc-name { font-size:15px; font-weight:800; color:white; margin-bottom:2px; }
+    .doc-meta { font-size:11px; color:white; opacity:0.5; margin-bottom:8px; }
+    .doc-tags { display:flex; flex-wrap:wrap; gap:5px; }
+    .tag { font-size:9px; font-weight:800; padding:3px 10px; border-radius:6px; background:rgba(255,255,255,0.08); text-transform:uppercase; }
+    .tag-blue { background:rgba(0,194,255,0.2); color:var(--accent); }
+    .tag-red  { background:rgba(239,68,68,0.2); color:#f87171; display:inline-flex; align-items:center; gap:4px; }
+    .doc-actions { display:flex; flex-direction:column; gap:6px; }
+    .mini-btn { padding:8px 14px; border-radius:10px; border:1px solid var(--glass-border); background:rgba(255,255,255,0.05); font-size:10px; font-weight:800; color:white; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+    .mini-btn.primary { background:var(--accent); color:var(--bg-dark); border:none; }
+    .muted-footer { font-size:11px; color:white; opacity:0.4; text-align:center; margin-top:30px; padding:0 20px; line-height:1.5; }
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+    .detail-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:13px; }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-label { color:#64748b; font-weight:600; }
+    .detail-val   { color:#0d2b52; font-weight:800; text-align:right; max-width:55%; }
+    .acceso-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:11px; }
+    .acceso-row:last-child { border-bottom:none; }
+    .acceso-dot { width:8px; height:8px; border-radius:50%; background:#00C2FF; margin-top:4px; flex-shrink:0; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Documentos y Estudios</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+      <div class="filter-card">
+        <label class="section-label">Buscador</label>
+        <input type="text" id="buscadorDocs" class="input-text" placeholder="Buscar laboratorio, ECG, Rx..." oninput="filtrarDocs()">
+        <select id="filtroTipoDoc" class="select-field" onchange="filtrarDocs()">
+          <option value="todos">Todos los tipos</option>
+          <option value="laboratorio">Laboratorio</option>
+          <option value="imagen">Imágenes</option>
+          <option value="receta">Recetas</option>
+          <option value="certificado">Certificados</option>
+        </select>
+        <div class="toggle-row">
+          <label class="toggle">
+            <input type="checkbox" id="toggleDocsSensibles" checked onchange="filtrarDocs()">
+            <span class="slider"></span>
+          </label>
+          <span class="text-[11px] opacity-70 leading-tight ml-1">Incluir documentos de salud mental y datos sensibles.</span>
+        </div>
+      </div>
+
+      <div class="group-label">Recientes</div>
+      <div class="doc-list" id="docList">
+
+        <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="ecg cardiologia hospital general 2024" onclick="abrirDetalle('ecg')">
+          <div class="thumb"><i class="ph-bold ph-heartbeat"></i></div>
+          <div class="doc-main">
+            <div class="doc-name">ECG · 12 derivaciones</div>
+            <div class="doc-meta">12/04/2024 · Hospital General</div>
+            <div class="doc-tags"><span class="tag tag-blue">Imagen / Señal</span><span class="tag">Cardiología</span></div>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">Descargar</button>
+          </div>
+        </article>
+
+        <article class="doc-card" data-tipo="laboratorio" data-sensible="no" data-texto="laboratorio sangre glucemia analisis hba1c" onclick="abrirDetalle('lab')">
+          <div class="thumb green"><i class="ph-bold ph-flask"></i></div>
+          <div class="doc-main">
+            <div class="doc-name">Informe de Laboratorio</div>
+            <div class="doc-meta">03/03/2024 · Laboratorio Central</div>
+            <div class="doc-tags"><span class="tag tag-blue">Bioquímica</span><span class="tag">Diabetes</span></div>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">PDF</button>
+          </div>
+        </article>
+
+        <article class="doc-card sensible" data-tipo="imagen" data-sensible="si" data-texto="salud mental informe psicologia psiquiatria" onclick="abrirDetalle('mental')">
+          <div class="thumb red"><i class="ph-bold ph-brain"></i></div>
+          <div class="doc-main">
+            <div class="doc-name">Informe Salud Mental</div>
+            <div class="doc-meta">18/02/2024 · Hospital General</div>
+            <div class="doc-tags">
+              <span class="tag tag-red"><i class="ph-bold ph-lock-key"></i> Sensible</span>
+              <span class="tag">Psiquiatría</span>
+            </div>
+          </div>
+          <div class="doc-actions"><button class="mini-btn primary">Ver</button></div>
+        </article>
+
+        <article class="doc-card" data-tipo="imagen" data-sensible="no" data-texto="rx radiografia torax imagen pulmones" onclick="abrirDetalle('rx')">
+          <div class="thumb"><i class="ph-bold ph-scan"></i></div>
+          <div class="doc-main">
+            <div class="doc-name">Rx de Tórax</div>
+            <div class="doc-meta">10/01/2024 · Diagnóstico Norte</div>
+            <div class="doc-tags"><span class="tag tag-blue">Radiología</span><span class="tag">DICOM</span></div>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">DICOM</button>
+          </div>
+        </article>
+
+        <article class="doc-card" data-tipo="receta" data-sensible="no" data-texto="receta enalapril metformina cronica electronica" onclick="abrirDetalle('receta')">
+          <div class="thumb amber"><i class="ph-bold ph-pill"></i></div>
+          <div class="doc-main">
+            <div class="doc-name">Receta Crónica</div>
+            <div class="doc-meta">05/12/2023 · Consultorio Externo</div>
+            <div class="doc-tags"><span class="tag tag-blue">Electrónica</span></div>
+          </div>
+          <div class="doc-actions">
+            <button class="mini-btn primary">Ver</button>
+            <button class="mini-btn">Farmacia</button>
+          </div>
+        </article>
+
+      </div>
+      <p class="muted-footer">Documentos generados bajo Ley C.U.R.A. con validez federal e interoperabilidad inmediata. Art. 2m.</p>
+    </main>
+
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-5">
+        <h3 id="modal-title" class="text-xl font-extrabold">Detalle</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body"></div>
+      <div class="mt-6 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-lg" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const docs = {
+      ecg: { titulo:"ECG · 12 derivaciones", tipo:"Imagen / Señal", fecha:"12/04/2024", efector:"Hospital General", profesional:"Dr. Martín González — Mat. 54.321", formato:"PDF + DICOM", codigo:"DOC-CURA-20240412-0091", sensible:false, accesos:[{quien:"Dr. González (Cardiología)",cuando:"12/04/2024 · 10:42",efector:"Hospital General"},{quien:"Dra. Suárez (Clínica Médica)",cuando:"15/04/2024 · 14:05",efector:"Centro de Salud Norte"}] },
+      lab:  { titulo:"Informe de Laboratorio", tipo:"Bioquímica", fecha:"03/03/2024", efector:"Laboratorio Central", profesional:"Bioquím. Laura Pérez — Mat. 9.812", formato:"PDF", codigo:"DOC-CURA-20240303-0044", sensible:false, accesos:[{quien:"Dr. González (Cardiología)",cuando:"04/03/2024 · 09:10",efector:"Hospital General"},{quien:"Dr. Ruíz (Endocrinología)",cuando:"10/03/2024 · 11:30",efector:"Consultorio Externo"}] },
+      mental:{ titulo:"Informe Salud Mental", tipo:"Psiquiatría", fecha:"18/02/2024", efector:"Hospital General", profesional:"Lic. Andrea Torres — Mat. 7.221", formato:"PDF", codigo:"DOC-CURA-20240218-0017", sensible:true, accesos:[{quien:"Lic. Torres (Salud Mental)",cuando:"18/02/2024 · 15:00",efector:"Hospital General"}] },
+      rx:   { titulo:"Rx de Tórax", tipo:"Radiología", fecha:"10/01/2024", efector:"Diagnóstico Norte", profesional:"Dr. Félix Romero — Mat. 41.190", formato:"DICOM + PDF", codigo:"DOC-CURA-20240110-0008", sensible:false, accesos:[{quien:"Dr. González (Cardiología)",cuando:"11/01/2024 · 08:55",efector:"Hospital General"},{quien:"Dr. Romero (Radiodiagnóstico)",cuando:"10/01/2024 · 17:20",efector:"Diagnóstico Norte"}] },
+      receta:{ titulo:"Receta Crónica", tipo:"Receta Electrónica", fecha:"05/12/2023", efector:"Consultorio Externo", profesional:"Dr. Martín González — Mat. 54.321", formato:"QR + Código alfanumérico", codigo:"RX-CURA-20231205-0033", sensible:false, medicamentos:["Enalapril 10 mg · 30 comprimidos","Metformina 850 mg · 60 comprimidos"], accesos:[{quien:"Dr. González (Cardiología)",cuando:"05/12/2023 · 11:00",efector:"Consultorio Externo — Emisión"},{quien:"Farmacia del Sol (Mat. Farm. 3.341)",cuando:"07/12/2023 · 10:30",efector:"Dispensación parcial"}] }
+    };
+
+    function abrirDetalle(id) {
+      const d = docs[id];
+      if (!d) return;
+      document.getElementById("modal-title").innerText = d.titulo;
+      const sensibleBadge = d.sensible
+        ? `<div style="display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;padding:5px 12px;border-radius:8px;background:#fef2f2;color:#ef4444;border:1px solid #fecaca;margin-bottom:14px;"><i class="ph-bold ph-lock-key"></i> Dato sensible — Salud Mental (Art. 2l)</div>` : "";
+      const medRow = d.medicamentos
+        ? `<div style="margin:10px 0 4px;font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;">Medicamentos</div>${d.medicamentos.map(m=>`<div style="font-size:13px;font-weight:700;color:#0d2b52;padding:6px 0;border-bottom:1px solid #f1f5f9;">${m}</div>`).join("")}` : "";
+      const accesosHtml = d.accesos.map(a=>`<div class="acceso-row"><div class="acceso-dot"></div><div><div style="font-weight:800;color:#0d2b52;">${a.quien}</div><div style="color:#64748b;">${a.cuando} · ${a.efector}</div></div></div>`).join("");
+      document.getElementById("modal-body").innerHTML = `
+        ${sensibleBadge}
+        <div class="detail-row"><span class="detail-label">Código C.U.R.A.</span><span class="detail-val" style="font-size:10px;">${d.codigo}</span></div>
+        <div class="detail-row"><span class="detail-label">Tipo</span><span class="detail-val">${d.tipo}</span></div>
+        <div class="detail-row"><span class="detail-label">Fecha</span><span class="detail-val">${d.fecha}</span></div>
+        <div class="detail-row"><span class="detail-label">Efector</span><span class="detail-val">${d.efector}</span></div>
+        <div class="detail-row"><span class="detail-label">Profesional</span><span class="detail-val">${d.profesional}</span></div>
+        <div class="detail-row"><span class="detail-label">Formato</span><span class="detail-val">${d.formato}</span></div>
+        ${medRow}
+        <div style="margin-top:16px;margin-bottom:6px;font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;"><i class="ph-bold ph-shield-check" style="color:#00C2FF;"></i> Registro de Trazabilidad · Art. 2k</div>
+        ${accesosHtml}
+        <button onclick="cerrarModal()" style="width:100%;margin-top:18px;padding:14px;border-radius:16px;background:#004E85;color:white;font-size:14px;font-weight:800;border:none;cursor:pointer;">Descargar documento</button>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function abrirModalAyuda() {
+      document.getElementById("modal-title").innerText = "Ayuda: Documentos";
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-file-pdf" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Validez Federal:</strong> Todos los documentos del sistema C.U.R.A. son oficiales y válidos en cualquier centro de salud del país. Art. 2m.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-microscope" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Estudios:</strong> Podés ver informes de laboratorio e imágenes radiológicas (DICOM) sin necesidad de llevar papeles físicos.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Trazabilidad:</strong> Cada documento registra quién lo accedió, cuándo y desde qué efector. Registro cronológico e inalterable. Art. 2k.</p></div>
+          <div style="display:flex;gap:12px;"><i class="ph-bold ph-lock-key" style="color:#004E85;font-size:22px;flex-shrink:0;"></i><p style="font-size:13px;color:#475569;"><strong>Datos sensibles:</strong> Los documentos de salud mental tienen acceso restringido según tu Consentimiento Informado Granular. Art. 2l.</p></div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+
+    function filtrarDocs() {
+      const texto = document.getElementById("buscadorDocs").value.toLowerCase();
+      const tipo  = document.getElementById("filtroTipoDoc").value;
+      const mostrarSensibles = document.getElementById("toggleDocsSensibles").checked;
+      document.querySelectorAll("#docList .doc-card").forEach(item => {
+        const t  = item.dataset.tipo;
+        const s  = item.dataset.sensible === "si";
+        const tx = (item.dataset.texto || "").toLowerCase();
+        let visible = true;
+        if (tipo !== "todos" && t !== tipo) visible = false;
+        if (!mostrarSensibles && s) visible = false;
+        if (texto && !tx.includes(texto)) visible = false;
+        item.style.display = visible ? "flex" : "none";
+      });
+    }
+  </script>
+</body>
+</html>

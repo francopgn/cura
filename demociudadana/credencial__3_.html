@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Credencial C.U.S. - C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
+    body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
+    .app-shell { width:100%; max-width:414px; padding:20px; padding-bottom:120px; display:flex; flex-direction:column; }
+    .header-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 5px; margin-bottom:25px; }
+    .back-btn { width:40px; height:40px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; cursor:pointer; }
+
+    /* TARJETA PRINCIPAL */
+    .qr-card { background:var(--glass); backdrop-filter:blur(15px); -webkit-backdrop-filter:blur(15px); border:1px solid var(--glass-border); border-radius:35px; padding:28px 20px; text-align:center; box-shadow:0 25px 50px rgba(0,0,0,0.4); margin-bottom:16px; }
+
+    .cus-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--accent); opacity:0.8; margin-bottom:6px; }
+    .cus-title { font-size:17px; font-weight:800; color:white; margin-bottom:20px; }
+
+    .qr-wrapper { background:white; padding:15px; border-radius:22px; display:inline-block; margin-bottom:16px; }
+    .qr-wrapper svg { display:block; }
+
+    .curaid-code { font-size:10px; letter-spacing:3px; text-transform:uppercase; opacity:0.5; margin-bottom:16px; }
+
+    .token-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.5); margin-bottom:4px; }
+    .token-display { font-size:52px; font-weight:900; letter-spacing:8px; color:var(--accent); margin:4px 0 8px; }
+
+    .timer-container { width:80%; margin:0 auto 6px; }
+    .progress-bg { height:5px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden; }
+    .progress-fill { height:100%; background:var(--accent); transition:width 1s linear; border-radius:10px; }
+    .time-text { font-size:10px; margin-top:6px; opacity:0.5; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+
+    /* FRANJA RESUMEN CLÍNICO */
+    .rcf-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:16px; }
+    .rcf-header { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
+    .rcf-title { font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--accent); }
+    .rcf-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .rcf-item { background:rgba(255,255,255,0.04); border-radius:14px; padding:12px; }
+    .rcf-item-label { font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:rgba(255,255,255,0.4); margin-bottom:4px; }
+    .rcf-item-value { font-size:13px; font-weight:700; color:white; line-height:1.3; }
+    .rcf-item.full { grid-column:1/-1; }
+    .badge-cobertura { display:inline-flex; align-items:center; gap:5px; font-size:10px; font-weight:800; padding:4px 10px; border-radius:8px; background:rgba(0,194,255,0.15); color:var(--accent); border:1px solid rgba(0,194,255,0.2); }
+
+    /* AVISO */
+    .alert-box { background:rgba(255,165,0,0.1); border:1px solid rgba(255,165,0,0.2); border-radius:20px; padding:15px; display:flex; gap:12px; align-items:center; margin-bottom:16px; }
+
+    /* BOTONES */
+    .btn-download { width:100%; background:var(--cura-blue); border:1px solid rgba(255,255,255,0.1); padding:18px; border-radius:22px; font-size:15px; font-weight:700; color:white; display:flex; align-items:center; justify-content:center; gap:10px; transition:all 0.2s; cursor:pointer; }
+    .btn-download:active { transform:scale(0.98); }
+    .feedback-dl { font-size:11px; font-weight:700; text-align:center; padding:8px; border-radius:10px; margin-top:8px; display:none; background:rgba(16,185,129,0.15); color:#4ade80; }
+    .feedback-dl.show { display:block; }
+
+    .bottom-bar { position:fixed; bottom:25px; left:50%; transform:translateX(-50%); width:85%; max-width:350px; background:rgba(6,93,155,0.7); backdrop-filter:blur(20px); border-radius:30px; height:70px; display:flex; align-items:center; justify-content:space-around; border:1px solid var(--glass-border); z-index:1000; }
+    .nav-btn { color:rgba(255,255,255,0.4); font-size:24px; background:none; border:none; cursor:pointer; }
+    .nav-btn.active { color:var(--accent); }
+    .center-btn { width:60px; height:60px; background:var(--accent); color:var(--bg-dark); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; margin-top:-40px; box-shadow:0 8px 20px rgba(0,194,255,0.4); cursor:pointer; }
+
+    .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
+    .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header-bar">
+      <button class="back-btn" onclick="history.back()"><i class="ph-bold ph-caret-left"></i></button>
+      <div class="text-lg font-extrabold">Credencial Digital</div>
+      <div style="width:40px"></div>
+    </header>
+
+    <main>
+
+      <!-- TARJETA C.U.S. -->
+      <div class="qr-card">
+        <div class="cus-label">Credencial Única de Salud</div>
+        <div class="cus-title">C.U.S. · Art. 2b Ley C.U.R.A.</div>
+
+        <!-- QR generado en SVG inline — no depende de imagen externa -->
+        <div class="qr-wrapper">
+          <svg id="qrSvg" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <div class="curaid-code">CURAID-41316202</div>
+
+        <div class="token-label">Token de Seguridad</div>
+        <div id="token" class="token-display">0000</div>
+
+        <div class="timer-container">
+          <div class="progress-bg">
+            <div class="progress-fill" id="progress" style="width:100%"></div>
+          </div>
+          <div id="time-remaining" class="time-text">Expira en 05:00 min</div>
+        </div>
+      </div>
+
+      <!-- AVISO -->
+      <div class="alert-box">
+        <i class="ph-fill ph-shield-check" style="font-size:22px;color:#fb923c;flex-shrink:0"></i>
+        <p style="font-size:11px;line-height:1.5;opacity:0.9">
+          Mostrá este código solo a profesionales de salud o farmacias autorizadas para validar tu identidad federal bajo la Ley C.U.R.A.
+        </p>
+      </div>
+
+      <!-- RESUMEN CLÍNICO FEDERAL — Art. 3 TER -->
+      <div class="rcf-card">
+        <div class="rcf-header">
+          <i class="ph-bold ph-identification-card" style="color:var(--accent);font-size:18px"></i>
+          <div class="rcf-title">Resumen Clínico Federal · Art. 3 TER</div>
+        </div>
+        <div class="rcf-grid">
+          <div class="rcf-item">
+            <div class="rcf-item-label">Titular</div>
+            <div class="rcf-item-value">María García</div>
+          </div>
+          <div class="rcf-item">
+            <div class="rcf-item-label">DNI</div>
+            <div class="rcf-item-value">41.316.202</div>
+          </div>
+          <div class="rcf-item full">
+            <div class="rcf-item-label">Cobertura</div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px">
+              <span class="badge-cobertura"><i class="ph-bold ph-check-circle" style="font-size:11px"></i> PAMI Régimen A</span>
+            </div>
+          </div>
+          <div class="rcf-item full">
+            <div class="rcf-item-label">Efector Habitual</div>
+            <div class="rcf-item-value">Hospital General de Agudos · Dra. Ramírez</div>
+          </div>
+          <div class="rcf-item full">
+            <div class="rcf-item-label">Alergias activas</div>
+            <div class="rcf-item-value" style="color:#fbbf24">Penicilina · Ibuprofeno</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESCARGAR -->
+      <button class="btn-download" onclick="descargarCredencial()">
+        <i class="ph-bold ph-file-pdf"></i> Descargar Credencial Offline
+      </button>
+      <div class="feedback-dl" id="feedbackDl">✓ Credencial generada correctamente</div>
+
+    </main>
+
+    <!-- BOTTOM BAR — links corregidos -->
+    <nav class="bottom-bar">
+      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='solicitar-turno__1_.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
+      <div class="center-btn" onclick="abrirModalAyuda()">?</div>
+      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn active" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
+    </nav>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-container" class="modal-backdrop" onclick="cerrarModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-extrabold">Ayuda: Credencial C.U.S.</h3>
+        <button onclick="cerrarModal()" class="bg-gray-100 p-2 rounded-full"><i class="ph ph-x"></i></button>
+      </div>
+      <div id="modal-body" class="space-y-5"></div>
+      <div class="mt-8 pt-5 border-t border-gray-100">
+        <button onclick="cerrarModal()" class="flex items-center gap-2 font-bold text-lg" style="color:#004E85">
+          <i class="ph-bold ph-arrow-left"></i> Volver
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── QR SVG generado programáticamente ──
+    // Patrón QR simplificado de demostración (no escaneable, representa el concepto)
+    function drawQR() {
+      const svg = document.getElementById("qrSvg");
+      const size = 180, cells = 21, cell = Math.floor(size / cells);
+      // Patrón de bits de ejemplo (21x21)
+      const pattern = [
+        [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,1,0,0,1,0,1,0,0,1,0,0,0,0,0,1],
+        [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+        [1,0,1,1,1,0,1,0,0,1,0,1,0,1,1,0,1,1,1,0,1],
+        [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1],
+        [1,0,0,0,0,0,1,0,0,1,0,0,0,1,1,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1],
+        [0,0,0,0,0,0,0,0,1,1,0,1,0,1,0,0,0,0,0,0,0],
+        [1,1,0,1,1,0,1,1,0,0,1,0,1,1,0,1,1,0,1,0,1],
+        [0,1,0,0,1,0,0,1,1,0,0,1,0,0,1,1,0,1,0,1,0],
+        [1,0,1,1,0,1,1,0,1,1,0,0,1,1,0,0,1,0,1,1,0],
+        [0,1,0,0,1,1,0,1,0,1,1,0,0,1,1,0,0,1,1,0,1],
+        [1,1,1,0,1,0,1,0,1,0,0,1,1,0,1,1,1,0,1,0,1],
+        [0,0,0,0,0,0,0,0,1,0,1,1,0,1,0,1,0,1,0,1,0],
+        [1,1,1,1,1,1,1,0,0,1,0,0,1,0,1,0,1,1,0,1,1],
+        [1,0,0,0,0,0,1,0,1,0,1,1,0,1,0,1,0,0,1,0,0],
+        [1,0,1,1,1,0,1,0,0,1,0,0,1,1,1,0,1,1,0,1,1],
+        [1,0,1,1,1,0,1,1,1,0,1,0,0,0,0,1,0,0,1,0,0],
+        [1,0,1,1,1,0,1,0,1,1,0,1,1,1,0,0,1,1,0,1,1],
+        [1,0,0,0,0,0,1,0,0,0,1,0,0,0,1,1,0,0,1,0,0],
+        [1,1,1,1,1,1,1,0,1,1,0,1,1,1,0,0,1,1,0,1,1]
+      ];
+      let html = "";
+      for (let r = 0; r < cells; r++) {
+        for (let c = 0; c < cells; c++) {
+          if (pattern[r][c]) {
+            html += `<rect x="${c*cell}" y="${r*cell}" width="${cell}" height="${cell}" fill="#0d2b52"/>`;
+          }
+        }
+      }
+      svg.innerHTML = html;
+    }
+
+    // ── TOKEN / TIMER ──
+    const duration = 300;
+    let remaining = duration;
+
+    function generarToken() {
+      document.getElementById("token").textContent = String(Math.floor(1000 + Math.random() * 9000));
+      drawQR(); // regenerar QR visual al renovar token
+    }
+
+    function actualizarTimer() {
+      const min = String(Math.floor(remaining / 60)).padStart(2, "0");
+      const sec = String(remaining % 60).padStart(2, "0");
+      const timeEl = document.getElementById("time-remaining");
+      const progressEl = document.getElementById("progress");
+      if (timeEl) timeEl.textContent = `Expira en ${min}:${sec} min`;
+      if (progressEl) progressEl.style.width = ((remaining / duration) * 100) + "%";
+      remaining--;
+      if (remaining < 0) { generarToken(); remaining = duration; }
+    }
+
+    // ── DESCARGAR ──
+    function descargarCredencial() {
+      const fb = document.getElementById("feedbackDl");
+      fb.classList.add("show");
+      setTimeout(() => fb.classList.remove("show"), 3000);
+    }
+
+    // ── MODAL AYUDA ──
+    function abrirModalAyuda() {
+      document.getElementById("modal-body").innerHTML = `
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-identification-card" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Credencial Única de Salud — C.U.S. (Art. 2b):</strong> Es tu documento de identidad sanitaria federal. Reemplaza las credenciales de obra social y contiene tu CURA-ID, cobertura y datos de Resumen Clínico Federal.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-key" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Token Dinámico:</strong> El número de 4 dígitos cambia cada 5 minutos. Asegurate de mostrar el código vigente al profesional o farmacia.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-qr-code" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Uso Federal:</strong> El QR permite que médicos y farmacias de todo el país validen tu identidad y accedan a tus recetas o historia clínica autorizada.</p>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
+            <p style="font-size:13px;color:#475569"><strong>Privacidad:</strong> El QR y el Token son personales e intransferibles. Nadie puede obligarte a mostrar este código fuera de un contexto de atención sanitaria.</p>
+          </div>
+        </div>
+      `;
+      document.getElementById("modal-container").style.display = "flex";
+    }
+
+    function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
+
+    drawQR();
+    generarToken();
+    actualizarTimer();
+    setInterval(actualizarTimer, 1000);
+  </script>
+</body>
+</html>

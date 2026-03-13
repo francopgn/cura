@@ -377,12 +377,21 @@
       this.messagesEl.appendChild(this.typingEl);
       this.scrollToBottom();
 
-      try {
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message, history: this.history }),
-        });
+   try {
+  const res = await fetch("/api/cura", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      question: message
+    })
+  });
+
+  const data = await res.json();
+  this.addBotMessage(data.answer);
+
+} catch (err) {
+  console.error(err);
+}
 
         const data = await res.json();
         if (this.typingEl) this.typingEl.remove();

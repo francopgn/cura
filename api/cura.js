@@ -254,13 +254,15 @@ const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     "HTTP-Referer": "https://leycura.org",
     "X-Title": "LeyCura Chatbot"
   },
-  body: JSON.stringify({
-    model: "deepseek/deepseek-chat",
-    messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: message }
-    ]
-  })
+body: JSON.stringify({
+  model: "deepseek/deepseek-chat",
+  temperature: CONFIG.TEMPERATURE,
+  max_tokens: CONFIG.MAX_TOKENS,
+  messages: [
+    { role: "system", content: SYSTEM_PROMPT },
+    ...messages
+  ]
+})
 });
 
   if (!response.ok) {

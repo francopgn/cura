@@ -4,7 +4,7 @@
 // Modelo: DeepSeek | Búsqueda: TF-IDF semántica sobre chunks locales
 // ============================================================
 
-import chunksData from './cura_rag_chunks.json' assert { type: 'json' };
+import chunksData from './cura_rag_chunks.json' with { type: 'json' };
 
 // ─────────────────────────────────────────────
 // CONFIGURACIÓN

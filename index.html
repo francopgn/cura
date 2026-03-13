@@ -446,10 +446,110 @@
       max-width: 380px !important;
       margin: 0 auto;
     }
+
+/* Scroll con dots */
+    .scroll-dots {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 1000;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7fb5da;
+  opacity: 0.45;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.dot:hover {
+  opacity: 0.8;
+}
+
+.dot.active {
+  background: #004E85;
+  opacity: 1;
+  transform: scale(1.35);
+}
+
+/* pulso tecnológico */
+
+.dot.active::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid #004E85;
+  animation: pulseDot 1.8s infinite;
+  opacity: 0.6;
+}
+
+@keyframes pulseDot {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* tooltip */
+
+.dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #004E85;
+  color: white;
+  padding: 4px 9px;
+  font-size: 12px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.dot:hover::after {
+  opacity: 1;
+  right: 22px;
+}
+
+
+    
   </style>
 </head>
 
 <body class="font-sans bg-cura-primary text-white overflow-x-hidden">
+
+
+  <!-- ========= scroll dots --->
+  <div class="scroll-dots">
+  <a href="#inicio" class="dot active" data-label="Inicio"></a>
+  <a href="#quees" class="dot" data-label="¿Qué es la Ley C.U.R.A.?"></a>
+  <a href="#funcionamiento" class="dot" data-label="Funcionamiento"></a>
+  <a href="#beneficios" class="dot" data-label="Beneficios"></a>
+  <a href="#contacto" class="dot" data-label="Contacto"></a>
+      <a href="#datos" class="dot" data-label="Datos"></a>
+     <a href="#sumarse" class="dot" data-label="Sumarse"></a>
+      <a href="#sumarse" class="dot" data-label="Contacto"></a>
+     <a href="#newsletter" class="dot" data-label="Newsletter"></a>
+     <a href="#novedades" class="dot" data-label="Novedades"></a>
+</div>
 
 <!-- =============================================
      BANNER SUPERIOR ROTATIVO (ORIGINAL)
@@ -2211,5 +2311,6 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Chatbot widget (original) -->
 <script src="/chatbot-widget.js" defer></script>
 <script src="/mapa-cura.js"></script>
+  <script src="/puntos-scroll.js"></script>
 </body>
 </html>

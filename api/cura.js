@@ -14,7 +14,7 @@ const CONFIG = {
   MIN_SCORE: 0.08,         // score mínimo para considerar un chunk relevante
   PRIORITY_ARTICULO: 1.4,  // boost para chunks de tipo 'articulo'
   PRIORITY_TEMA: 1.2,      // boost para chunks temáticos con coincidencia de tema
-  DEEPSEEK_MODEL: 'deepseek-chat',
+ DEEPSEEK_MODEL: 'deepseek-reasoner',
   MAX_TOKENS: 1024,
   TEMPERATURE: 0.3,        // baja temperatura para respuestas más precisas y legales
 };

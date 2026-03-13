@@ -393,39 +393,33 @@ try {
 
   const data = await res.json();
 
+  if (this.typingEl) this.typingEl.remove();
+
   if (data.answer) {
     this.addMessage(data.answer, "bot");
+
+    if (data.suggestions && data.suggestions.length > 0) {
+      setTimeout(() => {
+        this.addSuggestions(data.suggestions);
+      }, 600);
+    }
+
+  } else {
+    this.addMessage("No se pudo generar una respuesta detallada.", "bot");
   }
 
 } catch (err) {
+
+  if (this.typingEl) this.typingEl.remove();
   console.error(err);
+  this.addMessage("Error de conexión con el asistente.", "bot");
+
+} finally {
+
+  this.isLoading = false;
+  this.scrollToBottom();
+
 }
-
-} catch (err) {
-  console.error(err);
-}
-
-
-        if (this.typingEl) this.typingEl.remove();
-
-        if (data.answer) {
-          this.addMessage(data.answer, "bot");
-          if (data.suggestions && data.suggestions.length > 0) {
-            setTimeout(() => {
-              this.addSuggestions(data.suggestions);
-            }, 600);
-          }
-        } else {
-          this.addMessage("No se pudo generar una respuesta detallada.", "bot");
-        }
-      } catch (e) {
-        if (this.typingEl) this.typingEl.remove();
-        this.addMessage("Error de conexión con el asistente.", "bot");
-      } finally {
-        this.isLoading = false;
-        this.scrollToBottom();
-      }
-    }
 
     addMessage(text, type) {
       const div = document.createElement("div");

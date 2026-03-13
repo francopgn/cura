@@ -1,6 +1,6 @@
 (function () {
   "use strict";
-
+ 
   class LeyCuraChatbot {
     constructor() {
       this.isOpen = false;

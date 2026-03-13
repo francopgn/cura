@@ -383,7 +383,9 @@ try {
 
   const res = await fetch("/api/cura", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
       question: message
     })
@@ -391,29 +393,13 @@ try {
 
   const data = await res.json();
 
-  if (this.typingEl) this.typingEl.remove();
-
   if (data.answer) {
     this.addMessage(data.answer, "bot");
-
-    if (data.suggestions && data.suggestions.length > 0) {
-      setTimeout(() => {
-        this.addSuggestions(data.suggestions);
-      }, 600);
-    }
-
-  } else {
-    this.addMessage("No se pudo generar una respuesta detallada.", "bot");
   }
 
-} catch (e) {
-
-  if (this.typingEl) this.typingEl.remove();
-  this.addMessage("Error de conexión con el asistente.", "bot");
-
+} catch (err) {
+  console.error(err);
 }
-      
-  this.addBotMessage(data.answer);
 
 } catch (err) {
   console.error(err);

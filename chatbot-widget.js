@@ -363,61 +363,64 @@
       this.chatWindow.classList.remove("keyboard-up");
     }
 
-    async sendMessage() {
-      const message = this.inputEl.value.trim();
-      if (!message || this.isLoading) return;
+async sendMessage() {
 
-      this.addMessage(message, "user");
-      this.inputEl.value = "";
-      this.isLoading = true;
+  const message = this.inputEl.value.trim();
+  if (!message || this.isLoading) return;
 
-      this.typingEl = document.createElement("div");
-      this.typingEl.className = "leycura-typing";
-      this.typingEl.textContent = "El asistente está pensando...";
-      this.messagesEl.appendChild(this.typingEl);
-      this.scrollToBottom();
+  this.addMessage(message, "user");
+  this.inputEl.value = "";
+  this.isLoading = true;
 
+  this.typingEl = document.createElement("div");
+  this.typingEl.className = "leycura-typing";
+  this.typingEl.textContent = "El asistente está pensando...";
+  this.messagesEl.appendChild(this.typingEl);
 
+  this.scrollToBottom();
 
-try {
+  try {
 
-  const res = await fetch("/api/cura", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      question: message
-    })
-  });
+    const res = await fetch("/api/cura", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        question: message
+      })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (this.typingEl) this.typingEl.remove();
+    if (this.typingEl) this.typingEl.remove();
 
-  if (data.answer) {
-    this.addMessage(data.answer, "bot");
+    if (data.answer) {
 
-    if (data.suggestions && data.suggestions.length > 0) {
-      setTimeout(() => {
-        this.addSuggestions(data.suggestions);
-      }, 600);
+      this.addMessage(data.answer, "bot");
+
+      if (data.suggestions && data.suggestions.length > 0) {
+        setTimeout(() => {
+          this.addSuggestions(data.suggestions);
+        }, 600);
+      }
+
+    } else {
+      this.addMessage("No se pudo generar una respuesta detallada.", "bot");
     }
 
-  } else {
-    this.addMessage("No se pudo generar una respuesta detallada.", "bot");
+  } catch (err) {
+
+    if (this.typingEl) this.typingEl.remove();
+    console.error(err);
+    this.addMessage("Error de conexión con el asistente.", "bot");
+
+  } finally {
+
+    this.isLoading = false;
+    this.scrollToBottom();
+
   }
-
-} catch (err) {
-
-  if (this.typingEl) this.typingEl.remove();
-  console.error(err);
-  this.addMessage("Error de conexión con el asistente.", "bot");
-
-} finally {
-
-  this.isLoading = false;
-  this.scrollToBottom();
 
 }
 

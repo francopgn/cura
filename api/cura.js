@@ -42,6 +42,11 @@ Tu misión es explicar la Ley C.U.R.A. de manera clara, precisa y accesible para
 
 7. **Sé neutral y objetivo**: No opines sobre si la ley es buena o mala. Informa con precisión.
 
+8. Si el contexto no menciona explícitamente financiamiento, presupuesto, fondos o recursos económicos, debes responder
+que la ley no especifica fuentes de financiación.
+
+9. Nunca inventes mecanismos económicos, presupuestos o estructuras financieras que no aparezcan en el contexto.
+
 ## FORMATO DE RESPUESTA OBLIGATORIO:
 
 📌 **Artículo aplicable:** Artículo [N°] – [Título del artículo]
@@ -186,31 +191,45 @@ export function searchChunks(query, topK = CONFIG.MAX_CHUNKS) {
  * @returns {string} - Texto de contexto formateado para el prompt
  */
 export function buildContext(chunks) {
+
   if (!chunks || chunks.length === 0) {
-    return 'NO_CONTEXT';
+    return "NO_CONTEXT";
   }
 
   const contextParts = chunks.map((chunk, index) => {
-    const artNum = chunk.numero ? `Artículo ${chunk.numero}` : 'Tema transversal';
-    const tipo = chunk.tipo.toUpperCase().replace('_', ' ');
+
+    const artNum = chunk.numero
+      ? `Artículo ${chunk.numero}`
+      : "Tema transversal";
+
+    const tipo = chunk.tipo.toUpperCase().replace("_", " ");
 
     return `
 --- FUENTE ${index + 1} [${tipo}] ---
-ID: ${chunk.id}
 Título: ${artNum} – ${chunk.titulo}
 Capítulo: ${chunk.capitulo}
-Temas: ${chunk.tema.join(', ')}
+Temas: ${chunk.tema.join(", ")}
+
 Contenido:
 ${chunk.contenido}
 `.trim();
+
   });
 
   return `
-=== CONTEXTO DE LA LEY C.U.R.A. ===
-A continuación encontrarás ${chunks.length} fragmento(s) relevantes de la Ley C.U.R.A. para responder la pregunta. 
-Usa ÚNICAMENTE esta información. Si no es suficiente, indícalo con la frase de respuesta establecida.
+=== CONTEXTO OFICIAL DE LA LEY C.U.R.A. ===
 
-${contextParts.join('\n\n')}
+Los siguientes fragmentos pertenecen al texto de la Ley C.U.R.A.
+
+⚠️ REGLA CRÍTICA:
+Debes usar ÚNICAMENTE la información presente en estos fragmentos.
+Si la información solicitada no aparece aquí, debes responder:
+
+"No encontré un artículo específico en la Ley C.U.R.A. que responda directamente esta pregunta."
+
+No inventes artículos, financiamiento ni mecanismos legales.
+
+${contextParts.join("\n\n")}
 
 === FIN DEL CONTEXTO ===
 `.trim();
@@ -287,21 +306,33 @@ body: JSON.stringify({
  * @returns {Promise<Object>} - { answer, chunks, hasContext }
  */
 export async function ragQuery(question, history = []) {
+
   // 1. Búsqueda semántica
   const relevantChunks = searchChunks(question);
   const hasContext = relevantChunks.length > 0;
 
+  // 🚫 Si no hay contexto, no llamar al modelo
+  if (!hasContext) {
+    return {
+      answer:
+        "No encontré un artículo específico en la Ley C.U.R.A. que responda directamente esta pregunta.",
+      chunks: [],
+      hasContext: false,
+      chunksUsed: 0
+    };
+  }
+
   // 2. Construir contexto
   const context = buildContext(relevantChunks);
 
-  // 3. Generar respuesta con DeepSeek
+  // 3. Generar respuesta
   const answer = await askDeepseek(question, context, history);
 
   return {
     answer,
     chunks: relevantChunks,
-    hasContext,
-    chunksUsed: relevantChunks.length,
+    hasContext: true,
+    chunksUsed: relevantChunks.length
   };
 }
 

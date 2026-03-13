@@ -127,7 +127,7 @@
             </div>
           </div>
           <div class="tc-actions">
-            <button class="tc-btn primary" onclick="location.href='turno-confirmado.html'"><i class="ph-bold ph-eye"></i> Ver detalle</button>
+            <button class="tc-btn primary" onclick="location.='turno-confirmado.html'"><i class="ph-bold ph-eye"></i> Ver detalle</button>
             <button class="tc-btn secondary" onclick="abrirModalReprogramar()"><i class="ph-bold ph-calendar-blank"></i> Reprogramar</button>
             <button class="tc-btn danger" onclick="abrirModalCancelar()"><i class="ph-bold ph-x"></i> Cancelar</button>
           </div>
@@ -154,7 +154,7 @@
           </div>
         </article>
 
-        <button class="btn-nuevo" onclick="location.href='solicitar-turno__1_.html'">
+        <button class="btn-nuevo" onclick="location.href='solicitar-turno.html'">
           <i class="ph-bold ph-plus-circle"></i> Solicitar nuevo turno
         </button>
       </section>
@@ -181,8 +181,8 @@
             <span class="chip">Renovación de receta</span>
           </div>
           <div class="tc-actions">
-            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver registro clínico</button>
-            <button class="tc-btn secondary" onclick="location.href='documentos-estudios__1_.html'"><i class="ph-bold ph-folder-open"></i> Ver estudios</button>
+            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa.html'"><i class="ph-bold ph-file-medical"></i> Ver registro clínico</button>
+            <button class="tc-btn secondary" onclick="location.href='documentos-estudios.html'"><i class="ph-bold ph-folder-open"></i> Ver estudios</button>
           </div>
         </article>
 
@@ -201,7 +201,7 @@
             <span class="chip">Salud Mental</span>
           </div>
           <div class="tc-actions">
-            <button class="tc-btn primary" onclick="location.href='historia-salud__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver historia de salud</button>
+            <button class="tc-btn primary" onclick="location.href='historia-salud.html'"><i class="ph-bold ph-file-medical"></i> Ver historia de salud</button>
             <button class="tc-btn secondary" onclick="location.href='auditoria.html'"><i class="ph-bold ph-clock-clockwise"></i> Ver registro de accesos</button>
           </div>
         </article>
@@ -220,12 +220,12 @@
             <span class="chip">HbA1c · Lipídico</span>
           </div>
           <div class="tc-actions">
-            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver registro clínico</button>
-            <button class="tc-btn secondary" onclick="location.href='documentos-estudios__1_.html'"><i class="ph-bold ph-folder-open"></i> Ver estudios</button>
+            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa.html'"><i class="ph-bold ph-file-medical"></i> Ver registro clínico</button>
+            <button class="tc-btn secondary" onclick="location.href='documentos-estudios.html'"><i class="ph-bold ph-folder-open"></i> Ver estudios</button>
           </div>
         </article>
 
-        <button class="btn-nuevo" onclick="location.href='solicitar-turno__1_.html'">
+        <button class="btn-nuevo" onclick="location.href='solicitar-turno.html'">
           <i class="ph-bold ph-plus-circle"></i> Solicitar nuevo turno
         </button>
       </section>
@@ -272,7 +272,7 @@
             <span class="badge badge-blue">Realizado</span>
           </div>
           <div class="tc-actions">
-            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa__1_.html'"><i class="ph-bold ph-file-medical"></i> Ver registro</button>
+            <button class="tc-btn primary" onclick="location.href='historia-clinica-completa.html'"><i class="ph-bold ph-file-medical"></i> Ver registro</button>
           </div>
         </article>
 
@@ -289,7 +289,7 @@
           </div>
         </article>
 
-        <button class="btn-nuevo" onclick="location.href='solicitar-turno__1_.html'">
+        <button class="btn-nuevo" onclick="location.href='solicitar-turno.html'">
           <i class="ph-bold ph-plus-circle"></i> Solicitar nuevo turno
         </button>
       </section>
@@ -302,10 +302,10 @@
 
     <!-- BOTTOM BAR -->
     <nav class="bottom-bar">
-      <button class="nav-btn" onclick="location.href='menu__15_.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
+      <button class="nav-btn" onclick="location.href='menu.html'" title="Inicio"><i class="ph-bold ph-house-line"></i></button>
       <button class="nav-btn active" onclick="location.href='mis-turnos.html'" title="Turnos"><i class="ph-bold ph-calendar-blank"></i></button>
       <div class="center-btn" onclick="abrirModalAyuda()">?</div>
-      <button class="nav-btn" onclick="location.href='farmacias__9_.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
+      <button class="nav-btn" onclick="location.href='farmacias.html'" title="Farmacias"><i class="ph-bold ph-heartbeat"></i></button>
       <button class="nav-btn" onclick="location.href='perfil.html'" title="Perfil"><i class="ph-bold ph-user-circle"></i></button>
     </nav>
   </div>
@@ -374,7 +374,7 @@
       document.getElementById("modal-title").innerText = "Reprogramar turno";
       document.getElementById("modal-body").innerHTML = `
         <p style="font-size:13px;color:#475569;margin-bottom:16px">Para reprogramar este turno serás redirigido al módulo de solicitud de turnos del sistema C.U.R.A.</p>
-        <button class="btn-modal-primary" onclick="location.href='solicitar-turno__1_.html'">Ir a solicitar turno</button>
+        <button class="btn-modal-primary" onclick="location.href='solicitar-turno.html'">Ir a solicitar turno</button>
         <button class="btn-modal-secondary" onclick="cerrarModal()">Cancelar</button>
       `;
       document.getElementById("modal-container").style.display = "flex";

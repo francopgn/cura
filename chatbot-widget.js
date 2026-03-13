@@ -405,7 +405,7 @@ try {
   console.error(err);
 }
 
-        const data = await res.json();
+
         if (this.typingEl) this.typingEl.remove();
 
         if (data.answer) {

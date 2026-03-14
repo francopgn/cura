@@ -459,20 +459,33 @@ z-index:9999;
 
 .scroll-line{
 position:absolute;
-top:8px;
-bottom:8px;
 left:50%;
 transform:translateX(-50%);
 width:2px;
-background:linear-gradient(
-to bottom,
-transparent,
-#00E5FF55,
-#00E5FF55,
-transparent
-);
+height:100%;
 z-index:1;
 pointer-events:none;
+}
+
+/* segmentos entre nodos */
+
+.scroll-line::before,
+.scroll-line::after{
+content:"";
+position:absolute;
+left:0;
+width:2px;
+background:#00E5FF55;
+}
+
+.scroll-line::before{
+top:16px;
+bottom:50%;
+}
+
+.scroll-line::after{
+top:50%;
+bottom:16px;
 }
     
 .scroll-dots{

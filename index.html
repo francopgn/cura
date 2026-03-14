@@ -2431,16 +2431,15 @@ if (bannerTextEl) {
 <script src="/mapa-cura.js"></script>
 <script>
 
-const sections = document.querySelectorAll("section");
+const sections = document.querySelectorAll("main[id], section[id]");
 const dots = document.querySelectorAll(".scroll-dots a");
 
 let currentActive = null;
 
-/* activar dot */
-
 function activateDot(id){
 
 if(currentActive === id) return;
+
 currentActive = id;
 
 dots.forEach(dot=>{
@@ -2462,7 +2461,7 @@ dot.classList.remove("show-label");
 }
 
 
-/* detectar sección inicial correctamente */
+/* detectar sección inicial */
 
 function detectInitialSection(){
 
@@ -2477,10 +2476,6 @@ const offset = Math.abs(rect.top);
 if(offset < bestOffset){
 bestOffset = offset;
 bestSection = section;
-
-  setTimeout(()=>{
-activateDot("inicio");
-},400);
 }
 
 });
@@ -2492,26 +2487,24 @@ activateDot(bestSection.id);
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
-setTimeout(detectInitialSection,200);
+setTimeout(detectInitialSection,300);
 });
 
 
-/* observer más estable */
+/* observer robusto */
 
 const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
 if(entry.isIntersecting){
-
 activateDot(entry.target.id);
-
 }
 
 });
 
 },{
-threshold:0.55
+threshold:0.6
 });
 
 sections.forEach(section=>{
@@ -2519,7 +2512,7 @@ observer.observe(section);
 });
 
 
-/* scroll suave con Lenis */
+/* scroll con lenis */
 
 dots.forEach(dot=>{
 
@@ -2533,15 +2526,19 @@ const target = document.querySelector(targetId);
 if(!target) return;
 
 if(window.lenis){
-lenis.scrollTo(target,{offset:0});
+lenis.scrollTo(target,{
+offset:0,
+duration:1.2
+});
 }else{
-target.scrollIntoView({behavior:"smooth"});
+target.scrollIntoView({
+behavior:"smooth"
+});
 }
 
 });
 
 });
-
 
 /* pulsos de datos */
 

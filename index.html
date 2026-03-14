@@ -541,7 +541,7 @@
   <div class="scroll-dots">
   <a href="#inicio" class="dot active" data-label="Inicio"></a>
   <a href="#explicacion" class="dot" data-label="¿Qué es la Ley C.U.R.A.?"></a>
-  <a href="#funcionamiento" class="dot" data-label="Funcionamiento"></a>
+  <a href="#como-funciona" class="dot" data-label="Funcionamiento"></a>
   <a href="#beneficios" class="dot" data-label="Beneficios"></a>
   <a href="#contacto" class="dot" data-label="Contacto"></a>
       <a href="#datos" class="dot" data-label="Datos"></a>
@@ -841,7 +841,7 @@
        NUEVA SECCIÓN: ¿QUÉ ES C.U.R.A.?
        Con animación de red sanitaria en canvas
   =========================================== -->
-  <section id="que-es" class="que-es-section p-6 md:p-10 shadow-2xl" data-aos="fade-up">
+  <section id="explicacion" class="que-es-section p-6 md:p-10 shadow-2xl" data-aos="fade-up">
 
     <!-- Canvas de red animada (fondo) -->
     <canvas id="network-canvas" aria-hidden="true"></canvas>
@@ -2310,6 +2310,38 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Chatbot widget (original) -->
 <script src="/chatbot-widget.js" defer></script>
 <script src="/mapa-cura.js"></script>
-  <script src="/puntos-scroll.js"></script>
+  <script>
+const sections = document.querySelectorAll("section");
+const dots = document.querySelectorAll(".scroll-dots a");
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+
+    if (entry.isIntersecting) {
+
+      dots.forEach(dot => {
+        dot.classList.remove("active");
+      });
+
+      const id = entry.target.getAttribute("id");
+
+      const activeDot = document.querySelector(`.scroll-dots a[href="#${id}"]`);
+
+      if (activeDot) {
+        activeDot.classList.add("active");
+      }
+
+    }
+
+  });
+}, {
+  threshold: 0.6
+});
+
+sections.forEach(section => {
+  observer.observe(section);
+});
+</script>
+<!--  <script src="/puntos-scroll.js"></script> --->
 </body>
 </html>

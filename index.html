@@ -2434,7 +2434,14 @@ if (bannerTextEl) {
 const sections = document.querySelectorAll("section");
 const dots = document.querySelectorAll(".scroll-dots a");
 
+let currentActive = null;
+
+/* activar dot */
+
 function activateDot(id){
+
+if(currentActive === id) return;
+currentActive = id;
 
 dots.forEach(dot=>{
 
@@ -2454,35 +2461,44 @@ dot.classList.remove("show-label");
 
 }
 
-/* detectar sección al cargar */
+
+/* detectar sección inicial correctamente */
 
 function detectInitialSection(){
 
-let scrollPosition = window.scrollY + window.innerHeight * 0.35;
+let bestSection = null;
+let bestOffset = Infinity;
 
 sections.forEach(section=>{
 
-if(
-scrollPosition >= section.offsetTop &&
-scrollPosition < section.offsetTop + section.offsetHeight
-){
-activateDot(section.id);
+const rect = section.getBoundingClientRect();
+const offset = Math.abs(rect.top);
+
+if(offset < bestOffset){
+bestOffset = offset;
+bestSection = section;
 }
 
 });
 
+if(bestSection){
+activateDot(bestSection.id);
 }
 
-window.addEventListener("load", detectInitialSection);
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+setTimeout(detectInitialSection,200);
+});
 
 
-/* observer para actualizar dots */
+/* observer más estable */
 
 const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
-if(entry.intersectionRatio > 0.35){
+if(entry.isIntersecting){
 
 activateDot(entry.target.id);
 
@@ -2491,7 +2507,7 @@ activateDot(entry.target.id);
 });
 
 },{
-threshold:[0.35]
+threshold:0.55
 });
 
 sections.forEach(section=>{
@@ -2499,24 +2515,23 @@ observer.observe(section);
 });
 
 
-/* scroll suave al hacer clic */
+/* scroll suave con Lenis */
 
-dots.forEach(dot => {
+dots.forEach(dot=>{
 
-dot.addEventListener("click", e => {
+dot.addEventListener("click",e=>{
 
 e.preventDefault();
 
 const targetId = dot.getAttribute("href");
 const target = document.querySelector(targetId);
 
-if(target){
+if(!target) return;
 
-target.scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
-
+if(window.lenis){
+lenis.scrollTo(target,{offset:0});
+}else{
+target.scrollIntoView({behavior:"smooth"});
 }
 
 });

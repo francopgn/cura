@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="C.U.R.A." />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <title>Ley C.U.R.A. | Texto completo de la ley</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Ley C.U.R.A. — La primera infraestructura pública nacional de datos de salud de Argentina. Texto completo de la ley, organizado por capítulos y artículos." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cura: {
+              primary:     '#004E85',
+              primaryDark: '#00345C',
+              card:        '#065D9B',
+              accent:      '#00C2FF',
+              accentLight: '#59D2FF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* =============================================
+       ESTILOS ORIGINALES DEL SITIO (se mantienen)
+    ============================================== */
+    .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+    .modal-backdrop.show { opacity: 1; }
+    #top-banner-text { display: inline-block; transition: opacity 0.35s ease, transform 0.35s ease; }
+    .banner-hidden { opacity: 0; transform: translateY(-4px); }
+    .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+    .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+
+    /* --- CREDENCIAL 3D (ORIGINAL) --- */
+    .perspective-container { perspective: 1500px; }
+    .card-container { position: relative; width: 100%; max-width: 450px; aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20; container-type: inline-size; }
+    .card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); transform-style: preserve-3d; cursor: pointer; will-change: transform; }
+    .card-inner.is-flipped { transform: rotateY(180deg); }
+    .card-face { position: absolute; top: 0; left: 0; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 18px; overflow: hidden; transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4); -webkit-mask-image: -webkit-radial-gradient(white, black); }
+    .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+    .card-front { z-index: 2; transform: rotateY(0deg); }
+    .card-back  { z-index: 1; transform: rotateY(180deg); }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .card-container:hover .animate-float { animation-play-state: paused; }
+    .card-data-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; color: white; }
+    .pos-nombre-front { position: absolute; left: 3.50%; top: 15%; width: 55%; font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pos-dni-front { position: absolute; left: 3.50%; top: 21.06%; font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left; }
+    .pos-sangre { position: absolute; left: 94.88%; top: 8.5%; transform: translate(-50%, -50%); width: 12%; height: 18%; font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw; display: flex; justify-content: center; align-items: center; }
+    .pos-ficticios { position: absolute; bottom: 3%; left: 0; width: 100%; text-align: center; font-family: 'Open Sans', sans-serif; font-size: 1.8cqw; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; pointer-events: none; }
+    .data-block { position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600; font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .block-alergias     { left: 3.8%;  top: 34%; }
+    .block-medicamentos { left: 3.6%;  top: 53.7%; }
+    .block-antecedentes { left: 3.9%;  top: 72%; }
+    .block-operaciones  { left: 36.6%; top: 30%; height: 22%; font-size: 2cqw; }
+    .block-fecha-nac    { left: 69%;   top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
+    .block-domicilio    { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2.3cqw; font-weight: 600; }
+    .block-contactos    { left: 69.8%; top: 72.4%; font-size: 1.9cqw; }
+    .pos-nombre-back { position: absolute; top: 5%; left: 3%; font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left; }
+    .pos-dni-back { position: absolute; top: 13%; left: 3.2%; font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left; }
+    .pos-id-number { position: absolute; bottom: 23%; left: 0; right: -3%; text-align: center; font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.8cqw; letter-spacing: 0.05em; }
+
+    .btn-resumen-ejecutivo { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; background-color: rgba(255,255,255,0.08); color: #e2e8f0; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; text-decoration: none; border: 1px dashed rgba(255,255,255,0.3); transition: all 0.3s ease; width: 100%; box-sizing: border-box; }
+    .btn-resumen-ejecutivo:hover { background-color: rgba(255,255,255,0.15); color: #fff; border-style: solid; border-color: rgba(255,255,255,0.5); }
+
+    .notification-badge-ui { position: absolute; top: -2px; right: -2px; background-color: #ef4444; color: white; font-size: 9px; font-weight: bold; width: 15px; height: 15px; display: flex; align-items: center; justify-content: center; border-radius: 9999px; border: 2px solid #00345C; pointer-events: none; }
+    #notificationMenu.show { display: block !important; }
+    @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95) translateY(-10px); } to   { opacity: 1; transform: scale(1) translateY(0); } }
+    .animate-fade-in { animation: fadeInScale 0.2s ease-out forwards; }
+
+    /* =============================================
+       ESTILOS NUEVOS PARA EL VISUALIZADOR DE LA LEY
+    ============================================== */
+    .search-box {
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 60px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 2.5rem;
+      border: 1px solid #e0e7ef;
+    }
+    .search-box i {
+      color: #7f8c9a;
+      font-size: 1.2rem;
+    }
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 1.1rem;
+      background: transparent;
+      color: #1a2b3c;
+    }
+    .search-box input::placeholder {
+      color: #a0b3c9;
+      font-weight: 300;
+    }
+    .capitulo {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 8px 24px rgba(0,40,80,0.08);
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+      border: 1px solid #e9eef3;
+    }
+    .capitulo-header {
+      background: linear-gradient(98deg, #f0f6fd 0%, #ffffff 80%);
+      padding: 1.2rem 2rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid transparent;
+      transition: background 0.2s;
+    }
+    .capitulo-header:hover {
+      background: #e6eff9;
+    }
+    .capitulo-header h2 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #0b2a41;
+      letter-spacing: -0.3px;
+    }
+    .capitulo-header .toggle-icon {
+      font-size: 2rem;
+      color: #2a5f8a;
+      font-weight: 300;
+      transition: transform 0.3s;
+    }
+    .capitulo-body {
+      padding: 1.8rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      background: #ffffff;
+    }
+    .capitulo-body.collapsed {
+      display: none;
+    }
+    .articulo-card {
+      background: #f9fcff;
+      border: 1px solid #dde5ed;
+      border-radius: 20px;
+      padding: 1.3rem 1.3rem 1.5rem 1.3rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,20,40,0.02);
+      display: flex;
+      flex-direction: column;
+    }
+    .articulo-card:hover {
+      border-color: #9bb7d4;
+      box-shadow: 0 8px 18px -6px rgba(0,85,150,0.15);
+      background: #ffffff;
+    }
+    .articulo-titulo {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #003366;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+    }
+    .articulo-numero {
+      background: #003b6a;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      display: inline-block;
+      margin-right: 0.6rem;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .articulo-desc {
+      color: #2b435e;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-top: 0.5rem;
+      text-align: justify;
+      word-break: break-word;
+      flex: 1;
+    }
+    .no-resultados {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: #7b8c9d;
+      font-size: 1.2rem;
+      background: #f5f9ff;
+      border-radius: 40px;
+    }
+    .badge-doc {
+      background: #d4e2f0;
+      color: #1d486b;
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .capitulo-header h2 { font-size: 1.3rem; }
+      .capitulo-body { padding: 1.2rem; grid-template-columns: 1fr; }
+      .search-box { padding: 0.7rem 1.2rem; }
+    }
+  </style>
+</head>
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden">
+
+<!-- ========= BANNER SUPERIOR ROTATIVO ========= -->
+<div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
+  <span id="top-banner-text">
+    Versión 05/03/26 — La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
+  </span>
+</div>
+
+<!-- ========= HEADER (idéntico al original) ========= -->
+<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
+
+    <div class="flex items-center justify-between w-full sm:w-auto">
+      <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
+        <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
+        <div class="leading-tight">
+          <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
+          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+        </div>
+      </a>
+      <div class="sm:hidden relative">
+        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <i class="ph-bold ph-bell text-2xl"></i>
+          <span class="notification-badge-ui">1</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
+      <div class="flex gap-4">
+        <a href="#inicio"      class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
+        <a href="#capitulos"   class="text-cura-accentLight hover:text-white transition-colors">Capítulos</a>
+        <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
+        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
+        <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
+          Demo
+        </a>
+        <div class="hidden sm:block relative">
+          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+            <i class="ph-bold ph-bell text-xl"></i>
+            <span class="notification-badge-ui">1</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Menú novedades (ORIGINAL) -->
+    <div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+      <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+        <span class="text-cura-primary font-bold text-xs uppercase tracking-wider">Novedades</span>
+        <span class="text-[9px] text-gray-400 font-medium">Actualizado: 13/03/26</span>
+      </div>
+      <div class="max-h-[400px]">
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">12/00/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento acorde a la expansión de la ley.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 hover:bg-blue-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-robot text-cura-primary text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold text-cura-primary hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase">Cerrar</button>
+    </div>
+  </div>
+</header>
+
+<!-- ========= CONTENIDO PRINCIPAL: VISUALIZADOR DE LA LEY ========= -->
+<main id="inicio" class="max-w-5xl mx-auto px-4 pt-10 pb-16 space-y-10">
+
+  <!-- Título de la página -->
+  <div class="text-center">
+    <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+      Ley C.U.R.A. · Texto completo
+    </h1>
+    <p class="text-sm md:text-base text-cura-accentLight max-w-2xl mx-auto">
+      Navegá por los 260 artículos de la ley, organizados por títulos. Usá el buscador para filtrar por número, título o descripción.
+    </p>
+  </div>
+
+  <!-- Buscador -->
+  <div class="search-box">
+    <i>🔍</i>
+    <input type="text" id="buscador" placeholder="Buscar por número, título o descripción..." autofocus>
+  </div>
+
+  <!-- Contenedor de capítulos (se llena con JS) -->
+  <div id="ley-container"></div>
+
+  <!-- Botón para volver arriba (opcional, pero queda bien) -->
+  <div class="text-center">
+    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="inline-flex items-center gap-2 px-6 py-2 bg-cura-accent/20 border border-cura-accent/40 rounded-full text-sm text-cura-accentLight hover:bg-cura-accent/30 transition">
+      <i class="ph-bold ph-arrow-up"></i> Volver arriba
+    </button>
+  </div>
+
+</main>
+
+<!-- ========= FOOTER (idéntico al original) ========= -->
+<footer class="border-t border-cura-accent/30 bg-cura-primaryDark">
+  <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
+    <p>Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
+    <div class="flex flex-wrap gap-3">
+      <a href="#inicio"       class="hover:text-white">Inicio</a>
+      <a href="#capitulos"    class="hover:text-white">Capítulos</a>
+      <a href="#beneficios"   class="hover:text-white">Beneficios</a>
+      <a href="/Informacion/informacion.html" class="hover:text-white">Información</a>
+      <a href="/demo.html"     class="hover:text-white">Demostración</a>
+      <a href="#contacto"      class="hover:text-white">Contacto</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ========= MODALES ORIGINALES (sin cambios) ========= -->
+<div id="success-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">...</div>
+<div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">...</div>
+<div id="newsletter-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">...</div>
+
+<!-- ========= SCRIPTS ========= -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<script>
+/* =============================================
+   FUNCIONES GLOBALES (toggleMenuNovedades, etc.)
+============================================== */
+function toggleMenuNovedades() {
+  const menu   = document.getElementById('notificationMenu');
+  const badges = document.querySelectorAll('.notification-badge-ui');
+  const KEY    = 'visto_novedades_v1';
+  if (menu) menu.classList.toggle('show');
+  badges.forEach(b => b.classList.add('hidden'));
+  localStorage.setItem(KEY, 'true');
+}
+
+// =============================================
+// DATOS DE LA LEY (extraídos de NotebookLM + nuevas descripciones)
+// =============================================
+const leyData = [
+  {
+    chapter: "Título I: Disposiciones generales",
+    articles: [
+      { number: "1°", title: "Objeto y Principios", description: "Crea el Sistema C.U.R.A. para unificar historias clínicas digitales con carácter federal y estratégico." },
+      { number: "2°", title: "Definiciones", description: "Establece los conceptos técnicos clave como Interoperabilidad, Trazabilidad y Consentimiento Granular." },
+      { number: "3°", title: "Ámbito de aplicación", description: "Define la obligatoriedad para efectos nacionales y el régimen de adhesión voluntaria para provincias." },
+      { number: "3° BIS", title: "Portabilidad interjurisdiccional", description: "Garantiza el derecho del paciente a que su información clínica sea transferida entre cualquier jurisdicción." },
+      { number: "3° TER", title: "Resumen Clínico Federal", description: "Crea un conjunto mínimo de datos críticos (alergias, medicación) para atención segura fuera de la jurisdicción de origen." },
+      { number: "4°", title: "Régimen de adhesión federal", description: "Invita a provincias a sumarse al sistema, ofreciendo beneficios tecnológicos (modelo SaaS) sin ceder autonomía." },
+      { number: "4° BIS", title: "Incumplimiento Jurisdiccional", description: "Establece el procedimiento y límites para restringir beneficios tecnológicos a provincias que incumplan lo acordado." },
+      { number: "4° TER", title: "Corresponsabilidad de datos", description: "Define que las provincias son responsables de sus datos y la Nación es la encargada de la infraestructura y custodia." },
+      { number: "5°", title: "Sustento jurídico", description: "Integra la ley con las normas de Protección de Datos Personales y Derechos del Paciente preexistentes." }
+    ]
+  },
+  {
+    chapter: "Título II: Autoridades y gobierno del sistema",
+    articles: [
+      { number: "6°", title: "Autoridad de aplicación", description: "Designa al Ministerio de Salud y crea el equipo de respuesta ante incidentes de seguridad (CSIRT-C.U.R.A.)." },
+      { number: "7°", title: "Consejo Nacional", description: "Crea el órgano máximo de gobierno del sistema, con representación federal paritaria y atribuciones estratégicas." },
+      { number: "8°", title: "Subcomités técnicos", description: "Establece grupos especializados en estándares, usabilidad, ética/IA y seguridad informática." },
+      { number: "9°", title: "Unidad Ejecutora (UESC)", description: "Crea el brazo operativo responsable del desarrollo técnico y la gestión diaria del sistema." },
+      { number: "9° BIS", title: "Conflicto de intereses", description: "Regula conflictos de interés, prohibiciones de integración y causales de remoción para autoridades del sistema." },
+      { number: "10°", title: "Módulo de trazabilidad", description: "Componente central para registrar y auditar todos los accesos y modificaciones en el sistema por 10 años." },
+      { number: "10 BIS", title: "Licencias digitales", description: "Implementa una ventanilla única para emitir y verificar licencias médicas digitales mediante códigos QR." },
+      { number: "10 TER", title: "Plazos de guarda", description: "Fija tiempos específicos para guardar información: 20 años para historias clínicas y 10 para trazabilidad." },
+      { number: "11°", title: "Registro de Prestadores", description: "Obliga a efectores y sistemas de software a certificarse e inscribirse para operar en la red C.U.R.A.." },
+      { number: "11 BIS", title: "Indicador público", description: "Crea un indicador público y trimestral para medir la calidad y completitud de los datos cargados por cada prestador." },
+      { number: "12°", title: "Infraestructura pública", description: "Prioriza el uso de ARSAT y REFEFO bajo el principio de máxima eficiencia presupuestaria." },
+      { number: "12 BIS", title: "Infraestructura IA-Ready", description: "Exige que la arquitectura esté preparada para IA y provee herramientas para modernizar sistemas antiguos." }
+    ]
+  },
+  {
+    chapter: "Título III: Infraestructura y estándares",
+    articles: [
+      { number: "12 TER", title: "Financiamiento FSU", description: "Autoriza el uso de hasta un 20% del Fondo del Servicio Universal para conectividad en centros de salud públicos." },
+      { number: "13°", title: "Arquitectura híbrida", description: "Combina repositorios nacionales de datos críticos con repositorios locales para historias completas." },
+      { number: "14°", title: "Implementación escalonada", description: "Establece una estrategia en 5 fases (de 1 a 7 años) desde el sistema base hasta la proyección global." },
+      { number: "15°", title: "Estándares de Interoperabilidad", description: "Define los estándares técnicos obligatorios (HL7 FHIR, SNOMED CT) para garantizar la comunicación entre sistemas." },
+      { number: "16°", title: "Conjunto Mínimo de Datos", description: "Establece el conjunto de datos esenciales que debe contener toda historia clínica digital interoperable." }
+    ]
+  },
+  {
+    chapter: "Título IV: Identidad digital y derechos del paciente",
+    articles: [
+      { number: "17°", title: "Identificador C.U.R.A.-ID", description: "Crea la clave única nacional para vincular datos de salud, asociada al DNI y gestionada por RENAPER." },
+      { number: "17 BIS", title: "Consentimiento por episodio", description: "El acceso a datos se otorga por cada atención médica, caducando al finalizar el acto asistencial." },
+      { number: "17 TER", title: "Datos Vitales Críticos", description: "Permite al paciente cargar voluntariamente información de riesgo (sangre, alergias) para emergencias." },
+      { number: "17 QUATER", title: "Limitación de finalidad", description: "Prohíbe usar el C.U.R.A.-ID para fines comerciales, laborales, crediticios o de perfilamiento social." },
+      { number: "17 QUINQUIES", title: "Naturaleza criptográfica", description: "Obliga a que el C.U.R.A.-ID sea un token seudonimizado para proteger la identidad civil del paciente." },
+      { number: "18°", title: "Resumen Internacional IPS", description: "Implementa un extracto digital bajo estándar global para asegurar continuidad médica en el extranjero." },
+      { number: "18 BIS", title: "Vigilancia Epidemiológica IA", description: "Crea un sistema de detección temprana de brotes mediante análisis automatizado de datos anonimizados." },
+      { number: "19°", title: "Derechos del Paciente", description: "Incluye acceso a prescripciones, historial de accesos, recordatorios y control de privacidad granular." },
+      { number: "19 BIS", title: "Gestión de Turnos", description: "Crea la plataforma federal para buscar profesionales, consultar disponibilidad y reservar citas en tiempo real." },
+      { number: "19 TER", title: "Motor Predictivo de Demanda", description: "Módulo de IA para anticipar la saturación de servicios y recomendar optimización de recursos." },
+      { number: "19 QUATER", title: "Seguimiento farmacológico", description: "Integra prescripciones, alertas de vencimiento y un visor de farmacias de turno geolocalizado." },
+      { number: "19 QUINQUIES", title: "Videoconsulta obligatoria", description: "Exige ofrecer telemedicina y recetas extendidas (hasta 180 días) para pacientes crónicos estabilizados." },
+      { number: "19 SEXIES", title: "Salud Mental y Turnos", description: "Prioriza la atención presencial en grupos vulnerables y habilita telecomsultas opcionales para seguimiento." },
+      { number: "19 SEPTIES", title: "Teleconsulta Interjurisdiccional", description: "Permite a psicólogos y psiquiatras atender pacientes de otras provincias adheridas mediante la red federal." },
+      { number: "19 OCTIES", title: "Holgura Prestacional", description: "Subordina turnos presenciales de pacientes aptos digitalmente a la capacidad ociosa del efector." },
+      { number: "20°", title: "Trazabilidad de Medicamentos", description: "Reemplaza el troquel físico por un registro digital de dispensación vinculado en tiempo real con ANMAT." },
+      { number: "21°", title: "Ensayos Clínicos", description: "Crea el registro federal de investigación farmacéutica y reportes automáticos de efectos adversos." },
+      { number: "21 BIS", title: "Accesibilidad IA", description: "Obliga a incluir asistentes 24/7 y herramientas para personas con discapacidades visuales o auditivas." },
+      { number: "22°", title: "Operación Offline", description: "Permite a profesionales registrar atenciones sin internet, sincronizando datos al recuperar la conexión." },
+      { number: "23°", title: "Asistencia Clínica Inteligente", description: "Implementa IA para apoyo diagnóstico con validación profesional obligatoria y transparencia algorítmica." },
+      { number: "23 BIS", title: "Gestión de Capacidad", description: "Incorpora tableros visuales para ver disponibilidad de camas y derivaciones en tiempo real." },
+      { number: "23 TER", title: "Responsabilidad IA", description: "Define la responsabilidad objetiva del Estado y solidaria de prestadores ante fallas del sistema de IA." },
+      { number: "24°", title: "Indicadores Predictivos", description: "Genera modelos de planificación macro-sanitaria basados exclusivamente en datos anonimizados." },
+      { number: "24 BIS", title: "Detección de Fraude", description: "Módulo preventivo para identificar fraudes, duplicación de estudios o sobreactuación prestacional." },
+      { number: "25°", title: "Protección de datos", description: "Clasifica la información como datos sensibles y establece protocolos de notificación de brechas de seguridad." },
+      { number: "26°", title: "Acuerdos de intercambio", description: "Regula los convenios entre Nación y provincias para asegurar el 'blindaje sanitario' de la información." },
+      { number: "26 BIS", title: "Inmunidad Administrativa", description: "Prohíbe el uso de datos de salud para fines migratorios, policiales, de inteligencia o impositivos." },
+      { number: "27°", title: "Panel de Privacidad", description: "Herramienta para que el paciente oculte categorías sensibles (HIV, Salud Mental) bajo cifrado independiente." },
+      { number: "27 BIS", title: "Evaluación de Impacto", description: "Exige realizar auditorías de impacto en protección de datos (EIPD) antes de lanzar módulos de IA." },
+      { number: "27 TER", title: "Bases jurídicas", description: "Fundamenta el tratamiento de datos en la relación asistencial y el interés público en salud pública." },
+      { number: "27 QUATER", title: "Retención y eliminación", description: "Define que las historias clínicas se guardan 10 años y logs técnicos por 5 años antes de eliminarse." }
+    ]
+  },
+  {
+    chapter: "Título V: Seguridad y emergencias",
+    articles: [
+      { number: "28°", title: "Acceso 'Break-Glass'", description: "Protocolo de acceso de emergencia a datos protegidos en caso de riesgo vital inminente del paciente." },
+      { number: "29°", title: "Verificación de identidad", description: "Métodos obligatorios de validación (DNI, tokens de Mi Argentina) para acceder a la información clínica." },
+      { number: "29 BIS", title: "Pacientes No Identificados", description: "Crea el C.U.R.A.-TEMP y un mecanismo humanitario de contraste facial para buscar personas desaparecidas." },
+      { number: "30°", title: "Seguridad Zero Trust", description: "Adopta arquitectura de 'Cero Confianza' y cifrado de grado NIST para toda la información nacional." },
+      { number: "31°", title: "Modo de Adversidad", description: "Protocolo excepcional que activa funciones logísticas masivas durante catástrofes o pandemias." }
+    ]
+  },
+  {
+    chapter: "Título VI: Usuarios, prestadores y capacitación",
+    articles: [
+      { number: "32°", title: "Derechos del usuario", description: "Detalla el acceso gratuito a datos, revocación simple de consentimientos y comprensión plena de términos." },
+      { number: "33°", title: "Obligaciones de prestadores", description: "Incluye carga obligatoria de datos, verificación de identidad y capacitación certificada del personal." },
+      { number: "34°", title: "Capacitación Digital", description: "Crea el sistema federal gratuito para entrenar a usuarios en interoperabilidad y ética digital." },
+      { number: "34 BIS", title: "Actualización tecnológica", description: "Establece un plan a 10 años para renovar infraestructura y evaluar nuevas tecnologías emergentes." }
+    ]
+  },
+  {
+    chapter: "Título VII · Capítulo 1: Financiamiento y fondos",
+    articles: [
+      { number: "35°", title: "Financiamiento (FIISD)", description: "Crea el fondo con reasignación de partidas, aportes del PAMI y ahorros generados por digitalización." },
+      { number: "35° (cont)", title: "Responsabilidad Fiscal", description: "Sujeta la ejecución de programas a la disponibilidad presupuestaria anual y al cronograma federal." },
+      { number: "35 TER", title: "Garantía de asignación", description: "Establece que las obligaciones solo son exigibles si el Estado proveyó el presupuesto y capacitación previa." },
+      { number: "35 QUATER", title: "Fuentes complementarias", description: "Habilita fondos de modernización, créditos del FONTAR y emisión de títulos de inversión (TISD)." },
+      { number: "35 QUINQUIES", title: "Acuerdos internacionales", description: "Autoriza acuerdos no reembolsables con organismos como el BID, CAF y la OPS/OMS." },
+      { number: "35° (donaciones)", title: "Donaciones y prohibiciones", description: "Regula donaciones de fundaciones y prohíbe taxativamente monetizar datos de salud." },
+      { number: "36°", title: "Verificación de matrícula", description: "El sistema verifica diariamente la vigencia de la matrícula ante registros nacionales y provinciales." },
+      { number: "37°", title: "Padrinazgo Tecnológico", description: "Crea el 'Padrinazgo Tecnológico' con beneficios fiscales para empresas que equipen hospitales públicos." },
+      { number: "37° (sandbox)", title: "Sandbox regulatorio", description: "Entorno regulado para que empresas desarrollen y prueben algoritmos de salud con datos anonimizados." },
+      { number: "37° (beneficio)", title: "Incentivo fiscal", description: "Permite deducir hasta el 100% de lo invertido en padrinazgo del Impuesto a las Ganancias." },
+      { number: "38°", title: "Exportación del modelo", description: "Faculta a exportar el modelo C.U.R.A. a otros países para generar divisas al Tesoro Nacional." },
+      { number: "38 BIS", title: "Gestión financiera internacional", description: "Ordena gestiones activas ante bancos internacionales para financiar el despliegue del sistema." }
+    ]
+  },
+  {
+    chapter: "Título VII · Capítulo 2: Hub internacional y equidad",
+    articles: [
+      { number: "39°", title: "Posición estratégica", description: "Declara estratégica la posición de Argentina como centro de interoperabilidad sanitaria internacional." },
+      { number: "40°", title: "Servicios exportables", description: "Define los servicios de asesoría, software (Core) y nube soberana que se ofrecerán a otros Estados." },
+      { number: "41°", title: "Modelos de conexión", description: "Establece cómo se conectará el sistema con bloques regionales manteniendo la soberanía de datos." },
+      { number: "42°", title: "Financiamiento Hub", description: "Los ingresos por exportaciones alimentarán una subcuenta para expandir el modelo internacionalmente." },
+      { number: "43°", title: "Alerta Temprana Global", description: "Sistema para detectar pandemias analizando patrones de datos agregados." },
+      { number: "43 TER", title: "Fondo de Equidad (FFES)", description: "Fondo para reducir asimetrías territoriales en el acceso a especialistas médicos." },
+      { number: "43 QUATER", title: "Comisión de Equidad", description: "Órgano responsable de diseñar los bonos e incentivos para médicos en zonas críticas." },
+      { number: "43 SEXIES", title: "Zonas Críticas Sanitarias", description: "Define las áreas con déficit de profesionales basándose en densidad poblacional y tiempo de acceso." },
+      { number: "43° (instrumentos)", title: "Instrumentos de Equidad", description: "Crea bonos de radicación profesional, subsidios de vivienda y telemedicina de apoyo." },
+      { number: "44°", title: "Evaluación de impacto", description: "Obliga a publicar informes anuales especializados en zonas críticas." }
+    ]
+  },
+  {
+    chapter: "Título VIII: Régimen sancionatorio y auditoría",
+    articles: [
+      { number: "45°", title: "Régimen Sancionatorio", description: "Tipifica faltas leves, graves y gravísimas, con multas graduadas en Unidades de Multa Sanitaria Digital." },
+      { number: "46°", title: "Sanciones en Trazabilidad", description: "Penaliza específicamente el fraude con troqueles digitales o la dispensación sin verificar identidad." },
+      { number: "47°", title: "Auditoría y Panel Público", description: "Obliga a la AGN y SIGEN a auditar el sistema y publicar indicadores de eficiencia en tiempo real." }
+    ]
+  },
+  {
+    chapter: "Título IX: Integración con PAMI",
+    articles: [
+      { number: "47°", title: "Integración PAMI", description: "Obliga al PAMI a unificar sus historias clínicas y recetas electrónicas con el ecosistema nacional." },
+      { number: "48°", title: "Plataforma Única PAMI", description: "PAMI debe usar el entorno C.U.R.A. como canal oficial para servicios digitales a sus afiliados." },
+      { number: "49°", title: "Modelo prestacional", description: "Garantiza la libre elección de médicos para jubilados mediante coordinación digital obligatoria." },
+      { number: "50°", title: "Prescripción extendida", description: "Implementa en PAMI la renovación automática de recetas por hasta 180 días." },
+      { number: "51°", title: "Gestión de medicamentos", description: "Elimina definitivamente el troquel físico de papel en todas las farmacias que atiendan PAMI." },
+      { number: "52°", title: "Detección de duplicaciones", description: "Integra al PAMI en el módulo para evitar estudios repetidos mediante auditoría IA." },
+      { number: "53°", title: "Traslados inteligentes", description: "Pre-asignación automática de traslados para afiliados con discapacidad o movilidad reducida." },
+      { number: "54°", title: "Turnos Federales PAMI", description: "Los afiliados pueden sacar turnos desde Mi Argentina en cualquier prestador de la cartilla nacional." },
+      { number: "55°", title: "Videoconsulta PAMI", description: "Habilita la telemedicina para controles de rutina, respetando siempre la opción presencial." },
+      { number: "56°", title: "Prótesis y órtesis", description: "Digitalización total del trámite de insumos especiales para seguimiento en tiempo real del afiliado." },
+      { number: "57°", title: "Notificaciones", description: "Sistema de alertas al celular del afiliado sobre recetas emitidas, turnos y cambios en cartilla." },
+      { number: "58°", title: "Facilitadores Digitales", description: "Programa presencial en agencias PAMI para asistir a jubilados con dificultades tecnológicas." },
+      { number: "59°", title: "Gestor delegado", description: "Permite al afiliado autorizar a un familiar para gestionar sus trámites digitales en el portal." },
+      { number: "60°", title: "Priorización objetiva", description: "Los turnos se asignan priorizando edad avanzada, cronicidad o urgencia médica documentada." },
+      { number: "61°", title: "Acreditación biométrica", description: "Uso de C.U.R.A.-ID y biométricos para todas las gestiones de los afiliados del Instituto." },
+      { number: "62°", title: "Despapelización PAMI", description: "Ordena digitalizar archivos históricos y prohíbe exigir papel para nuevas prestaciones." },
+      { number: "63°", title: "Contingencia PAMI", description: "Protocolo para asegurar atención y recetas ante cortes de luz o falta de internet en agencias." },
+      { number: "64°", title: "Estabilidad laboral", description: "Garantiza que la digitalización no causará despidos, reconvirtiendo al personal a nuevas funciones." }
+    ]
+  },
+  {
+    chapter: "Título X: Inteligencia Artificial (IA) y ética",
+    articles: [
+      { number: "65°", title: "Principios de IA", description: "Exige supervisión humana permanente y prohíbe que algoritmos sustituyan el juicio médico." },
+      { number: "65 TER", title: "Clasificación de Riesgo", description: "Divide los módulos de IA en Nivel I (Bajo), II (Moderado) y III (Alto Impacto)." },
+      { number: "66°", title: "IA Prohibida", description: "Veda sistemas que discriminen, realicen vigilancia masiva o decidan tratamientos sin revisión humana." },
+      { number: "67°", title: "Subcomité de Ética", description: "Órgano encargado de autorizar cada módulo de IA antes de su activación con pacientes reales." },
+      { number: "67 BIS", title: "Registro RENIA-Salud", description: "Censo obligatorio de todos los algoritmos usados en salud, con auditorías cada 24 meses." },
+      { number: "67° (repositorio)", title: "Repositorio Anonimizado", description: "Crea la base de datos para investigación científica, bajo protocolos de computación segura." }
+    ]
+  },
+  {
+    chapter: "Título XI: Transparencia y alfabetización",
+    articles: [
+      { number: "68°", title: "Difusión y Alfabetización", description: "Obliga a usar lenguaje claro y formatos inclusivos para informar sobre derechos digitales." },
+      { number: "69°", title: "Mejora continua", description: "Establece un régimen de al menos dos actualizaciones anuales de seguridad y usabilidad." }
+    ]
+  },
+  {
+    chapter: "Título XII: Disposiciones finales y soberanía",
+    articles: [
+      { number: "70°", title: "Regla de interpretación", description: "En caso de duda, prevalece siempre la protección de la salud y la privacidad del paciente." },
+      { number: "71°", title: "Soberanía tecnológica", description: "Los datos clínicos (Categoría A) deben alojarse exclusivamente en servidores dentro de Argentina." },
+      { number: "72°", title: "Reglamentación", description: "Fija plazos escalonados (120 a 270 días) para que el Ejecutivo dicte las normas operativas." },
+      { number: "72 BIS", title: "Control parlamentario", description: "Crea la Comisión Bicameral de Seguimiento para revisar anualmente el avance del sistema." },
+      { number: "72 TER", title: "Evaluación de impacto", description: "Informe integral al Congreso a los 5 años para evaluar resultados sanitarios y económicos." },
+      { number: "73°", title: "Derogaciones", description: "Anula normativas que exijan papel o troqueles físicos una vez certificada la operatividad digital." },
+      { number: "74°", title: "No regresividad", description: "Prohíbe que normas futuras reduzcan el piso de protección de datos o presupuesto del sistema." },
+      { number: "75°", title: "Forma", description: "Cláusula estándar de comunicación al Poder Ejecutivo Nacional." }
+    ]
+  }
+];
+
+// =============================================
+// RENDERIZACIÓN Y BUSCADOR
+// =============================================
+const contenedor = document.getElementById('ley-container');
+const buscador = document.getElementById('buscador');
+let collapsedState = {};
+
+function renderLaw(data, filterText = '') {
+  const filtro = filterText.toLowerCase().trim();
+  let hayCoincidencias = false;
+
+  const html = data.map((capitulo, index) => {
+    let articulosFiltrados = capitulo.articles;
+    if (filtro !== '') {
+      articulosFiltrados = capitulo.articles.filter(art => 
+        art.number.toLowerCase().includes(filtro) ||
+        art.title.toLowerCase().includes(filtro) ||
+        (art.description && art.description.toLowerCase().includes(filtro))
+      );
+    }
+
+    const capituloVisible = articulosFiltrados.length > 0 || filtro === '';
+    if (capituloVisible && articulosFiltrados.length > 0) hayCoincidencias = true;
+    if (filtro !== '' && articulosFiltrados.length === 0) return '';
+
+    const isCollapsed = collapsedState[index] || false;
+    const toggleIcon = isCollapsed ? '➕' : '➖';
+
+    return `
+      <div class="capitulo" data-cap-index="${index}" id="capitulo-${index}">
+        <div class="capitulo-header" onclick="toggleCapitulo(${index})">
+          <h2>${capitulo.chapter} <span class="badge-doc" style="background:#e2eaf2;">${articulosFiltrados.length} artículos</span></h2>
+          <span class="toggle-icon">${toggleIcon}</span>
+        </div>
+        <div class="capitulo-body ${isCollapsed ? 'collapsed' : ''}" id="capitulo-body-${index}">
+          ${articulosFiltrados.map(art => `
+            <div class="articulo-card">
+              <div class="articulo-titulo">
+                <span class="articulo-numero">Art. ${art.number}</span> ${art.title}
+              </div>
+              <div class="articulo-desc">${art.description || 'Sin descripción disponible'}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  contenedor.innerHTML = html;
+  if (!hayCoincidencias && filtro !== '') {
+    contenedor.innerHTML += `
+      <div class="no-resultados">
+        ⚡ No se encontraron artículos que coincidan con "<strong>${filtro}</strong>"
+      </div>
+    `;
+  }
+}
+
+window.toggleCapitulo = function(index) {
+  collapsedState[index] = !collapsedState[index];
+  renderLaw(leyData, buscador.value);
+};
+
+buscador.addEventListener('input', (e) => {
+  renderLaw(leyData, e.target.value);
+});
+
+// =============================================
+// INICIALIZACIÓN DE LA PÁGINA (AOS, LENIS, ETC.)
+// =============================================
+document.addEventListener('DOMContentLoaded', function () {
+  // Estado inicial de notificaciones
+  const KEY = 'visto_novedades_v1';
+  if (localStorage.getItem(KEY) === 'true') {
+    document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
+  }
+
+  // Cerrar notificationMenu al hacer clic afuera
+  document.addEventListener('click', (e) => {
+    const menu = document.getElementById('notificationMenu');
+    const buttons = document.querySelectorAll('button[onclick="toggleMenuNovedades()"]');
+    let clickedOnButton = false;
+    buttons.forEach(btn => { if (btn.contains(e.target)) clickedOnButton = true; });
+    if (menu && !menu.contains(e.target) && !clickedOnButton) menu.classList.remove('show');
+  });
+
+  // AOS
+  AOS.init({ duration: 800, once: true, offset: 80 });
+
+  // Lenis (scroll suave)
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+  lenis.on('scroll', AOS.refresh);
+
+  // Banner rotativo
+  const bannerTextEl = document.getElementById('top-banner-text');
+  if (bannerTextEl) {
+    const bannerMessages = [
+      'Versión 05/03/26 — La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
+      'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 260 páginas de transformación histórica.',
+      'Ya disponible: Resumen Ejecutivo actualizado [13/03/26]'
+    ];
+    let bannerIndex = 0;
+    setInterval(() => {
+      bannerTextEl.classList.add('banner-hidden');
+      setTimeout(() => {
+        bannerIndex = (bannerIndex + 1) % bannerMessages.length;
+        bannerTextEl.textContent = bannerMessages[bannerIndex];
+        bannerTextEl.classList.remove('banner-hidden');
+      }, 350);
+    }, 5000);
+  }
+
+  // Scroll suave para enlaces del header (ajustados a la nueva página)
+  function smoothScrollTo(el, off = 80) { if (el) lenis.scrollTo(el, { offset: -off }); }
+  document.querySelectorAll('a[href="#inicio"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); }));
+  document.querySelectorAll('a[href="#capitulos"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(document.querySelector('.capitulo'), { offset: -80 }); }));
+  // Los enlaces a #beneficios y #contacto se mantienen, pero no existen en esta página. Los dejamos por si acaso.
+  document.querySelectorAll('a[href="#beneficios"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); alert('Sección no disponible en esta vista.'); }));
+  document.querySelectorAll('a[href="#contacto"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); alert('Sección no disponible en esta vista.'); }));
+
+  // Render inicial de la ley
+  renderLaw(leyData);
+});
+</script>
+
+<!-- Opcional: algunos scripts originales que no interfieren (chatbot, mapa, etc.) se pueden omitir o incluir -->
+</body>
+</html>

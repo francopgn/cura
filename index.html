@@ -2063,10 +2063,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // ==========================================
-  // 2. LÓGICA DE LAS CITAS DINÁMICAS (Nuevo)
+// ==========================================
+  // 2. LÓGICA DE LAS CITAS DINÁMICAS
   // ==========================================
   const citaElemento = document.getElementById('cita-dinamica');
+  
+  // Esto nos avisará en la consola si encontró el texto o no
+  console.log("Buscando el elemento cita...", citaElemento);
   
   if (citaElemento) {
     const frasesCita = [
@@ -2078,19 +2081,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let citaIndex = 0;
 
     setInterval(() => {
-      // Ocultamos el texto (usando la clase opacity-0 de Tailwind)
+      console.log("Cambiando frase a la número:", citaIndex + 1); // Aviso de que el reloj está girando
+      
+      // 1. Ocultamos el texto
       citaElemento.classList.add('opacity-0');
 
-      // Esperamos 500ms (lo que dura la clase duration-500)
+      // 2. Esperamos medio segundo
       setTimeout(() => {
         citaIndex = (citaIndex + 1) % frasesCita.length;
         citaElemento.textContent = frasesCita[citaIndex];
         
-        // Volvemos a mostrar el texto
+        // 3. Volvemos a mostrar el texto
         citaElemento.classList.remove('opacity-0');
       }, 500); 
 
-    }, 5000); // 5000ms = 5 segundos
+    }, 5000);
+  } else {
+    console.log("ERROR: No se encontró el id='cita-dinamica' en el HTML");
   }
 
 });

@@ -2477,6 +2477,10 @@ const offset = Math.abs(rect.top);
 if(offset < bestOffset){
 bestOffset = offset;
 bestSection = section;
+
+  setTimeout(()=>{
+activateDot("inicio");
+},400);
 }
 
 });

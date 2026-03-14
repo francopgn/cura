@@ -569,7 +569,8 @@ transform:translateY(-50%) translateX(-4px);
 
 .data-pulse{
 position:absolute;
-right:5px;
+left:50%;
+transform:translateX(-50%);
 width:6px;
 height:6px;
 background:#00E5FF;
@@ -638,7 +639,7 @@ display:none;
   <div class="scroll-line"></div>
 
   <div class="scroll-dots">
-  <a href="#inicio" class="dot active" data-label="Inicio"></a>
+  <a href="#inicio" class="dot" data-label="Inicio"></a>
   <a href="#explicacion" class="dot" data-label="¿Qué es la Ley C.U.R.A.?"></a>
   <a href="#como-funciona" class="dot" data-label="Funcionamiento"></a>
   <a href="#beneficios" class="dot" data-label="Beneficios"></a>
@@ -686,7 +687,7 @@ display:none;
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">
         <a href="#inicio"      class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
-        <a href="#explicacion"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
+        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
         <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
         <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
         <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
@@ -780,7 +781,7 @@ display:none;
       </h1>
 
       <!-- NUEVO SUBTÍTULO -->
-      <p class="text-sm md:text-base text-white/80 mb-2 leading-relaxed">
+     <p class="text-sm md:text-base text-white/80 mb-2 leading-relaxed">
        Un sistema interoperable que une hospitales, obras sociales y pacientes bajo un estándar digital común. Una red que integra a todo el país preservando la autonomía de cada jurisdicción, con soberanía tecnológica y control ciudadano."
       </p>
 
@@ -794,7 +795,7 @@ display:none;
           <button id="btn-sumate" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
             APOYAR PROYECTO
           </button>
-<a id="btn-info" href="/Informacion/informacion.html" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
+   <a id="btn-info" href="/Informacion/informacion.html" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition">
   Información Técnica
 </a>
         </div>
@@ -2012,7 +2013,7 @@ document.addEventListener('DOMContentLoaded', function () {
   AOS.init({ duration: 800, once: true, offset: 80 });
 
   /* --- Lenis (scroll suave) --- */
-  const lenis = new Lenis({
+  const lenis = window.lenis = new Lenis({
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true
@@ -2060,12 +2061,12 @@ if (bannerTextEl) {
   const btnSumate   = document.getElementById('btn-sumate');
   const targetSumate  = document.getElementById('sumate');
   const btnInfo     = document.getElementById('btn-info');
-  const targetQueEs  = document.getElementById('explicacion');
+  const targetQueEs  = document.getElementById('que-es');
   function smoothScrollTo(el, off = 100) { if (el) lenis.scrollTo(el, { offset: -off }); }
   if (btnSumate && targetSumate) btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
   if (btnInfo   && targetQueEs)  btnInfo.addEventListener('click',   e => { e.preventDefault(); smoothScrollTo(targetQueEs, 80); });
   document.querySelectorAll('a[href="#inicio"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); }));
-  document.querySelectorAll('a[href="#explicacion"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('que-es'), 80); }));
+  document.querySelectorAll('a[href="#que-es"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('que-es'), 80); }));
   document.querySelectorAll('a[href="#beneficios"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('beneficios'), 80); }));
   document.querySelectorAll('a[href="#contacto"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('contacto')); }));
 
@@ -2430,126 +2431,136 @@ if (bannerTextEl) {
 <script src="/chatbot-widget.js" defer></script>
 <script src="/mapa-cura.js"></script>
 <script>
+/* ===== SCROLL DOTS — v3 =====
+   Sin IntersectionObserver (incompatible con Lenis virtual scroll).
+   Detección 100% basada en getBoundingClientRect() via scroll event.
+   Click → Lenis.scrollTo en todos los dots.
+=============================== */
+(function waitForSections() {
 
-const sections = document.querySelectorAll("main[id], section[id]");
-const dots = document.querySelectorAll(".scroll-dots a");
+  /* Construir la lista de targets desde los propios dots
+     (evita depender de querySelectorAll("section") que no encuentra <main id="inicio">) */
+  const dots     = Array.from(document.querySelectorAll(".scroll-dots a"));
 
-/* obtener todas las secciones reales */
-const sections = [...document.querySelectorAll("main[id], section[id]")];
+  if (!dots.length) return setTimeout(waitForSections, 50);
 
-let activeId = null;
+  const sections = dots
+    .map(d => document.getElementById(d.getAttribute("href").slice(1)))
+    .filter(Boolean);
 
+  if (!sections.length) return setTimeout(waitForSections, 50);
 
-/* activar dot */
+  let currentId  = null;
+  let labelTimer = null;
 
-function activateDot(id){
+  /* ── Activa dot + label 1 segundo ── */
+  function activateDot(id, force) {
+    if (!force && currentId === id) return;
+    currentId = id;
 
-if(activeId === id) return;
-activeId = id;
+    if (labelTimer) { clearTimeout(labelTimer); labelTimer = null; }
 
-dots.forEach(dot=>{
+    dots.forEach(d => {
+      d.classList.remove("active", "show-label");
+      if (d.getAttribute("href") === "#" + id) {
+        d.classList.add("active", "show-label");
+        labelTimer = setTimeout(() => d.classList.remove("show-label"), 1000);
+      }
+    });
+  }
 
-dot.classList.remove("active","show-label");
+  /* ── Calcula qué sección corresponde al viewport ahora mismo ──
+     Usa getBoundingClientRect para ser compatible con Lenis.
+     La sección activa es la primera cuyo top ya pasó el 45% del viewport. */
+  function calcActiveId() {
+    const trigger = window.innerHeight * 0.45;
 
-if(dot.getAttribute("href")==="#"+id){
+    /* Al fondo de la página → última sección siempre */
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 80) {
+      return sections[sections.length - 1].id;
+    }
 
-dot.classList.add("active","show-label");
+    let activeId = sections[0].id;
+    for (const s of sections) {
+      const top = s.getBoundingClientRect().top;
+      if (top <= trigger) activeId = s.id;
+    }
+    return activeId;
+  }
 
-setTimeout(()=>{
-dot.classList.remove("show-label");
-},1000);
+  /* ── Actualiza dots en cada tick de scroll (Lenis-friendly) ── */
+  function onScroll() {
+    activateDot(calcActiveId());
+  }
 
-}
+  /* Escuchar tanto el scroll nativo como el de Lenis */
+  window.addEventListener("scroll", onScroll, { passive: true });
 
-});
+  /* Lenis emite su propio evento "scroll" en el objeto lenis.
+     Lo enganchamos cuando lenis esté disponible. */
+  function hookLenis() {
+    if (window.lenis) {
+      window.lenis.on("scroll", onScroll);
+    } else {
+      setTimeout(hookLenis, 100);
+    }
+  }
+  hookLenis();
 
-}
+  /* ── Activación al cargar la página ──
+     3 disparos para garantizar que siempre enciende el dot correcto:
+     1) primer rAF (DOM pintado), 2) window.load, 3) 500ms post-load */
+  function forceActivation() {
+    currentId = null;
+    activateDot(calcActiveId(), true);
+  }
 
+  /* Disparo 1: primer frame pintado tras el script */
+  requestAnimationFrame(() => requestAnimationFrame(forceActivation));
 
-/* detectar sección visible */
+  /* Disparos 2 y 3: en load y post-load */
+  if (document.readyState === "complete") {
+    forceActivation();
+    setTimeout(forceActivation, 500);
+  } else {
+    window.addEventListener("load", () => {
+      forceActivation();
+      setTimeout(forceActivation, 500);
+    });
+  }
 
-function detectSection(){
+  /* ── Click en dot → Lenis.scrollTo ── */
+  dots.forEach(dot => {
+    dot.addEventListener("click", e => {
+      e.preventDefault();
+      const id     = dot.getAttribute("href").slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
 
-let current = null;
-let minDist = Infinity;
+      /* Activar inmediatamente sin esperar al scroll event */
+      currentId = null;
+      activateDot(id, true);
 
-sections.forEach(section=>{
+      if (window.lenis) {
+        window.lenis.scrollTo(target, { offset: -80, duration: 1.2 });
+      } else {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
 
-const rect = section.getBoundingClientRect();
-const dist = Math.abs(rect.top);
+  /* ── Pulsos de datos (animación de línea — intacta) ── */
+  function createDataPulse() {
+    const container = document.querySelector(".scroll-system");
+    if (!container) return;
+    const p = document.createElement("div");
+    p.className = "data-pulse";
+    container.appendChild(p);
+    setTimeout(() => p.remove(), 4000);
+  }
+  setInterval(createDataPulse, 2200);
 
-if(dist < minDist){
-minDist = dist;
-current = section;
-}
-
-});
-
-if(current){
-activateDot(current.id);
-}
-
-}
-
-
-/* escuchar scroll */
-
-window.addEventListener("scroll",detectSection);
-window.addEventListener("load",detectSection);
-
-
-/* scroll usando lenis */
-
-dots.forEach(dot=>{
-
-dot.addEventListener("click",e=>{
-
-e.preventDefault();
-
-const id = dot.getAttribute("href");
-const target = document.querySelector(id);
-
-if(!target) return;
-
-if(window.lenis){
-
-lenis.scrollTo(target,{
-offset:-60,
-duration:1.2
-});
-
-}else{
-
-target.scrollIntoView({
-behavior:"smooth"
-});
-
-}
-
-});
-
-});
-/* pulsos de datos */
-
-function createDataPulse(){
-
-const container = document.querySelector(".scroll-system");
-
-if(!container) return;
-
-const pulse=document.createElement("div");
-pulse.className="data-pulse";
-
-container.appendChild(pulse);
-
-setTimeout(()=>{
-pulse.remove();
-},4000);
-
-}
-
-setInterval(createDataPulse,2200);
-
+})();
 </script>
 
 <script>

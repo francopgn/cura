@@ -768,9 +768,9 @@ display:none;
       </p>
 
       <!-- REFERENCIA AL MAPA -->
-      <p class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic">
-        Lo que ves a la derecha es la Red Sanitaria Nacional desplegándose sobre el mapa de Argentina — cada nodo, un punto de acceso a la infraestructura C.U.R.A.
-      </p>
+ <p class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic">
+  Lo que <span class="hidden lg:inline">ves a la derecha</span><span class="inline lg:hidden">verás aquí debajo</span> es la Red Sanitaria Nacional desplegándose sobre el mapa de Argentina — cada nodo, un punto de acceso a la infraestructura C.U.R.A.
+</p>
 
       <div class="flex flex-col gap-3">
         <div class="flex gap-3">
@@ -2538,7 +2538,7 @@ setInterval(createDataPulse,2200);
               textoElemento.classList.remove('opacity-0');
           }, 500); 
 
-      }, 5000);
+      }, 2000);
   });
 </script>
 </body>

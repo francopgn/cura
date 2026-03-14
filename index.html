@@ -771,7 +771,7 @@ display:none;
       <!-- Badge de tipo de proyecto -->
       <div class="inline-flex items-center gap-2 mb-4 w-fit">
         <span class="text-[10px] font-bold tracking-[0.2em] text-cura-accentLight uppercase border border-cura-accent/40 rounded-full px-3 py-1">
-          LEY C.U.R.A. · INFRAESTRUCTURA PÚBLICA NACIONAL
+          LEY C.U.R.A. · INFRAESTRUCTURA PÚBLICA NACIONAL DE SALIUD
         </span>
       </div>
 
@@ -1053,12 +1053,14 @@ display:none;
       </div>
 
       <!-- Frase potente del discurso -->
-      <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="100">
-        <blockquote class="text-sm md:text-base italic text-white/70 border-t border-cura-accent/20 pt-6">
-          "Cuando el paciente no puede hablar, su historia clínica sí puede hacerlo."
-        </blockquote>
-        <p class="text-xs text-cura-accentLight mt-1">— Franco A. Paganini, autor de la Ley C.U.R.A.</p>
-      </div>
+<div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="100">
+  <blockquote id="cita-dinamica" class="text-sm md:text-base italic text-white/70 border-t border-cura-accent/20 pt-6 transition-opacity duration-500 ease-in-out">
+    "Integrar la salud argentina no requiere centralizarla, requiere que todos los actores comiencen a hablar el mismo idioma digital."
+  </blockquote>
+  <p class="text-xs text-cura-accentLight mt-1">
+    — <a href="https://www.linkedin.com/in/franco-paganini" target="_blank" rel="noopener noreferrer" class="hover:text-white hover:underline decoration-cura-accent/50 underline-offset-4 transition-colors duration-300">Franco A. Paganini</a>, autor de la Ley C.U.R.A.
+  </p>
+</div>
 
     </div>
   </section>
@@ -2023,40 +2025,75 @@ document.addEventListener('DOMContentLoaded', function () {
   lenis.on('scroll', AOS.refresh);
 
   /* --- Banner rotativo --- */
-const bannerTextEl = document.getElementById('top-banner-text');
+document.addEventListener('DOMContentLoaded', () => {
 
-if (bannerTextEl) {
+  // ==========================================
+  // 1. LÓGICA DEL BANNER SUPERIOR (Tu código)
+  // ==========================================
+  const bannerTextEl = document.getElementById('top-banner-text');
 
-  const bannerMessages = [
-    'La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
-    'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 260 páginas de transformación histórica.',
-    'Ya disponible: Resumen Ejecutivo actualizado [13/03/26]'
-  ];
+  if (bannerTextEl) {
+    const bannerMessages = [
+      'La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
+      'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 260 páginas de transformación histórica.',
+      'Ya disponible: Resumen Ejecutivo actualizado [13/03/26]'
+    ];
 
-  let bannerIndex = 0;
-  let bannerActivo = true;
+    let bannerIndex = 0;
+    let bannerActivo = true;
 
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 30) bannerActivo = false;
-  });
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 30) bannerActivo = false;
+    });
 
-  bannerTextEl.textContent = bannerMessages[0];
+    bannerTextEl.textContent = bannerMessages[0];
 
-  setInterval(() => {
+    setInterval(() => {
+      if (!bannerActivo) return;
 
-    if (!bannerActivo) return;
+      bannerTextEl.classList.add('banner-hidden');
 
-    bannerTextEl.classList.add('banner-hidden');
+      setTimeout(() => {
+        bannerIndex = (bannerIndex + 1) % bannerMessages.length;
+        bannerTextEl.textContent = bannerMessages[bannerIndex];
+        bannerTextEl.classList.remove('banner-hidden');
+      }, 350);
 
-    setTimeout(() => {
-      bannerIndex = (bannerIndex + 1) % bannerMessages.length;
-      bannerTextEl.textContent = bannerMessages[bannerIndex];
-      bannerTextEl.classList.remove('banner-hidden');
-    }, 350);
+    }, 5000);
+  }
 
-  }, 5000);
 
-}
+  // ==========================================
+  // 2. LÓGICA DE LAS CITAS DINÁMICAS (Nuevo)
+  // ==========================================
+  const citaElemento = document.getElementById('cita-dinamica');
+  
+  if (citaElemento) {
+    const frasesCita = [
+      '"Integrar la salud argentina no requiere centralizarla, requiere que todos los actores comiencen a hablar el mismo idioma digital."',
+      '"Empoderar al paciente en el siglo XXI significa devolverle el control absoluto e inmediato sobre su propia información médica."',
+      '"La soberanía sobre nuestros datos de salud es el primer paso para construir un sistema sanitario verdaderamente equitativo."'
+    ];
+    
+    let citaIndex = 0;
+
+    setInterval(() => {
+      // Ocultamos el texto (usando la clase opacity-0 de Tailwind)
+      citaElemento.classList.add('opacity-0');
+
+      // Esperamos 500ms (lo que dura la clase duration-500)
+      setTimeout(() => {
+        citaIndex = (citaIndex + 1) % frasesCita.length;
+        citaElemento.textContent = frasesCita[citaIndex];
+        
+        // Volvemos a mostrar el texto
+        citaElemento.classList.remove('opacity-0');
+      }, 500); 
+
+    }, 5000); // 5000ms = 5 segundos
+  }
+
+});
   /* --- Scroll suave: botones hero y nav --- */
   const btnSumate   = document.getElementById('btn-sumate');
   const targetSumate  = document.getElementById('sumate');

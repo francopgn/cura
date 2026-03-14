@@ -2025,10 +2025,10 @@ document.addEventListener('DOMContentLoaded', function () {
   lenis.on('scroll', AOS.refresh);
 
   /* --- Banner rotativo --- */
-document.addEventListener('DOMContentLoaded', () => {
 
+/* --- Banner rotativo --- */
   // ==========================================
-  // 1. LÓGICA DEL BANNER SUPERIOR (Tu código)
+  // 1. LÓGICA DEL BANNER SUPERIOR
   // ==========================================
   const bannerTextEl = document.getElementById('top-banner-text');
 
@@ -2062,14 +2062,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 5000);
   }
 
-
-// ==========================================
+  // ==========================================
   // 2. LÓGICA DE LAS CITAS DINÁMICAS
   // ==========================================
   const citaElemento = document.getElementById('cita-dinamica');
-  
-  // Esto nos avisará en la consola si encontró el texto o no
-  console.log("Buscando el elemento cita...", citaElemento);
   
   if (citaElemento) {
     const frasesCita = [
@@ -2081,8 +2077,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let citaIndex = 0;
 
     setInterval(() => {
-      console.log("Cambiando frase a la número:", citaIndex + 1); // Aviso de que el reloj está girando
-      
       // 1. Ocultamos el texto
       citaElemento.classList.add('opacity-0');
 
@@ -2096,8 +2090,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 500); 
 
     }, 5000);
-  } else {
-    console.log("ERROR: No se encontró el id='cita-dinamica' en el HTML");
   }
 
 });

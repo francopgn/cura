@@ -2434,16 +2434,16 @@ if (bannerTextEl) {
 const sections = document.querySelectorAll("main[id], section[id]");
 const dots = document.querySelectorAll(".scroll-dots a");
 
-let currentActive = null;
+let activeSection = null;
+
+/* activar dot */
 
 function activateDot(id){
 
-if(currentActive === id) return;
-
-currentActive = id;
+if(activeSection === id) return;
+activeSection = id;
 
 dots.forEach(dot=>{
-
 dot.classList.remove("active","show-label");
 
 if(dot.getAttribute("href")==="#"+id){
@@ -2461,21 +2461,21 @@ dot.classList.remove("show-label");
 }
 
 
-/* detectar sección inicial */
+/* detectar sección visible */
 
-function detectInitialSection(){
+function detectSection(){
 
-let bestSection = null;
-let bestOffset = Infinity;
+let bestSection=null;
+let bestVisible=0;
 
 sections.forEach(section=>{
 
 const rect = section.getBoundingClientRect();
-const offset = Math.abs(rect.top);
+const visible = Math.min(window.innerHeight,rect.bottom) - Math.max(0,rect.top);
 
-if(offset < bestOffset){
-bestOffset = offset;
-bestSection = section;
+if(visible>bestVisible){
+bestVisible=visible;
+bestSection=section;
 }
 
 });
@@ -2486,37 +2486,15 @@ activateDot(bestSection.id);
 
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-setTimeout(detectInitialSection,300);
-});
-
-
-/* observer robusto */
-
-const observer = new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-activateDot(entry.target.id);
-}
-
-});
-
-},{
-threshold:0.6
-});
-
-sections.forEach(section=>{
-observer.observe(section);
-});
+window.addEventListener("scroll",detectSection);
+window.addEventListener("load",detectSection);
 
 
 /* scroll con lenis */
 
 dots.forEach(dot=>{
 
-dot.addEventListener("click",e=>{
+dot.addEventListener("click",(e)=>{
 
 e.preventDefault();
 
@@ -2525,16 +2503,10 @@ const target = document.querySelector(targetId);
 
 if(!target) return;
 
-if(window.lenis){
 lenis.scrollTo(target,{
-offset:0,
+offset:-20,
 duration:1.2
 });
-}else{
-target.scrollIntoView({
-behavior:"smooth"
-});
-}
 
 });
 

@@ -795,9 +795,10 @@ display:none;
           </div>
         </a>
 
-        <p class="mt-2 text-[11px] text-cura-accentLight leading-tight">
-          Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
-        </p>
+        
+     <p id="texto-dinamico" class="mt-2 text-[11px] text-cura-accentLight leading-tight transition-opacity duration-500 ease-in-out">
+  Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
+</p>
       </div>
     </div>
 
@@ -2513,6 +2514,32 @@ setInterval(createDataPulse,2200);
 
 </script>
 
-<!--  <script src="/puntos-scroll.js"></script> --->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const textoElemento = document.getElementById('texto-dinamico');
+      
+      const frase1 = "Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.";
+      const frase2 = "Tu historia clínica siempre con vos: sin importar tu cobertura, tu provincia o dónde te atiendas.";
+      
+      let mostrandoFrase1 = true;
+
+      // Cambia el texto cada 5 segundos (5000ms)
+      setInterval(() => {
+          // 1. Ocultamos el texto bajando la opacidad a 0 con Tailwind
+          textoElemento.classList.add('opacity-0');
+
+          // 2. Esperamos 500ms (lo que dura la transición duration-500)
+          setTimeout(() => {
+              // Cambiamos a la otra frase
+              mostrandoFrase1 = !mostrandoFrase1;
+              textoElemento.textContent = mostrandoFrase1 ? frase1 : frase2;
+              
+              // 3. Volvemos a mostrar el texto subiendo la opacidad
+              textoElemento.classList.remove('opacity-0');
+          }, 500); 
+
+      }, 5000);
+  });
+</script>
 </body>
 </html>

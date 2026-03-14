@@ -1,237 +1,555 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>Sistema C.U.R.A. | Nivel 2 (Urgencias)</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        medical: {
-                            primary: '#004E85',
-                            primaryDark: '#00345C',
-                            blueMain: '#1f6fe5',
-                            blueSoft: '#e3f0ff',
-                            textDark: '#0d2b52',
-                            textGray: '#64748b',
-                            accent: '#00C2FF'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>Sistema C.U.R.A. | Nivel 2 — Urgencias</title>
 
-    <style>
-        body { -webkit-font-smoothing: antialiased; background-color: #f0f4f8; }
-        .cura-card { background: #ffffff; border-radius: 28px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); border: 1px solid #e5e7eb; }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cura: {
+              primary:     '#004E85',
+              primaryDark: '#00345C',
+              card:        '#065D9B',
+              accent:      '#00C2FF',
+              accentLight: '#59D2FF'
+            }
+          },
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg-deep:      #00223d;
+      --bg-mid:       #002f52;
+      --card-bg:      rgba(255,255,255,0.04);
+      --card-border:  rgba(0,194,255,0.18);
+      --card-hover:   rgba(0,194,255,0.10);
+      --accent:       #00C2FF;
+      --accent-light: #59D2FF;
+      --accent-dim:   rgba(0,194,255,0.35);
+      --text-main:    #e8f4ff;
+      --text-muted:   rgba(89,210,255,0.65);
+      --text-dim:     rgba(89,210,255,0.4);
+      --warn-bg:      rgba(251,191,36,0.07);
+      --warn-border:  rgba(251,191,36,0.25);
+      --warn-text:    #fbbf24;
+      --warn-label:   rgba(251,191,36,0.55);
+    }
+
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--text-main);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    main, header, footer { position: relative; z-index: 1; }
+
+    .site-header {
+      background: rgba(0,34,61,0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .section-label {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-dim); padding-left: 2px;
+    }
+
+    .cura-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .cura-card:hover { border-color: var(--accent-dim); background: var(--card-hover); }
+
+    .patient-hero {
+      background: linear-gradient(135deg, rgba(6,93,155,0.5) 0%, rgba(0,78,133,0.35) 100%);
+      border: 1px solid rgba(0,194,255,0.25);
+      border-radius: 24px; overflow: hidden; position: relative;
+    }
+    .patient-hero::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: radial-gradient(circle, rgba(0,194,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .photo-ring {
+      width: 72px; height: 72px; border-radius: 50%;
+      border: 2px solid var(--accent-dim); overflow: hidden;
+      background: rgba(0,194,255,0.08); flex-shrink: 0;
+      box-shadow: 0 0 0 4px rgba(0,194,255,0.06);
+    }
+    .photo-ring img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* TIPO DE SANGRE — PROMINENTE */
+    .blood-type-wrap {
+      background: rgba(0,194,255,0.12);
+      border: 1.5px solid rgba(0,194,255,0.35);
+      border-radius: 14px;
+      padding: 8px 14px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 2px;
+      flex-shrink: 0;
+    }
+    .blood-type-value {
+      font-size: 1.9rem; font-weight: 800; line-height: 1;
+      color: #fff; letter-spacing: -0.03em;
+      text-shadow: 0 0 20px rgba(0,194,255,0.7), 0 0 48px rgba(0,194,255,0.35);
+    }
+    .blood-type-label {
+      font-size: 0.48rem; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--text-dim);
+    }
+
+    .data-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(0,194,255,0.07); border: 1px solid rgba(0,194,255,0.14);
+      border-radius: 8px; padding: 4px 10px;
+      font-size: 0.65rem; font-weight: 600; color: var(--accent-light);
+    }
+    .data-chip .chip-label { color: var(--text-dim); font-weight: 500; }
+
+    .btn-emergency {
+      width: 100%;
+      background: linear-gradient(90deg, #004E85 0%, #065D9B 100%);
+      border: 1px solid rgba(0,194,255,0.3); border-radius: 14px; padding: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-emergency:active { transform: scale(0.97); opacity: 0.9; }
+    .btn-emergency:hover  { border-color: var(--accent); background: linear-gradient(90deg, #065D9B 0%, #0070bb 100%); }
+
+    .btn-refresh {
+      width: 100%; background: transparent;
+      border: 1px solid var(--card-border); border-radius: 14px; padding: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-refresh:hover  { border-color: var(--accent-dim); color: var(--accent-light); background: var(--card-hover); }
+    .btn-refresh:active { transform: scale(0.97); }
+
+    .warn-strip { background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 16px; overflow: hidden; }
+    .warn-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--warn-border); }
+    .warn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--warn-text); animation: pulse-warn 2s ease-in-out infinite; }
+    @keyframes pulse-warn { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+    .warn-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 9px 16px; border-bottom: 1px solid rgba(251,191,36,0.1);
+      font-size: 0.7rem; font-weight: 600; color: var(--warn-text); line-height: 1.45;
+    }
+    .warn-item:last-child { border-bottom: none; }
+    .warn-item i { flex-shrink: 0; margin-top: 1px; font-size: 0.9rem; color: var(--warn-label); }
+
+    .condition-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 16px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .condition-card:hover { border-color: var(--accent-dim); background: var(--card-hover); }
+    .condition-icon {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      background: rgba(0,194,255,0.08); border: 1px solid rgba(0,194,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent); font-size: 1.15rem;
+    }
+
+    .implant-card {
+      background: rgba(99,102,241,0.07); border: 1px solid rgba(99,102,241,0.22);
+      border-radius: 16px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .implant-icon {
+      width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.22);
+      display: flex; align-items: center; justify-content: center;
+      color: #a5b4fc; font-size: 1.15rem;
+    }
+
+    .med-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; border-bottom: 1px solid rgba(0,194,255,0.07); gap: 8px;
+    }
+    .med-row:last-child { border-bottom: none; }
+    .med-badge {
+      font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      background: rgba(0,194,255,0.07); border: 1px solid rgba(0,194,255,0.14);
+      color: var(--text-dim); padding: 3px 8px; border-radius: 6px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--card-border), transparent); margin: 8px 0; }
+
+    .timestamp-bar {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em;
+      color: var(--text-dim); text-transform: uppercase;
+    }
+    .timestamp-bar::before { content:''; flex:1; height:1px; background: linear-gradient(90deg, transparent, var(--card-border)); }
+    .timestamp-bar::after  { content:''; flex:1; height:1px; background: linear-gradient(270deg, transparent, var(--card-border)); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .fade-in  { animation: fadeUp 0.4s ease forwards; }
+    .delay-1  { animation-delay:0.05s; opacity:0; }
+    .delay-2  { animation-delay:0.10s; opacity:0; }
+    .delay-3  { animation-delay:0.15s; opacity:0; }
+    .delay-4  { animation-delay:0.20s; opacity:0; }
+    .delay-5  { animation-delay:0.25s; opacity:0; }
+    .delay-6  { animation-delay:0.30s; opacity:0; }
+
+    .empty-state { font-size:0.68rem; font-weight:500; color:var(--text-dim); font-style:italic; padding:6px 2px; }
+
+    .site-footer { background: rgba(255,255,255,0.02); border-top: 1px solid rgba(255,255,255,0.05); }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+  </style>
 </head>
 
-<body class="min-h-screen flex flex-col pt-24 font-sans">
+<body>
 
-<header class="fixed top-0 left-0 w-full bg-medical-primaryDark text-white shadow-lg z-50">
-    <div class="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <img src="/logo_cura.png" class="h-10 w-auto">
-            <div class="leading-tight">
-                <h1 class="text-[10px] font-extrabold uppercase tracking-widest text-medical-accent">C.U.R.A.</h1>
-                <p class="text-[9px] opacity-80 font-bold uppercase">Nivel 2 (Urgencias)</p>
-            </div>
+<!-- HEADER -->
+<header class="site-header fixed top-0 left-0 w-full z-50">
+  <div class="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <img src="/logo.png" alt="C.U.R.A." class="h-9 w-auto object-contain">
+      <div class="leading-tight">
+        <p class="text-[9px] font-bold uppercase tracking-[0.22em] text-cura-accentLight">Sistema C.U.R.A.</p>
+        <div class="flex items-center gap-1.5 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-cura-accent" style="box-shadow:0 0 5px #00C2FF"></span>
+          <p class="text-[8px] font-semibold text-white/60 uppercase tracking-wider">Nivel 2 · Urgencias</p>
         </div>
-        <div class="text-right leading-tight">
-            <span id="random-medico" class="text-[10px] font-bold opacity-90 uppercase"></span>
-        </div>
+      </div>
     </div>
+    <div class="text-right leading-snug">
+      <p id="random-medico" class="text-[9px] font-bold text-white/80 uppercase tracking-tight"></p>
+    </div>
+  </div>
 </header>
 
-<main class="w-full max-w-lg mx-auto px-5 py-6 space-y-5">
+<!-- MAIN -->
+<main class="w-full max-w-lg mx-auto px-4 pt-24 pb-16 space-y-4">
 
-    <div class="pb-2">
-        <button onclick="window.location.reload()" class="w-full bg-white text-medical-primary hover:bg-gray-100 px-4 py-3 rounded-2xl flex items-center justify-center gap-3 shadow-sm border border-gray-200 active:scale-95 transition-all">
-            <i class="ph-bold ph-arrows-clockwise text-lg"></i>
-            <span class="text-xs font-bold uppercase tracking-wide">Actualizar Caso Clínico</span>
+  <!-- Timestamp + Refresh -->
+  <div class="fade-in delay-1 space-y-3">
+    <div class="timestamp-bar" id="hora-acceso">Cargando...</div>
+    <button onclick="window.location.reload()" class="btn-refresh">
+      <i class="ph-bold ph-arrows-clockwise"></i>
+      Actualizar caso clínico
+    </button>
+  </div>
+
+  <!-- PACIENTE -->
+  <section class="patient-hero fade-in delay-2">
+    <div class="p-5">
+      <div class="flex items-start gap-4 mb-5">
+
+        <!-- Foto -->
+        <div class="photo-ring">
+          <img id="foto-paciente" src="" alt="Foto paciente">
+        </div>
+
+        <!-- Datos -->
+        <div class="flex-1 min-w-0">
+          <h2 id="nombre-completo" class="text-base font-extrabold text-white leading-tight mb-2.5 truncate uppercase tracking-tight"></h2>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="data-chip"><span class="chip-label">DNI</span><span id="dni">—</span></span>
+            <span class="data-chip"><span class="chip-label">Nac.</span><span id="fecha-nac">—</span></span>
+            <span class="data-chip"><span id="edad">—</span><span class="chip-label">años</span></span>
+          </div>
+        </div>
+
+        <!-- Tipo de sangre PROMINENTE -->
+        <div class="blood-type-wrap">
+          <div class="blood-type-value" id="tipo-sangre">—</div>
+          <div class="blood-type-label">Grupo</div>
+        </div>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="mt-4">
+        <button class="btn-emergency">
+          <i class="ph-fill ph-phone-outgoing text-base"></i>
+          Llamar contacto de emergencia
         </button>
+      </div>
     </div>
+  </section>
 
-    <div class="text-center pb-2">
-        <p id="hora-acceso" class="text-[11px] font-bold text-medical-textGray uppercase tracking-tighter leading-tight"></p>
+  <!-- ADVERTENCIAS -->
+  <section class="warn-strip fade-in delay-3">
+    <div class="warn-header">
+      <div class="warn-dot"></div>
+      <span class="text-[10px] font-bold uppercase tracking-[0.18em] text-yellow-400/70">Advertencias críticas</span>
     </div>
+    <ul id="lista-advertencias"></ul>
+  </section>
 
-    <section class="cura-card p-6 relative overflow-hidden">
-        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-medical-primary"></div>
-        <div class="flex items-center gap-5">
-            <div class="relative flex-shrink-0">
-                <div class="w-20 h-20 rounded-full bg-gray-100 border-4 border-medical-light overflow-hidden shadow-sm">
-                    <img id="foto-paciente" src="" class="w-full h-full object-cover">
-                </div>
-                <div id="tipo-sangre" class="absolute -bottom-1 -right-1 flex items-center justify-center w-9 h-9 rounded-full bg-medical-blueMain text-white text-[11px] font-black border-2 border-white shadow-md">--</div>
-            </div>
-            <div class="flex-grow">
-                <h2 id="nombre-completo" class="text-xl font-extrabold text-medical-textDark leading-none mb-2 uppercase tracking-tight"></h2>
-                <div class="space-y-1">
-                    <p class="text-xs font-bold text-medical-textGray uppercase">D.N.I.: <span id="dni" class="text-medical-textDark"></span></p>
-                    <p class="text-xs font-bold text-medical-textGray uppercase">Nac: <span id="fecha-nac" class="text-medical-textDark"></span> (<span id="edad" class="text-medical-textDark"></span> años)</p>
-                </div>
-            </div>
-        </div>
-        <div class="mt-6 pt-5 border-t border-gray-100">
-            <button class="w-full bg-gradient-to-r from-medical-blueMain to-medical-primary text-white font-bold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all uppercase text-xs">
-                <i class="ph-fill ph-phone-outgoing text-xl"></i>
-                Llamar Contacto de Emergencia
-            </button>
-        </div>
-    </section>
+  <!-- CONDICIONES -->
+  <section class="space-y-2.5 fade-in delay-4">
+    <p class="section-label">Condiciones relevantes</p>
+    <div id="lista-condiciones" class="space-y-2"></div>
+  </section>
 
-    <section class="bg-yellow-50 border-2 border-yellow-100 rounded-[28px] p-6 shadow-sm">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="w-8 h-8 bg-yellow-600 text-white rounded-full flex items-center justify-center"><i class="ph-fill ph-warning text-lg"></i></div>
-            <h3 class="text-yellow-800 font-black text-xs uppercase tracking-widest">Advertencias Críticas</h3>
-        </div>
-        <ul id="lista-advertencias" class="text-xs text-yellow-900 space-y-2 font-bold leading-relaxed"></ul>
-    </section>
+  <!-- IMPLANTES -->
+  <section class="space-y-2.5 fade-in delay-5">
+    <p class="section-label">Implantes y dispositivos</p>
+    <div id="lista-implantes"></div>
+  </section>
 
-    <section class="space-y-3">
-        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Condiciones Relevantes</h3>
-        <div id="lista-condiciones" class="grid grid-cols-1 gap-3"></div>
-    </section>
-
-    <section class="space-y-3">
-        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Implantes y Dispositivos</h3>
-        <div id="lista-implantes" class="space-y-3"></div>
-    </section>
-
-    <section class="space-y-3">
-        <h3 class="text-[11px] font-black text-medical-textGray uppercase tracking-widest px-2">Medicación Actual</h3>
-        <div class="cura-card overflow-hidden">
-            <ul id="lista-medicacion" class="divide-y divide-gray-100"></ul>
-        </div>
-    </section>
+  <!-- MEDICACIÓN -->
+  <section class="space-y-2.5 fade-in delay-6">
+    <p class="section-label">Medicación en curso</p>
+    <div class="cura-card overflow-hidden">
+      <ul id="lista-medicacion"></ul>
+    </div>
+  </section>
 
 </main>
 
-<footer class="mt-auto bg-white border-t border-gray-100 py-10 px-6 opacity-60">
-    <div class="flex flex-col items-center gap-3 text-center">
-        <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg" class="h-8 grayscale">
-        <p class="text-[10px] font-black text-medical-textGray uppercase tracking-widest">Protocolo de Privacidad Federal · 2026</p>
-    </div>
+<!-- FOOTER (original) -->
+<footer class="site-footer mt-auto py-10 px-6">
+  <div class="max-w-lg mx-auto flex flex-col items-center gap-3 text-center opacity-50">
+    <img src="https://datos.salud.gob.ar/user_images/logo_nuevo_msal_encabezado%202.jpg"
+         class="h-8 grayscale brightness-200" alt="Ministerio de Salud de la Nación">
+    <p class="text-[10px] font-black text-white uppercase tracking-widest">Protocolo de Privacidad Federal · 2026</p>
+  </div>
 </footer>
 
+<!-- SCRIPTS -->
 <script>
-function randInt(min, max){return Math.floor(Math.random()*(max-min+1))+min;}
-function choice(arr){return arr[randInt(0, arr.length-1)];}
-function fechaRandom(){
-    const y = randInt(1945, 2010);
-    const m = randInt(1,12);
-    const d = randInt(1, [4,6,9,11].includes(m)?30:(m===2?28:31));
-    return {d,m,y};
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function choice(arr)        { return arr[randInt(0, arr.length - 1)]; }
+
+function fechaRandom() {
+  const y = randInt(1945, 2010), m = randInt(1, 12);
+  const d = randInt(1, [4,6,9,11].includes(m) ? 30 : (m === 2 ? 28 : 31));
+  return { d, m, y };
 }
-function formatear(d,m,y){return d.toString().padStart(2,'0')+'/'+m.toString().padStart(2,'0')+'/'+y;}
-function edad(d,m,y){
-    const n=new Date(y,m-1,d),h=new Date();let e=h.getFullYear()-n.getFullYear();
-    if(h.getMonth()<n.getMonth()||(h.getMonth()===n.getMonth()&&h.getDate()<n.getDate()))e--;
-    return e;
+function formatear(d, m, y) {
+  return d.toString().padStart(2,'0') + '/' + m.toString().padStart(2,'0') + '/' + y;
+}
+function calcEdad(d, m, y) {
+  const n = new Date(y, m-1, d), h = new Date();
+  let e = h.getFullYear() - n.getFullYear();
+  if (h.getMonth() < n.getMonth() || (h.getMonth() === n.getMonth() && h.getDate() < n.getDate())) e--;
+  return e;
 }
 
-const nombresM=['Franco','Juan','Lucas','Santiago','Matías','Agustín','Iván','Tomás','Bruno','Ezequiel'];
-const nombresF=['Sofía','Camila','Valentina','Julieta','Martina','Ana','Paula','Rocío','Florencia','Lorena'];
-const apellidos=['Gómez','Rodríguez','Paganini','Fernández','López','Sánchez','Romero','Martínez','García','Argüello'];
-const sangres=['O+','A+','B+','AB+','O-','A-','B-','AB-'];
-const medicos = ["Dr. Fabián Alonso","Dra. Julieta Ruiz","Dr. Mauro Etcheverry","Dra. Florencia Rivas","Dr. Sebastián López","Dra. Ana Beltrán"];
+/* Foto filtrada por rango etario via randomuser.me API */
+async function fetchFotoEdad(sexo, edadPaciente) {
+  const gender = sexo === 'M' ? 'male' : 'female';
+  const margen = 12;
+  const minAge = Math.max(18, edadPaciente - margen);
+  const maxAge = edadPaciente + margen;
+  try {
+    const res  = await fetch(`https://randomuser.me/api/?gender=${gender}&nat=ar,es,mx&results=15`);
+    const data = await res.json();
+    const filtrados = data.results.filter(u => u.dob.age >= minAge && u.dob.age <= maxAge);
+    const usuario   = filtrados.length > 0 ? filtrados[0] : data.results[0];
+    document.getElementById('foto-paciente').src = usuario.picture.large;
+  } catch {
+    document.getElementById('foto-paciente').src =
+      `https://randomuser.me/api/portraits/${sexo === 'M' ? 'men' : 'women'}/${randInt(1,99)}.jpg`;
+  }
+}
+
+const nombresM  = ['Franco','Juan','Lucas','Santiago','Matías','Agustín','Iván','Tomás','Bruno','Ezequiel','Rodrigo','Nicolás','Diego','Adrián','Hugo','Roberto'];
+const nombresF  = ['Sofía','Camila','Valentina','Julieta','Martina','Ana','Paula','Rocío','Florencia','Lorena','Gabriela','Marcela','Elena','Cristina','Claudia','Graciela'];
+const apellidos = ['Gómez','Rodríguez','Paganini','Fernández','López','Sánchez','Romero','Martínez','García','Argüello','Peralta','Castillo','Morales','Gutiérrez','Suárez','Pereira'];
+const sangres   = ['O+','A+','B+','AB+','O-','A-','B-','AB-'];
+const medicos   = ["Dr. Fabián Alonso","Dra. Julieta Ruiz","Dr. Mauro Etcheverry","Dra. Florencia Rivas","Dr. Sebastián López","Dra. Ana Beltrán","Dr. Carlos Ibáñez","Dra. Natalia Pereyra"];
 
 const condicionesCatalogo = [
-    {titulo:'Diabetes Tipo 2', subt:'Control metabólico', adv:['Riesgo de hipoglucemia'], meds:[['Metformina 850 mg','Hipoglucemiante']]},
-    {titulo:'Hipertensión Arterial', subt:'Grado II', adv:['Controlar T.A. al ingreso'], meds:[['Enalapril 10 mg','IECA']]},
-    {titulo:'Asma Bronquial', subt:'Moderada', adv:['Riesgo de broncoespasmo'], meds:[['Salbutamol','Broncodilatador']]},
-    {titulo:'Fibrilación Auricular', subt:'Arritmia crónica', adv:['RIESGO HEMORRÁGICO ALTO'], meds:[['Apixabán 5 mg','Anticoagulante']]},
-    {titulo:'EPOC', subt:'Enfermedad Pulmonar', adv:['Meta Saturación: 88-92%'], meds:[['Tiotropio','Broncodilatador']]},
-    {titulo:'Epilepsia', subt:'Neurológica clínica', adv:['Proteger vía aérea en crisis'], meds:[['Levetiracetam 500 mg','Anticonvulsivo']]},
-    {titulo:'Insuficiencia Cardíaca', subt:'Congestiva', adv:['Control de balance hídrico'], meds:[['Furosemida 40 mg','Diurético']]},
-    {titulo:'Hipotiroidismo', subt:'Sustitución hormonal', adv:['Administrar en ayunas'], meds:[['Levotiroxina 100 mcg','Hormona']]},
-    {titulo:'Enfermedad de Parkinson', subt:'Postural', adv:['Riesgo de caídas alto'], meds:[['Levodopa/Carbidopa','Dopaminérgico']]},
-    {titulo:'Gastritis Erosiva', subt:'Reflujo severo', adv:['Evitar AINES (Ibuprofeno)'], meds:[['Pantoprazol 40 mg','Protector']]},
-    {titulo:'Artritis Reumatoidea', subt:'Autoinmune', adv:['Paciente Inmunosuprimido'], meds:[['Metotrexato','Inmunomodulador']]},
-    {titulo:'Gota / Hiperuricemia', subt:'Articular', adv:['Consultar función renal'], meds:[['Alopurinol 300 mg','Uricosúrico']]},
-    {titulo:'Glaucoma', subt:'Ángulo abierto', adv:['Evitar Atropina en guardia'], meds:[['Timolol 0.5%','Gotas oft.']]}
+  /* Cardiovascular */
+  { titulo:'Hipertensión Arterial',      subt:'Grado II',                   adv:['Controlar T.A. al ingreso'],                    icon:'ph-fill ph-heart',                 meds:[['Enalapril 10 mg','IECA'],['Amlodipina 5 mg','Calcioantagonista']] },
+  { titulo:'Fibrilación Auricular',      subt:'Arritmia crónica',           adv:['RIESGO HEMORRÁGICO ALTO'],                       icon:'ph-fill ph-heartbeat',              meds:[['Apixabán 5 mg','Anticoagulante'],['Bisoprolol 5 mg','Betabloqueante']] },
+  { titulo:'Insuficiencia Cardíaca',     subt:'FE reducida',                adv:['Control de balance hídrico'],                    icon:'ph-fill ph-heart-break',            meds:[['Furosemida 40 mg','Diurético'],['Carvedilol 25 mg','Betabloqueante']] },
+  { titulo:'Cardiopatía Isquémica',      subt:'Post-infarto',               adv:['NO suspender antiagregantes'],                   icon:'ph-fill ph-first-aid-kit',          meds:[['AAS 100 mg','Antiagregante'],['Atorvastatina 40 mg','Estatina']] },
+  { titulo:'Trombosis Venosa Profunda',  subt:'Anticoagulado',              adv:['ANTICOAGULADO — riesgo de sangrado'],             icon:'ph-fill ph-drop-half',              meds:[['Rivaroxabán 20 mg','Anticoagulante']] },
+  { titulo:'Hipercolesterolemia',        subt:'Riesgo cardiovascular alto', adv:['Revisar interacciones con estatinas'],            icon:'ph-fill ph-chart-bar',              meds:[['Atorvastatina 40 mg','Estatina']] },
+
+  /* Metabólico / Endócrino */
+  { titulo:'Diabetes Tipo 2',            subt:'Control metabólico',         adv:['Riesgo de hipoglucemia'],                        icon:'ph-fill ph-chart-line-up',          meds:[['Metformina 850 mg','Hipoglucemiante'],['Glibenclamida 5 mg','Sulfonilurea']] },
+  { titulo:'Diabetes Tipo 1',            subt:'Insulinodependiente',        adv:['INSULINODEPENDIENTE — no suspender insulina'],    icon:'ph-fill ph-drop',                   meds:[['Insulina Glargina 20 UI','Insulina basal'],['Insulina Lispro','Insulina rápida']] },
+  { titulo:'Hipotiroidismo',             subt:'Sustitución hormonal',       adv:['Administrar levotiroxina en ayunas'],             icon:'ph-fill ph-thermometer',            meds:[['Levotiroxina 100 mcg','Hormona tiroidea']] },
+  { titulo:'Gota / Hiperuricemia',       subt:'Articular',                  adv:['Consultar función renal antes de AINES'],        icon:'ph-fill ph-bone',                   meds:[['Alopurinol 300 mg','Uricosúrico']] },
+  { titulo:'Obesidad',                   subt:'IMC > 35',                   adv:['Ajustar dosis por peso corporal'],                icon:'ph-fill ph-scales',                 meds:[['Orlistat 120 mg','Inhibidor lipasas']] },
+
+  /* Respiratorio */
+  { titulo:'Asma Bronquial',             subt:'Moderada persistente',       adv:['Riesgo de broncoespasmo agudo'],                 icon:'ph-fill ph-wind',                   meds:[['Salbutamol 100 mcg','Broncodilatador'],['Budesonida inhalada','Corticoide']] },
+  { titulo:'EPOC',                       subt:'Estadio GOLD III',           adv:['Meta saturación O₂: 88–92%'],                   icon:'ph-fill ph-activity',               meds:[['Tiotropio 18 mcg','Broncodilatador'],['Salmeterol/Fluticasona','LABA + ICS']] },
+
+  /* Neurológico */
+  { titulo:'Epilepsia',                  subt:'Focal compleja',             adv:['Proteger vía aérea en crisis — NO contener'],    icon:'ph-fill ph-brain',                  meds:[['Levetiracetam 500 mg','Anticonvulsivo'],['Valproato 500 mg','Antiepiléptico']] },
+  { titulo:'Enfermedad de Parkinson',    subt:'Estadio III (H&Y)',          adv:['Riesgo alto de caídas — movilización asistida'], icon:'ph-fill ph-person-simple-walk',     meds:[['Levodopa/Carbidopa 250/25 mg','Dopaminérgico']] },
+  { titulo:'Migraña Crónica',            subt:'Con aura',                   adv:['Evitar ergotamínicos en emergencia'],             icon:'ph-fill ph-lightning',              meds:[['Topiramato 100 mg','Antimigrañoso'],['Sumatriptán 50 mg','Triptán']] },
+
+  /* Gastroenterológico */
+  { titulo:'Gastritis Erosiva',          subt:'Úlcera péptica activa',      adv:['Evitar AINES — ibuprofeno, diclofenac'],         icon:'ph-fill ph-flame',                  meds:[['Pantoprazol 40 mg','IBP']] },
+  { titulo:'Cirrosis Hepática',          subt:'Child-Pugh B',               adv:['Riesgo de hemorragia digestiva alta'],           icon:'ph-fill ph-exam',                   meds:[['Espironolactona 100 mg','Diurético'],['Propranolol 40 mg','Betabloqueante']] },
+  { titulo:'Enfermedad de Crohn',        subt:'Ileocolónica activa',        adv:['Paciente inmunosuprimido'],                      icon:'ph-fill ph-bandaids',               meds:[['Mesalazina 1 g','Aminosalicilato'],['Azatioprina 100 mg','Inmunosupresor']] },
+
+  /* Musculoesquelético / Autoinmune */
+  { titulo:'Artritis Reumatoidea',       subt:'Seropositiva',               adv:['Paciente inmunosuprimido — riesgo infeccioso'],  icon:'ph-fill ph-hand',                   meds:[['Metotrexato 15 mg','Inmunomodulador'],['Prednisona 5 mg','Corticoide']] },
+  { titulo:'Osteoporosis Severa',        subt:'T-score < -2.5',             adv:['Riesgo alto de fractura patológica'],            icon:'ph-fill ph-bone',                   meds:[['Alendronato 70 mg','Bifosfonato'],['Calcio + Vit. D','Suplemento']] },
+  { titulo:'Lupus Eritematoso',          subt:'Sistémico (LES)',            adv:['Paciente inmunosuprimido — fotosensible'],       icon:'ph-fill ph-sun',                    meds:[['Hidroxicloroquina 200 mg','Antipalúdico'],['Prednisona 10 mg','Corticoide']] },
+
+  /* Renal */
+  { titulo:'Insuficiencia Renal Crónica',subt:'Estadio IV (TFG 15–29)',     adv:['Ajustar TODAS las dosis según TFG'],             icon:'ph-fill ph-drop-half',              meds:[['Losartán 50 mg','ARA II'],['Eritropoyetina SC','Estimulante eritropoyesis']] },
+
+  /* Hematológico */
+  { titulo:'Anemia Crónica',             subt:'Déficit de hierro',          adv:['Hb baja — evaluar transfusión si <7 g/dL'],     icon:'ph-fill ph-tray',                   meds:[['Sulfato Ferroso 300 mg','Suplemento'],['Ácido Fólico 5 mg','Vitamina']] },
+
+  /* Oftalmología */
+  { titulo:'Glaucoma',                   subt:'Ángulo abierto',             adv:['Evitar Atropina — riesgo de cierre angular'],    icon:'ph-fill ph-eye',                    meds:[['Timolol 0.5%','Betabloqueante oft.']] },
+
+  /* Oncológico */
+  { titulo:'Cáncer de Colon',            subt:'Post-cirugía, seguimiento',  adv:['Revisar hemograma — posible anemia'],            icon:'ph-fill ph-syringe',                meds:[['Capecitabina 1500 mg','Quimioterápico oral'],['Ácido Fólico 5 mg','Vitamina']] },
 ];
 
 const implantes = [
-    {t:'Bomba de Morfina', d:'Infusión intratecal', a:'Bomba programable. No suspender.', icon:'ph-fill ph-pill'},
-    {t:'Válvula DVP', d:'Hidrocefalia', a:'Sensible a imanes de alta potencia.', icon:'ph-fill ph-brain'},
-    {t:'Neuroestimulador', d:'Dolor neuropático', a:'Dispositivo electrónico implantado.', icon:'ph-fill ph-cpu'},
-    {t:'Marcapasos Bicameral', d:'Bloqueo AV', a:'Evitar campos electromagnéticos.', icon:'ph-fill ph-heartbeat'},
-    {t:'DAI (Desfibrilador)', d:'Prevención muerte súbita', a:'Peligro con bisturí eléctrico.', icon:'ph-fill ph-lightning-bold'},
-    {t:'Placa de Titanio', d:'Osteosíntesis húmero', a:'Compatible con RM.', icon:'ph-fill ph-bone'},
-    {t:'Bomba de Insulina', d:'Infusión continua', a:'No retirar sin supervisión.', icon:'ph-fill ph-drop'}
+  { t:'Marcapasos Bicameral',     d:'Bloqueo AV completo',        a:'Evitar campos electromagnéticos.',                      icon:'ph-fill ph-heartbeat' },
+  { t:'DAI (Desfibrilador)',      d:'Prevención muerte súbita',   a:'Peligro con bisturí eléctrico y electrocauterio.',       icon:'ph-fill ph-lightning' },
+  { t:'Bomba de Insulina',        d:'Infusión continua SC',       a:'No retirar sin supervisión médica.',                    icon:'ph-fill ph-drop' },
+  { t:'Bomba de Morfina',         d:'Infusión intratecal',        a:'Bomba programable — no suspender.',                     icon:'ph-fill ph-pill' },
+  { t:'Válvula DVP',              d:'Hidrocefalia crónica',       a:'Sensible a imanes de alta potencia.',                   icon:'ph-fill ph-brain' },
+  { t:'Neuroestimulador Medular', d:'Dolor neuropático crónico',  a:'Dispositivo electrónico activo implantado.',            icon:'ph-fill ph-cpu' },
+  { t:'Placa de Titanio Craneal', d:'Osteosíntesis post-trauma',  a:'Compatible con RM 1.5T.',                               icon:'ph-fill ph-bone' },
+  { t:'Stent Coronario',          d:'Post-angioplastia',          a:'NO suspender antiagregantes — riesgo trombosis.',       icon:'ph-fill ph-first-aid-kit' },
+  { t:'Prótesis Total de Cadera', d:'Gonartrosis bilateral',      a:'Compatible con RM. Cuidado en movilización.',           icon:'ph-fill ph-person-simple-walk' },
+  { t:'Válvula Aórtica (TAVI)',   d:'Estenosis aórtica severa',   a:'Anticoagulación o antiagregación — no suspender.',      icon:'ph-fill ph-heartbeat' },
 ];
 
-document.addEventListener("DOMContentLoaded",()=>{
-    const ahora = new Date();
-    const opciones = { weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' };
-    document.getElementById("hora-acceso").innerText = "ACCESO REGISTRADO: " + ahora.toLocaleDateString('es-AR', opciones).toUpperCase();
-    document.getElementById("random-medico").innerHTML = `${choice(medicos)}<br>M.P.: ${randInt(10000, 99999)}<br>M.N.: ${randInt(100000, 999999)}`;
+/* ══════════════════════════════════
+   INIT
+══════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
 
-    const sexo = Math.random() < 0.5 ? 'M' : 'F';
-    document.getElementById("nombre-completo").textContent = choice(sexo==='M'?nombresM:nombresF) + " " + choice(apellidos);
-    document.getElementById("foto-paciente").src = `https://randomuser.me/api/portraits/${sexo==='M'?'men/':'women/'}${randInt(1,99)}.jpg`;
-    document.getElementById("dni").textContent = randInt(15000000,50000000).toLocaleString('es-AR');
-    const fn = fechaRandom();
-    document.getElementById("fecha-nac").textContent = formatear(fn.d, fn.m, fn.y);
-    document.getElementById("edad").textContent = edad(fn.d, fn.m, fn.y);
-    document.getElementById("tipo-sangre").textContent = choice(sangres);
+  /* Timestamp */
+  const ahora = new Date();
+  const opciones = { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' };
+  document.getElementById('hora-acceso').textContent =
+    'Acceso registrado · ' + ahora.toLocaleDateString('es-AR', opciones).toUpperCase();
 
-    /* LÓGICA DE EQUILIBRIO (demo-random 7) */
-    const prob = Math.random();
-    let numCond = prob < 0.1 ? 0 : (prob < 0.8 ? 1 : 2); 
-    const usadas = [];
-    const advArr = [];
-    const contCond = document.getElementById("lista-condiciones");
-    const meds = document.getElementById("lista-medicacion");
+  /* Médico */
+  const med = choice(medicos);
+  document.getElementById('random-medico').innerHTML =
+    `${med}<br><span style="font-weight:500;color:rgba(89,210,255,0.45)">M.P.&nbsp;${randInt(10000,99999)}&nbsp;·&nbsp;M.N.&nbsp;${randInt(100000,999999)}</span>`;
 
-    if (numCond === 0) {
-        contCond.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">Sin condiciones reportadas.</p>`;
-        meds.innerHTML = `<li class="p-4 text-xs text-medical-textGray italic">Sin medicación en curso.</li>`;
-    } else {
-        while(usadas.length < numCond){
-            const c = choice(condicionesCatalogo);
-            if(!usadas.includes(c)){
-                usadas.push(c);
-                advArr.push(...c.adv);
-                contCond.innerHTML += `<div class="cura-card p-4 flex gap-4"><div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0"><i class="ph-fill ph-activity text-xl"></i></div><div><p class="text-sm font-bold text-medical-textDark">${c.titulo}</p><p class="text-[11px] font-medium text-medical-textGray">${c.subt}</p></div></div>`;
-                c.meds.forEach(m => {
-                    meds.innerHTML += `<li class="p-4 flex justify-between items-center"><span class="text-sm font-bold text-medical-primary">${m[0]}</span><span class="text-[10px] font-black bg-gray-100 px-2 py-1 rounded-lg uppercase text-medical-textGray">${m[1]}</span></li>`;
-                });
-            }
-        }
+  /* Paciente */
+  const sexo = Math.random() < 0.5 ? 'M' : 'F';
+  document.getElementById('nombre-completo').textContent =
+    choice(sexo === 'M' ? nombresM : nombresF) + ' ' + choice(apellidos);
+  document.getElementById('dni').textContent =
+    randInt(15000000, 50000000).toLocaleString('es-AR');
+  const fn = fechaRandom();
+  document.getElementById('fecha-nac').textContent = formatear(fn.d, fn.m, fn.y);
+  const pacEdad = calcEdad(fn.d, fn.m, fn.y);
+  document.getElementById('edad').textContent = pacEdad;
+  document.getElementById('tipo-sangre').textContent = choice(sangres);
+
+  /* Foto filtrada por edad */
+  fetchFotoEdad(sexo, pacEdad);
+
+  /* Lógica: 10% sano · 60% 1 cond · 25% 2 cond · 5% 3 cond */
+  const prob    = Math.random();
+  const numCond = prob < 0.10 ? 0 : prob < 0.70 ? 1 : prob < 0.95 ? 2 : 3;
+
+  const usadas    = [], advArr = [];
+  const contCond  = document.getElementById('lista-condiciones');
+  const listaMeds = document.getElementById('lista-medicacion');
+
+  if (numCond === 0) {
+    contCond.innerHTML  = `<p class="empty-state">Sin condiciones reportadas.</p>`;
+    listaMeds.innerHTML = `<li class="med-row"><span class="empty-state">Sin medicación en curso.</span></li>`;
+  } else {
+    while (usadas.length < numCond) {
+      const c = choice(condicionesCatalogo);
+      if (!usadas.includes(c)) {
+        usadas.push(c);
+        advArr.push(...c.adv);
+        contCond.innerHTML += `
+          <div class="condition-card">
+            <div class="condition-icon"><i class="${c.icon}"></i></div>
+            <div>
+              <p class="text-sm font-bold text-white leading-tight">${c.titulo}</p>
+              <p class="text-[10px] font-medium mt-0.5" style="color:var(--text-muted)">${c.subt}</p>
+            </div>
+          </div>`;
+        c.meds.forEach(m => {
+          listaMeds.innerHTML += `
+            <li class="med-row">
+              <span class="text-sm font-semibold text-white">${m[0]}</span>
+              <span class="med-badge">${m[1]}</span>
+            </li>`;
+        });
+      }
     }
+  }
 
-    const contImpl = document.getElementById("lista-implantes");
-    if(Math.random() < 0.45){
-        const im = choice(implantes);
-        advArr.push(im.a);
-        contImpl.innerHTML = `<div class="cura-card p-4 flex gap-4"><div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center flex-shrink-0"><i class="${im.icon} text-xl"></i></div><div><p class="text-sm font-bold text-medical-textDark">${im.t}</p><p class="text-[11px] font-medium text-medical-textGray">${im.d}</p></div></div>`;
-    } else {
-        contImpl.innerHTML = `<p class="text-xs text-medical-textGray italic px-2">No se detectan implantes.</p>`;
-    }
+  /* Implantes */
+  const contImpl = document.getElementById('lista-implantes');
+  if (Math.random() < 0.45) {
+    const im = choice(implantes);
+    advArr.push(im.a);
+    contImpl.innerHTML = `
+      <div class="implant-card">
+        <div class="implant-icon"><i class="${im.icon}"></i></div>
+        <div>
+          <p class="text-sm font-bold text-white leading-tight">${im.t}</p>
+          <p class="text-[10px] font-medium mt-0.5" style="color:rgba(165,180,252,0.75)">${im.d}</p>
+        </div>
+      </div>`;
+  } else {
+    contImpl.innerHTML = `<p class="empty-state">Sin implantes reportados.</p>`;
+  }
 
-    const advC = document.getElementById("lista-advertencias");
-    const unicas = [...new Set(advArr)];
-    if (unicas.length === 0) { advC.innerHTML = `<li>• Sin advertencias reportadas.</li>`; } 
-    else { unicas.forEach(a => { advC.innerHTML += `<li>• ${a}</li>`; }); }
+  /* Advertencias */
+  const advC   = document.getElementById('lista-advertencias');
+  const unicas = [...new Set(advArr)];
+  if (unicas.length === 0) {
+    advC.innerHTML = `<li class="warn-item"><i class="ph ph-check-circle"></i>Sin advertencias reportadas.</li>`;
+  } else {
+    unicas.forEach(a => {
+      advC.innerHTML += `<li class="warn-item"><i class="ph-fill ph-warning-circle"></i>${a}</li>`;
+    });
+  }
 });
 </script>
+
 </body>
 </html>

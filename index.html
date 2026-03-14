@@ -448,59 +448,102 @@
     }
 
 /* Scroll con dots */
-   .scroll-dots {
-  position: fixed;
-  right: 25px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  z-index: 9999;
+ .scroll-system{
+position:fixed;
+right:28px;
+top:50%;
+transform:translateY(-50%);
+z-index:9999;
+display:flex;
+align-items:center;
 }
 
-.dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.25);
-  position: relative;
-  transition: all .3s ease;
+.scroll-line{
+position:absolute;
+right:6px;
+width:2px;
+height:320px;
+background:linear-gradient(
+to bottom,
+transparent,
+#00E5FF55,
+#00E5FF,
+#00E5FF55,
+transparent
+);
 }
 
-.dot::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  background:#00E5FF;
-  transform:scale(0);
-  transition:transform .3s ease;
+.scroll-dots{
+display:flex;
+flex-direction:column;
+gap:18px;
 }
 
-.dot.active::after{
-  transform:scale(1);
+.dot{
+width:12px;
+height:12px;
+border-radius:50%;
+background:#ffffff30;
+position:relative;
+transition:all .4s ease;
 }
 
 .dot.active{
-  box-shadow:0 0 12px #00E5FF;
+background:#00E5FF;
+box-shadow:
+0 0 10px #00E5FF,
+0 0 20px #00E5FF;
 }
 
-.dot.progress::before{
-  content:'';
-  position:absolute;
-  inset:-3px;
-  border-radius:50%;
-  border:2px solid #00E5FF;
-  opacity:.5;
-  animation:pulse 1.6s infinite;
+.dot::after{
+content:'';
+position:absolute;
+inset:-4px;
+border-radius:50%;
+border:2px solid transparent;
 }
 
-@keyframes pulse{
-  0%{transform:scale(1);opacity:.7}
-  100%{transform:scale(1.7);opacity:0}
+.dot.active::after{
+border-color:#00E5FF;
+animation:pulseDot 1.5s infinite;
 }
 
+@keyframes pulseDot{
+0%{transform:scale(1);opacity:.7}
+100%{transform:scale(2);opacity:0}
+}
+    .data-pulse{
+position:absolute;
+right:5px;
+width:6px;
+height:6px;
+background:#00E5FF;
+border-radius:50%;
+box-shadow:0 0 10px #00E5FF;
+animation:dataFlow 4s linear infinite;
+}
+
+@keyframes dataFlow{
+
+0%{
+top:0%;
+opacity:0;
+}
+
+10%{
+opacity:1;
+}
+
+90%{
+opacity:1;
+}
+
+100%{
+top:100%;
+opacity:0;
+}
+
+}
     
   </style>
 </head>
@@ -2317,15 +2360,15 @@ sections.forEach(section => {
 const sections = document.querySelectorAll("section");
 const dots = document.querySelectorAll(".dot");
 
-function setActive(id){
+function activateDot(id){
 
 dots.forEach(dot=>{
 
-dot.classList.remove("active","progress");
+dot.classList.remove("active");
 
 if(dot.getAttribute("href")==="#"+id){
 
-dot.classList.add("active","progress");
+dot.classList.add("active");
 
 }
 
@@ -2339,7 +2382,7 @@ entries.forEach(entry=>{
 
 if(entry.isIntersecting){
 
-setActive(entry.target.id);
+activateDot(entry.target.id);
 
 }
 
@@ -2349,39 +2392,25 @@ setActive(entry.target.id);
 
 sections.forEach(section=>observer.observe(section));
 
-/* progreso dentro de la sección */
+/* generar pulsos de datos */
 
-window.addEventListener("scroll",()=>{
+function createPulse(){
 
-let scrollPos = window.scrollY;
+const pulse=document.createElement("div");
+pulse.className="data-pulse";
 
-sections.forEach(section=>{
+document.querySelector(".scroll-system").appendChild(pulse);
 
-let top = section.offsetTop;
-let height = section.offsetHeight;
-let id = section.getAttribute("id");
-
-if(scrollPos >= top && scrollPos < top + height){
-
-let progress = (scrollPos-top)/height;
-
-dots.forEach(dot=>{
-
-if(dot.getAttribute("href")==="#"+id){
-
-dot.style.transform = `scale(${1 + progress*0.4})`;
+setTimeout(()=>{
+pulse.remove();
+},4000);
 
 }
 
-});
-
-}
-
-});
-
-});
+setInterval(createPulse,2200);
 
 </script>
+
 <!--  <script src="/puntos-scroll.js"></script> --->
 </body>
 </html>

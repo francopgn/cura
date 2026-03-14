@@ -2341,6 +2341,37 @@ sections.forEach(section => {
   observer.observe(section);
 });
 </script>
+  <script>
+const sections = document.querySelectorAll("section");
+const dots = document.querySelectorAll(".dot");
+
+const observer = new IntersectionObserver((entries) => {
+
+  entries.forEach(entry => {
+
+    if(entry.isIntersecting){
+
+      const id = entry.target.getAttribute("id");
+
+      dots.forEach(dot => {
+        dot.classList.remove("active");
+
+        if(dot.getAttribute("href") === "#" + id){
+          dot.classList.add("active");
+        }
+
+      });
+
+    }
+
+  });
+
+}, {
+  threshold: 0.6
+});
+
+sections.forEach(section => observer.observe(section));
+</script>
 <!--  <script src="/puntos-scroll.js"></script> --->
 </body>
 </html>

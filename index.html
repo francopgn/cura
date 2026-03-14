@@ -448,7 +448,8 @@
     }
 
 /* Scroll con dots */
- .scroll-system{
+
+.scroll-system{
 position:fixed;
 right:28px;
 top:50%;
@@ -467,16 +468,18 @@ background:linear-gradient(
 to bottom,
 transparent,
 #00E5FF55,
-#00E5FF,
 #00E5FF55,
 transparent
 );
+z-index:1;
 }
 
 .scroll-dots{
 display:flex;
 flex-direction:column;
 gap:18px;
+position:relative;
+z-index:3;
 }
 
 .dot{
@@ -485,8 +488,12 @@ height:12px;
 border-radius:50%;
 background:#ffffff30;
 position:relative;
-transition:all .4s ease;
+transition:all .3s ease;
+cursor:pointer;
+z-index:4;
 }
+
+/* dot activo */
 
 .dot.active{
 background:#00E5FF;
@@ -495,16 +502,14 @@ box-shadow:
 0 0 20px #00E5FF;
 }
 
-.dot::after{
+/* pulso */
+
+.dot.active::after{
 content:'';
 position:absolute;
 inset:-4px;
 border-radius:50%;
-border:2px solid transparent;
-}
-
-.dot.active::after{
-border-color:#00E5FF;
+border:2px solid #00E5FF;
 animation:pulseDot 1.5s infinite;
 }
 
@@ -512,7 +517,41 @@ animation:pulseDot 1.5s infinite;
 0%{transform:scale(1);opacity:.7}
 100%{transform:scale(2);opacity:0}
 }
-    .data-pulse{
+
+/* labels */
+
+.dot::before{
+content:attr(data-label);
+position:absolute;
+right:22px;
+top:50%;
+transform:translateY(-50%);
+background:#001e33;
+color:#fff;
+padding:4px 8px;
+font-size:12px;
+border-radius:4px;
+white-space:nowrap;
+opacity:0;
+pointer-events:none;
+transition:all .25s ease;
+}
+
+.dot:hover::before{
+opacity:1;
+transform:translateY(-50%) translateX(-4px);
+}
+
+/* label cuando cambia sección */
+
+.dot.show-label::before{
+opacity:1;
+transform:translateY(-50%) translateX(-4px);
+}
+
+/* pulsos de datos */
+
+.data-pulse{
 position:absolute;
 right:5px;
 width:6px;
@@ -521,6 +560,7 @@ background:#00E5FF;
 border-radius:50%;
 box-shadow:0 0 10px #00E5FF;
 animation:dataFlow 4s linear infinite;
+z-index:2;
 }
 
 @keyframes dataFlow{
@@ -2331,80 +2371,64 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Chatbot widget (original) -->
 <script src="/chatbot-widget.js" defer></script>
 <script src="/mapa-cura.js"></script>
-  <script>
+<script>
+
 const sections = document.querySelectorAll("section");
 const dots = document.querySelectorAll(".scroll-dots a");
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+function activateDot(id){
 
-    if (entry.isIntersecting) {
+dots.forEach(dot=>{
 
-      dots.forEach(dot => {
-        dot.classList.remove("active");
-      });
-
-      const id = entry.target.getAttribute("id");
-
-      const activeDot = document.querySelector(`.scroll-dots a[href="#${id}"]`);
-
-      if (activeDot) {
-        activeDot.classList.add("active");
-      }
-
-    }
-
-  });
-}, {
-  threshold: 0.6
-});
-
-sections.forEach(section => {
-  observer.observe(section);
-});
-</script>
-<script>
-
-const scrollSections = document.querySelectorAll("section");
-const scrollDots = document.querySelectorAll(".dot");
-
-function activateScrollDot(id){
-
-scrollDots.forEach(dot=>{
-
-dot.classList.remove("active");
+dot.classList.remove("active","show-label");
 
 if(dot.getAttribute("href")==="#"+id){
-dot.classList.add("active");
+
+dot.classList.add("active","show-label");
+
+/* mostrar label 1 segundo */
+
+setTimeout(()=>{
+dot.classList.remove("show-label");
+},1000);
+
 }
 
 });
 
 }
 
-const scrollObserver = new IntersectionObserver((entries)=>{
+const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
 if(entry.isIntersecting){
-activateScrollDot(entry.target.id);
+
+activateDot(entry.target.id);
+
 }
 
 });
 
 },{threshold:0.6});
 
-scrollSections.forEach(section=>scrollObserver.observe(section));
+sections.forEach(section=>{
+observer.observe(section);
+});
 
 
 /* pulsos de datos */
 
 function createDataPulse(){
 
+const container = document.querySelector(".scroll-system");
+
+if(!container) return;
+
 const pulse=document.createElement("div");
 pulse.className="data-pulse";
 
-document.querySelector(".scroll-system").appendChild(pulse);
+container.appendChild(pulse);
 
 setTimeout(()=>{
 pulse.remove();

@@ -455,15 +455,15 @@ right:28px;
 top:50%;
 transform:translateY(-50%);
 z-index:9999;
-display:flex;
-align-items:center;
 }
 
 .scroll-line{
 position:absolute;
-right:6px;
+top:0;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
 width:2px;
-height:320px;
 background:linear-gradient(
 to bottom,
 transparent,
@@ -472,6 +472,7 @@ transparent,
 transparent
 );
 z-index:1;
+pointer-events:none;
 }
 
 .scroll-dots{
@@ -488,9 +489,7 @@ height:12px;
 border-radius:50%;
 background:#ffffff30;
 position:relative;
-transition:all .3s ease;
-cursor:pointer;
-z-index:4;
+z-index:5;
 }
 
 /* dot activo */
@@ -2386,8 +2385,6 @@ if(dot.getAttribute("href")==="#"+id){
 
 dot.classList.add("active","show-label");
 
-/* mostrar label 1 segundo */
-
 setTimeout(()=>{
 dot.classList.remove("show-label");
 },1000);
@@ -2402,7 +2399,7 @@ const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
-if(entry.isIntersecting){
+if(entry.intersectionRatio > 0.35){
 
 activateDot(entry.target.id);
 
@@ -2410,14 +2407,16 @@ activateDot(entry.target.id);
 
 });
 
-},{threshold:0.6});
+},{
+threshold:[0.35]
+});
 
 sections.forEach(section=>{
 observer.observe(section);
 });
 
 
-/* pulsos de datos */
+/* pulsos */
 
 function createDataPulse(){
 

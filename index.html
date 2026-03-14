@@ -2357,44 +2357,41 @@ sections.forEach(section => {
 </script>
 <script>
 
-const sections = document.querySelectorAll("section");
-const dots = document.querySelectorAll(".dot");
+const scrollSections = document.querySelectorAll("section");
+const scrollDots = document.querySelectorAll(".dot");
 
-function activateDot(id){
+function activateScrollDot(id){
 
-dots.forEach(dot=>{
+scrollDots.forEach(dot=>{
 
 dot.classList.remove("active");
 
 if(dot.getAttribute("href")==="#"+id){
-
 dot.classList.add("active");
-
 }
 
 });
 
 }
 
-const observer = new IntersectionObserver((entries)=>{
+const scrollObserver = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
 
 if(entry.isIntersecting){
-
-activateDot(entry.target.id);
-
+activateScrollDot(entry.target.id);
 }
 
 });
 
 },{threshold:0.6});
 
-sections.forEach(section=>observer.observe(section));
+scrollSections.forEach(section=>scrollObserver.observe(section));
 
-/* generar pulsos de datos */
 
-function createPulse(){
+/* pulsos de datos */
+
+function createDataPulse(){
 
 const pulse=document.createElement("div");
 pulse.className="data-pulse";
@@ -2407,7 +2404,7 @@ pulse.remove();
 
 }
 
-setInterval(createPulse,2200);
+setInterval(createDataPulse,2200);
 
 </script>
 

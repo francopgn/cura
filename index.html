@@ -448,87 +448,58 @@
     }
 
 /* Scroll con dots */
-    .scroll-dots {
+   .scroll-dots {
   position: fixed;
-  right: 28px;
+  right: 25px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 14px;
-  z-index: 1000;
+  z-index: 9999;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #7fb5da;
-  opacity: 0.45;
-  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.25);
   position: relative;
+  transition: all .3s ease;
 }
 
-.dot:hover {
-  opacity: 0.8;
+.dot::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:#00E5FF;
+  transform:scale(0);
+  transition:transform .3s ease;
 }
 
-.dot.active {
-  background: #004E85;
-  opacity: 1;
-  transform: scale(1.35);
+.dot.active::after{
+  transform:scale(1);
 }
 
-/* pulso tecnológico */
-
-.dot.active::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px solid #004E85;
-  animation: pulseDot 1.8s infinite;
-  opacity: 0.6;
+.dot.active{
+  box-shadow:0 0 12px #00E5FF;
 }
 
-@keyframes pulseDot {
-  0% {
-    transform: scale(0.8);
-    opacity: 0.7;
-  }
-  70% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
+.dot.progress::before{
+  content:'';
+  position:absolute;
+  inset:-3px;
+  border-radius:50%;
+  border:2px solid #00E5FF;
+  opacity:.5;
+  animation:pulse 1.6s infinite;
 }
 
-/* tooltip */
-
-.dot::after {
-  content: attr(data-label);
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #004E85;
-  color: white;
-  padding: 4px 9px;
-  font-size: 12px;
-  border-radius: 6px;
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: all 0.25s ease;
+@keyframes pulse{
+  0%{transform:scale(1);opacity:.7}
+  100%{transform:scale(1.7);opacity:0}
 }
-
-.dot:hover::after {
-  opacity: 1;
-  right: 22px;
-}
-
 
     
   </style>
@@ -2341,36 +2312,75 @@ sections.forEach(section => {
   observer.observe(section);
 });
 </script>
-  <script>
+<script>
+
 const sections = document.querySelectorAll("section");
 const dots = document.querySelectorAll(".dot");
 
-const observer = new IntersectionObserver((entries) => {
+function setActive(id){
 
-  entries.forEach(entry => {
+dots.forEach(dot=>{
 
-    if(entry.isIntersecting){
+dot.classList.remove("active","progress");
 
-      const id = entry.target.getAttribute("id");
+if(dot.getAttribute("href")==="#"+id){
 
-      dots.forEach(dot => {
-        dot.classList.remove("active");
+dot.classList.add("active","progress");
 
-        if(dot.getAttribute("href") === "#" + id){
-          dot.classList.add("active");
-        }
+}
 
-      });
-
-    }
-
-  });
-
-}, {
-  threshold: 0.6
 });
 
-sections.forEach(section => observer.observe(section));
+}
+
+const observer = new IntersectionObserver((entries)=>{
+
+entries.forEach(entry=>{
+
+if(entry.isIntersecting){
+
+setActive(entry.target.id);
+
+}
+
+});
+
+},{threshold:0.6});
+
+sections.forEach(section=>observer.observe(section));
+
+/* progreso dentro de la sección */
+
+window.addEventListener("scroll",()=>{
+
+let scrollPos = window.scrollY;
+
+sections.forEach(section=>{
+
+let top = section.offsetTop;
+let height = section.offsetHeight;
+let id = section.getAttribute("id");
+
+if(scrollPos >= top && scrollPos < top + height){
+
+let progress = (scrollPos-top)/height;
+
+dots.forEach(dot=>{
+
+if(dot.getAttribute("href")==="#"+id){
+
+dot.style.transform = `scale(${1 + progress*0.4})`;
+
+}
+
+});
+
+}
+
+});
+
+});
+
 </script>
 <!--  <script src="/puntos-scroll.js"></script> --->
 </body>

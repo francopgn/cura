@@ -686,7 +686,7 @@ display:none;
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">
         <a href="#inicio"      class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
-        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
+        <a href="#explicacion"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
         <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
         <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
         <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
@@ -2060,12 +2060,12 @@ if (bannerTextEl) {
   const btnSumate   = document.getElementById('btn-sumate');
   const targetSumate  = document.getElementById('sumate');
   const btnInfo     = document.getElementById('btn-info');
-  const targetQueEs  = document.getElementById('que-es');
+  const targetQueEs  = document.getElementById('explicacion');
   function smoothScrollTo(el, off = 100) { if (el) lenis.scrollTo(el, { offset: -off }); }
   if (btnSumate && targetSumate) btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
   if (btnInfo   && targetQueEs)  btnInfo.addEventListener('click',   e => { e.preventDefault(); smoothScrollTo(targetQueEs, 80); });
   document.querySelectorAll('a[href="#inicio"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); }));
-  document.querySelectorAll('a[href="#que-es"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('que-es'), 80); }));
+  document.querySelectorAll('a[href="#explicacion"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('que-es'), 80); }));
   document.querySelectorAll('a[href="#beneficios"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('beneficios'), 80); }));
   document.querySelectorAll('a[href="#contacto"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('contacto')); }));
 
@@ -2434,16 +2434,21 @@ if (bannerTextEl) {
 const sections = document.querySelectorAll("main[id], section[id]");
 const dots = document.querySelectorAll(".scroll-dots a");
 
-let activeSection = null;
+/* obtener todas las secciones reales */
+const sections = [...document.querySelectorAll("main[id], section[id]")];
+
+let activeId = null;
+
 
 /* activar dot */
 
 function activateDot(id){
 
-if(activeSection === id) return;
-activeSection = id;
+if(activeId === id) return;
+activeId = id;
 
 dots.forEach(dot=>{
+
 dot.classList.remove("active","show-label");
 
 if(dot.getAttribute("href")==="#"+id){
@@ -2465,53 +2470,65 @@ dot.classList.remove("show-label");
 
 function detectSection(){
 
-let bestSection=null;
-let bestVisible=0;
+let current = null;
+let minDist = Infinity;
 
 sections.forEach(section=>{
 
 const rect = section.getBoundingClientRect();
-const visible = Math.min(window.innerHeight,rect.bottom) - Math.max(0,rect.top);
+const dist = Math.abs(rect.top);
 
-if(visible>bestVisible){
-bestVisible=visible;
-bestSection=section;
+if(dist < minDist){
+minDist = dist;
+current = section;
 }
 
 });
 
-if(bestSection){
-activateDot(bestSection.id);
+if(current){
+activateDot(current.id);
 }
 
 }
+
+
+/* escuchar scroll */
 
 window.addEventListener("scroll",detectSection);
 window.addEventListener("load",detectSection);
 
 
-/* scroll con lenis */
+/* scroll usando lenis */
 
 dots.forEach(dot=>{
 
-dot.addEventListener("click",(e)=>{
+dot.addEventListener("click",e=>{
 
 e.preventDefault();
 
-const targetId = dot.getAttribute("href");
-const target = document.querySelector(targetId);
+const id = dot.getAttribute("href");
+const target = document.querySelector(id);
 
 if(!target) return;
 
+if(window.lenis){
+
 lenis.scrollTo(target,{
-offset:-20,
+offset:-60,
 duration:1.2
 });
 
+}else{
+
+target.scrollIntoView({
+behavior:"smooth"
 });
+
+}
 
 });
 
+});
 /* pulsos de datos */
 
 function createDataPulse(){

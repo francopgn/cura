@@ -104,8 +104,9 @@
       border: 1px solid #e0e7ef;
     }
     .search-box i {
-      color: #7f8c9a;
-      font-size: 1.2rem;
+      color: #a0b3c9;
+      font-size: 1.3rem;
+      flex-shrink: 0;
     }
     .search-box input {
       flex: 1;
@@ -147,10 +148,15 @@
       letter-spacing: -0.3px;
     }
     .capitulo-header .toggle-icon {
-      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
       color: #2a5f8a;
-      font-weight: 300;
-      transition: transform 0.3s;
+    }
+    .capitulo-header .toggle-icon.collapsed {
+      transform: rotate(-90deg);
     }
     .capitulo-body {
       padding: 1.8rem 2rem;
@@ -335,7 +341,7 @@
 
   <!-- Buscador -->
   <div class="search-box">
-    <i>🔍</i>
+    <i class="ph ph-magnifying-glass"></i>
     <input type="text" id="buscador" placeholder="Buscar por número, título o descripción..." autofocus>
   </div>
 
@@ -610,13 +616,13 @@ function renderLaw(data, filterText = '') {
     if (filtro !== '' && articulosFiltrados.length === 0) return '';
 
     const isCollapsed = collapsedState[index] || false;
-    const toggleIcon = isCollapsed ? '➕' : '➖';
+    const toggleIcon = `<svg class="toggle-icon ${isCollapsed ? 'collapsed' : ''}" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 8.25L11 13.75L16.5 8.25" stroke="#2a5f8a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
     return `
       <div class="capitulo" data-cap-index="${index}" id="capitulo-${index}">
         <div class="capitulo-header" onclick="toggleCapitulo(${index})">
           <h2>${capitulo.chapter} <span class="badge-doc" style="background:#e2eaf2;">${articulosFiltrados.length} artículos</span></h2>
-          <span class="toggle-icon">${toggleIcon}</span>
+          ${toggleIcon}
         </div>
         <div class="capitulo-body ${isCollapsed ? 'collapsed' : ''}" id="capitulo-body-${index}">
           ${articulosFiltrados.map(art => `
@@ -644,7 +650,10 @@ function renderLaw(data, filterText = '') {
 
 window.toggleCapitulo = function(index) {
   collapsedState[index] = !collapsedState[index];
-  renderLaw(leyData, buscador.value);
+  const body = document.getElementById(`capitulo-body-${index}`);
+  const icon = document.querySelector(`#capitulo-${index} .toggle-icon`);
+  if (body) body.classList.toggle('collapsed');
+  if (icon) icon.classList.toggle('collapsed');
 };
 
 buscador.addEventListener('input', (e) => {

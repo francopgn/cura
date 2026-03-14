@@ -608,7 +608,24 @@ display:none;
 }
 
 }
-    
+    .banner-container{
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
+}
+
+#top-banner-text{
+  position:absolute;
+  transition:opacity .35s ease, transform .35s ease;
+}
+
+.banner-hidden{
+  opacity:0;
+  transform:translateY(-6px);
+}
   </style>
 </head>
 
@@ -638,10 +655,10 @@ display:none;
 <!-- =============================================
      BANNER SUPERIOR ROTATIVO (ORIGINAL)
 ============================================== -->
-<div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 py-2 px-4">
-  <span id="top-banner-text">
-    Versión 05/03/26 — La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
-  </span>
+<div id="top-banner" class="w-full bg-yellow-50 text-center text-xs text-yellow-900 px-4">
+  <div class="banner-container">
+    <span id="top-banner-text"></span>
+  </div>
 </div>
 
 <!-- =============================================
@@ -2005,24 +2022,40 @@ document.addEventListener('DOMContentLoaded', function () {
   lenis.on('scroll', AOS.refresh);
 
   /* --- Banner rotativo --- */
-  const bannerTextEl = document.getElementById('top-banner-text');
-  if (bannerTextEl) {
-    const bannerMessages = [
-      'Versión 05/03/26 — La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
-      'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 260 páginas de transformación histórica.',
-      'Ya disponible: Resumen Ejecutivo actualizado [13/03/26]'
-    ];
-    let bannerIndex = 0;
-    setInterval(() => {
-      bannerTextEl.classList.add('banner-hidden');
-      setTimeout(() => {
-        bannerIndex = (bannerIndex + 1) % bannerMessages.length;
-        bannerTextEl.textContent = bannerMessages[bannerIndex];
-        bannerTextEl.classList.remove('banner-hidden');
-      }, 350);
-    }, 5000);
-  }
+const bannerTextEl = document.getElementById('top-banner-text');
 
+if (bannerTextEl) {
+
+  const bannerMessages = [
+    'La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
+    'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 260 páginas de transformación histórica.',
+    'Ya disponible: Resumen Ejecutivo actualizado [13/03/26]'
+  ];
+
+  let bannerIndex = 0;
+  let bannerActivo = true;
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 30) bannerActivo = false;
+  });
+
+  bannerTextEl.textContent = bannerMessages[0];
+
+  setInterval(() => {
+
+    if (!bannerActivo) return;
+
+    bannerTextEl.classList.add('banner-hidden');
+
+    setTimeout(() => {
+      bannerIndex = (bannerIndex + 1) % bannerMessages.length;
+      bannerTextEl.textContent = bannerMessages[bannerIndex];
+      bannerTextEl.classList.remove('banner-hidden');
+    }, 350);
+
+  }, 5000);
+
+}
   /* --- Scroll suave: botones hero y nav --- */
   const btnSumate   = document.getElementById('btn-sumate');
   const targetSumate  = document.getElementById('sumate');

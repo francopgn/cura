@@ -2419,7 +2419,31 @@ dot.classList.remove("show-label");
 });
 
 }
-activateDot("inicio"); // ← activa el primero al cargar
+
+/* detectar sección al cargar */
+
+function detectInitialSection(){
+
+let scrollPosition = window.scrollY + window.innerHeight * 0.35;
+
+sections.forEach(section=>{
+
+if(
+scrollPosition >= section.offsetTop &&
+scrollPosition < section.offsetTop + section.offsetHeight
+){
+activateDot(section.id);
+}
+
+});
+
+}
+
+window.addEventListener("load", detectInitialSection);
+
+
+/* observer para actualizar dots */
+
 const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{
@@ -2441,7 +2465,32 @@ observer.observe(section);
 });
 
 
-/* pulsos */
+/* scroll suave al hacer clic */
+
+dots.forEach(dot => {
+
+dot.addEventListener("click", e => {
+
+e.preventDefault();
+
+const targetId = dot.getAttribute("href");
+const target = document.querySelector(targetId);
+
+if(target){
+
+target.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+});
+
+});
+
+
+/* pulsos de datos */
 
 function createDataPulse(){
 

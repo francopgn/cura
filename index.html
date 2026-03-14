@@ -628,7 +628,7 @@ display:none;
       <a href="#datos" class="dot" data-label="Datos"></a>
      <a href="#sumate" class="dot" data-label="Sumarse"></a>
       <a href="#contacto" class="dot" data-label="Contacto"></a>
-     <a href="#newsletter" class="dot" data-label="Newsletter"></a>
+    
   </div>
 
 </div>
@@ -669,14 +669,14 @@ display:none;
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">
         <a href="#inicio"      class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
-        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">El Sistema</a>
+        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
         <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
         <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
         <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
       </div>
       <div class="flex items-center gap-3">
         <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
-          Demostración
+          Demo
         </a>
         <div class="hidden sm:block relative">
           <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
@@ -1617,10 +1617,10 @@ display:none;
   <div class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-cura-accentLight">
     <p>Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
     <div class="flex flex-wrap gap-3">
-      <a href="#que-es"     class="hover:text-white">El Sistema</a>
+      <a href="#explicacion"     class="hover:text-white">Sistema</a>
       <a href="#beneficios" class="hover:text-white">Beneficios</a>
       <a href="/Informacion/informacion.html" class="hover:text-white">Información</a>
-      <a href="/demonivel2.html" target="_blank" class="hover:text-white">Demo Enfermero</a>
+      <a href="/demo.html" target="_blank" class="hover:text-white">Demostración</a>
       <a href="#contacto"   class="hover:text-white">Contacto</a>
     </div>
   </div>
@@ -2419,7 +2419,7 @@ dot.classList.remove("show-label");
 });
 
 }
-
+activateDot("inicio"); // ← activa el primero al cargar
 const observer = new IntersectionObserver((entries)=>{
 
 entries.forEach(entry=>{

@@ -606,17 +606,77 @@
       "sin nuevos impuestos",
       "PAMI ahorros",
       "10%",
-      "BID"
+      "BID",
+      "mecenazgo",
+      "padrinazgo",
+      "Ganancias",
+      "TISD",
+      "FSU",
+      "fondo servicio universal",
+      "reinversión ahorros",
+      "fuentes financiamiento",
+      "donaciones",
+      "multas",
+      "cooperación internacional"
     ],
     "articulos_ref": [
       "Artículo 35",
+      "Artículo 12 TER",
+      "Artículo 35 QUATER",
+      "Artículo 35 QUINQUIES",
+      "Artículo 35 SEXIES",
+      "Artículo 37",
+      "Artículo 37 TER"
+    ],
+    "resumen": "El FIISD se integra con: reasignación del 10% de partidas de salud digital, FSU hasta el 20% para conectividad, infraestructura de ARSAT sin costo, Canon CIES a cargo de obras sociales y prepagas, ahorros del PAMI (hasta 50%) y reinversión del 50% de ahorros sistémicos (40% ciberseguridad + 60% equidad sanitaria). No genera nuevos impuestos.",
+    "titulo": "Financiamiento del Sistema C.U.R.A.: fuentes principales del FIISD (1 de 2)",
+    "contenido": "Artículo 35 — Financiamiento del Sistema C.U.R.A. (fuentes principales):\n\nPrincipio rector: Máxima Eficiencia Presupuestaria. El sistema NO crea nuevos impuestos. Se financia reasignando y articulando recursos existentes.\n\n1. REASIGNACIÓN ESTRATÉGICA — Art. 35.b.1 (hasta el 10%):\nHasta el 10% de las partidas del Ministerio de Salud asignadas a Telemedicina (Ley 27.553), SNVS e Informática Sanitaria. Solo cuando el Sistema C.U.R.A. absorbe operativamente esa función. EXCLUIDOS programas con más de 50.000 beneficiarios activos.\n\n2. FONDO DEL SERVICIO UNIVERSAL (FSU) — Art. 12 TER (hasta el 20%):\nHasta el 20% anual de los recursos del FSU (Ley 27.078) para infraestructura de conectividad sanitaria en establecimientos públicos de salud. Carácter transitorio (5 años), condicionado a informe del ENACOM que certifique que no reduce los programas tradicionales de conectividad.\n\n3. INFRAESTRUCTURA PÚBLICA SIN COSTO — Art. 35.b.2:\nARSAT S.E. (fibra óptica y satélites), Secretaría de Innovación Pública y ONTI, cuyos costos ya están en sus propios presupuestos.\n\n4. CANON DE INTEROPERABILIDAD (CIES) — Art. 35.b.4:\nTasa retributiva a cargo de Obras Sociales Nacionales y Entidades de Medicina Prepaga. Proporcional al costo real del servicio de interoperabilidad. NO puede trasladarse a cuotas ni copagos de afiliados.\n\n5. AHORRO OPERATIVO DEL PAMI — Art. 35.d:\nEl INSSJP-PAMI cuantifica sus ahorros anuales por digitalización (eliminación del troquel físico, recetas en papel, autorizaciones manuales, reducción de fraude). Hasta el 50% de esos ahorros netos PODRÁ ser transferido al FIISD, previo dictamen de la SIGEN.\n\n6. REINVERSIÓN DE AHORROS SISTÉMICOS — Art. 35.c:\nLa SIGEN certifica anualmente los ahorros netos del sistema. Al menos el 50% de esos ahorros certificados se destina obligatoriamente a:\n- 40% → Ciberseguridad, mejora de conectividad y mantenimiento crítico\n- 60% → Fondo Federal de Equidad Sanitaria (reducción de brechas entre provincias)\n\nGARANTÍA PRESUPUESTARIA (Disposición Transitoria Vigésimotercera):\nSi a los 18 meses de la reglamentación no se efectivizaron las reasignaciones, el Consejo Nacional eleva al Jefe de Gabinete un informe recomendando incluir una partida mínima de 0,1% del presupuesto del Ministerio de Salud.\n\nPreguntas frecuentes relacionadas:\n- ¿Cómo se financia el sistema CURA?\n- ¿Cuáles son las fuentes de financiamiento?\n- ¿El sistema CURA genera nuevos impuestos?\n- ¿Qué es el FIISD?\n- ¿Qué es el CIES?\n- ¿El PAMI aporta fondos al sistema?\n- ¿Qué es el Fondo del Servicio Universal y cómo se usa?\n- ¿A dónde se reinvierten los ahorros del sistema?",
+    "articulos": [
+      "Artículo 35",
+      "Artículo 12 TER",
       "Artículo 35 BIS",
       "Artículo 35 TER",
+      "Artículo 35 QUATER",
+      "Artículo 35 QUINQUIES",
+      "Artículo 35 SEXIES",
+      "Artículo 37",
+      "Artículo 37 TER",
       "Disposición Transitoria Vigésimotercera"
+    ]
+  },
+  {
+    "id": "cura_art_35quater_financiamiento_complementario",
+    "tipo": "articulo",
+    "numero": 35,
+    "capitulo": "Título VII – Financiamiento, Sostenibilidad y Proyección Internacional",
+    "tema": [
+      "financiamiento",
+      "mecenazgo",
+      "padrinazgo",
+      "Ganancias",
+      "TISD",
+      "fuentes complementarias",
+      "donaciones",
+      "multas",
+      "cooperación internacional",
+      "FONTAR",
+      "ANR",
+      "TISD mercado capitales",
+      "salud corporativa",
+      "inversión privada"
     ],
-    "resumen": "El sistema se financia con: reasignación de hasta el 10% de partidas de salud digital existentes, ARSAT sin costo adicional, Canon de Interoperabilidad (CIES) a cargo de obras sociales y prepagas, y ahorros operativos. No genera nuevos impuestos.",
-    "titulo": "Financiamiento del Sistema C.U.R.A.: principio de eficiencia presupuestaria",
-    "contenido": "Artículo 35 — Financiamiento, Sostenibilidad y Principio de Máxima Eficiencia Presupuestaria:\n\nPrincipio rector: reasignación estratégica de recursos existentes, no generación de nueva erogación.\n\nFONDO DE INVERSIÓN INICIAL PARA LA SALUD DIGITAL (FIISD):\nSe integra con:\n\n1. Reasignación estratégica (hasta el 10%):\nHasta el 10% de las partidas del Ministerio de Salud asignadas a Telemedicina (Ley 27.553), SNVS e Informática Sanitaria. Solo se aplica cuando el Sistema C.U.R.A. absorbe operativamente esa función. EXCLUIDOS los programas con más de 50.000 beneficiarios activos.\n\n2. Infraestructura pública sin costo adicional:\nARSAT S.E. (fibra óptica y satélites), Secretaría de Innovación Pública y ONTI, cuyos costos ya están en sus propios presupuestos.\n\n3. Canon de Interoperabilidad e Integración al Sistema (CIES):\nTasa retributiva a cargo de Obras Sociales Nacionales y Entidades de Medicina Prepaga, proporcional al costo real del servicio de interoperabilidad. NO puede trasladarse a cuotas ni copagos de afiliados.\n\n4. Ahorro operativo del PAMI (Art. 35.d):\nEl INSSJP-PAMI cuantifica anualmente sus ahorros. Hasta el 50% de esos ahorros netos PODRÁ ser transferido al FIISD, previo dictamen de la SIGEN que certifique que no compromete la calidad prestacional del Instituto.\n\n5. Financiamiento internacional: créditos específicos con BID, BM y CAF.\n\nGarantía presupuestaria (Disposición Transitoria Vigésimotercera):\nSi a los 18 meses de la reglamentación no se efectivizaron las reasignaciones, el Consejo Nacional eleva un informe al Jefe de Gabinete recomendando incluir una partida en el Presupuesto. Monto de referencia mínimo: 0,1% del presupuesto del Ministerio de Salud.\n\nPreguntas frecuentes relacionadas:\n- ¿Cómo se financia el sistema CURA?\n- ¿El sistema CURA genera nuevos impuestos?\n- ¿De dónde salen los fondos?\n- ¿Qué es el FIISD?\n- ¿El PAMI aporta fondos al sistema?"
+    "articulos_ref": [
+      "Artículo 35 QUATER",
+      "Artículo 35 QUINQUIES",
+      "Artículo 35 SEXIES",
+      "Artículo 37",
+      "Artículo 37 TER",
+      "Artículo 45"
+    ],
+    "resumen": "Fuentes complementarias del FIISD: Padrinazgo tecnológico (100% deducción en Ganancias, tope 5%), Integración de Salud Corporativa (precio público), FONTAR/ANR, Títulos de Inversión en Salud Digital (TISD), cooperación técnica internacional no reembolsable (OPS, PNUD, BID, CAF), donaciones de fundaciones y universidades, y multas por incumplimiento.",
+    "namespace": "leycura",
+    "contenido": "Artículos 35 QUATER, 35 QUINQUIES, 35 SEXIES, 37 y 45 — Fuentes complementarias y privadas del FIISD:\n\n7. PADRINAZGO TECNOLÓGICO PRIVADO — Arts. 37 y 37 TER:\nEmpresas que financien equipamiento en hospitales públicos deducen hasta el 100% del monto invertido del Impuesto a las Ganancias, con tope del 5% de la ganancia neta del ejercicio. No genera saldo a favor ni es trasladable a ejercicios futuros. Cupo fiscal fijado anualmente en la Ley de Presupuesto.\n\n8. INTEGRACIÓN DE SALUD CORPORATIVA — Art. 37.c:\nEmpresas con servicios médicos laborales propios que integren sus sistemas para validación digital de certificados médicos y licencias pagan un precio público por el servicio (de naturaleza contractual, no tributaria). Los recursos van al FIISD. Limitado a: verificar autenticidad del certificado, vigencia de matrícula y existencia formal del documento. No implica acceso a datos clínicos del trabajador.\n\n9. FUENTES COMPLEMENTARIAS DE BASE NACIONAL — Art. 35 QUATER:\n- FONTAR / Agencia I+D+i: Aportes No Reembolsables (ANR) y créditos subsidiados para módulos tecnológicos prioritarios del sistema\n- Régimen de Economía del Conocimiento (Ley 27.635): empresas de tecnología sanitaria calificadas\n- Fondos de modernización del Estado: partidas de programas cuyas funciones absorbe el sistema\n\n10. TÍTULOS DE INVERSIÓN EN SALUD DIGITAL (TISD) — Art. 35 QUATER.d:\nValores negociables emitibles en el mercado de capitales (CNV), con plazo hasta 10 años y rendimiento vinculado a ahorros sistémicos auditados por la SIGEN. Requieren autorización en la Ley de Presupuesto. No constituyen deuda soberana garantizada plena.\n\n11. COOPERACIÓN TÉCNICA INTERNACIONAL NO REEMBOLSABLE — Art. 35 QUINQUIES:\nAcuerdos expresamente autorizados con: OPS/OMS, PNUD, UIT, BID (asistencia técnica no reembolsable), CAF, AECID, GIZ, USAID, JICA. No generan deuda soberana ni implican transferencia de datos identificables de pacientes.\n\n12. DONACIONES DE FUNDACIONES Y CENTROS DE INVESTIGACIÓN — Art. 35 SEXIES:\nFundaciones, asociaciones civiles, universidades nacionales y organismos científicos (CONICET, INTA, INTI) pueden aportar dinero, especie o recursos humanos al FIISD. Condición: no puede implicar, directa ni indirectamente, acceso o comercialización de datos de salud.\n\n13. MULTAS POR INCUMPLIMIENTO — Art. 45.f:\nEl producido de las multas aplicadas a prestadores por incumplimientos a la ley se integra directamente al FIISD.\n\nFUENTES PROHIBIDAS (Art. 35 SEXIES.c):\nNo son admisibles: mecanismos que impliquen ceder datos de salud como contraprestación, Bonos de Impacto Social con métricas de datos individuales de pacientes, contratos con cláusulas de exclusividad tecnológica o dependencia permanente de un proveedor.\n\nPreguntas frecuentes relacionadas:\n- ¿Cuáles son las fuentes de financiamiento del sistema CURA?\n- ¿Qué incentivos tienen las empresas privadas para invertir en el sistema?\n- ¿Qué son los Títulos de Inversión en Salud Digital?\n- ¿A dónde van las multas del sistema?\n- ¿Las universidades pueden contribuir al sistema?\n- ¿El sistema puede recibir donaciones privadas?\n- ¿Qué es el Padrinazgo Tecnológico?",
+    "titulo": "Financiamiento del Sistema C.U.R.A.: fuentes complementarias del FIISD (2 de 2)"
   },
   {
     "id": "cura_art_37_mecenazgo_sandbox_ia",

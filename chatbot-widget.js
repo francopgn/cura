@@ -290,11 +290,20 @@
       `;
       document.body.appendChild(this.button);
 
-      // Mobile: colapsar a círculo después de 3s
+      // Mobile: colapsar a círculo después de 2.5s, fluidamente
       if (window.innerWidth <= 768) {
         setTimeout(() => {
-          if (!this.isOpen) this.button.classList.add('btn-collapsed');
-        }, 3000);
+          if (this.isOpen) return;
+          // Fijar el ancho actual explícitamente para que la transición tenga punto de partida
+          const currentWidth = this.button.offsetWidth;
+          this.button.style.width = currentWidth + 'px';
+          // Forzar repaint antes de agregar la clase
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              this.button.classList.add('btn-collapsed');
+            });
+          });
+        }, 2500);
       }
     }
 
@@ -393,6 +402,7 @@
       this.chatWindow.classList.toggle("open", this.isOpen);
       if (this.isOpen) {
         // Expandir mientras el chat está abierto
+        this.button.style.width = '';
         this.button.classList.remove('btn-collapsed');
       } else if (window.innerWidth <= 768) {
         // Volver a colapsar al cerrar
@@ -403,10 +413,17 @@
     closeChat() {
       this.isOpen = false;
       this.chatWindow.classList.remove("open");
+      this.button.style.width = '';
       this.button.classList.remove("leycura-btn-hidden-mobile");
       this.chatWindow.classList.remove("keyboard-up");
       if (window.innerWidth <= 768) {
-        setTimeout(() => this.button.classList.add('btn-collapsed'), 800);
+        setTimeout(() => {
+          const w = this.button.offsetWidth;
+          this.button.style.width = w + 'px';
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            this.button.classList.add('btn-collapsed');
+          }));
+        }, 800);
       }
     }
 
@@ -424,6 +441,17 @@ async sendMessage() {
   this.typingEl.textContent = "El asistente está pensando...";
   this.messagesEl.appendChild(this.typingEl);
 
+  // Alternar mensajes mientras espera la respuesta
+  const typingMessages = [
+    "El asistente está pensando...",
+    "Se está generando, esperá un momento..."
+  ];
+  let typingIdx = 0;
+  this.typingInterval = setInterval(() => {
+    typingIdx = (typingIdx + 1) % typingMessages.length;
+    if (this.typingEl) this.typingEl.textContent = typingMessages[typingIdx];
+  }, 2500);
+
   this.scrollToBottom();
 
   try {
@@ -440,10 +468,9 @@ async sendMessage() {
 
     const data = await res.json();
 
-    if (this.typingEl) this.typingEl.remove();
+    if (this.typingEl) { clearInterval(this.typingInterval); this.typingEl.remove(); }
 
     if (data.answer) {
-
       this.addMessage(data.answer, "bot");
 
       if (data.suggestions && data.suggestions.length > 0) {
@@ -458,8 +485,7 @@ async sendMessage() {
 
   } catch (err) {
 
-    if (this.typingEl) this.typingEl.remove();
-    console.error(err);
+    if (this.typingEl) { clearInterval(this.typingInterval); this.typingEl.remove(); }
     this.addMessage("Error de conexión con el asistente.", "bot");
 
   } finally {

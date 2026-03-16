@@ -180,7 +180,7 @@ box-shadow:0 20px 40px -5px rgba(0,0,0,0.4);
   transform-style:preserve-3d;
 }
     /* Shine automático: siempre activo, no depende del hover */
-.card-face::after{
+    .card-face::after{
 content:"";
 position:absolute;
 top:-50%;
@@ -191,15 +191,15 @@ height:200%;
 background:linear-gradient(
 115deg,
 transparent 40%,
-rgba(255,255,255,0.12) 48%,
-rgba(255,255,255,0.25) 50%,
-rgba(255,255,255,0.12) 52%,
+rgba(255,255,255,0.08) 48%,
+rgba(255,255,255,0.22) 50%,
+rgba(255,255,255,0.08) 52%,
 transparent 60%
 );
 
-opacity:0;
+opacity:1;
 pointer-events:none;
-transition:opacity .4s ease;
+animation:shineMove 4s linear infinite;
 }
 
 .card-bg-img{

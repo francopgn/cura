@@ -216,20 +216,25 @@
       .leycura-typing-text {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         margin-bottom: 6px;
+      }
+
+      .leycura-typing-msg {
+        animation: pulse-simple 1.5s ease-in-out infinite;
       }
 
       .leycura-typing-dots {
         display: inline-flex;
-        gap: 3px;
+        gap: 2px;
         align-items: center;
+        flex-shrink: 0;
       }
 
       .leycura-typing-dots span {
-        width: 5px;
-        height: 5px;
-        background: var(--cura-accent);
+        width: 3px;
+        height: 3px;
+        background: #94a3b8;
         border-radius: 50%;
         animation: bounceDot 1.2s ease-in-out infinite;
         display: inline-block;
@@ -238,8 +243,8 @@
       .leycura-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
       @keyframes bounceDot {
-        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-        30% { transform: translateY(-5px); opacity: 1; }
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+        30% { transform: translateY(-3px); opacity: 1; }
       }
 
       .leycura-progress-bar-wrap {
@@ -500,18 +505,18 @@ async sendMessage() {
 
   // Frases en orden, luego queda en la última
   const typingMessages = [
-    "El asistente está pensando...",
-    "Se está generando, esperá un momento...",
-    "Procesando tu consulta...",
-    "Buscando la mejor respuesta...",
-    "Consultando los artículos relevantes...",
-    "Preparando una respuesta detallada...",
-    "Revisando la documentación técnica...",
-    "Casi listo, redactando la respuesta...",
-    "Analizando la Ley C.U.R.A. para vos...",
-    "Todavía trabajando, un momento más...",
-    "Generando respuesta completa...",
-    "Listo, redactando los últimos detalles..."
+    "El asistente está pensando",
+    "Se está generando, esperá un momento",
+    "Procesando tu consulta",
+    "Buscando la mejor respuesta",
+    "Consultando los artículos relevantes",
+    "Preparando una respuesta detallada",
+    "Revisando la documentación técnica",
+    "Casi listo, redactando la respuesta",
+    "Analizando la Ley C.U.R.A. para vos",
+    "Todavía trabajando, un momento más",
+    "Generando respuesta completa",
+    "Listo, redactando los últimos detalles"
   ];
 
   // Progreso falso: sube rápido hasta ~85%, luego se frena
@@ -556,6 +561,7 @@ async sendMessage() {
     await new Promise(r => setTimeout(r, 350));
 
     if (data.answer) {
+      this.addMessage(data.answer, "bot");
 
       if (data.suggestions && data.suggestions.length > 0) {
         setTimeout(() => {

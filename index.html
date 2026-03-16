@@ -80,7 +80,7 @@ margin:0 auto;
 z-index:20;
 container-type:inline-size;
   transform-style:preserve-3d;
-  /* filter:drop-shadow eliminado — degradaba nitidez en 3D */
+  /* filter:drop-shadow eliminado — degrada nitidez en contexto 3D */
 }
     .card-container:hover::after{
 
@@ -123,34 +123,6 @@ content:"";
 
 position:absolute;
 
-width:80%;
-height:40%;
-
-left:50%;
-bottom:-18px;
-
-transform:translateX(-50%);
-
-background:radial-gradient(
-ellipse at center,
-rgba(0,0,0,0.35) 0%,
-rgba(0,0,0,0.18) 40%,
-rgba(0,0,0,0.05) 70%,
-transparent 100%
-);
-
-filter:blur(14px);
-
-z-index:-1;
-
-}
-
-    .card-container::before{
-
-content:"";
-
-position:absolute;
-
 left:50%;
 bottom:-22px;
 
@@ -187,7 +159,6 @@ transform-style:preserve-3d;
 transition:transform .8s cubic-bezier(.2,.8,.2,1);
 
 transform:translateZ(0);
-will-change:transform;
 
 cursor:pointer;
 }
@@ -207,6 +178,7 @@ overflow:hidden;
 box-shadow:0 20px 40px -5px rgba(0,0,0,0.4);
   transform-style:preserve-3d;
 }
+    /* Shine automático: siempre activo, no depende del hover */
     .card-face::after{
 content:"";
 position:absolute;
@@ -218,20 +190,15 @@ height:200%;
 background:linear-gradient(
 115deg,
 transparent 40%,
-rgba(255,255,255,0.15) 48%,
-rgba(255,255,255,0.35) 50%,
-rgba(255,255,255,0.15) 52%,
+rgba(255,255,255,0.08) 48%,
+rgba(255,255,255,0.22) 50%,
+rgba(255,255,255,0.08) 52%,
 transparent 60%
 );
 
-opacity:0;
-transition:opacity .4s ease;
-
+opacity:1;
 pointer-events:none;
-}
-    .card-container:hover:not(.is-flipping) .card-face::after{
-opacity:.6;
-animation:shineMove 3s linear infinite;
+animation:shineMove 4s linear infinite;
 }
 .card-bg-img{
 position:absolute;
@@ -241,12 +208,11 @@ width:100%;
 height:100%;
 
 object-fit:cover;
+
 image-rendering:-webkit-optimize-contrast;
-image-rendering:auto;
+
 backface-visibility:hidden;
 -webkit-backface-visibility:hidden;
-will-change:transform;
-  transform:translateZ(0);
 }
   .card-front{
 z-index:2;
@@ -260,22 +226,16 @@ transform:rotateY(180deg);
 backface-visibility:hidden;
 }
 
-  @keyframes float {
+  /* Float automático — siempre activo */
+  .animate-float {
+    animation: floatY 3.5s ease-in-out infinite;
+  }
+  /* Pausa el float solo cuando el usuario está encima */
+  .card-container:hover .animate-float {
+    animation-play-state: running;
+  }
 
-0%{
-transform:translateY(0px);
-}
-
-50%{
-transform:translateY(-12px);
-}
-
-100%{
-transform:translateY(0px);
-}
-
-}
-    @keyframes shineMove{
+  @keyframes shineMove{
 
 0%{
 transform:translateX(-40%) translateY(-40%) rotate(25deg);
@@ -316,10 +276,7 @@ transform:translateY(0);
 }
 
 }
-    .animate-float{
-animation: float 6s ease-in-out infinite;
-}
-    .card-container:hover .animate-float { animation-play-state: paused; }
+    /* float siempre corre — no se pausa en hover */
     .btn-resumen-ejecutivo {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 10px 20px; background-color: rgba(255,255,255,0.08); color: #e2e8f0;
@@ -1724,7 +1681,7 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#9af9f5f4eefbf9eef5daf6ffe3f9efe8fbb4f5e8fd" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="c7a4a8a9b3a6a4b3a887aba2bea4b2b5a6e9a8b5a0">[email&#160;protected]</span></a></p>
+          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#20434f4e544143544f604c4559435552410e4f5247" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="04676b6a706567706b4468617d677176652a6b7663">[email&#160;protected]</span></a></p>
           <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
         </div>
       </div>
@@ -1751,7 +1708,7 @@ display:none;
 
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#6e0d01001a0f0d1a012e020b170d1b1c0f40011c09" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="5e3d31302a3f3d2a311e323b273d2b2c3f70312c39">[email&#160;protected]</span></a></p>
+          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#bad9d5d4cedbd9ced5fad6dfc3d9cfc8db94d5c8dd" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="2f4c40415b4e4c5b406f434a564c5a5d4e01405d48">[email&#160;protected]</span></a></p>
         </div>
       </div>
     </div>
@@ -2373,14 +2330,7 @@ document.addEventListener('DOMContentLoaded', function () {
      CREDENCIAL 3D — ORIGINAL INTACTA
   ============================================== */
   const card = document.getElementById('credencial-giratoria');
-  if (card) card.addEventListener('click', function () {
-    const container = this.closest('.card-container');
-    this.classList.toggle('is-flipped');
-    if (container) {
-      container.classList.add('is-flipping');
-      setTimeout(() => container.classList.remove('is-flipping'), 850);
-    }
-  });
+  if (card) card.addEventListener('click', function () { this.classList.toggle('is-flipped'); });
 
   /* =============================================
      ANIMACIÓN DE RED SANITARIA EN CANVAS

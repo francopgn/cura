@@ -209,27 +209,7 @@ z-index:-1;
 pointer-events:none;
 }
 
-/* Brillo plástico estático — franja diagonal bien visible */
-.card-face::after{
-content:"";
-position:absolute;
-top:-20%;
-left:-10%;
-width:55%;
-height:160%;
-background:linear-gradient(
-  to right,
-  transparent 0%,
-  rgba(255,255,255,0.55) 40%,
-  rgba(255,255,255,0.80) 50%,
-  rgba(255,255,255,0.55) 60%,
-  transparent 100%
-);
-transform:rotate(-20deg);
-pointer-events:none;
-mix-blend-mode:overlay;
-z-index:2;
-}
+/* sin efecto shine */
 
 .card-bg-img{
 position:absolute;

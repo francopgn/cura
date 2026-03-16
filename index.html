@@ -188,12 +188,27 @@ backface-visibility:hidden;
 border-radius:18px;
 overflow:hidden;
 
-/* translateZ(0) promueve a capa GPU; -webkit-mask-image
-   es el fix WebKit para backface-visibility + overflow:hidden
-   sin la línea azul ni clip-path */
 transform:translateZ(0);
 box-shadow:0 20px 60px -8px rgba(0,0,0,0.6), 0 8px 24px -4px rgba(0,0,0,0.4);
 -webkit-mask-image:-webkit-radial-gradient(white, black);
+}
+
+/* Brillo plástico estático — sin animación, costo GPU mínimo */
+.card-face::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(
+  135deg,
+  rgba(255,255,255,0.18) 0%,
+  rgba(255,255,255,0.08) 20%,
+  transparent 45%,
+  transparent 70%,
+  rgba(255,255,255,0.04) 85%,
+  rgba(255,255,255,0.10) 100%
+);
+pointer-events:none;
+border-radius:18px;
 }
 
 .card-bg-img{
@@ -924,9 +939,11 @@ display:none;
        Un sistema interoperable que une hospitales, obras sociales y pacientes bajo un estándar digital común. Una red que integra a todo el país preservando la autonomía de cada jurisdicción, con soberanía tecnológica y control ciudadano.
       </p>
 
-<p id="texto-dinamico" class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic transition-opacity duration-500 ease-in-out" style="min-height:2.8em;display:flex;align-items:center;">
-  Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
-</p>
+<div class="mb-6 border-l-2 border-cura-accent/40 pl-3" style="height:3.6rem;overflow:hidden;display:flex;align-items:center;">
+  <p id="texto-dinamico" class="text-xs text-cura-accentLight italic transition-opacity duration-500 ease-in-out leading-snug m-0">
+    Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
+  </p>
+</div>
 
 <div class="flex flex-col gap-3">
   <div class="flex gap-3">

@@ -193,22 +193,42 @@ box-shadow:0 20px 60px -8px rgba(0,0,0,0.6), 0 8px 24px -4px rgba(0,0,0,0.4);
 -webkit-mask-image:-webkit-radial-gradient(white, black);
 }
 
+/* Sombra de profundidad debajo de la tarjeta — en el padre para que
+   no quede recortada por overflow:hidden ni afecte backface */
+.card-inner::after{
+content:"";
+position:absolute;
+left:6%;
+right:6%;
+bottom:-18px;
+height:28px;
+background:rgba(0,0,0,0.55);
+filter:blur(16px);
+border-radius:50%;
+z-index:-1;
+pointer-events:none;
+}
+
 /* Brillo plástico estático — sin animación, costo GPU mínimo */
 .card-face::after{
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(
-  135deg,
-  rgba(255,255,255,0.18) 0%,
-  rgba(255,255,255,0.08) 20%,
-  transparent 45%,
-  transparent 70%,
-  rgba(255,255,255,0.04) 85%,
-  rgba(255,255,255,0.10) 100%
-);
+/* Franja diagonal brillante que simula reflejo de luz sobre plástico */
+background:
+  linear-gradient(
+    118deg,
+    rgba(255,255,255,0.55) 0%,
+    rgba(255,255,255,0.25) 12%,
+    rgba(255,255,255,0.05) 28%,
+    transparent 42%,
+    transparent 68%,
+    rgba(255,255,255,0.04) 80%,
+    rgba(255,255,255,0.12) 100%
+  );
 pointer-events:none;
 border-radius:18px;
+z-index:2;
 }
 
 .card-bg-img{
@@ -594,10 +614,12 @@ transform:translateY(0);
     /* Tamaño de credencial en sección beneficios — aumentado */
     .cred-showcase-wrapper .card-container {
       max-width: 420px;
+      width: 95%;
     }
     /* Alias para el card-container dentro del showcase */
     .cred-showcase-wrapper-inner {
       max-width: 460px !important;
+      width: 95% !important;
       margin: 0 auto;
     }
 

@@ -219,8 +219,12 @@ width:100%;
 height:100%;
 
 object-fit:cover;
+/* crisp rendering en todos los browsers */
 image-rendering:-webkit-optimize-contrast;
-image-rendering:auto;
+image-rendering:crisp-edges;
+image-rendering:high-quality;
+/* fuerza sub-pixel rendering */
+-webkit-font-smoothing:antialiased;
 backface-visibility:hidden;
 -webkit-backface-visibility:hidden;
 will-change:transform;
@@ -1600,23 +1604,23 @@ display:none;
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="50">
-        <div class="metric-value">260</div>
+        <div class="metric-value" data-count="260">260</div>
         <div class="metric-label">páginas de documento técnico-legislativo</div>
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="100">
-        <div class="metric-value">5</div>
+        <div class="metric-value" data-count="5">5</div>
         <div class="metric-label">fases de implementación certificadas</div>
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="150">
-        <div class="metric-value">3</div>
+        <div class="metric-value" data-count="3">3</div>
         <div class="metric-label">subsistemas integrados (público, OOOO.SS, prepaga)</div>
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="200">
-        <div class="metric-value">90%</div>
+        <div class="metric-value" data-count="90" data-suffix="%">90%</div>
         <div class="metric-label">operatividad mínima para avanzar de fase</div>
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="250">
-        <div class="metric-value">100%</div>
+        <div class="metric-value" data-count="100" data-suffix="%">100%</div>
         <div class="metric-label">soberanía de datos clínicos en Argentina</div>
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="300">
@@ -1717,9 +1721,7 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">
-  correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a>
-</p>
+          <p class="text-sm text-cura-accentLight">email: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
           <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
         </div>
       </div>
@@ -1746,7 +1748,7 @@ display:none;
 
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#bad9d5d4cedbd9ced5fad6dfc3d9cfc8db94d5c8dd" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="2f4c40415b4e4c5b406f434a564c5a5d4e01405d48">[email&#160;protected]</span></a></p>
+          <p class="text-sm text-cura-accentLight">email: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
         </div>
       </div>
     </div>
@@ -2732,6 +2734,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
       }, 5000);
   });
+</script>
+<script>
+(function(){
+  var counters = document.querySelectorAll('.metric-value[data-count]');
+  if(!counters.length) return;
+
+  // Poner 0 inmediatamente antes de que AOS muestre nada
+  counters.forEach(function(el){
+    var suffix = el.getAttribute('data-suffix') || '';
+    el.textContent = '0' + suffix;
+  });
+
+  var done = false;
+
+  function animateCounters(){
+    counters.forEach(function(el){
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var suffix = el.getAttribute('data-suffix') || '';
+      var duration = 900;
+      var start = null;
+      el.textContent = '0' + suffix;
+
+      function step(ts){
+        if(!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var ease = 1 - Math.pow(1 - progress, 4);
+        el.textContent = Math.round(ease * target) + suffix;
+        if(progress < 1) requestAnimationFrame(step);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !done){
+        done = true;
+        setTimeout(animateCounters, 400);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  var section = document.getElementById('datos');
+  if(section) observer.observe(section);
+})();
 </script>
 </body>
 </html>

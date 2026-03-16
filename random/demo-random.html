@@ -282,7 +282,7 @@
 
         <!-- Datos -->
         <div class="flex-1 min-w-0">
-          <h2 id="nombre-completo" class="text-base font-extrabold text-white leading-tight mb-2.5 truncate uppercase tracking-tight"></h2>
+          <h2 id="nombre-completo" class="text-base font-extrabold text-white leading-tight mb-2.5 uppercase tracking-tight break-words" style="overflow-wrap:anywhere"></h2>
           <div class="flex flex-wrap gap-1.5">
             <span class="data-chip"><span class="chip-label">DNI</span><span id="dni">—</span></span>
             <span class="data-chip"><span class="chip-label">Nac.</span><span id="fecha-nac">—</span></span>
@@ -369,22 +369,15 @@ function calcEdad(d, m, y) {
   return e;
 }
 
-/* Foto filtrada por rango etario via randomuser.me API */
-async function fetchFotoEdad(sexo, edadPaciente) {
-  const gender = sexo === 'M' ? 'male' : 'female';
-  const margen = 12;
-  const minAge = Math.max(18, edadPaciente - margen);
-  const maxAge = edadPaciente + margen;
-  try {
-    const res  = await fetch(`https://randomuser.me/api/?gender=${gender}&nat=ar,es,mx&results=15`);
-    const data = await res.json();
-    const filtrados = data.results.filter(u => u.dob.age >= minAge && u.dob.age <= maxAge);
-    const usuario   = filtrados.length > 0 ? filtrados[0] : data.results[0];
-    document.getElementById('foto-paciente').src = usuario.picture.large;
-  } catch {
-    document.getElementById('foto-paciente').src =
-      `https://randomuser.me/api/portraits/${sexo === 'M' ? 'men' : 'women'}/${randInt(1,99)}.jpg`;
-  }
+/* Foto estilo DNI — retrato frontal directo */
+function fetchFotoEdad(sexo, edadPaciente) {
+  const carpeta = sexo === 'M' ? 'men' : 'women';
+  const n       = randInt(1, 99);
+  const img     = document.getElementById('foto-paciente');
+  img.src = `https://randomuser.me/api/portraits/${carpeta}/${n}.jpg`;
+  img.onerror = () => {
+    img.src = `https://randomuser.me/api/portraits/${carpeta}/${randInt(1,99)}.jpg`;
+  };
 }
 
 const nombresM  = ['Franco','Juan','Lucas','Santiago','Matías','Agustín','Iván','Tomás','Bruno','Ezequiel','Rodrigo','Nicolás','Diego','Adrián','Hugo','Roberto'];

@@ -82,12 +82,6 @@ z-index:20;
 container-type:inline-size;
 outline:none;
 -webkit-tap-highlight-color:transparent;
-/* Sombra en card-container — fuera del contexto 3D, no interfiere con el flip */
-filter:
-  drop-shadow(0 4px 6px rgba(0,0,0,0.4))
-  drop-shadow(0 16px 32px rgba(0,0,0,0.55))
-  drop-shadow(0 32px 56px rgba(0,0,0,0.35))
-  drop-shadow(0 0 36px rgba(0,194,255,0.20));
 }
     .card-container:hover::after{
 
@@ -194,30 +188,12 @@ backface-visibility:hidden;
 border-radius:18px;
 overflow:hidden;
 
-box-shadow: none;
-outline:none;
-}
-    /* Shine automático: siempre activo, no depende del hover */
-    .card-face::after{
-content:"";
-position:absolute;
-top:-50%;
-left:-50%;
-width:200%;
-height:200%;
-
-background:linear-gradient(
-115deg,
-transparent 40%,
-rgba(255,255,255,0.08) 48%,
-rgba(255,255,255,0.22) 50%,
-rgba(255,255,255,0.08) 52%,
-transparent 60%
-);
-
-opacity:1;
-pointer-events:none;
-animation:shineMove 4s linear infinite;
+/* translateZ(0) promueve a capa GPU; -webkit-mask-image
+   es el fix WebKit para backface-visibility + overflow:hidden
+   sin la línea azul ni clip-path */
+transform:translateZ(0);
+box-shadow:0 20px 60px -8px rgba(0,0,0,0.6), 0 8px 24px -4px rgba(0,0,0,0.4);
+-webkit-mask-image:-webkit-radial-gradient(white, black);
 }
 
 .card-bg-img{
@@ -255,31 +231,13 @@ backface-visibility:hidden;
     animation-play-state: running;
   }
 
-  /* ── Mobile: desactiva animaciones costosas para scroll fluido ── */
+  /* ── Mobile: desactiva float para scroll fluido ── */
   @media (max-width: 768px) {
-    /* Sin float — libera el compositor completamente */
     .animate-float {
       animation: none !important;
-      transform: none !important;
     }
-    /* Sin shine — elimina el repaint continuo del gradiente animado */
-    .card-face::after {
-      animation: none !important;
-      display: none !important;
-    }
-    /* Sombra mínima — drop-shadow múltiple es muy costoso en GPU mobile */
-    .card-container {
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.55));
-      will-change: auto;
-    }
-    /* Scroll táctil sin bloqueo */
     .card-inner {
       touch-action: manipulation;
-    }
-    .perspective-container,
-    .card-container,
-    .card-inner {
-      will-change: auto;
     }
   }
 
@@ -966,7 +924,7 @@ display:none;
        Un sistema interoperable que une hospitales, obras sociales y pacientes bajo un estándar digital común. Una red que integra a todo el país preservando la autonomía de cada jurisdicción, con soberanía tecnológica y control ciudadano.
       </p>
 
-<p id="texto-dinamico" class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic transition-opacity duration-500 ease-in-out" style="min-height:2.8em; display:flex; align-items:center;">
+<p id="texto-dinamico" class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic transition-opacity duration-500 ease-in-out" style="min-height:2.8em;display:flex;align-items:center;">
   Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
 </p>
 

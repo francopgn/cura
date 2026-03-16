@@ -209,25 +209,25 @@ z-index:-1;
 pointer-events:none;
 }
 
-/* Brillo plástico estático — sin animación, costo GPU mínimo */
+/* Brillo plástico estático — franja diagonal bien visible */
 .card-face::after{
 content:"";
 position:absolute;
-inset:0;
-/* Franja diagonal brillante que simula reflejo de luz sobre plástico */
-background:
-  linear-gradient(
-    118deg,
-    rgba(255,255,255,0.55) 0%,
-    rgba(255,255,255,0.25) 12%,
-    rgba(255,255,255,0.05) 28%,
-    transparent 42%,
-    transparent 68%,
-    rgba(255,255,255,0.04) 80%,
-    rgba(255,255,255,0.12) 100%
-  );
+top:-20%;
+left:-10%;
+width:55%;
+height:160%;
+background:linear-gradient(
+  to right,
+  transparent 0%,
+  rgba(255,255,255,0.55) 40%,
+  rgba(255,255,255,0.80) 50%,
+  rgba(255,255,255,0.55) 60%,
+  transparent 100%
+);
+transform:rotate(-20deg);
 pointer-events:none;
-border-radius:18px;
+mix-blend-mode:overlay;
 z-index:2;
 }
 
@@ -266,10 +266,10 @@ backface-visibility:hidden;
     animation-play-state: running;
   }
 
-  /* ── Mobile: desactiva float para scroll fluido ── */
+  /* ── Mobile: float activo (shineMove eliminado, ya no hay lag) ── */
   @media (max-width: 768px) {
     .animate-float {
-      animation: none !important;
+      animation: floatY 3.5s ease-in-out infinite;
     }
     .card-inner {
       touch-action: manipulation;
@@ -614,13 +614,24 @@ transform:translateY(0);
     /* Tamaño de credencial en sección beneficios — aumentado */
     .cred-showcase-wrapper .card-container {
       max-width: 420px;
-      width: 95%;
+      width: 100%;
     }
     /* Alias para el card-container dentro del showcase */
     .cred-showcase-wrapper-inner {
       max-width: 460px !important;
-      width: 95% !important;
+      width: 100% !important;
       margin: 0 auto;
+    }
+
+    @media (max-width: 640px) {
+      .cred-showcase-wrapper {
+        padding: 1.5rem 0.5rem 2rem;
+      }
+      .cred-showcase-wrapper .card-container,
+      .cred-showcase-wrapper-inner {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
     }
 
 /* Scroll con dots */

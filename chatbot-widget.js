@@ -450,7 +450,13 @@ async sendMessage() {
     "Procesando tu consulta...",
     "Buscando la mejor respuesta...",
     "Casi listo, un segundo más...",
-    "Analizando la Ley C.U.R.A. para vos..."
+    "Analizando la Ley C.U.R.A. para vos...",
+    "Consultando los artículos relevantes...",
+    "Preparando una respuesta detallada...",
+    "Revisando la documentación técnica...",
+    "Generando la respuesta, ya casi...",
+    "Todavía trabajando en eso...",
+    "Un momento más, vale la pena..."
   ];
   let typingIdx = 0;
   this.typingInterval = setInterval(() => {

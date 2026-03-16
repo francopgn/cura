@@ -71,11 +71,46 @@ perspective:1800px;
 transform-style:preserve-3d;
 }
 
-    .card-container {
-      position: relative; width: 100%; max-width: 450px;
-      aspect-ratio: 1.58 / 1; margin: 0 auto; z-index: 20;
-      container-type: inline-size;
-    }
+.card-container{
+position:relative;
+width:100%;
+max-width:450px;
+aspect-ratio:1.58 / 1;
+margin:0 auto;
+z-index:20;
+container-type:inline-size;
+}
+    .card-container::before{
+
+content:"";
+
+position:absolute;
+
+width:80%;
+height:40%;
+
+left:50%;
+bottom:-18px;
+
+transform:translateX(-50%);
+
+background:radial-gradient(
+ellipse at center,
+rgba(0,0,0,0.35) 0%,
+rgba(0,0,0,0.18) 40%,
+rgba(0,0,0,0.05) 70%,
+transparent 100%
+);
+
+filter:blur(14px);
+
+z-index:-1;
+
+}
+    .card-container:hover::before{
+filter:blur(18px);
+opacity:.9;
+}
     .card-inner {
       position: relative; width: 100%; height: 100%; text-align: center;
       transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -99,6 +134,32 @@ box-shadow:0 20px 40px -5px rgba(0,0,0,0.4);
 
 -webkit-mask-image:-webkit-radial-gradient(white,black);
 }
+    .card-face::after{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+
+background:linear-gradient(
+115deg,
+transparent 40%,
+rgba(255,255,255,0.15) 48%,
+rgba(255,255,255,0.35) 50%,
+rgba(255,255,255,0.15) 52%,
+transparent 60%
+);
+
+opacity:0;
+transition:opacity .4s ease;
+
+pointer-events:none;
+}
+    .card-container:hover .card-face::after{
+opacity:.6;
+animation:shineMove 3s linear infinite;
+}
 .card-bg-img{
 position:absolute;
 top:0;
@@ -118,6 +179,17 @@ image-rendering:auto;
     .card-back  { z-index: 1; transform: rotateY(180deg); }
 
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes shineMove{
+
+0%{
+transform:translateX(-40%) translateY(-40%) rotate(25deg);
+}
+
+100%{
+transform:translateX(40%) translateY(40%) rotate(25deg);
+}
+
+}
     .animate-float { animation: float 6s ease-in-out infinite; }
     .card-container:hover .animate-float { animation-play-state: paused; }
     .btn-resumen-ejecutivo {

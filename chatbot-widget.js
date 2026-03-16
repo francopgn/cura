@@ -245,7 +245,37 @@
         0%, 100% { opacity: 0.5; }
         50% { opacity: 1; }
       }
-      `;
+
+      /* ── Botón colapsado mobile: solo ícono circular ── */
+      .leycura-chat-btn {
+        overflow: hidden;
+      }
+      .leycura-btn-text {
+        max-width: 200px;
+        opacity: 1;
+        transition: max-width 0.5s cubic-bezier(0.4,0,0.2,1),
+                    opacity 0.35s ease,
+                    margin 0.5s ease;
+        white-space: nowrap;
+        display: inline-block;
+      }
+      @media (max-width: 768px) {
+        .leycura-chat-btn.btn-collapsed {
+          padding: 0 !important;
+          width: 52px !important;
+          border-radius: 50% !important;
+          justify-content: center !important;
+          transition: width 0.5s cubic-bezier(0.4,0,0.2,1),
+                      padding 0.5s cubic-bezier(0.4,0,0.2,1),
+                      border-radius 0.5s cubic-bezier(0.4,0,0.2,1) !important;
+        }
+        .leycura-chat-btn.btn-collapsed .leycura-btn-text {
+          max-width: 0 !important;
+          opacity: 0 !important;
+          margin: 0 !important;
+        }
+      }
+      
       const style = document.createElement("style");
       style.textContent = css;
       document.head.appendChild(style);
@@ -259,6 +289,13 @@
         <span class="leycura-btn-text">Chat con IA</span>
       `;
       document.body.appendChild(this.button);
+
+      // Mobile: colapsar a círculo después de 3s
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          if (!this.isOpen) this.button.classList.add('btn-collapsed');
+        }, 3000);
+      }
     }
 
     createChatWindow() {
@@ -354,6 +391,13 @@
     toggleChat() {
       this.isOpen = !this.isOpen;
       this.chatWindow.classList.toggle("open", this.isOpen);
+      if (this.isOpen) {
+        // Expandir mientras el chat está abierto
+        this.button.classList.remove('btn-collapsed');
+      } else if (window.innerWidth <= 768) {
+        // Volver a colapsar al cerrar
+        setTimeout(() => this.button.classList.add('btn-collapsed'), 800);
+      }
     }
 
     closeChat() {
@@ -361,6 +405,9 @@
       this.chatWindow.classList.remove("open");
       this.button.classList.remove("leycura-btn-hidden-mobile");
       this.chatWindow.classList.remove("keyboard-up");
+      if (window.innerWidth <= 768) {
+        setTimeout(() => this.button.classList.add('btn-collapsed'), 800);
+      }
     }
 
 async sendMessage() {

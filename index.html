@@ -66,7 +66,10 @@
     .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
 
     /* --- CREDENCIAL 3D (ORIGINAL INTACTO) --- */
-    .perspective-container { perspective: 1500px; }
+  .perspective-container{
+perspective:1800px;
+transform-style:preserve-3d;
+}
 
     .card-container {
       position: relative; width: 100%; max-width: 450px;
@@ -79,23 +82,35 @@
       transform-style: preserve-3d; cursor: pointer; will-change: transform;
     }
     .card-inner.is-flipped { transform: rotateY(180deg); }
-    .card-face {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      backface-visibility: hidden; border-radius: 18px; overflow: hidden;
-      transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
-      -webkit-mask-image: -webkit-radial-gradient(white, black);
-    }
-   .card-bg-img{
+    .card-face{
 position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
 
-object-fit:contain;   /* evita deformación */
+backface-visibility:hidden;
+border-radius:18px;
+overflow:hidden;
+
+transform:translateZ(2px);   /* clave */
+
+box-shadow:0 20px 40px -5px rgba(0,0,0,0.4);
+
+-webkit-mask-image:-webkit-radial-gradient(white,black);
+}
+.card-bg-img{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+object-fit:contain;
 
 backface-visibility:hidden;
-transform:translateZ(0);
+
+transform:translateZ(3px);
 
 image-rendering:auto;
 }

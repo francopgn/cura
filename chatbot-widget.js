@@ -265,9 +265,11 @@
           width: 52px !important;
           border-radius: 50% !important;
           justify-content: center !important;
+          gap: 0 !important;
           transition: width 0.5s cubic-bezier(0.4,0,0.2,1),
                       padding 0.5s cubic-bezier(0.4,0,0.2,1),
-                      border-radius 0.5s cubic-bezier(0.4,0,0.2,1) !important;
+                      border-radius 0.5s cubic-bezier(0.4,0,0.2,1),
+                      gap 0.5s ease !important;
         }
         .leycura-chat-btn.btn-collapsed .leycura-btn-text {
           max-width: 0 !important;
@@ -444,13 +446,17 @@ async sendMessage() {
   // Alternar mensajes mientras espera la respuesta
   const typingMessages = [
     "El asistente está pensando...",
-    "Se está generando, esperá un momento..."
+    "Se está generando, esperá un momento...",
+    "Procesando tu consulta...",
+    "Buscando la mejor respuesta...",
+    "Casi listo, un segundo más...",
+    "Analizando la Ley C.U.R.A. para vos..."
   ];
   let typingIdx = 0;
   this.typingInterval = setInterval(() => {
     typingIdx = (typingIdx + 1) % typingMessages.length;
     if (this.typingEl) this.typingEl.textContent = typingMessages[typingIdx];
-  }, 2500);
+  }, 2000);
 
   this.scrollToBottom();
 

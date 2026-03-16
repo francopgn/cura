@@ -210,8 +210,52 @@
         font-size: 12px;
         color: #64748b;
         font-style: italic;
-        padding: 8px 12px;
-        animation: pulse-simple 1.5s infinite;
+        padding: 8px 12px 4px;
+      }
+
+      .leycura-typing-text {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+
+      .leycura-typing-dots {
+        display: inline-flex;
+        gap: 3px;
+        align-items: center;
+      }
+
+      .leycura-typing-dots span {
+        width: 5px;
+        height: 5px;
+        background: var(--cura-accent);
+        border-radius: 50%;
+        animation: bounceDot 1.2s ease-in-out infinite;
+        display: inline-block;
+      }
+      .leycura-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+      .leycura-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+      @keyframes bounceDot {
+        0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+        30% { transform: translateY(-5px); opacity: 1; }
+      }
+
+      .leycura-progress-bar-wrap {
+        height: 3px;
+        background: #e2e8f0;
+        border-radius: 99px;
+        overflow: hidden;
+        margin-top: 2px;
+      }
+
+      .leycura-progress-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--cura-primary), var(--cura-accent));
+        border-radius: 99px;
+        width: 0%;
+        transition: width 0.4s ease;
       }
 
 /* ✅ RESPONSIVO CELULARES MEJORADO */
@@ -440,28 +484,50 @@ async sendMessage() {
 
   this.typingEl = document.createElement("div");
   this.typingEl.className = "leycura-typing";
-  this.typingEl.textContent = "El asistente está pensando...";
+  this.typingEl.innerHTML = `
+    <div class="leycura-typing-text">
+      <span class="leycura-typing-msg">El asistente está pensando...</span>
+      <span class="leycura-typing-dots"><span></span><span></span><span></span></span>
+    </div>
+    <div class="leycura-progress-bar-wrap">
+      <div class="leycura-progress-bar"></div>
+    </div>
+  `;
   this.messagesEl.appendChild(this.typingEl);
 
-  // Alternar mensajes mientras espera la respuesta
+  const msgEl  = this.typingEl.querySelector('.leycura-typing-msg');
+  const barEl  = this.typingEl.querySelector('.leycura-progress-bar');
+
+  // Frases en orden, luego queda en la última
   const typingMessages = [
     "El asistente está pensando...",
     "Se está generando, esperá un momento...",
     "Procesando tu consulta...",
     "Buscando la mejor respuesta...",
-    "Casi listo, un segundo más...",
-    "Analizando la Ley C.U.R.A. para vos...",
     "Consultando los artículos relevantes...",
     "Preparando una respuesta detallada...",
     "Revisando la documentación técnica...",
-    "Generando la respuesta, ya casi...",
-    "Todavía trabajando en eso...",
-    "Un momento más, vale la pena..."
+    "Casi listo, redactando la respuesta...",
+    "Analizando la Ley C.U.R.A. para vos...",
+    "Todavía trabajando, un momento más...",
+    "Generando respuesta completa...",
+    "Listo, redactando los últimos detalles..."
   ];
+
+  // Progreso falso: sube rápido hasta ~85%, luego se frena
+  const progressStops = [8, 18, 28, 38, 48, 56, 63, 69, 74, 79, 83, 86];
   let typingIdx = 0;
+
   this.typingInterval = setInterval(() => {
-    typingIdx = (typingIdx + 1) % typingMessages.length;
-    if (this.typingEl) this.typingEl.textContent = typingMessages[typingIdx];
+    typingIdx++;
+    if (typingIdx < typingMessages.length) {
+      msgEl.textContent = typingMessages[typingIdx];
+      barEl.style.width = (progressStops[typingIdx] || 86) + '%';
+    } else {
+      // Agotó las frases: quedar en la última + barra pulsando en 88%
+      msgEl.textContent = "Listo, redactando los últimos detalles...";
+      barEl.style.width = '88%';
+    }
   }, 2000);
 
   this.scrollToBottom();
@@ -480,10 +546,16 @@ async sendMessage() {
 
     const data = await res.json();
 
-    if (this.typingEl) { clearInterval(this.typingInterval); this.typingEl.remove(); }
+    if (this.typingEl) {
+      clearInterval(this.typingInterval);
+      const bar = this.typingEl.querySelector('.leycura-progress-bar');
+      if (bar) bar.style.width = '100%';
+      setTimeout(() => { if (this.typingEl) this.typingEl.remove(); }, 300);
+    }
+
+    await new Promise(r => setTimeout(r, 350));
 
     if (data.answer) {
-      this.addMessage(data.answer, "bot");
 
       if (data.suggestions && data.suggestions.length > 0) {
         setTimeout(() => {

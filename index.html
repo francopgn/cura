@@ -168,6 +168,7 @@ border-radius:18px;
 overflow:hidden;
 
 box-shadow:0 20px 40px -5px rgba(0,0,0,0.4);
+  transform-style:preserve-3d;
 }
     .card-face::after{
 content:"";
@@ -235,7 +236,21 @@ transform:translateX(40%) translateY(40%) rotate(25deg);
 }
 
 }
-    .animate-float { animation: float 6s ease-in-out infinite; }
+  @keyframes float {
+
+0%{
+translate:0 0;
+}
+
+50%{
+translate:0 -12px;
+}
+
+100%{
+translate:0 0;
+}
+
+}
     .card-container:hover .animate-float { animation-play-state: paused; }
     .btn-resumen-ejecutivo {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;

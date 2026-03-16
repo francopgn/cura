@@ -2324,17 +2324,34 @@ document.addEventListener('DOMContentLoaded', function () {
   if (sumateForm && sumateModal && sumateOkBtn) {
     sumateForm.addEventListener('submit', async function (e) {
       e.preventDefault();
+
+      // Validación manual de campos requeridos
+      if (!sumateForm.checkValidity()) {
+        sumateForm.reportValidity();
+        return;
+      }
+
       const submitBtn = sumateForm.querySelector('button[type="submit"]');
       const orig = submitBtn.textContent;
       submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
       const fd = new FormData(sumateForm);
       try {
         const body = { email: (fd.get('email') || '').trim(), nombre: (fd.get('nombre') || '').trim(), apellido: (fd.get('apellido') || '').trim(), provincia: (fd.get('provincia') || '').toString(), ciudad: (fd.get('ciudad') || '').toString(), dni: (fd.get('dni') || '').trim(), telefono: (fd.get('telefono') || '').trim() };
-        await fetch('/api/sumate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-        await fetch(sumateForm.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd });
-        sumateForm.reset(); abrirSumateModal();
-      } catch (err) { console.error(err); }
-      finally { submitBtn.disabled = false; submitBtn.textContent = orig; }
+        // Enviamos ambos en paralelo — si alguno falla igual mostramos el modal
+        await Promise.allSettled([
+          fetch('/api/sumate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }),
+          fetch(sumateForm.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd })
+        ]);
+        sumateForm.reset();
+        abrirSumateModal();
+      } catch (err) {
+        // Aun así mostramos el modal — el registro se guardó si /api/sumate respondió
+        sumateForm.reset();
+        abrirSumateModal();
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false; submitBtn.textContent = orig;
+      }
     });
     sumateOkBtn.addEventListener('click', cerrarSumateModal);
     sumateModal.addEventListener('click', e => { if (e.target === sumateModal) cerrarSumateModal(); });

@@ -275,7 +275,7 @@
           margin: 0 !important;
         }
       }
-      
+      `;
       const style = document.createElement("style");
       style.textContent = css;
       document.head.appendChild(style);

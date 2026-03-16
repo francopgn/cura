@@ -71,16 +71,16 @@ perspective:1800px;
 transform-style:preserve-3d;
 }
 
-.card-bg-img{
-  position:absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  object-fit:cover;
-  image-rendering: auto;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  will-change: transform;
-  transform:translateZ(0);
+.card-container{
+position:relative;
+width:100%;
+max-width:450px;
+aspect-ratio:1.58 / 1;
+margin:0 auto;
+z-index:20;
+container-type:inline-size;
+  transform-style:preserve-3d;
+  /* filter:drop-shadow eliminado — degradaba nitidez en 3D */
 }
     .card-container:hover::after{
 
@@ -179,7 +179,6 @@ filter:blur(20px);
 opacity:.9;
 }
   .card-inner{
-    will-change: transform;
 position:relative;
 width:100%;
 height:100%;
@@ -188,6 +187,7 @@ transform-style:preserve-3d;
 transition:transform .8s cubic-bezier(.2,.8,.2,1);
 
 transform:translateZ(0);
+will-change:transform;
 
 cursor:pointer;
 }
@@ -229,22 +229,23 @@ transition:opacity .4s ease;
 
 pointer-events:none;
 }
-    .card-container:hover .card-face::after{
+    .card-container:hover:not(.is-flipping) .card-face::after{
 opacity:.6;
 animation:shineMove 3s linear infinite;
 }
 .card-bg-img{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  image-rendering:-webkit-optimize-contrast; /* Safari */
-  image-rendering: crisp-edges;              /* Firefox */
-  image-rendering: high-quality;             /* Chrome */
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+object-fit:cover;
+image-rendering:-webkit-optimize-contrast;
+image-rendering:auto;
+backface-visibility:hidden;
+-webkit-backface-visibility:hidden;
+will-change:transform;
   transform:translateZ(0);
 }
   .card-front{
@@ -314,6 +315,9 @@ transform:translateY(-12px);
 transform:translateY(0);
 }
 
+}
+    .animate-float{
+animation: float 6s ease-in-out infinite;
 }
     .card-container:hover .animate-float { animation-play-state: paused; }
     .btn-resumen-ejecutivo {
@@ -1720,7 +1724,7 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#9af9f5f4eefbf9eef5daf6ffe3f9efe8fbb4f5e8fd" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="c7a4a8a9b3a6a4b3a887aba2bea4b2b5a6e9a8b5a0">[email&#160;protected]</span></a></p>
           <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
         </div>
       </div>
@@ -1747,7 +1751,7 @@ display:none;
 
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">correo: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-sm text-cura-accentLight">correo: <a href="/cdn-cgi/l/email-protection#6e0d01001a0f0d1a012e020b170d1b1c0f40011c09" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="5e3d31302a3f3d2a311e323b273d2b2c3f70312c39">[email&#160;protected]</span></a></p>
         </div>
       </div>
     </div>
@@ -1854,7 +1858,7 @@ display:none;
 <!-- =============================================
      SCRIPTS
 ============================================== -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
@@ -2369,7 +2373,14 @@ document.addEventListener('DOMContentLoaded', function () {
      CREDENCIAL 3D — ORIGINAL INTACTA
   ============================================== */
   const card = document.getElementById('credencial-giratoria');
-  if (card) card.addEventListener('click', function () { this.classList.toggle('is-flipped'); });
+  if (card) card.addEventListener('click', function () {
+    const container = this.closest('.card-container');
+    this.classList.toggle('is-flipped');
+    if (container) {
+      container.classList.add('is-flipping');
+      setTimeout(() => container.classList.remove('is-flipping'), 850);
+    }
+  });
 
   /* =============================================
      ANIMACIÓN DE RED SANITARIA EN CANVAS
@@ -2723,16 +2734,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // 2. Esperamos 500ms (lo que dura la transición duration-500)
           setTimeout(() => {
-              // Cambiamos a la otra frase
-              mostrandoFrase1 = !mostrandoFrase1;
-              textoElemento.textContent = mostrandoFrase1 ? frase1 : frase2;
-              
-              // 3. Volvemos a mostrar el texto subiendo la opacidad
-              textoElemento.classList.remove('opacity-0');
-          }, 500); 
-
-      }, 5000);
-  });
-</script>
-</body>
-</html>

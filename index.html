@@ -85,65 +85,26 @@
       transform: translateZ(0); box-shadow: 0 20px 40px -5px rgba(0,0,0,0.4);
       -webkit-mask-image: -webkit-radial-gradient(white, black);
     }
-    .card-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+   .card-bg-img{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+object-fit:contain;   /* evita deformación */
+
+backface-visibility:hidden;
+transform:translateZ(0);
+
+image-rendering:auto;
+}
     .card-front { z-index: 2; transform: rotateY(0deg); }
     .card-back  { z-index: 1; transform: rotateY(180deg); }
 
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
     .animate-float { animation: float 6s ease-in-out infinite; }
     .card-container:hover .animate-float { animation-play-state: paused; }
-
-    .card-data-layer {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 10; pointer-events: none; color: white;
-    }
-    .pos-nombre-front {
-      position: absolute; left: 3.50%; top: 15%; width: 55%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 700;
-      font-size: 4.5cqw; text-align: left; line-height: 1.1;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .pos-dni-front {
-      position: absolute; left: 3.50%; top: 21.06%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 400;
-      font-size: 3cqw; text-align: left;
-    }
-    .pos-sangre {
-      position: absolute; left: 94.88%; top: 8.5%; transform: translate(-50%, -50%);
-      width: 12%; height: 18%;
-      font-family: 'Roboto', sans-serif; font-weight: 600; color: #0c4e82; font-size: 4cqw;
-      display: flex; justify-content: center; align-items: center;
-    }
-    .pos-ficticios {
-      position: absolute; bottom: 3%; left: 0; width: 100%; text-align: center;
-      font-family: 'Open Sans', sans-serif; font-size: 1.8cqw; font-weight: 600;
-      color: rgba(255,255,255,0.5); letter-spacing: 0.1em; pointer-events: none;
-    }
-    .data-block {
-      position: absolute; font-family: 'Open Sans', sans-serif; font-weight: 600;
-      font-size: 2.1cqw; text-transform: uppercase; width: 27%; height: 11%; line-height: 1.2;
-      display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
-    }
-    .block-alergias     { left: 3.8%;  top: 34%; }
-    .block-medicamentos { left: 3.6%;  top: 53.7%; }
-    .block-antecedentes { left: 3.9%;  top: 72%; }
-    .block-operaciones  { left: 36.6%; top: 30%; height: 22%; font-size: 2cqw; }
-    .block-fecha-nac    { left: 69%;   top: 35.3%; font-weight: 700; font-size: 2.3cqw; }
-    .block-domicilio    { left: 69.9%; top: 52.9%; text-transform: none; font-size: 2.3cqw; font-weight: 600; }
-    .block-contactos    { left: 69.8%; top: 72.4%; font-size: 1.9cqw; }
-    .pos-nombre-back {
-      position: absolute; top: 5%; left: 3%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 700; font-size: 4.5cqw; text-align: left;
-    }
-    .pos-dni-back {
-      position: absolute; top: 13%; left: 3.2%;
-      font-family: 'Vazirmatn', sans-serif; font-weight: 400; font-size: 3cqw; text-align: left;
-    }
-    .pos-id-number {
-      position: absolute; bottom: 23%; left: 0; right: -3%; text-align: center;
-      font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 2.8cqw; letter-spacing: 0.05em;
-    }
-
     .btn-resumen-ejecutivo {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 10px 20px; background-color: rgba(255,255,255,0.08); color: #e2e8f0;
@@ -1185,8 +1146,6 @@ display:none;
                 </div>
                 <div class="card-face card-back">
                   <img src="credencial-dorso-base.png" alt="Credencial Dorso" class="card-bg-img">
-                  <div class="card-data-layer">
-                  </div>
                 </div>
               </div>
             </div>
@@ -2200,50 +2159,6 @@ document.addEventListener('DOMContentLoaded', function () {
   ============================================== */
   const card = document.getElementById('credencial-giratoria');
   if (card) card.addEventListener('click', function () { this.classList.toggle('is-flipped'); });
-
-  const nombres    = ["Franco","María","Carlos","Ana","Pedro","Lucía","Miguel","Sofía","Jorge","Elena","Martín","Julia"];
-  const apellidos  = ["García","Rodríguez","López","Martínez","González","Pérez","Sánchez","Romero","Sosa","Torres"];
-  const localidades = { "CABA":["Ciudad Autónoma de Buenos Aires"],"Buenos Aires":["La Plata","Mar del Plata","Bahía Blanca","General Rodríguez"],"Córdoba":["Córdoba Capital","Villa Carlos Paz","Río Cuarto"],"Santa Fe":["Rosario","Santa Fe Capital","Rafaela"],"Mendoza":["Mendoza Capital","San Rafael","Godoy Cruz"],"Tucumán":["San Miguel de Tucumán","Tafí Viejo"] };
-  const tiposSangre = ["A+","A-","B+","B-","O+","O-"];
-  const alergiasBase = ["PENICILINA","CIPROFLOXACINA","POLEN","ÁCAROS","SULFAS","LATEX","FRUTILLAS"];
-  const operacionesBase = ["APENDICECTOMÍA","CESÁREA","COLECISTECTOMÍA","BOMBA DE MORFINA","BYPASS GÁSTRICO","AMIGDALECTOMÍA"];
-  const perfilesMedicos = [
-    { antecedentes:[], medicamentos:[] },
-    { antecedentes:["HIPERTENSIÓN"],    medicamentos:["ENALAPRIL","LOSARTÁN"] },
-    { antecedentes:["DIABETES T2"],     medicamentos:["METFORMINA"] },
-    { antecedentes:["ASMA"],            medicamentos:["SALBUTAMOL"] }
-  ];
-  function randItem(a) { return a[Math.floor(Math.random()*a.length)]; }
-  function randNum(min,max) { return Math.floor(Math.random()*(max-min+1))+min; }
-  function genDNI() { const n=randNum(10000000,59999999).toString(); return `${n.slice(0,2)}.${n.slice(2,5)}.${n.slice(5)}`; }
-  function genFechaNac() { const d=String(randNum(1,28)); const m=["ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"][randNum(0,11)]; return `${d} ${m} ${randNum(1950,2005)}`; }
-  function genTel() { return `011 ${randNum(1000,9999)} ${randNum(1000,9999)}<br>011 ${randNum(1000,9999)} ${randNum(1000,9999)}`; }
-  function pickSubset(src, max) { let t=[...src],r=[]; const c=randNum(1,Math.min(max,t.length)); for(let i=0;i<c;i++){const i2=Math.floor(Math.random()*t.length);r.push(t.splice(i2,1)[0]);} return r; }
-  function poblarCredencial() {
-    const fullName = `${randItem(nombres)} ${randItem(apellidos)}`;
-    const dni      = genDNI();
-    const perfil   = randItem(perfilesMedicos);
-    const anteced  = perfil.antecedentes.length ? randItem(perfil.antecedentes) : "SIN PATOLOGÍAS REGISTRADAS";
-    const meds     = perfil.medicamentos.length ? pickSubset(perfil.medicamentos,2).join('<br>') : "SIN MEDICACIÓN VITAL EN USO";
-    const alergias = Math.random()>0.7 ? "NO REFIERE" : pickSubset(alergiasBase,1).join('<br>');
-    const ops      = Math.random()>0.6 ? "NO REFIERE" : pickSubset(operacionesBase,2).join('<br>');
-    const provKey  = randItem(Object.keys(localidades));
-    const ciudad   = randItem(localidades[provKey]);
-    document.getElementById('cred-nombre-front').textContent = fullName;
-    document.getElementById('cred-dni-front').textContent    = `D.N.I: ${dni}`;
-    document.getElementById('cred-sangre').textContent       = randItem(tiposSangre);
-    document.getElementById('cred-fecha-nac').textContent    = genFechaNac();
-    document.getElementById('cred-domicilio').innerHTML      = `${ciudad}<br>${provKey}`;
-    document.getElementById('cred-contactos').innerHTML      = genTel();
-    document.getElementById('cred-antecedentes').innerHTML   = anteced;
-    document.getElementById('cred-medicamentos').innerHTML   = meds;
-    document.getElementById('cred-alergias').innerHTML       = alergias;
-    document.getElementById('cred-operaciones').innerHTML    = ops;
-    document.getElementById('cred-nombre-back').textContent  = fullName;
-    document.getElementById('cred-dni-back').textContent     = `D.N.I: ${dni}`;
-    document.getElementById('cred-id-number').textContent    = `ID${randNum(10,99)}-${dni.replace(/\./g,'')}`;
-  }
-  poblarCredencial();
 
   /* =============================================
      ANIMACIÓN DE RED SANITARIA EN CANVAS

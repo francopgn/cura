@@ -251,21 +251,34 @@ backface-visibility:hidden;
   .animate-float {
     animation: floatY 3.5s ease-in-out infinite;
   }
-  /* Pausa el float solo cuando el usuario está encima */
   .card-container:hover .animate-float {
     animation-play-state: running;
   }
 
-  /* ── Mobile scroll fix: pausa la animación durante scroll táctil ── */
+  /* ── Mobile: desactiva animaciones costosas para scroll fluido ── */
   @media (max-width: 768px) {
+    /* Sin float — libera el compositor completamente */
     .animate-float {
-      animation-play-state: running;
-      /* Reduce repaints en mobile */
+      animation: none !important;
+      transform: none !important;
+    }
+    /* Sin shine — elimina el repaint continuo del gradiente animado */
+    .card-face::after {
+      animation: none !important;
+      display: none !important;
+    }
+    /* Sombra mínima — drop-shadow múltiple es muy costoso en GPU mobile */
+    .card-container {
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.55));
       will-change: auto;
     }
-    .card-container {
-      /* Elimina el filter en mobile para mejorar performance de scroll */
-      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5)) drop-shadow(0 0 20px rgba(0,194,255,0.15));
+    /* Scroll táctil sin bloqueo */
+    .card-inner {
+      touch-action: manipulation;
+    }
+    .perspective-container,
+    .card-container,
+    .card-inner {
       will-change: auto;
     }
   }
@@ -953,7 +966,7 @@ display:none;
        Un sistema interoperable que une hospitales, obras sociales y pacientes bajo un estándar digital común. Una red que integra a todo el país preservando la autonomía de cada jurisdicción, con soberanía tecnológica y control ciudadano.
       </p>
 
-<p id="texto-dinamico" class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic transition-opacity duration-500 ease-in-out">
+<p id="texto-dinamico" class="text-xs text-cura-accentLight mb-6 border-l-2 border-cura-accent/40 pl-3 italic transition-opacity duration-500 ease-in-out" style="min-height:2.8em; display:flex; align-items:center;">
   Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
 </p>
 

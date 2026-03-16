@@ -167,6 +167,7 @@ transition:transform .8s cubic-bezier(.2,.8,.2,1);
 
 will-change:transform;
 cursor:pointer;
+touch-action: manipulation; /* permite scroll táctil sin delay */
 
 /* ── Fix: elimina outline/highlight azul al clickear ── */
 outline:none;
@@ -253,6 +254,20 @@ backface-visibility:hidden;
   /* Pausa el float solo cuando el usuario está encima */
   .card-container:hover .animate-float {
     animation-play-state: running;
+  }
+
+  /* ── Mobile scroll fix: pausa la animación durante scroll táctil ── */
+  @media (max-width: 768px) {
+    .animate-float {
+      animation-play-state: running;
+      /* Reduce repaints en mobile */
+      will-change: auto;
+    }
+    .card-container {
+      /* Elimina el filter en mobile para mejorar performance de scroll */
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5)) drop-shadow(0 0 20px rgba(0,194,255,0.15));
+      will-change: auto;
+    }
   }
 
   @keyframes shineMove{
@@ -2704,3 +2719,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // 2. Esperamos 500ms (lo que dura la transición duration-500)
           setTimeout(() => {
+              // 3. Cambiamos el texto
+              mostrandoFrase1 = !mostrandoFrase1;
+              textoElemento.textContent = mostrandoFrase1 ? frase1 : frase2;
+
+              // 4. Volvemos a mostrar el texto
+              textoElemento.classList.remove('opacity-0');
+          }, 500);
+
+      }, 5000);
+  });
+</script>
+</body>
+</html>

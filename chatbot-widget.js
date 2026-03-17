@@ -571,6 +571,9 @@ async sendMessage() {
 
     if (data.answer) {
       this.addMessage(data.answer, "bot");
+      // Scroll al inicio del mensaje del bot
+const botMsg = this.messagesEl.querySelector('.leycura-message.bot:last-child');
+if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       if (data.suggestions && data.suggestions.length > 0) {
         setTimeout(() => {
@@ -586,38 +589,38 @@ async sendMessage() {
 
     if (this.typingEl) { clearInterval(this.typingInterval); this.typingEl.remove(); }
     this.addMessage("Error de conexión con el asistente.", "bot");
-
+const botMsg = this.messagesEl.querySelector('.leycura-message.bot:last-child');
+if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } finally {
 
     this.isLoading = false;
-    this.scrollToBottom();
+
 
   }
 
 }
 
-    addMessage(text, type) {
-      const div = document.createElement("div");
-      div.className = `leycura-message ${type}`;
-      
-      let html = text
-        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
-        .replace(/\*(.*?)\*/g, '<span style="color: #334155; font-weight: 600;">$1</span>')
-        .replace(/\n-\s?/g, "<br>• ")
-        .replace(/\n/g, "<br>");
+  addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = `leycura-message ${type}`;
+  
+  let html = text
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+    .replace(/\*(.*?)\*/g, '<span style="color: #334155; font-weight: 600;">$1</span>')
+    .replace(/\n-\s?/g, "<br>• ")
+    .replace(/\n/g, "<br>");
 
-      div.innerHTML = html;
-      this.messagesEl.appendChild(div);
-      
-      this.history.push({ role: type === "user" ? "user" : "assistant", content: text });
-      if (this.history.length > 6) this.history.shift();
-      this.scrollToBottom();
-    }
-
-    scrollToBottom() {
-      this.messagesEl.scrollTo({ top: this.messagesEl.scrollHeight, behavior: 'smooth' });
-    }
+  div.innerHTML = html;
+  this.messagesEl.appendChild(div);
+  
+  this.history.push({ role: type === "user" ? "user" : "assistant", content: text });
+  if (this.history.length > 6) this.history.shift();
+  
+  // Solo scroll automático para mensajes del usuario
+  if (type === "user") {
+    this.scrollToBottom();
   }
+}
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => new LeyCuraChatbot());

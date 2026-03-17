@@ -886,24 +886,22 @@ display:none;
 <!-- =============================================
      HEADER (ORIGINAL INTACTO)
 ============================================== -->
-<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
-
-    <div class="flex items-center justify-between w-full sm:w-auto">
-      <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
-        <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
-        <div class="leading-tight">
-          <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
-          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
-        </div>
-      </a>
-      <div class="sm:hidden relative">
-        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
-          <i class="ph-bold ph-bell text-2xl"></i>
-          <span class="notification-badge-ui">1</span>
-        </button>
-      </div>
+<header class="relative z-50 px-6 py-4 flex items-center justify-between">
+  <div class="flex items-center gap-4">
+    <img src="tu-logo.svg" alt="Logo C.U.R.A." class="w-10 h-10 md:w-12 md:h-12 object-contain">
+    <div class="flex flex-col justify-center border-l border-white/20 pl-4">
+      <span class="text-[10px] uppercase tracking-widest text-cura-accentLight font-bold leading-none">Ley Nacional</span>
+      <h1 class="text-xs md:text-sm font-semibold text-white leading-tight">
+        Transformación Digital Sanitaria Argentina
+      </h1>
     </div>
+  </div>
+
+  <button class="relative p-2 text-white/80 hover:text-white transition-colors">
+    <i class="ph ph-bell text-2xl"></i>
+    <span class="notification-badge-ui">!</span>
+  </button>
+</header>
 
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">

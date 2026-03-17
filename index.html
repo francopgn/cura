@@ -862,7 +862,7 @@ display:none;
 ============================================== -->
 <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
   <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
-
+    
     <div class="flex items-center justify-between w-full sm:w-auto">
       <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
@@ -872,7 +872,7 @@ display:none;
         </div>
       </a>
       <div class="sm:hidden relative">
-        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+        <button onclick="toggleMenuNovedades(event)" class="boton-campana relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
           <i class="ph-bold ph-bell text-2xl"></i>
           <span id="badge-movil" class="notification-badge-ui hidden">1</span>
         </button>
@@ -881,18 +881,16 @@ display:none;
 
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
       <div class="flex gap-4">
-        <a href="#inicio"      class="nav-inicio-link text-cura-accentLight hover:text-white transition-colors">Inicio</a>
-        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
-        <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
+        <a href="#inicio" class="text-cura-accentLight hover:text-white transition-colors">Inicio</a>
+        <a href="#que-es" class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
+        <a href="#beneficios" class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
         <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
-        <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
+        <a href="#contacto" class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
       </div>
       <div class="flex items-center gap-3">
-        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
-          Demo
-        </a>
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">Demo</a>
         <div class="hidden sm:block relative">
-          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <button onclick="toggleMenuNovedades(event)" class="boton-campana flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
             <i class="ph-bold ph-bell text-xl"></i>
             <span id="badge-desktop" class="notification-badge-ui hidden">1</span>
           </button>
@@ -926,10 +924,10 @@ display:none;
             <i class="ph-bold ph-file-pdf text-gray-400 text-lg"></i>
             <div class="flex-1">
               <div class="flex justify-between items-start mb-1">
-                <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
+                <p class="text-gray-800 text-xs font-bold">Actualización Resumen Ejecutivo</p>
                 <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">13/03/26</span>
               </div>
-              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento acorde a la expansión de la ley.</p>
+              <p class="text-gray-600 text-[11px]">Se actualizó el documento acorde a la expansión de la ley.</p>
             </div>
           </div>
         </div>
@@ -942,12 +940,26 @@ display:none;
                 <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
                 <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
               </div>
-              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+              <p class="text-gray-600 text-[11px]">Consultá detalles técnicos de la ley con nuestro asistente.</p>
             </div>
           </div>
         </div>
 
-      </div> <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold border-t border-gray-100 uppercase" style="color: #004e85;">Cerrar</button>
+        <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-100 text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-gray-400 text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px]">Se actualizó el documento con los nuevos anexos técnicos.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <button onclick="toggleMenuNovedades(event)" class="w-full text-center py-2.5 text-[10px] font-bold border-t border-gray-100 uppercase" style="color: #004e85;">Cerrar</button>
     </div>
   </div>
 </header>
@@ -2829,6 +2841,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
   const VERSION_NOVEDADES = "17/03/26";
 
+  // 1. Manejo del menú y el badge (punto rojo)
   function toggleMenuNovedades(event) {
     if (event) event.stopPropagation();
     const menu = document.getElementById('notificationMenu');
@@ -2836,30 +2849,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     menu.classList.toggle('hidden');
 
-    // Marcar como visto al abrir
+    // Al abrir, se marca como visto
     localStorage.setItem('leycura_visto', VERSION_NOVEDADES);
     document.getElementById('badge-movil')?.classList.add('hidden');
     document.getElementById('badge-desktop')?.classList.add('hidden');
   }
 
-  // CERRAR AL CLICKEAR FUERA
+  // 2. Cierre automático al hacer clic fuera
   window.addEventListener('click', function(e) {
     const menu = document.getElementById('notificationMenu');
     if (menu && !menu.classList.contains('hidden')) {
-      // Si el clic no es el menú ni el botón de la campana, cerramos
       if (!menu.contains(e.target) && !e.target.closest('.boton-campana')) {
         menu.classList.add('hidden');
       }
     }
   });
 
-  // CONTROL DEL PUNTO ROJO AL CARGAR
+  // 3. Texto Dinámico del Header
+  function iniciarTextoDinamico() {
+    const textos = [
+      "Transformación Digital Sanitaria Argentina",
+      "Conectividad Unificada para Redes y Asistencia",
+      "La infraestructura que une la salud"
+    ];
+    let i = 0;
+    const el = document.getElementById('texto-dinamico-header');
+    if (!el) return;
+
+    setInterval(() => {
+      el.classList.add('opacity-0');
+      setTimeout(() => {
+        i = (i + 1) % textos.length;
+        el.textContent = textos[i];
+        el.classList.remove('opacity-0');
+      }, 500);
+    }, 5000);
+  }
+
+  // 4. Inicializar todo
   document.addEventListener('DOMContentLoaded', () => {
+    // Verificación del badge
     const vista = localStorage.getItem('leycura_visto');
     if (vista !== VERSION_NOVEDADES) {
       document.getElementById('badge-movil')?.classList.remove('hidden');
       document.getElementById('badge-desktop')?.classList.remove('hidden');
     }
+    iniciarTextoDinamico();
   });
 </script>
 </body>

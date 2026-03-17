@@ -387,24 +387,26 @@
       this.closeBtn = this.chatWindow.querySelector(".leycura-chat-close");
     }
 
-    addSuggestions(list) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "leycura-suggestions-wrapper";
-      
-      list.forEach(text => {
-        const btn = document.createElement("button");
-        btn.className = "leycura-suggestion-btn";
-        btn.textContent = text;
-        btn.onclick = () => {
-          this.inputEl.value = text;
-          this.sendMessage();
-        };
-        wrapper.appendChild(btn);
-      });
+addSuggestions(list, shouldScroll = true) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "leycura-suggestions-wrapper";
+  
+  list.forEach(text => {
+    const btn = document.createElement("button");
+    btn.className = "leycura-suggestion-btn";
+    btn.textContent = text;
+    btn.onclick = () => {
+      this.inputEl.value = text;
+      this.sendMessage();
+    };
+    wrapper.appendChild(btn);
+  });
 
-      this.messagesEl.appendChild(wrapper);
-      this.scrollToBottom();
-    }
+  this.messagesEl.appendChild(wrapper);
+  if (shouldScroll) {
+    this.scrollToBottom();
+  }
+}
 
     renderInitialSuggestions() {
       const initial = [
@@ -561,7 +563,7 @@
           if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
           if (data.suggestions && data.suggestions.length > 0) {
-            setTimeout(() => this.addSuggestions(data.suggestions), 600);
+setTimeout(() => this.addSuggestions(data.suggestions, false), 600);
           }
         } else {
           this.addMessage("No se pudo generar una respuesta detallada.", "bot");

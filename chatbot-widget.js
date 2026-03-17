@@ -426,19 +426,17 @@
         if (e.key === "Enter") this.sendMessage();
       });
 
-     this.inputEl.addEventListener("focus", () => {
-  if (window.innerWidth <= 480) {
-    this.chatWindow.classList.add("keyboard-up");
-    this.button.classList.add("leycura-btn-hidden-mobile");
-    
-    // Esperamos un instante a que el teclado termine de subir
-    setTimeout(() => {
-      this.scrollToBottom();
-      // Forzamos al input a ser visible
-      this.inputEl.scrollIntoView({ block: "end", behavior: "smooth" });
-    }, 300);
-  }
-});
+      this.inputEl.addEventListener("focus", () => {
+        if (window.innerWidth <= 480) {
+          this.chatWindow.classList.add("keyboard-up");
+          this.button.classList.add("leycura-btn-hidden-mobile");
+          
+          setTimeout(() => {
+            this.scrollToBottom();
+            this.inputEl.scrollIntoView({ block: "end", behavior: "smooth" });
+          }, 300);
+        }
+      });
 
       this.inputEl.addEventListener("blur", () => {
         if (window.innerWidth <= 480) {
@@ -448,181 +446,177 @@
       });
     }
 
-toggleChat() {
-  if (this.isOpen) {
-    this.closeChat();
-  } else {
-    this.openChat();
-  }
-}
+    toggleChat() {
+      if (this.isOpen) {
+        this.closeChat();
+      } else {
+        this.openChat();
+      }
+    }
 
     openChat() {
-  this.isOpen = true;
-  this.chatWindow.classList.add("open");
-  // Expandir botón: quitar ancho fijo y clase colapsada
-  this.button.style.width = '';
-  this.button.classList.remove('btn-collapsed');
-}
-
-  closeChat() {
-  this.isOpen = false;
-  this.chatWindow.classList.remove("open");
-  this.button.classList.remove("leycura-btn-hidden-mobile");
-  this.chatWindow.classList.remove("keyboard-up");
-
-  if (window.innerWidth <= 768) {
-    // Fijar el ancho actual del botón expandido para que la transición sea suave
-    const currentWidth = this.button.offsetWidth;
-    this.button.style.width = currentWidth + 'px';
-    
-    // Forzar repaint y luego agregar la clase colapsada
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.button.classList.add('btn-collapsed');
-      });
-    });
-  } else {
-    // En desktop, simplemente asegurar que no quede colapsado
-    this.button.classList.remove('btn-collapsed');
-  }
-}
-
-async sendMessage() {
-
-  const message = this.inputEl.value.trim();
-  if (!message || this.isLoading) return;
-
-  this.addMessage(message, "user");
-  this.inputEl.value = "";
-  this.isLoading = true;
-
-  this.typingEl = document.createElement("div");
-  this.typingEl.className = "leycura-typing";
-  this.typingEl.innerHTML = `
-    <div class="leycura-typing-text">
-      <span class="leycura-typing-msg">El asistente está pensando...</span>
-      <span class="leycura-typing-dots"><span></span><span></span><span></span></span>
-    </div>
-    <div class="leycura-progress-bar-wrap">
-      <div class="leycura-progress-bar"></div>
-    </div>
-  `;
-  this.messagesEl.appendChild(this.typingEl);
-
-  const msgEl  = this.typingEl.querySelector('.leycura-typing-msg');
-  const barEl  = this.typingEl.querySelector('.leycura-progress-bar');
-
-  // Frases en orden, luego queda en la última
-  const typingMessages = [
-    "El asistente está pensando",
-    "Se está generando, esperá un momento",
-    "Procesando tu consulta",
-    "Buscando la mejor respuesta",
-    "Consultando los artículos relevantes",
-    "Preparando una respuesta detallada",
-    "Revisando la documentación técnica",
-    "Casi listo, redactando la respuesta",
-    "Analizando la Ley C.U.R.A. para vos",
-    "Todavía trabajando, un momento más",
-    "Generando respuesta completa",
-    "Listo, redactando los últimos detalles"
-  ];
-
-  // Progreso falso: sube rápido hasta ~85%, luego se frena
-  const progressStops = [8, 18, 28, 38, 48, 56, 63, 69, 74, 79, 83, 86];
-  let typingIdx = 0;
-
-  this.typingInterval = setInterval(() => {
-    typingIdx++;
-    if (typingIdx < typingMessages.length) {
-      msgEl.textContent = typingMessages[typingIdx];
-      barEl.style.width = (progressStops[typingIdx] || 86) + '%';
-    } else {
-      // Agotó las frases: quedar en la última + barra pulsando en 88%
-      msgEl.textContent = "Listo, redactando los últimos detalles...";
-      barEl.style.width = '88%';
-    }
-  }, 2000);
-
-  this.scrollToBottom();
-
-  try {
-
-    const res = await fetch("/api/cura", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        question: message
-      })
-    });
-
-    const data = await res.json();
-
-    if (this.typingEl) {
-      clearInterval(this.typingInterval);
-      const bar = this.typingEl.querySelector('.leycura-progress-bar');
-      if (bar) bar.style.width = '100%';
-      setTimeout(() => { if (this.typingEl) this.typingEl.remove(); }, 300);
+      this.isOpen = true;
+      this.chatWindow.classList.add("open");
+      // Expandir botón: quitar ancho fijo y clase colapsada
+      this.button.style.width = '';
+      this.button.classList.remove('btn-collapsed');
     }
 
-    await new Promise(r => setTimeout(r, 350));
+    closeChat() {
+      this.isOpen = false;
+      this.chatWindow.classList.remove("open");
+      this.button.classList.remove("leycura-btn-hidden-mobile");
+      this.chatWindow.classList.remove("keyboard-up");
 
-    if (data.answer) {
-      this.addMessage(data.answer, "bot");
-      // Scroll al inicio del mensaje del bot
-const botMsg = this.messagesEl.querySelector('.leycura-message.bot:last-child');
-if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      if (data.suggestions && data.suggestions.length > 0) {
-        setTimeout(() => {
-          this.addSuggestions(data.suggestions);
-        }, 600);
+      if (window.innerWidth <= 768) {
+        // Fijar el ancho actual del botón expandido para que la transición sea suave
+        const currentWidth = this.button.offsetWidth;
+        this.button.style.width = currentWidth + 'px';
+        
+        // Forzar repaint y luego agregar la clase colapsada
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            this.button.classList.add('btn-collapsed');
+          });
+        });
+      } else {
+        // En desktop, simplemente asegurar que no quede colapsado
+        this.button.classList.remove('btn-collapsed');
       }
-
-    } else {
-      this.addMessage("No se pudo generar una respuesta detallada.", "bot");
     }
 
-  } catch (err) {
+    async sendMessage() {
+      const message = this.inputEl.value.trim();
+      if (!message || this.isLoading) return;
 
-    if (this.typingEl) { clearInterval(this.typingInterval); this.typingEl.remove(); }
-    this.addMessage("Error de conexión con el asistente.", "bot");
-const botMsg = this.messagesEl.querySelector('.leycura-message.bot:last-child');
-if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  } finally {
+      this.addMessage(message, "user");
+      this.inputEl.value = "";
+      this.isLoading = true;
 
-    this.isLoading = false;
+      this.typingEl = document.createElement("div");
+      this.typingEl.className = "leycura-typing";
+      this.typingEl.innerHTML = `
+        <div class="leycura-typing-text">
+          <span class="leycura-typing-msg">El asistente está pensando...</span>
+          <span class="leycura-typing-dots"><span></span><span></span><span></span></span>
+        </div>
+        <div class="leycura-progress-bar-wrap">
+          <div class="leycura-progress-bar"></div>
+        </div>
+      `;
+      this.messagesEl.appendChild(this.typingEl);
 
+      const msgEl  = this.typingEl.querySelector('.leycura-typing-msg');
+      const barEl  = this.typingEl.querySelector('.leycura-progress-bar');
 
+      // Frases en orden, luego queda en la última
+      const typingMessages = [
+        "El asistente está pensando",
+        "Se está generando, esperá un momento",
+        "Procesando tu consulta",
+        "Buscando la mejor respuesta",
+        "Consultando los artículos relevantes",
+        "Preparando una respuesta detallada",
+        "Revisando la documentación técnica",
+        "Casi listo, redactando la respuesta",
+        "Analizando la Ley C.U.R.A. para vos",
+        "Todavía trabajando, un momento más",
+        "Generando respuesta completa",
+        "Listo, redactando los últimos detalles"
+      ];
+
+      // Progreso falso: sube rápido hasta ~85%, luego se frena
+      const progressStops = [8, 18, 28, 38, 48, 56, 63, 69, 74, 79, 83, 86];
+      let typingIdx = 0;
+
+      this.typingInterval = setInterval(() => {
+        typingIdx++;
+        if (typingIdx < typingMessages.length) {
+          msgEl.textContent = typingMessages[typingIdx];
+          barEl.style.width = (progressStops[typingIdx] || 86) + '%';
+        } else {
+          // Agotó las frases: quedar en la última + barra pulsando en 88%
+          msgEl.textContent = "Listo, redactando los últimos detalles...";
+          barEl.style.width = '88%';
+        }
+      }, 2000);
+
+      this.scrollToBottom();
+
+      try {
+        const res = await fetch("/api/cura", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            question: message
+          })
+        });
+
+        const data = await res.json();
+
+        if (this.typingEl) {
+          clearInterval(this.typingInterval);
+          const bar = this.typingEl.querySelector('.leycura-progress-bar');
+          if (bar) bar.style.width = '100%';
+          setTimeout(() => { if (this.typingEl) this.typingEl.remove(); }, 300);
+        }
+
+        await new Promise(r => setTimeout(r, 350));
+
+        if (data.answer) {
+          this.addMessage(data.answer, "bot");
+          // Scroll al inicio del mensaje del bot
+          const botMsg = this.messagesEl.querySelector('.leycura-message.bot:last-child');
+          if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          if (data.suggestions && data.suggestions.length > 0) {
+            setTimeout(() => {
+              this.addSuggestions(data.suggestions);
+            }, 600);
+          }
+        } else {
+          this.addMessage("No se pudo generar una respuesta detallada.", "bot");
+        }
+      } catch (err) {
+        if (this.typingEl) { clearInterval(this.typingInterval); this.typingEl.remove(); }
+        this.addMessage("Error de conexión con el asistente.", "bot");
+        const botMsg = this.messagesEl.querySelector('.leycura-message.bot:last-child');
+        if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } finally {
+        this.isLoading = false;
+      }
+    }
+
+    addMessage(text, type) {
+      const div = document.createElement("div");
+      div.className = `leycura-message ${type}`;
+      
+      let html = text
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+        .replace(/\*(.*?)\*/g, '<span style="color: #334155; font-weight: 600;">$1</span>')
+        .replace(/\n-\s?/g, "<br>• ")
+        .replace(/\n/g, "<br>");
+
+      div.innerHTML = html;
+      this.messagesEl.appendChild(div);
+      
+      this.history.push({ role: type === "user" ? "user" : "assistant", content: text });
+      if (this.history.length > 6) this.history.shift();
+      
+      // Solo scroll automático para mensajes del usuario
+      if (type === "user") {
+        this.scrollToBottom();
+      }
+    }
+
+    scrollToBottom() {
+      this.messagesEl.scrollTo({ top: this.messagesEl.scrollHeight, behavior: 'smooth' });
+    }
   }
 
-}
-
-  addMessage(text, type) {
-  const div = document.createElement("div");
-  div.className = `leycura-message ${type}`;
-  
-  let html = text
-    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
-    .replace(/\*(.*?)\*/g, '<span style="color: #334155; font-weight: 600;">$1</span>')
-    .replace(/\n-\s?/g, "<br>• ")
-    .replace(/\n/g, "<br>");
-
-  div.innerHTML = html;
-  this.messagesEl.appendChild(div);
-  
-  this.history.push({ role: type === "user" ? "user" : "assistant", content: text });
-  if (this.history.length > 6) this.history.shift();
-  
-  // Solo scroll automático para mensajes del usuario
-  if (type === "user") {
-    this.scrollToBottom();
-  }
-}
-    } 
-
+  // Inicialización
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => new LeyCuraChatbot());
   } else {

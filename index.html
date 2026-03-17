@@ -905,7 +905,6 @@ display:none;
             Ley Nacional
           </span>
 
-          <!-- 🔥 TITULO MEJORADO -->
           <p class="text-sm md:text-base font-semibold text-white leading-tight tracking-tight max-w-[520px]">
             Transformación Digital Sanitaria Argentina
           </p>
@@ -920,30 +919,54 @@ display:none;
       </button>
 
     </div>
-</header>
 
-    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
-      <div class="flex gap-4">
-        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
-        <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
-        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
-        <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
+    <!-- NAV (AHORA ADENTRO DEL HEADER) -->
+    <nav class="flex items-center justify-between">
+
+      <div class="flex gap-6 text-sm font-medium">
+
+        <a href="#que-es" class="text-cura-accentLight hover:text-white transition-colors">
+          Sistema
+        </a>
+
+        <a href="#beneficios" class="text-cura-accentLight hover:text-white transition-colors">
+          Beneficios
+        </a>
+
+        <a href="/Informacion/informacion.html"
+           class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">
+          Información
+        </a>
+
+        <a href="#contacto" class="text-cura-accentLight hover:text-white transition-colors">
+          Contacto
+        </a>
+
       </div>
+
       <div class="flex items-center gap-3">
-        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
+
+        <a href="/demo.html"
+           class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
           Demo
         </a>
+
         <div class="hidden sm:block relative">
-          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <button onclick="toggleMenuNovedades()"
+            class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
             <i class="ph-bold ph-bell text-xl"></i>
             <span class="notification-badge-ui">1</span>
           </button>
         </div>
+
       </div>
+
     </nav>
 
-    <!-- Menú novedades (ORIGINAL) -->
-<div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+  </div>
+
+  <!-- Menú novedades -->
+  <div id="notificationMenu" class="hidden absolute right-4 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
   
   <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
     <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>

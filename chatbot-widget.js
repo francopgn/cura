@@ -448,35 +448,44 @@
       });
     }
 
-    toggleChat() {
-      this.isOpen = !this.isOpen;
-      this.chatWindow.classList.toggle("open", this.isOpen);
-      if (this.isOpen) {
-        // Expandir mientras el chat está abierto
-        this.button.style.width = '';
-        this.button.classList.remove('btn-collapsed');
-      } else if (window.innerWidth <= 768) {
-        // Volver a colapsar al cerrar
-        setTimeout(() => this.button.classList.add('btn-collapsed'), 800);
-      }
-    }
+toggleChat() {
+  if (this.isOpen) {
+    this.closeChat();
+  } else {
+    this.openChat();
+  }
+}
 
-    closeChat() {
-      this.isOpen = false;
-      this.chatWindow.classList.remove("open");
-      this.button.style.width = '';
-      this.button.classList.remove("leycura-btn-hidden-mobile");
-      this.chatWindow.classList.remove("keyboard-up");
-      if (window.innerWidth <= 768) {
-        setTimeout(() => {
-          const w = this.button.offsetWidth;
-          this.button.style.width = w + 'px';
-          requestAnimationFrame(() => requestAnimationFrame(() => {
-            this.button.classList.add('btn-collapsed');
-          }));
-        }, 800);
-      }
-    }
+    openChat() {
+  this.isOpen = true;
+  this.chatWindow.classList.add("open");
+  // Expandir botón: quitar ancho fijo y clase colapsada
+  this.button.style.width = '';
+  this.button.classList.remove('btn-collapsed');
+}
+
+  closeChat() {
+  this.isOpen = false;
+  this.chatWindow.classList.remove("open");
+  this.button.classList.remove("leycura-btn-hidden-mobile");
+  this.chatWindow.classList.remove("keyboard-up");
+
+  if (window.innerWidth <= 768) {
+    // Fijar el ancho actual del botón expandido para que la transición sea suave
+    const currentWidth = this.button.offsetWidth;
+    this.button.style.width = currentWidth + 'px';
+    
+    // Forzar repaint y luego agregar la clase colapsada
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        this.button.classList.add('btn-collapsed');
+      });
+    });
+  } else {
+    // En desktop, simplemente asegurar que no quede colapsado
+    this.button.classList.remove('btn-collapsed');
+  }
+}
 
 async sendMessage() {
 

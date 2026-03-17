@@ -868,13 +868,13 @@ display:none;
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
         <div class="leading-tight">
           <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
-          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
+          <p id="texto-dinamico-header" class="text-xs sm:text-sm font-bold text-white transition-opacity duration-500">Transformación Digital Sanitaria Argentina</p>
         </div>
       </a>
       <div class="sm:hidden relative">
         <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
           <i class="ph-bold ph-bell text-2xl"></i>
-          <span class="notification-badge-ui">1</span>
+          <span id="badge-movil" class="notification-badge-ui hidden">1</span>
         </button>
       </div>
     </div>
@@ -894,83 +894,62 @@ display:none;
         <div class="hidden sm:block relative">
           <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
             <i class="ph-bold ph-bell text-xl"></i>
-            <span class="notification-badge-ui">1</span>
+            <span id="badge-desktop" class="notification-badge-ui hidden">1</span>
           </button>
         </div>
       </div>
     </nav>
 
-    <!-- Menú novedades (ORIGINAL) -->
-<div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
-  
-  <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
-    <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>
-    <span class="text-[9px] text-gray-400 font-medium">Actualizado: 17/03/26</span>
+    <div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+      <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+        <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>
+        <span class="text-[9px] text-gray-400 font-medium">Actualizado: 17/03/26</span>
+      </div>
+
+      <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
+        
+        <div class="p-4 border-b border-gray-200 border-l-4 cursor-default text-left bg-gray-100" style="border-l-color: #00345c;">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-scales text-lg" style="color: #004e85;"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-xs font-bold" style="color: #00345c;">Estado del Proyecto C.U.R.A.</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">17/03/26</span>
+              </div>
+              <p class="text-gray-700 text-[11px] leading-relaxed">El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-100 text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-gray-400 text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">13/03/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento acorde a la expansión de la ley.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-100 text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-robot text-gray-400 text-lg"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+            </div>
+          </div>
+        </div>
+
+      </div> <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold border-t border-gray-100 uppercase" style="color: #004e85;">Cerrar</button>
+    </div>
   </div>
-
-  <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
-    
-    <div class="p-4 hover:bg-blue-50/50 transition-colors border-b border-gray-100 border-l-4 cursor-default text-left" 
-         style="border-l-color: #00345c; background-color: rgba(0, 194, 255, 0.08);">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-scales text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-xs font-bold" style="color: #00345c;">Estado del Proyecto C.U.R.A.</p>
-            <span class="text-[9px] font-bold whitespace-nowrap ml-2" style="color: #00c2ff;">17/03/26</span>
-          </div>
-          <p class="text-gray-700 text-[11px] leading-relaxed">
-            El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-file-pdf text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">13/03/26</span>
-          </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento acorde a la expansión de la ley.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-robot text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
-          </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-file-pdf text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">Resumen Ejecutivo</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">15/01/26</span>
-          </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento con los nuevos anexos técnicos.</p>
-        </div>
-      </div>
-    </div>
-
-  </div> <button onclick="toggleMenuNovedades()" 
-          class="w-full text-center py-2.5 text-[10px] font-bold hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase"
-          style="color: #004e85;">
-    Cerrar
-  </button>
-</div>
 </header>
 
 <!-- =============================================

@@ -621,6 +621,7 @@ if (botMsg) botMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
     this.scrollToBottom();
   }
 }
+    } 
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => new LeyCuraChatbot());

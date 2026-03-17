@@ -2218,6 +2218,7 @@ document.addEventListener('DOMContentLoaded', function () {
       'La ley será presentada del 28 al 30 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
       'C.U.R.A.: la primera infraestructura pública nacional de datos de salud de Argentina. 260 páginas de transformación histórica.',
       'Ya disponible: Resumen Ejecutivo actualizado [13/03/26]'
+      'El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular.'
     ];
 
     let bannerIndex = 0;
@@ -2825,35 +2826,54 @@ document.addEventListener('DOMContentLoaded', function () {
   if(section) observer.observe(section);
 })();
 </script>
-  <script>
-  // Esta fecha es la "llave". Si la cambias aquí, el punto rojo volverá a aparecer para todos los usuarios.
+<script>
+  // Fecha para controlar si hay novedades nuevas
   const VERSION_NOVEDADES = "17/03/26";
 
-  function controlarBadgeNovedades() {
-      const ultimaVista = localStorage.getItem('fecha_novedad_leida');
-      const badgeM = document.getElementById('badge-movil');
-      const badgeD = document.getElementById('badge-desktop');
-
-      // Si nunca entró o la fecha guardada es vieja, mostramos el punto rojo
-      if (ultimaVista !== VERSION_NOVEDADES) {
-          badgeM?.classList.remove('hidden');
-          badgeD?.classList.remove('hidden');
-      }
-  }
-
   function toggleMenuNovedades() {
-      const menu = document.getElementById('notificationMenu');
-      if (!menu) return;
-      
-      menu.classList.toggle('hidden');
+    const menu = document.getElementById('notificationMenu');
+    if (!menu) return;
 
-      // Al abrir el menú, guardamos la fecha actual para que el badge desaparezca
-      localStorage.setItem('fecha_novedad_leida', VERSION_NOVEDADES);
+    const estaOculto = menu.classList.contains('hidden');
+
+    if (estaOculto) {
+      menu.classList.remove('hidden');
+      // Al abrir, guardamos en el navegador que ya se vio esta versión
+      localStorage.setItem('leycura_visto', VERSION_NOVEDADES);
       document.getElementById('badge-movil')?.classList.add('hidden');
       document.getElementById('badge-desktop')?.classList.add('hidden');
+    } else {
+      menu.classList.add('hidden');
+    }
   }
 
-  document.addEventListener('DOMContentLoaded', controlarBadgeNovedades);
+  // Lógica para cerrar al hacer clic en cualquier parte de la pantalla
+  window.addEventListener('click', function(e) {
+    const menu = document.getElementById('notificationMenu');
+    if (!menu || menu.classList.contains('hidden')) return;
+
+    // Buscamos los botones que tienen tu función original para no entrar en conflicto
+    const botonesBell = document.querySelectorAll('[onclick="toggleMenuNovedades()"]');
+    let clicEnBoton = false;
+    
+    botonesBell.forEach(btn => {
+      if (btn.contains(e.target)) clicEnBoton = true;
+    });
+
+    // Si el clic NO fue en el menú y NO fue en los botones, se cierra
+    if (!menu.contains(e.target) && !clicEnBoton) {
+      menu.classList.add('hidden');
+    }
+  });
+
+  // Control del punto rojo al cargar la página
+  document.addEventListener('DOMContentLoaded', () => {
+    const vista = localStorage.getItem('leycura_visto');
+    if (vista !== VERSION_NOVEDADES) {
+      document.getElementById('badge-movil')?.classList.remove('hidden');
+      document.getElementById('badge-desktop')?.classList.remove('hidden');
+    }
+  });
 </script>
 </body>
 </html>

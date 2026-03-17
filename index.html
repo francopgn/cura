@@ -1020,7 +1020,7 @@ display:none;
 
       <!-- NUEVO SUBTÍTULO -->
      <p class="text-sm md:text-base text-white/80 mb-2 leading-relaxed">
-       Un sistema interoperable que une hospitales, obras sociales y pacientes bajo un estándar digital común. Una red que integra a todo el país preservando la autonomía de cada jurisdicción, con soberanía tecnológica y control ciudadano.
+       Un sistema interoperable que une hospitales, obras sociales y pacientes bajo un estándar digital común, preservando la autonomía de cada jurisdicción, con soberanía tecnológica y control ciudadano.
       </p>
 
 <div class="mb-6 border-l-2 border-cura-accent/40 pl-3" style="height:3.6rem;overflow:hidden;display:flex;align-items:center;">
@@ -1029,29 +1029,44 @@ display:none;
   </p>
 </div>
 
-<div class="flex flex-col gap-3">
+<div class="flex flex-col gap-4">
+  
   <div class="flex gap-3">
-    <button id="btn-sumate" type="button" class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full bg-white text-cura-primary text-sm font-semibold shadow-sm hover:bg-cura-accentLight hover:text-cura-primaryDark transition cursor-pointer">
-      APOYAR PROYECTO
-    </button>
-<a id="btn-info" href="/Informacion/informacion.html" 
-   class="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-full border border-cura-accent text-sm font-semibold text-cura-accentLight hover:bg-cura-accent hover:text-cura-primary transition text-center">
-  Información Técnica
-</a>
+    
+    <a id="btn-info" href="/Informacion/informacion.html" 
+       class="flex-1 flex items-center justify-center gap-2 px-2 py-3 rounded-full border border-cura-accentLight text-cura-accentLight hover:bg-cura-accent hover:text-white transition">
+      <i class="ph-bold ph-file-text text-2xl shrink-0"></i>
+      <div class="text-left leading-tight">
+        <span class="block text-[13px] sm:text-sm font-semibold">Información</span>
+        <span class="block text-[13px] sm:text-sm font-semibold">Técnica</span>
+      </div>
+    </a>
+
+    <a href="/Informacion/documentos/Resumen_Ejecutivo-13-03-26.pdf" target="_blank"
+       class="group flex-1 relative overflow-hidden flex items-center justify-center rounded-full border border-cura-accentLight text-cura-accentLight hover:bg-cura-accent hover:text-white transition">
+      <div class="relative flex flex-col items-center justify-center w-full h-full py-3 transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
+        
+        <div class="flex items-center justify-center gap-2 w-full">
+          <i class="ph-bold ph-file-pdf text-2xl shrink-0"></i>
+          <div class="text-left leading-tight">
+            <span class="block text-[13px] sm:text-sm font-semibold">Resumen</span>
+            <span class="block text-[13px] sm:text-sm font-semibold">Ejecutivo</span>
+          </div>
+        </div>
+        
+        <div class="absolute top-full flex items-center justify-center w-full h-full text-[11px] sm:text-xs text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 px-2 leading-tight font-medium">
+          Actualizado:<br>13/03/26
+        </div>
+
+      </div>
+    </a>
+    
   </div>
 
-  <a href="/Informacion/documentos/Resumen_Ejecutivo-13-03-26.pdf" target="_blank"
-     class="group relative inline-flex items-center justify-center overflow-hidden bg-cura-accent px-8 py-4 rounded-full text-white font-bold shadow-lg transition-all duration-300 hover:bg-cura-accent/90">
-    <div class="relative flex flex-col items-center transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
-      <span class="flex items-center gap-2 py-1">
-        <i class="ph-bold ph-file-pdf text-xl"></i>
-        Ver Resumen Ejecutivo
-      </span>
-      <span class="absolute top-full flex items-center gap-2 py-1 whitespace-nowrap text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        Última actualización: 13/03/2026
-      </span>
-    </div>
-  </a>
+  <button id="btn-sumate" type="button" class="w-full inline-flex items-center justify-center px-6 py-4 rounded-[40px] bg-white text-cura-primaryDark text-[16px] sm:text-lg font-extrabold tracking-wide shadow-lg hover:bg-gray-100 transition cursor-pointer">
+    APOYAR PROYECTO
+  </button>
+  
 
   <p class="mt-2 text-[11px] text-cura-accentLight leading-tight">
     Lo que <span class="hidden md:inline">ves a la derecha</span><span class="inline md:hidden">verás aquí debajo</span> es la Red Sanitaria Nacional desplegándose sobre el mapa de Argentina — cada nodo, un punto de acceso a la infraestructura C.U.R.A.

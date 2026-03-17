@@ -886,90 +886,47 @@ display:none;
 <!-- =============================================
      HEADER (ORIGINAL INTACTO)
 ============================================== -->
-<header class="sticky top-0 z-50 bg-cura-primaryDark/95 backdrop-blur border-b border-cura-accent/30">
+<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
 
-<div class="w-full max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-
-    <!-- FILA SUPERIOR -->
-    <!-- <div class="flex items-center justify-between"> --->
-  <div class="flex items-center gap-6">
-
-      <!-- LOGO + TITULO -->
-      <div class="flex items-center gap-4 min-w-0">
-
-        <img src="logo_cura.png" alt="Logo C.U.R.A."
-          class="w-10 h-10 md:w-12 md:h-12 object-contain shrink-0">
-
-        <div class="flex flex-col justify-center border-l border-white/20 pl-4 min-w-0">
-
-          <span class="text-[10px] uppercase tracking-widest text-cura-accentLight font-bold leading-none whitespace-nowrap">
-            Ley Nacional
-          </span>
-
-          <p class="text-sm md:text-base font-semibold text-white leading-tight tracking-tight max-w-[520px]">
-            Transformación Digital Sanitaria Argentina
-          </p>
-
+    <div class="flex items-center justify-between w-full sm:w-auto">
+      <a href="#inicio" class="nav-inicio-link flex items-center gap-2 group cursor-pointer">
+        <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
+        <div class="leading-tight">
+          <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
+          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
         </div>
+      </a>
+      <div class="sm:hidden relative">
+        <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <i class="ph-bold ph-bell text-2xl"></i>
+          <span class="notification-badge-ui">1</span>
+        </button>
       </div>
+    </div>
 
-      <!-- NOTIFICACIONES -->
-     <div class="hidden md:block relative">
-          <button onclick="toggleMenuNovedades()"
-           class="relative p-2 text-white/80 hover:text-white transition-colors shrink-0 md:hidden">
-           <i class="ph ph-bell text-2xl"></i>
-            <span class="notification-badge-ui">1</span>
-          </button>
-        </div>
-    </div> 
-
-    <!-- NAV (AHORA ADENTRO DEL HEADER) -->
-    <nav class="flex items-center justify-between">
-
-      <div class="flex gap-6 text-sm font-medium">
-
-        <a href="#que-es" class="text-cura-accentLight hover:text-white transition-colors">
-          Sistema
-        </a>
-
-        <a href="#beneficios" class="text-cura-accentLight hover:text-white transition-colors">
-          Beneficios
-        </a>
-
-        <a href="/Informacion/informacion.html"
-           class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">
-          Información
-        </a>
-
-        <a href="#contacto" class="text-cura-accentLight hover:text-white transition-colors">
-          Contacto
-        </a>
-
+    <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end mt-2 sm:mt-0">
+      <div class="flex gap-4">
+        <a href="#que-es"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
+        <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
+        <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
+        <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
       </div>
-
       <div class="flex items-center gap-3">
-
-        <a href="/demo.html"
-           class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
           Demo
         </a>
-
         <div class="hidden sm:block relative">
-          <button onclick="toggleMenuNovedades()"
-            class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
+          <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
             <i class="ph-bold ph-bell text-xl"></i>
             <span class="notification-badge-ui">1</span>
           </button>
         </div>
-
       </div>
-
     </nav>
 
-  </div>
-
-  <!-- Menú novedades -->
-  <div id="notificationMenu" class="hidden absolute right-4 top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+    <!-- Menú novedades (ORIGINAL) -->
+<div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
   
   <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
     <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>

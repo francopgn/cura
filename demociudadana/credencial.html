@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
   <style>
     :root { --bg-dark:#00345C; --cura-blue:#004E85; --accent:#00C2FF; --glass:rgba(255,255,255,0.05); --glass-border:rgba(255,255,255,0.1); }
     body { background-color:var(--bg-dark); background-image:radial-gradient(circle at top right,rgba(0,78,133,0.5),transparent),radial-gradient(circle at bottom left,rgba(0,194,255,0.05),transparent); color:white; margin:0; display:flex; justify-content:center; min-height:100vh; font-family:'Inter',sans-serif; overflow-x:hidden; }
@@ -20,18 +21,13 @@
     .cus-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:3px; color:var(--accent); opacity:0.8; margin-bottom:6px; }
     .cus-title { font-size:17px; font-weight:800; color:white; margin-bottom:20px; }
 
-    .qr-wrapper { background:white; padding:15px; border-radius:22px; display:inline-block; margin-bottom:16px; }
+    .qr-wrapper { background:white; padding:15px; border-radius:22px; display:block; width:fit-content; margin:0 auto 16px; }
     .qr-wrapper svg { display:block; }
 
     .curaid-code { font-size:10px; letter-spacing:3px; text-transform:uppercase; opacity:0.5; margin-bottom:16px; }
 
-    .token-label { font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:2px; color:rgba(255,255,255,0.5); margin-bottom:4px; }
-    .token-display { font-size:52px; font-weight:900; letter-spacing:8px; color:var(--accent); margin:4px 0 8px; }
-
-    .timer-container { width:80%; margin:0 auto 6px; }
-    .progress-bg { height:5px; background:rgba(255,255,255,0.1); border-radius:10px; overflow:hidden; }
-    .progress-fill { height:100%; background:var(--accent); transition:width 1s linear; border-radius:10px; }
-    .time-text { font-size:10px; margin-top:6px; opacity:0.5; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+    .barcode-wrapper { background:white; padding:14px 15px 10px; border-radius:22px; display:block; width:fit-content; margin:0 auto; }
+    .barcode-wrapper svg { display:block; }
 
     /* FRANJA RESUMEN CLÍNICO */
     .rcf-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:16px; }
@@ -79,19 +75,13 @@
 
         <!-- QR generado en SVG inline — no depende de imagen externa -->
         <div class="qr-wrapper">
-          <svg id="qrSvg" width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg id="qrSvg" width="168" height="168" viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
 
         <div class="curaid-code">CURAID-41316202</div>
 
-        <div class="token-label">Token de Seguridad</div>
-        <div id="token" class="token-display">0000</div>
-
-        <div class="timer-container">
-          <div class="progress-bg">
-            <div class="progress-fill" id="progress" style="width:100%"></div>
-          </div>
-          <div id="time-remaining" class="time-text">Expira en 05:00 min</div>
+        <div class="barcode-wrapper">
+          <svg id="barcode"></svg>
         </div>
       </div>
 
@@ -174,7 +164,8 @@
     // Patrón QR simplificado de demostración (no escaneable, representa el concepto)
     function drawQR() {
       const svg = document.getElementById("qrSvg");
-      const size = 180, cells = 21, cell = Math.floor(size / cells);
+      const cells = 21, cell = 8; // 21 × 8 = 168px exactos
+      const size = cells * cell;
       // Patrón de bits de ejemplo (21x21)
       const pattern = [
         [1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1],
@@ -215,19 +206,27 @@
     let remaining = duration;
 
     function generarToken() {
-      document.getElementById("token").textContent = String(Math.floor(1000 + Math.random() * 9000));
       drawQR(); // regenerar QR visual al renovar token
     }
 
     function actualizarTimer() {
-      const min = String(Math.floor(remaining / 60)).padStart(2, "0");
-      const sec = String(remaining % 60).padStart(2, "0");
-      const timeEl = document.getElementById("time-remaining");
-      const progressEl = document.getElementById("progress");
-      if (timeEl) timeEl.textContent = `Expira en ${min}:${sec} min`;
-      if (progressEl) progressEl.style.width = ((remaining / duration) * 100) + "%";
       remaining--;
       if (remaining < 0) { generarToken(); remaining = duration; }
+    }
+
+    // ── BARCODE Code128 ──
+    function drawBarcode() {
+      JsBarcode("#barcode", "CURAID-41316202", {
+        format: "CODE128",
+        width: 1.8,
+        height: 60,
+        displayValue: false,
+        margin: 0,
+        marginLeft: 4,
+        marginRight: 4,
+        lineColor: "#0d2b52",
+        background: "#ffffff"
+      });
     }
 
     // ── DESCARGAR ──
@@ -246,16 +245,12 @@
             <p style="font-size:13px;color:#475569"><strong>Credencial Única de Salud — C.U.S. (Art. 2b):</strong> Es tu documento de identidad sanitaria federal. Reemplaza las credenciales de obra social y contiene tu CURA-ID, cobertura y datos de Resumen Clínico Federal.</p>
           </div>
           <div style="display:flex;gap:12px;align-items:flex-start;">
-            <i class="ph-bold ph-key" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
-            <p style="font-size:13px;color:#475569"><strong>Token Dinámico:</strong> El número de 4 dígitos cambia cada 5 minutos. Asegurate de mostrar el código vigente al profesional o farmacia.</p>
-          </div>
-          <div style="display:flex;gap:12px;align-items:flex-start;">
             <i class="ph-bold ph-qr-code" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
-            <p style="font-size:13px;color:#475569"><strong>Uso Federal:</strong> El QR permite que médicos y farmacias de todo el país validen tu identidad y accedan a tus recetas o historia clínica autorizada.</p>
+            <p style="font-size:13px;color:#475569"><strong>Uso Federal:</strong> El QR y el código de barras permiten que médicos y farmacias de todo el país validen tu identidad y accedan a tus recetas o historia clínica autorizada.</p>
           </div>
           <div style="display:flex;gap:12px;align-items:flex-start;">
             <i class="ph-bold ph-shield-check" style="color:#004E85;font-size:22px;flex-shrink:0"></i>
-            <p style="font-size:13px;color:#475569"><strong>Privacidad:</strong> El QR y el Token son personales e intransferibles. Nadie puede obligarte a mostrar este código fuera de un contexto de atención sanitaria.</p>
+            <p style="font-size:13px;color:#475569"><strong>Privacidad:</strong> El QR y el código de barras son personales e intransferibles. Nadie puede obligarte a mostrar este código fuera de un contexto de atención sanitaria.</p>
           </div>
         </div>
       `;
@@ -265,9 +260,7 @@
     function cerrarModal() { document.getElementById("modal-container").style.display = "none"; }
 
     drawQR();
-    generarToken();
-    actualizarTimer();
-    setInterval(actualizarTimer, 1000);
+    drawBarcode();
   </script>
 </body>
 </html>

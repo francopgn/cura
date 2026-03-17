@@ -2827,46 +2827,33 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 <script>
-  // Fecha para controlar si hay novedades nuevas
   const VERSION_NOVEDADES = "17/03/26";
 
-  function toggleMenuNovedades() {
+  function toggleMenuNovedades(event) {
+    if (event) event.stopPropagation();
     const menu = document.getElementById('notificationMenu');
     if (!menu) return;
 
-    const estaOculto = menu.classList.contains('hidden');
+    menu.classList.toggle('hidden');
 
-    if (estaOculto) {
-      menu.classList.remove('hidden');
-      // Al abrir, guardamos en el navegador que ya se vio esta versión
-      localStorage.setItem('leycura_visto', VERSION_NOVEDADES);
-      document.getElementById('badge-movil')?.classList.add('hidden');
-      document.getElementById('badge-desktop')?.classList.add('hidden');
-    } else {
-      menu.classList.add('hidden');
-    }
+    // Marcar como visto al abrir
+    localStorage.setItem('leycura_visto', VERSION_NOVEDADES);
+    document.getElementById('badge-movil')?.classList.add('hidden');
+    document.getElementById('badge-desktop')?.classList.add('hidden');
   }
 
-  // Lógica para cerrar al hacer clic en cualquier parte de la pantalla
+  // CERRAR AL CLICKEAR FUERA
   window.addEventListener('click', function(e) {
     const menu = document.getElementById('notificationMenu');
-    if (!menu || menu.classList.contains('hidden')) return;
-
-    // Buscamos los botones que tienen tu función original para no entrar en conflicto
-    const botonesBell = document.querySelectorAll('[onclick="toggleMenuNovedades()"]');
-    let clicEnBoton = false;
-    
-    botonesBell.forEach(btn => {
-      if (btn.contains(e.target)) clicEnBoton = true;
-    });
-
-    // Si el clic NO fue en el menú y NO fue en los botones, se cierra
-    if (!menu.contains(e.target) && !clicEnBoton) {
-      menu.classList.add('hidden');
+    if (menu && !menu.classList.contains('hidden')) {
+      // Si el clic no es el menú ni el botón de la campana, cerramos
+      if (!menu.contains(e.target) && !e.target.closest('.boton-campana')) {
+        menu.classList.add('hidden');
+      }
     }
   });
 
-  // Control del punto rojo al cargar la página
+  // CONTROL DEL PUNTO ROJO AL CARGAR
   document.addEventListener('DOMContentLoaded', () => {
     const vista = localStorage.getItem('leycura_visto');
     if (vista !== VERSION_NOVEDADES) {

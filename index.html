@@ -914,11 +914,13 @@ display:none;
       </div>
 
       <!-- NOTIFICACIONES -->
- <button class="relative p-2 text-white/80 hover:text-white transition-colors shrink-0 md:hidden">
-        <i class="ph ph-bell text-2xl"></i>
-        <span class="notification-badge-ui">!</span>
-      </button>
-
+     <div class="hidden sm:block relative">
+          <button onclick="toggleMenuNovedades()"
+           class="relative p-2 text-white/80 hover:text-white transition-colors shrink-0 md:hidden">
+           <i class="ph ph-bell text-2xl"></i>
+            <span class="notification-badge-ui">1</span>
+          </button>
+        </div>
     </div> 
 
     <!-- NAV (AHORA ADENTRO DEL HEADER) -->

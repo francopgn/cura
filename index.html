@@ -868,7 +868,7 @@ display:none;
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-14 sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
         <div class="leading-tight">
           <p class="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors">LEY NACIONAL</p>
-          <p id="texto-dinamico-header" class="text-xs sm:text-sm font-bold text-white transition-opacity duration-500">Transformación Digital Sanitaria Argentina</p>
+          <p class="text-xs sm:text-sm font-bold text-white">Transformación Digital Sanitaria Argentina</p>
         </div>
       </a>
       <div class="sm:hidden relative">
@@ -905,7 +905,6 @@ display:none;
       </div>
 
       <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
-        
         <div class="p-4 border-b border-gray-200 border-l-4 cursor-default text-left bg-gray-100" style="border-l-color: #00345c;">
           <div class="flex gap-3">
             <i class="ph-bold ph-scales text-lg" style="color: #004e85;"></i>
@@ -940,7 +939,7 @@ display:none;
                 <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
                 <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
               </div>
-              <p class="text-gray-600 text-[11px]">Consultá detalles técnicos de la ley con nuestro asistente.</p>
+              <p class="text-gray-600 text-[11px]">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
             </div>
           </div>
         </div>
@@ -957,7 +956,6 @@ display:none;
             </div>
           </div>
         </div>
-
       </div>
       <button onclick="toggleMenuNovedades(event)" class="w-full text-center py-2.5 text-[10px] font-bold border-t border-gray-100 uppercase" style="color: #004e85;">Cerrar</button>
     </div>
@@ -2841,7 +2839,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script>
   const VERSION_NOVEDADES = "17/03/26";
 
-  // 1. Manejo del menú y el badge (punto rojo)
+  // Manejo del menú
   function toggleMenuNovedades(event) {
     if (event) event.stopPropagation();
     const menu = document.getElementById('notificationMenu');
@@ -2849,13 +2847,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     menu.classList.toggle('hidden');
 
-    // Al abrir, se marca como visto
+    // Marcar como visto
     localStorage.setItem('leycura_visto', VERSION_NOVEDADES);
     document.getElementById('badge-movil')?.classList.add('hidden');
     document.getElementById('badge-desktop')?.classList.add('hidden');
   }
 
-  // 2. Cierre automático al hacer clic fuera
+  // Cerrar al clickear fuera
   window.addEventListener('click', function(e) {
     const menu = document.getElementById('notificationMenu');
     if (menu && !menu.classList.contains('hidden')) {
@@ -2865,36 +2863,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // 3. Texto Dinámico del Header
-  function iniciarTextoDinamico() {
-    const textos = [
-      "Transformación Digital Sanitaria Argentina",
-      "Conectividad Unificada para Redes y Asistencia",
-      "La infraestructura que une la salud"
-    ];
-    let i = 0;
-    const el = document.getElementById('texto-dinamico-header');
-    if (!el) return;
-
-    setInterval(() => {
-      el.classList.add('opacity-0');
-      setTimeout(() => {
-        i = (i + 1) % textos.length;
-        el.textContent = textos[i];
-        el.classList.remove('opacity-0');
-      }, 500);
-    }, 5000);
-  }
-
-  // 4. Inicializar todo
+  // Verificar badge al cargar
   document.addEventListener('DOMContentLoaded', () => {
-    // Verificación del badge
     const vista = localStorage.getItem('leycura_visto');
     if (vista !== VERSION_NOVEDADES) {
       document.getElementById('badge-movil')?.classList.remove('hidden');
       document.getElementById('badge-desktop')?.classList.remove('hidden');
     }
-    iniciarTextoDinamico();
   });
 </script>
 </body>

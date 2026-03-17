@@ -800,11 +800,11 @@ display:none;
 }
     /* Estilo para la barrita de scroll del menú de novedades */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px; /* Muy finita */
+  width: 4px; /* Muy finita */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Fondo del carril casi blanco */
+  background: #f9f9f9; /* Fondo del carril casi blanco */
   border-radius: 10px;
 }
 
@@ -2824,6 +2824,36 @@ document.addEventListener('DOMContentLoaded', function () {
   var section = document.getElementById('datos');
   if(section) observer.observe(section);
 })();
+</script>
+  <script>
+  // Esta fecha es la "llave". Si la cambias aquí, el punto rojo volverá a aparecer para todos los usuarios.
+  const VERSION_NOVEDADES = "17/03/26";
+
+  function controlarBadgeNovedades() {
+      const ultimaVista = localStorage.getItem('fecha_novedad_leida');
+      const badgeM = document.getElementById('badge-movil');
+      const badgeD = document.getElementById('badge-desktop');
+
+      // Si nunca entró o la fecha guardada es vieja, mostramos el punto rojo
+      if (ultimaVista !== VERSION_NOVEDADES) {
+          badgeM?.classList.remove('hidden');
+          badgeD?.classList.remove('hidden');
+      }
+  }
+
+  function toggleMenuNovedades() {
+      const menu = document.getElementById('notificationMenu');
+      if (!menu) return;
+      
+      menu.classList.toggle('hidden');
+
+      // Al abrir el menú, guardamos la fecha actual para que el badge desaparezca
+      localStorage.setItem('fecha_novedad_leida', VERSION_NOVEDADES);
+      document.getElementById('badge-movil')?.classList.add('hidden');
+      document.getElementById('badge-desktop')?.classList.add('hidden');
+  }
+
+  document.addEventListener('DOMContentLoaded', controlarBadgeNovedades);
 </script>
 </body>
 </html>

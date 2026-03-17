@@ -1025,10 +1025,9 @@ display:none;
 
 <div class="mb-6 border-l-2 border-cura-accent/40 pl-3" style="height:3.6rem;overflow:hidden;display:flex;align-items:center;">
   <p id="texto-dinamico" class="text-xs text-cura-accentLight italic transition-opacity duration-500 ease-in-out leading-snug m-0">
-    Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.
+    Tu historia clínica siempre con vos: sin importar tu cobertura, tu provincia o dónde te atiendas.
   </p>
 </div>
-
 <div class="flex flex-col gap-4">
   
   <div class="flex gap-3">
@@ -2827,8 +2826,9 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('DOMContentLoaded', () => {
       const textoElemento = document.getElementById('texto-dinamico');
       
-      const frase1 = "Creada para mejorar la salud de todos, sin importar la obra social, la provincia o el nivel de complejidad del centro de salud.";
-      const frase2 = "No se trata de gastar más, sino de usar mejor. Máxima eficiencia presupuestaria aprovechando la infraestructura tecnológica que el país ya tiene.";
+      // Frases actualizadas
+      const frase1 = "Tu historia clínica siempre con vos: sin importar tu cobertura, tu provincia o dónde te atiendas.";
+      const frase2 = "<strong>No se trata de gastar más, sino de usar mejor.</strong> Máxima eficiencia presupuestaria aprovechando la infraestructura tecnológica que el país ya tiene.";
       
       let mostrandoFrase1 = true;
 
@@ -2839,15 +2839,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // 2. Esperamos 500ms (lo que dura la transición duration-500)
           setTimeout(() => {
-              // 3. Cambiamos el texto
+              // 3. Cambiamos el estado
               mostrandoFrase1 = !mostrandoFrase1;
-              textoElemento.textContent = mostrandoFrase1 ? frase1 : frase2;
+              
+              // 4. ¡EL CAMBIO CLAVE!: Usar innerHTML para que lea el <strong>
+              textoElemento.innerHTML = mostrandoFrase1 ? frase1 : frase2;
 
-              // 4. Volvemos a mostrar el texto
+              // 5. Volvemos a mostrar el texto
               textoElemento.classList.remove('opacity-0');
           }, 500);
 
-      }, 5000);
+      }, 5000); // 5 segundos por frase
   });
 </script>
 <script>

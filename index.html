@@ -1420,6 +1420,7 @@ display:none;
         <button class="actor-tab-btn active" onclick="switchTab('pacientes')"      role="tab" aria-selected="true">Pacientes</button>
         <button class="actor-tab-btn"        onclick="switchTab('jubilados')"      role="tab">Jubilados</button>
         <button class="actor-tab-btn"        onclick="switchTab('medicos')"        role="tab">Médicos</button>
+        <button class="actor-tab-btn"        onclick="switchTab('farmacias')"       role="tab">Farmacias</button>
         <button class="actor-tab-btn"        onclick="switchTab('hospitales')"     role="tab">Hospitales</button>
         <button class="actor-tab-btn"        onclick="switchTab('obraSocial')"     role="tab">Obras Sociales</button>
         <button class="actor-tab-btn"        onclick="switchTab('estado')"         role="tab">Estado</button>
@@ -1483,6 +1484,54 @@ display:none;
           <div class="benefit-card-desc">Agenda federal que encuentra el turno más cercano entre todos los hospitales y clínicas adheridas.</div>
           <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
         </button>
+        <button class="benefit-card" onclick="openBenefitModal('portabilidad-pac')" data-aos="fade-up" data-aos-delay="350">
+          <div class="benefit-card-icon"><i class="ph-bold ph-arrows-out"></i></div>
+          <div class="benefit-card-title">Portabilidad nacional de datos</div>
+          <div class="benefit-card-desc">Tu información médica te acompaña en tiempo real a cualquier hospital del país, sin importar la provincia ni la obra social.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('recordatorios-pac')" data-aos="fade-up" data-aos-delay="400">
+          <div class="benefit-card-icon"><i class="ph-bold ph-bell-ringing"></i></div>
+          <div class="benefit-card-title">Recordatorios terapéuticos</div>
+          <div class="benefit-card-desc">Notificaciones automáticas sobre medicamentos, vencimiento de recetas y controles periódicos pendientes.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('ips-pac')" data-aos="fade-up" data-aos-delay="450">
+          <div class="benefit-card-icon"><i class="ph-bold ph-globe-hemisphere-east"></i></div>
+          <div class="benefit-card-title">Resumen Internacional del Paciente</div>
+          <div class="benefit-card-desc">Extracto clínico bajo estándar global (HL7 FHIR) para recibir atención segura en el exterior.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('asistente-ia-pac')" data-aos="fade-up" data-aos-delay="500">
+          <div class="benefit-card-icon"><i class="ph-bold ph-robot"></i></div>
+          <div class="benefit-card-title">Asistente de lenguaje claro</div>
+          <div class="benefit-card-desc">Herramientas que traducen términos médicos complejos a lenguaje simple, con soporte de voz y lectura de pantalla.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('farmacias-geo')" data-aos="fade-up" data-aos-delay="550">
+          <div class="benefit-card-icon"><i class="ph-bold ph-map-pin"></i></div>
+          <div class="benefit-card-title">Farmacias de turno geolocalizadas</div>
+          <div class="benefit-card-desc">Visor en tiempo real de farmacias cercanas y de turno con stock orientativo. Sin llamadas ni caminatas innecesarias.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('blindaje-san')" data-aos="fade-up" data-aos-delay="600">
+          <div class="benefit-card-icon"><i class="ph-bold ph-shield-check"></i></div>
+          <div class="benefit-card-title">Inmunidad administrativa</div>
+          <div class="benefit-card-desc">Prohibición expresa de que los datos del sistema se usen con fines migratorios, impositivos, policiales o de inteligencia.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('sin-doc')" data-aos="fade-up" data-aos-delay="650">
+          <div class="benefit-card-icon"><i class="ph-bold ph-user-plus"></i></div>
+          <div class="benefit-card-title">Atención sin documentación</div>
+          <div class="benefit-card-desc">Identificador temporal (C.U.R.A.-TEMP) para recibir atención aunque no tengas DNI. Continuidad asistencial garantizada.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('desbu-farmacia-pac')" data-aos="fade-up" data-aos-delay="700">
+          <div class="benefit-card-icon"><i class="ph-bold ph-receipt"></i></div>
+          <div class="benefit-card-title">Farmacia sin papeles</div>
+          <div class="benefit-card-desc">Retirá tus medicamentos solo con DNI o código de app. Sin recetas impresas ni troqueles. Rápido y sin errores.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
       </div>
 
       <!-- ---- PANEL: JUBILADOS ---- -->
@@ -1521,6 +1570,24 @@ display:none;
           <div class="benefit-card-icon"><i class="ph-bold ph-scissors"></i></div>
           <div class="benefit-card-title">Fin del troquel físico</div>
           <div class="benefit-card-desc">El troquel físico de PAMI desaparece. El Registro Digital de Dispensación Trazable (RDDT) lo reemplaza.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('delegado-jub')" data-aos="fade-up" data-aos-delay="350">
+          <div class="benefit-card-icon"><i class="ph-bold ph-users"></i></div>
+          <div class="benefit-card-title">Gestor delegado familiar</div>
+          <div class="benefit-card-desc">Autorizá a un familiar para gestionar recetas, turnos y trámites desde su celular en tu nombre.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('notif-jub')" data-aos="fade-up" data-aos-delay="400">
+          <div class="benefit-card-icon"><i class="ph-bold ph-bell"></i></div>
+          <div class="benefit-card-title">Notificaciones críticas automáticas</div>
+          <div class="benefit-card-desc">Alertas al celular cuando tu médico deja de atender por PAMI, se emite una receta o se modifica tu cobertura.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('prioridad-jub')" data-aos="fade-up" data-aos-delay="450">
+          <div class="benefit-card-icon"><i class="ph-bold ph-star"></i></div>
+          <div class="benefit-card-title">Priorización sanitaria automática</div>
+          <div class="benefit-card-desc">El sistema asigna turnos priorizando edad avanzada, cronicidad y zona geográfica. Menos espera para quienes más lo necesitan.</div>
           <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
         </button>
       </div>
@@ -1563,6 +1630,58 @@ display:none;
           <div class="benefit-card-desc">La capacitación en el sistema otorga puntaje para recertificación de matrículas profesionales.</div>
           <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
         </button>
+        <button class="benefit-card" onclick="openBenefitModal('agenda-med')" data-aos="fade-up" data-aos-delay="350">
+          <div class="benefit-card-icon"><i class="ph-bold ph-calendar-blank"></i></div>
+          <div class="benefit-card-title">Agenda profesional unificada</div>
+          <div class="benefit-card-desc">Una sola plataforma para todos tus turnos presenciales y videoconsultas. Sin sistemas paralelos ni planillas manuales.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('matricula-val')" data-aos="fade-up" data-aos-delay="400">
+          <div class="benefit-card-icon"><i class="ph-bold ph-seal-check"></i></div>
+          <div class="benefit-card-title">Validación automática de matrícula</div>
+          <div class="benefit-card-desc">El sistema verifica cada 24 horas la vigencia de tu matrícula, dando seguridad jurídica al acto médico sin trámites adicionales.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('bonos-med')" data-aos="fade-up" data-aos-delay="450">
+          <div class="benefit-card-icon"><i class="ph-bold ph-currency-circle-dollar"></i></div>
+          <div class="benefit-card-title">Bonos por radicación en zonas críticas</div>
+          <div class="benefit-card-desc">Suplementos del 30% al 50% del salario para profesionales que se radiquen en áreas con déficit sanitario.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('offline-med')" data-aos="fade-up" data-aos-delay="500">
+          <div class="benefit-card-icon"><i class="ph-bold ph-wifi-slash"></i></div>
+          <div class="benefit-card-title">Operación sin conexión (offline)</div>
+          <div class="benefit-card-desc">Registrá atenciones sin internet en visitas domiciliarias o zonas rurales. Sincronización automática al volver la conexión.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+      </div>
+
+      <!-- ---- PANEL: FARMACIAS ---- -->
+      <div id="panel-farmacias" class="actor-panel grid-cols-1 sm:grid-cols-2 gap-4">
+        <button class="benefit-card" onclick="openBenefitModal('troquel-farm')" data-aos="fade-up" data-aos-delay="50">
+          <div class="benefit-card-icon"><i class="ph-bold ph-scissors"></i></div>
+          <div class="benefit-card-title">Fin del troquel físico</div>
+          <div class="benefit-card-desc">Se acabó recortar etiquetas y pegarlas en planillas. El mostrador se libera de papel y los errores de procesamiento manual desaparecen.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('rddt-farm')" data-aos="fade-up" data-aos-delay="100">
+          <div class="benefit-card-icon"><i class="ph-bold ph-barcode"></i></div>
+          <div class="benefit-card-title">RDDT: dispensación trazable</div>
+          <div class="benefit-card-desc">Validación inmediata con ANMAT al entregar el medicamento, con firma digital y sello de tiempo. Seguridad jurídica instantánea.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('stock-farm')" data-aos="fade-up" data-aos-delay="150">
+          <div class="benefit-card-icon"><i class="ph-bold ph-storefront"></i></div>
+          <div class="benefit-card-title">Visibilidad de stock para pacientes</div>
+          <div class="benefit-card-desc">Mostrá tu disponibilidad en el visor geolocalizado del sistema. Atraé pacientes cercanos y mejorá la rotación de medicamentos.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('offline-farm')" data-aos="fade-up" data-aos-delay="200">
+          <div class="benefit-card-icon"><i class="ph-bold ph-wifi-slash"></i></div>
+          <div class="benefit-card-title">Operación sin conexión (offline)</div>
+          <div class="benefit-card-desc">Seguí dispensando ante cortes de internet. Registro local cifrado con sincronización automática sin perder trazabilidad.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
       </div>
 
       <!-- ---- PANEL: HOSPITALES ---- -->
@@ -1591,6 +1710,42 @@ display:none;
           <div class="benefit-card-desc">La banca pública nacional creará líneas de crédito específicas para adopción de software y hardware certificado.</div>
           <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
         </button>
+        <button class="benefit-card" onclick="openBenefitModal('hardware-cero')" data-aos="fade-up" data-aos-delay="250">
+          <div class="benefit-card-icon"><i class="ph-bold ph-desktop"></i></div>
+          <div class="benefit-card-title">Arquitectura Hardware Cero</div>
+          <div class="benefit-card-desc">El sistema funciona 100% vía web en cualquier computadora, tablet o celular estándar. Sin servidores locales ni inversión en hardware.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('capacidad-hosp')" data-aos="fade-up" data-aos-delay="300">
+          <div class="benefit-card-icon"><i class="ph-bold ph-chart-bar"></i></div>
+          <div class="benefit-card-title">Capacidad hospitalaria en tiempo real</div>
+          <div class="benefit-card-desc">Tableros interactivos con camas disponibles, estado de derivaciones y flujos de pacientes al instante para optimizar decisiones.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('ia-demanda')" data-aos="fade-up" data-aos-delay="350">
+          <div class="benefit-card-icon"><i class="ph-bold ph-brain"></i></div>
+          <div class="benefit-card-title">Motor Predictivo de Demanda</div>
+          <div class="benefit-card-desc">IA que anticipa picos de saturación en guardias, estima necesidades de stock y genera alertas tempranas antes del colapso operativo.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('padrinazgo')" data-aos="fade-up" data-aos-delay="400">
+          <div class="benefit-card-icon"><i class="ph-bold ph-handshake"></i></div>
+          <div class="benefit-card-title">Programa de Padrinazgo Tecnológico</div>
+          <div class="benefit-card-desc">Empresas privadas financian la modernización tecnológica de establecimientos públicos a cambio de beneficios fiscales.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('arsat-hosp')" data-aos="fade-up" data-aos-delay="450">
+          <div class="benefit-card-icon"><i class="ph-bold ph-cloud"></i></div>
+          <div class="benefit-card-title">Infraestructura soberana en ARSAT</div>
+          <div class="benefit-card-desc">Los datos clínicos críticos se alojan en la nube de ARSAT bajo jurisdicción argentina. Sin dependencia de servidores extranjeros.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('admin-hosp')" data-aos="fade-up" data-aos-delay="500">
+          <div class="benefit-card-icon"><i class="ph-bold ph-file-minus"></i></div>
+          <div class="benefit-card-title">Menos burocracia administrativa</div>
+          <div class="benefit-card-desc">El personal deja de gestionar papeles y planillas para enfocarse en la atención humana, el triage y la coordinación asistencial.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
       </div>
 
       <!-- ---- PANEL: OBRAS SOCIALES ---- -->
@@ -1617,6 +1772,18 @@ display:none;
           <div class="benefit-card-icon"><i class="ph-bold ph-arrows-clockwise"></i></div>
           <div class="benefit-card-title">Receta electrónica integrada</div>
           <div class="benefit-card-desc">Los mecanismos de la Ley 27.553 de Recetas Electrónicas se integran obligatoriamente al Sistema C.U.R.A.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('fraude-ia-os')" data-aos="fade-up" data-aos-delay="250">
+          <div class="benefit-card-icon"><i class="ph-bold ph-detective"></i></div>
+          <div class="benefit-card-title">Detección automática de fraude</div>
+          <div class="benefit-card-desc">Módulo de IA que identifica estudios repetidos innecesariamente, medicación duplicada y patrones de sobreactuación.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('biometria-os')" data-aos="fade-up" data-aos-delay="300">
+          <div class="benefit-card-icon"><i class="ph-bold ph-fingerprint"></i></div>
+          <div class="benefit-card-title">Validación biométrica del beneficiario</div>
+          <div class="benefit-card-desc">Verificación robusta en cada prestación mediante DNI, biometría o token de Mi Argentina. Fin de la suplantación de identidad.</div>
           <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
         </button>
       </div>
@@ -1657,6 +1824,18 @@ display:none;
           <div class="benefit-card-icon"><i class="ph-bold ph-flask"></i></div>
           <div class="benefit-card-title">Infraestructura para ciencia</div>
           <div class="benefit-card-desc">Registro Federal de Ensayos Clínicos y Sandbox de IA en Salud bajo soberanía estatal para investigación nacional.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('soberania-est')" data-aos="fade-up" data-aos-delay="350">
+          <div class="benefit-card-icon"><i class="ph-bold ph-lock-laminated"></i></div>
+          <div class="benefit-card-title">Soberanía tecnológica de datos</div>
+          <div class="benefit-card-desc">Todos los datos clínicos se almacenan en territorio argentino. Las claves criptográficas permanecen bajo control estatal.</div>
+          <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
+        </button>
+        <button class="benefit-card" onclick="openBenefitModal('saas-prov')" data-aos="fade-up" data-aos-delay="400">
+          <div class="benefit-card-icon"><i class="ph-bold ph-buildings"></i></div>
+          <div class="benefit-card-title">Plataforma gratuita para provincias</div>
+          <div class="benefit-card-desc">Las provincias adherentes acceden al sistema completo sin costo de licencias. El Estado Nacional asume desarrollo y ciberseguridad.</div>
           <div class="benefit-card-hint"><i class="ph-bold ph-cursor-click"></i> Ver más</div>
         </button>
       </div>
@@ -1802,7 +1981,7 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">email: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-sm text-cura-accentLight">email: <a href="/cdn-cgi/l/email-protection#45262a2b312426312a0529203c263037246b2a3722" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="e78488899386849388a78b829e84929586c9889580">[email&#160;protected]</span></a></p>
           <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
         </div>
       </div>
@@ -1829,7 +2008,7 @@ display:none;
 
         <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
           <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-          <p class="text-sm text-cura-accentLight">email: <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">contacto@leycura.org</a></p>
+          <p class="text-sm text-cura-accentLight">email: <a href="/cdn-cgi/l/email-protection#f1929e9f859092859eb19d948892848390df9e8396" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="2e4d41405a4f4d5a416e424b574d5b5c4f00415c49">[email&#160;protected]</span></a></p>
         </div>
       </div>
     </div>
@@ -1952,7 +2131,7 @@ display:none;
 <!-- =============================================
      SCRIPTS
 ============================================== -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
@@ -2163,6 +2342,194 @@ const BENEFIT_DATA = {
     title: 'Infraestructura para la ciencia argentina',
     body: 'El Sandbox Nacional de Inteligencia Artificial en Salud permite el desarrollo de módulos de IA bajo soberanía estatal, con datos anonimizados y control institucional. El Registro Federal de Ensayos Clínicos y Farmacovigilancia centraliza y hace pública la información sobre investigación y seguridad de medicamentos. Argentina podría convertirse en un polo de desarrollo de tecnología sanitaria de clase mundial.',
     tag: 'Estado · Art. 21 y 37 BIS'
+  },
+
+  /* --- NUEVOS: PACIENTES --- */
+  'portabilidad-pac': {
+    icon: 'ph-bold ph-arrows-out',
+    title: 'Tu información médica te sigue a cualquier rincón del país',
+    body: 'La portabilidad nacional de datos garantiza que tu historia clínica viaja con vos en tiempo real a cualquier hospital del país, sin importar la provincia ni la obra social. Ya no tenés que llevar carpetas de estudios ni repetir antecedentes cada vez que cambiás de médico o de provincia. El sistema elimina las barreras geográficas y administrativas que hoy fragmentan tu atención.',
+    tag: 'Ciudadanos · Interoperabilidad'
+  },
+  'recordatorios-pac': {
+    icon: 'ph-bold ph-bell-ringing',
+    title: 'Tu salud, sin olvidados',
+    body: 'El sistema envía notificaciones automáticas a tu celular para recordarte la toma de medicamentos según la pauta prescripta, el vencimiento de recetas electrónicas, estudios pendientes que el médico ordenó y controles periódicos programados. Diseñado especialmente para pacientes crónicos y adultos mayores que gestionan múltiples tratamientos simultáneos.',
+    tag: 'Ciudadanos · Adherencia terapéutica'
+  },
+  'ips-pac': {
+    icon: 'ph-bold ph-globe-hemisphere-east',
+    title: 'Resumen Internacional del Paciente (IPS)',
+    body: 'El Resumen Internacional del Paciente es un extracto clínico bajo el estándar global HL7 FHIR que permite recibir atención médica segura en cualquier país del mundo. Se genera bajo demanda desde la app y es compartible mediante un código temporal de 24 horas. Incluye diagnósticos activos, medicación vigente, alergias y vacunas en un formato reconocido internacionalmente.',
+    tag: 'Ciudadanos · Estándar IPS'
+  },
+  'asistente-ia-pac': {
+    icon: 'ph-bold ph-robot',
+    title: 'Lenguaje claro para entender tu salud',
+    body: 'Las herramientas de lenguaje claro con IA traducen términos médicos complejos a un lenguaje simple y comprensible. Incluyen lectura de pantalla y conversión voz-texto para personas con barreras digitales o dificultades de comprensión. Porque el derecho a la información sanitaria no puede depender de si tenés un título universitario.',
+    tag: 'Ciudadanos · Accesibilidad'
+  },
+  'farmacias-geo': {
+    icon: 'ph-bold ph-map-pin',
+    title: 'La farmacia de turno más cercana, en tu celular',
+    body: 'El visor en tiempo real muestra las farmacias de turno cercanas a tu ubicación con stock orientativo de medicamentos. Ya no es necesario llamar por teléfono o caminar cuadras hasta descubrir que no tienen lo que necesitás. La información se actualiza automáticamente y es accesible desde la app o desde cualquier navegador.',
+    tag: 'Ciudadanos · Acceso a medicamentos'
+  },
+  'blindaje-san': {
+    icon: 'ph-bold ph-shield-check',
+    title: 'Tu historia clínica no es una herramienta de control',
+    body: 'La ley establece la prohibición expresa de que los datos del sistema sean usados para fines migratorios, impositivos, policiales o de inteligencia. Toda persona recibe atención sin riesgo de exposición o uso indebido de su información. Esta garantía aplica a todos, independientemente del estatus migratorio, situación fiscal o antecedentes. El sistema de salud es un espacio seguro.',
+    tag: 'Ciudadanos · Art. 27 — Inmunidad administrativa'
+  },
+  'sin-doc': {
+    icon: 'ph-bold ph-user-plus',
+    title: 'Atención garantizada aunque no tengas documentos',
+    body: 'El protocolo de identificador temporal (C.U.R.A.-TEMP) permite recibir atención médica aunque no se tenga DNI o no se pueda identificar al paciente en el momento. El sistema garantiza la continuidad asistencial y registra la atención para búsqueda posterior de identidad. Nadie puede ser rechazado en una guardia por falta de documentación.',
+    tag: 'Ciudadanos · Protocolo C.U.R.A.-TEMP'
+  },
+  'desbu-farmacia-pac': {
+    icon: 'ph-bold ph-receipt',
+    title: 'Retirá tus medicamentos sin papeles',
+    body: 'Con C.U.R.A., el retiro de medicamentos se realiza solo con DNI o código de la app. Fin de las recetas impresas de WhatsApp, los troqueles y las planillas manuales. El sistema valida en tiempo real la identidad, la receta y la cobertura. La salida de la farmacia es más rápida y sin riesgo de errores por ilegibilidad o falsificación de documentos.',
+    tag: 'Ciudadanos · Dispensación digital'
+  },
+
+  /* --- NUEVOS: JUBILADOS --- */
+  'delegado-jub': {
+    icon: 'ph-bold ph-users',
+    title: 'Que un familiar gestione tu salud digital en tu nombre',
+    body: 'El gestor delegado familiar es una autorización formal que permite a un familiar o referente afectivo gestionar recetas, turnos y trámites de salud desde su propio celular, en nombre del jubilado. La delegación queda registrada en el sistema con plena trazabilidad. El titular puede revocarla en cualquier momento. Diseñado para adultos mayores que prefieren delegar la gestión digital sin perder control.',
+    tag: 'Jubilados · Delegación digital'
+  },
+  'notif-jub': {
+    icon: 'ph-bold ph-bell',
+    title: 'Nunca más te sorprenderá un cambio en tu cobertura',
+    body: 'El sistema envía alertas automáticas al celular cuando un médico deja de atender por PAMI, cuando se emite una receta, cuando se aprueba un insumo o cuando se modifica la cobertura. Las notificaciones también se envían al gestor delegado familiar si está configurado. Para que siempre estés informado antes de ir al consultorio o a la farmacia.',
+    tag: 'Jubilados · Notificaciones proactivas'
+  },
+  'prioridad-jub': {
+    icon: 'ph-bold ph-star',
+    title: 'Los que más lo necesitan, primero',
+    body: 'El sistema de asignación de turnos prioriza objetivamente la edad avanzada, la cronicidad del paciente y la zona geográfica de residencia. El algoritmo reduce las listas de espera para quienes más lo necesitan, sin que haga falta conocer a nadie ni hacer llamadas. La priorización es transparente y auditable, y aplica especialmente para especialidades con déficit territorial.',
+    tag: 'Jubilados · Priorización sanitaria'
+  },
+
+  /* --- NUEVOS: MÉDICOS --- */
+  'agenda-med': {
+    icon: 'ph-bold ph-calendar-blank',
+    title: 'Una sola agenda para toda tu práctica médica',
+    body: 'La agenda profesional unificada centraliza en una sola plataforma todos los turnos presenciales, videoconsultas y operaciones asistenciales. Fin de los sistemas paralelos, las planillas manuales y la gestión fragmentada entre distintas plataformas. La agenda es accesible desde cualquier dispositivo, sincronizada en tiempo real y compatible con el sistema de turnos federal.',
+    tag: 'Médicos · Gestión profesional'
+  },
+  'matricula-val': {
+    icon: 'ph-bold ph-seal-check',
+    title: 'Tu matrícula, validada automáticamente cada día',
+    body: 'El sistema verifica cada 24 horas la vigencia de la matrícula ante los registros oficiales de los colegios y consejos profesionales. Esta validación automática y diaria otorga seguridad jurídica al acto médico sin necesidad de trámites adicionales. El médico sabe que cada consulta realizada tiene respaldo institucional verificable en tiempo real.',
+    tag: 'Médicos · Seguridad jurídica'
+  },
+  'bonos-med': {
+    icon: 'ph-bold ph-currency-circle-dollar',
+    title: 'Un incentivo real para llevar salud donde más falta hace',
+    body: 'El sistema establece suplementos no remunerativos del 30% al 50% del salario de referencia para profesionales que se radiquen en áreas con déficit sanitario certificado. Los bonos se financian con los ahorros generados por el propio sistema de digitalización. Argentina tiene regiones donde conseguir turno con un cardiólogo puede llevar meses: C.U.R.A. corrige esa inequidad estructural.',
+    tag: 'Médicos · Art. 43 — Zonas Críticas Sanitarias'
+  },
+  'offline-med': {
+    icon: 'ph-bold ph-wifi-slash',
+    title: 'Trabajá sin internet y sin perder nada',
+    body: 'El sistema permite registrar atenciones sin conexión a internet, fundamental para visitas domiciliarias y trabajo en zonas rurales o de baja conectividad. Los registros se almacenan cifrados en el dispositivo y se sincronizan automáticamente al recuperar la conexión, sin pérdida de datos y manteniendo la trazabilidad completa del acto médico.',
+    tag: 'Médicos · Operación offline certificada'
+  },
+
+  /* --- NUEVOS: FARMACIAS --- */
+  'troquel-farm': {
+    icon: 'ph-bold ph-scissors',
+    title: 'Chau troquel: el mostrador se libera de papel',
+    body: 'Hoy retirá un medicamento implica recortar una etiqueta de la cajita, pegarla en una planilla, mandarla a la obra social y esperar que no se pierda. Con el RDDT todo eso desaparece. El farmacéutico deja de hacer trabajo manual tedioso y propenso a errores. El proceso de dispensación se simplifica radicalmente y la obra social recibe la información al instante.',
+    tag: 'Farmacias · Despapelización'
+  },
+  'rddt-farm': {
+    icon: 'ph-bold ph-barcode',
+    title: 'RDDT: cada dispensación con valor legal instantáneo',
+    body: 'El Registro Digital de Dispensación Trazable genera al momento de la entrega del medicamento un registro con firma digital y sello de tiempo, con validación automática ante ANMAT. El registro tiene valor legal pleno, equivalente al troquel físico tradicional. La trazabilidad es completa: qué medicamento, a quién, con qué receta, en qué farmacia y a qué hora.',
+    tag: 'Farmacias · Art. 20 — RDDT'
+  },
+  'stock-farm': {
+    icon: 'ph-bold ph-storefront',
+    title: 'Que los pacientes sepan que tu farmacia tiene lo que necesitan',
+    body: 'Las farmacias pueden optar por mostrar su disponibilidad de stock orientativo en el visor geolocalizado del sistema. Esto atrae pacientes cercanos que buscan medicamentos específicos y mejora la rotación del inventario. La información se actualiza de manera dinámica y el sistema no impone obligación de publicación: cada farmacia decide si participar.',
+    tag: 'Farmacias · Visibilidad de stock'
+  },
+  'offline-farm': {
+    icon: 'ph-bold ph-wifi-slash',
+    title: 'Un corte de internet no paraliza tu farmacia',
+    body: 'El sistema permite continuar dispensando ante cortes de internet mediante un modo offline certificado. Los registros de dispensación se almacenan localmente con cifrado de seguridad y se sincronizan automáticamente al recuperar la conexión, sin pérdida de trazabilidad ni de valor legal de los registros generados durante el período sin conexión.',
+    tag: 'Farmacias · Operación offline'
+  },
+
+  /* --- NUEVOS: HOSPITALES --- */
+  'hardware-cero': {
+    icon: 'ph-bold ph-desktop',
+    title: 'Adoptá el sistema sin comprar un solo servidor',
+    body: 'La arquitectura "cliente liviano" permite que el sistema funcione 100% vía navegador web en cualquier computadora, tablet o celular estándar que ya exista en el hospital. No requiere servidores locales ni inversión en hardware específico. Esto reduce radicalmente la barrera de adopción para establecimientos públicos con presupuesto limitado y elimina los costos de mantenimiento de infraestructura propia.',
+    tag: 'Hospitales · Arquitectura cliente liviano'
+  },
+  'capacidad-hosp': {
+    icon: 'ph-bold ph-chart-bar',
+    title: 'Sabé en tiempo real cuántas camas tenés disponibles',
+    body: 'Los tableros interactivos muestran en tiempo real las camas disponibles por servicio, el estado de las derivaciones activas y los flujos de pacientes en el establecimiento. Esta visibilidad permite optimizar la toma de decisiones clínicas y organizativas, reducir los tiempos de espera en guardia y mejorar la coordinación entre servicios. Las decisiones de gestión se basan en datos actuales, no en estimaciones.',
+    tag: 'Hospitales · Gestión de capacidad'
+  },
+  'ia-demanda': {
+    icon: 'ph-bold ph-brain',
+    title: 'Anticipate al colapso de guardia antes de que ocurra',
+    body: 'El Motor Predictivo de Demanda usa inteligencia artificial para anticipar picos de saturación en guardias, estimar necesidades de stock e insumos y generar alertas tempranas. Las decisiones finales siempre son tomadas por personas: el sistema informa, no decide. Esto permite planificar recursos humanos y materiales con antelación, evitando situaciones de colapso operativo.',
+    tag: 'Hospitales · IA predictiva'
+  },
+  'padrinazgo': {
+    icon: 'ph-bold ph-handshake',
+    title: 'El sector privado financia la modernización pública',
+    body: 'El Programa de Padrinazgo Tecnológico establece un mecanismo por el cual empresas privadas pueden financiar la modernización tecnológica de establecimientos públicos a cambio de beneficios fiscales. La adopción del sistema no genera costo adicional para el Estado. El programa crea un vínculo estructurado entre el sector privado y la salud pública con reglas claras y transparencia total.',
+    tag: 'Hospitales · Padrinazgo tecnológico'
+  },
+  'arsat-hosp': {
+    icon: 'ph-bold ph-cloud',
+    title: 'Tus datos clínicos en suelo argentino, siempre',
+    body: 'Los datos clínicos críticos del sistema se alojan exclusivamente en la infraestructura de ARSAT, bajo jurisdicción argentina, sin depender de servidores extranjeros ni de licencias privadas de terceros. Las claves criptográficas permanecen bajo control estatal. Esto garantiza que ante cualquier conflicto internacional, cambio de política comercial o quiebra de un proveedor, los datos permanecen bajo control soberano.',
+    tag: 'Hospitales · Soberanía digital — ARSAT'
+  },
+  'admin-hosp': {
+    icon: 'ph-bold ph-file-minus',
+    title: 'Menos papeles, más tiempo para los pacientes',
+    body: 'El personal administrativo del hospital deja de gestionar papeles y planillas manuales para enfocarse en la atención humana, el triage y la coordinación asistencial. Las órdenes, derivaciones y certificados se generan y validan digitalmente. El tiempo liberado se redistribuye hacia tareas de mayor valor para el paciente y el sistema.',
+    tag: 'Hospitales · Desburocratización'
+  },
+
+  /* --- NUEVOS: OBRAS SOCIALES --- */
+  'fraude-ia-os': {
+    icon: 'ph-bold ph-detective',
+    title: 'IA que detecta fraude antes de que se consolide',
+    body: 'El módulo de detección automática de fraude identifica estudios repetidos innecesariamente, medicación duplicada entre distintos prestadores y patrones estadísticos de sobreactuación. Toda alerta generada por el sistema requiere validación humana antes de que se tome cualquier acción o sanción. El módulo trabaja sobre datos anonimizados y su operación es auditada de forma independiente.',
+    tag: 'Obras Sociales · Módulo antifraud IA'
+  },
+  'biometria-os': {
+    icon: 'ph-bold ph-fingerprint',
+    title: 'Verificación robusta de identidad en cada prestación',
+    body: 'La validación biométrica de identidad del beneficiario mediante DNI, biometría o token de Mi Argentina en cada prestación reduce drásticamente la suplantación de identidad y el uso indebido de la cobertura ajena. El sistema integra los mecanismos de verificación del RENAPER sin crear nuevas bases de datos biométricas propias, respetando los principios de minimización de datos.',
+    tag: 'Obras Sociales · Validación biométrica'
+  },
+
+  /* --- NUEVOS: ESTADO --- */
+  'soberania-est': {
+    icon: 'ph-bold ph-lock-laminated',
+    title: 'Los datos de salud de los argentinos, bajo control argentino',
+    body: 'La ley establece que todos los datos clínicos del sistema se almacenan en territorio argentino bajo jurisdicción nacional. Las claves criptográficas permanecen bajo control estatal sin dependencia de servidores ni normativa extranjera. Ante cualquier cambio en el contexto internacional, Argentina mantiene control absoluto sobre su infraestructura sanitaria digital y los datos que contiene.',
+    tag: 'Estado · Soberanía digital'
+  },
+  'saas-prov': {
+    icon: 'ph-bold ph-buildings',
+    title: 'Salud digital federal sin costo de licencias para las provincias',
+    body: 'Las provincias que adhieran al sistema C.U.R.A. acceden a la plataforma completa bajo un modelo SaaS sin costo de licencias. El Estado Nacional asume el desarrollo, mantenimiento, actualizaciones y ciberseguridad centralizada. Esto libera presupuesto provincial para reforzar la atención directa. La adhesión es progresiva y el Estado acompaña técnicamente a cada provincia en el proceso.',
+    tag: 'Estado · Federalismo sanitario digital'
   }
 };
 
@@ -2881,22 +3248,4 @@ document.addEventListener('DOMContentLoaded', function () {
         if(progress < 1) requestAnimationFrame(step);
         else el.textContent = target + suffix;
       }
-      requestAnimationFrame(step);
-    });
-  }
-
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting && !done){
-        done = true;
-        setTimeout(animateCounters, 400);
-      }
-    });
-  }, { threshold: 0.05 });
-
-  var section = document.getElementById('datos');
-  if(section) observer.observe(section);
-})();
-</script>
-</body>
-</html>
+      requestAnimationFrame

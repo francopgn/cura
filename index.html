@@ -387,10 +387,18 @@ transform:translateY(0);
       padding: 8px 0;
       border-bottom: 1px solid rgba(0,194,255,0.18);
     }
-    @media (max-width: 639px) {
+    @media (max-width: 768px) {
       .actor-tabs {
-        top: 112px;
-        background: #065D9B;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      #beneficios {
+        padding-top: 60px;
       }
     }
 
@@ -398,22 +406,27 @@ transform:translateY(0);
     .benefits-nav {
       display: flex;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       margin-top: 24px;
-      flex-wrap: wrap;
     }
     .benefits-nav button {
+      flex: 1;
+      min-width: 0;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 10px 24px;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px 16px;
       border-radius: 9999px;
       background: #00C2FF;
       color: #004E85;
       border: none;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 4px 14px rgba(0,194,255,0.3);
     }
@@ -421,6 +434,12 @@ transform:translateY(0);
       background: rgba(0,194,255,0.8);
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0,194,255,0.4);
+    }
+    @media (max-width: 480px) {
+      .benefits-nav button {
+        font-size: 0.7rem;
+        padding: 9px 10px;
+      }
     }
 
     /* --- TARJETA DE BENEFICIO (CLIC ABRE MODAL) --- */
@@ -3371,5 +3390,6 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 
 </script>
+
 </body>
 </html>

@@ -362,7 +362,7 @@ transform:translateY(0);
       cursor: pointer;
       border: 1px solid rgba(0,194,255,0.4);
       color: #59D2FF;
-      background: transparent;
+      background: #065D9B;
       transition: all 0.2s ease;
       white-space: nowrap;
     }
@@ -377,6 +377,41 @@ transform:translateY(0);
     }
     .actor-panel { display: none; }
     .actor-panel.active { display: grid; }
+
+    /* --- STICKY TABS --- */
+    .actor-tabs {
+      position: sticky;
+      top: 92px;
+      z-index: 10;
+      background: transparent;
+      padding: 6px 0;
+    }
+    @media (max-width: 639px) {
+      .actor-tabs { top: 128px; }
+    }
+
+    /* --- NAVEGACIÓN INFERIOR --- */
+    .benefits-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .benefits-nav button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .benefits-nav button:hover {
+      background: rgba(255,255,255,0.15);
+    }
 
     /* --- TARJETA DE BENEFICIO (CLIC ABRE MODAL) --- */
     .benefit-card {
@@ -1834,6 +1869,13 @@ display:none;
         </button>
       </div>
 
+
+      <!-- NAVEGACIÓN INFERIOR DINÁMICA -->
+      <div class="benefits-nav">
+        <button class="prev-btn"></button>
+        <button class="next-btn"></button>
+      </div>
+
       <!-- Link a más información -->
       <div class="mt-10 flex justify-center" data-aos="fade-up">
         <a href="/Informacion/informacion.html"
@@ -2553,13 +2595,8 @@ function switchTab(actorId) {
   if (panel) {
     panel.classList.add('active');
     
-    // --- NUEVO: Reiniciar animaciones AOS de las tarjetas ---
     const tarjetas = panel.querySelectorAll('[data-aos]');
-    
-    // 1. Le quitamos la clase que indica que ya se animaron
     tarjetas.forEach(t => t.classList.remove('aos-animate'));
-    
-    // 2. Esperamos 50 milisegundos y se la volvemos a poner para forzar la re-animación
     setTimeout(() => {
       tarjetas.forEach(t => t.classList.add('aos-animate'));
     }, 50);
@@ -2572,6 +2609,56 @@ function switchTab(actorId) {
       b.classList.add('active');
     }
   });
+
+  // Scroll suave al inicio de la sección beneficios (compatible con Lenis)
+  const sec = document.getElementById('beneficios');
+  if (sec) {
+    if (window.lenis) {
+      window.lenis.scrollTo(sec, { offset: -80, duration: 1.2 });
+    } else {
+      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  updateNavButtons(actorId);
+}
+
+/* =============================================
+   FUNCIÓN GLOBAL: updateNavButtons
+============================================== */
+function updateNavButtons(current) {
+  const order  = ['pacientes','jubilados','medicos','farmacias','hospitales','obraSocial','estado'];
+  const labels = {
+    pacientes:  'Ciudadanos',
+    jubilados:  'Jubilados',
+    medicos:    'Médicos',
+    farmacias:  'Farmacias',
+    hospitales: 'Hospitales',
+    obraSocial: 'Obras Sociales',
+    estado:     'Estado'
+  };
+  const i       = order.indexOf(current);
+  const prevId  = order[i - 1];
+  const nextId  = order[i + 1];
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
+  if (!prevBtn || !nextBtn) return;
+
+  if (prevId) {
+    prevBtn.style.display = 'block';
+    prevBtn.textContent   = '← Ver ' + labels[prevId];
+    prevBtn.onclick       = () => switchTab(prevId);
+  } else {
+    prevBtn.style.display = 'none';
+  }
+
+  if (nextId) {
+    nextBtn.style.display = 'block';
+    nextBtn.textContent   = 'Ver ' + labels[nextId] + ' →';
+    nextBtn.onclick       = () => switchTab(nextId);
+  } else {
+    nextBtn.style.display = 'none';
+  }
 }
 
 /* =============================================
@@ -3188,6 +3275,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar navegación inferior con la pestaña activa por defecto
+  updateNavButtons('pacientes');
+
       const textoElemento = document.getElementById('texto-dinamico');
       
       // Frases actualizadas

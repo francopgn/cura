@@ -383,34 +383,44 @@ transform:translateY(0);
       position: sticky;
       top: 92px;
       z-index: 10;
-      background: transparent;
-      padding: 6px 0;
+      background: #065D9B;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,194,255,0.18);
     }
     @media (max-width: 639px) {
-      .actor-tabs { top: 128px; }
+      .actor-tabs {
+        top: 112px;
+        background: #065D9B;
+      }
     }
 
     /* --- NAVEGACIÓN INFERIOR --- */
     .benefits-nav {
       display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 20px;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
     }
     .benefits-nav button {
-      flex: 1;
-      padding: 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      background: #00C2FF;
+      color: #004E85;
       border: none;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 14px rgba(0,194,255,0.3);
     }
     .benefits-nav button:hover {
-      background: rgba(255,255,255,0.15);
+      background: rgba(0,194,255,0.8);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,194,255,0.4);
     }
 
     /* --- TARJETA DE BENEFICIO (CLIC ABRE MODAL) --- */
@@ -2610,15 +2620,17 @@ function switchTab(actorId) {
     }
   });
 
-  // Scroll suave al inicio de la sección beneficios (compatible con Lenis)
-  const sec = document.getElementById('beneficios');
-  if (sec) {
+  // Scroll suave al inicio de #beneficios — delay para que el panel termine de renderizar
+  setTimeout(() => {
+    const sec = document.getElementById('beneficios');
+    if (!sec) return;
     if (window.lenis) {
-      window.lenis.scrollTo(sec, { offset: -80, duration: 1.2 });
+      window.lenis.scrollTo(sec, { offset: -90, duration: 1.0 });
     } else {
-      sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const top = sec.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
-  }
+  }, 60);
 
   updateNavButtons(actorId);
 }

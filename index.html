@@ -3033,7 +3033,10 @@ document.addEventListener('DOMContentLoaded', function () {
       mVisible = entries[0].isIntersecting;
       if (!mVisible) { cancelAnimationFrame(mAnimFrame); }
       else { mAnimFrame = requestAnimationFrame(animateMapParticles); }
-    }, { threshold: 0.05 });
+    }, { 
+  threshold: 0.3,
+  rootMargin: "0px 0px -100px 0px"
+});
     mObs.observe(mapCW);
 
     const mRO = new ResizeObserver(() => { resizeMapParticles(); initMapNodes(); });

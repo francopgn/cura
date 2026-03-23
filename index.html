@@ -384,8 +384,20 @@ transform:translateY(0);
       top: 92px;
       z-index: 10;
       background: #065D9B;
-      padding: 8px 0;
+      /* full-bleed: compensar p-6 del contenedor en desktop */
+      padding: 8px 1.5rem;
+      margin-left:  -1.5rem;
+      margin-right: -1.5rem;
       border-bottom: 1px solid rgba(0,194,255,0.18);
+    }
+    @media (min-width: 768px) {
+      .actor-tabs {
+        /* compensar md:p-8 */
+        padding-left:  2rem;
+        padding-right: 2rem;
+        margin-left:  -2rem;
+        margin-right: -2rem;
+      }
     }
     @media (max-width: 768px) {
       .actor-tabs {
@@ -401,7 +413,7 @@ transform:translateY(0);
       top: 70px;
       left: 0;
       right: 0;
-      z-index: 20;
+      z-index: 31; /* encima del header (z-30) */
       box-shadow: 0 4px 20px rgba(0,78,133,0.5), 0 1px 0 rgba(0,194,255,0.18);
     }
 
@@ -3395,10 +3407,11 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- =============================================
-     STICKY MOBILE — BENEFICIOS TABS
+     STICKY MOBILE — BENEFICIOS TABS v5
      Solo activa en ≤768px. Desktop usa position:sticky
      nativo (intacto). Teleport a <body> para evitar
      conflicto con transforms de AOS en mobile.
+     Fix: contTop/contH frescos en cada update().
 ============================================= -->
 <script>
 (function () {
@@ -3421,23 +3434,24 @@ document.addEventListener('DOMContentLoaded', function () {
   spacer.style.cssText = 'display:none;flex-shrink:0;width:100%;';
   originalParent.insertBefore(spacer, tabs.nextSibling);
 
-  /* Métricas cacheadas al init (una sola vez) */
+  /*
+   * Solo cachedTabsTop y cachedTabsH se cachean (se necesitan cuando
+   * el tabs ya está en <body> y no podemos medir su posición natural).
+   * contTop y contH se calculan frescos en cada update() usando
+   * getBoundingClientRect(), que refleja la posición real actual.
+   */
   var cachedTabsTop = 0;
-  var cachedContTop = 0;
-  var cachedContH   = 0;
   var cachedTabsH   = 0;
 
-  function cacheMetrics() {
-    /* Asegurar posición normal antes de medir */
+  function cacheTabsMetrics() {
+    /* Asegurar posición normal antes de medir el tabs */
     if (tabs.parentNode !== originalParent) {
       originalParent.insertBefore(tabs, spacer);
       tabs.classList.remove('mob-fixed');
       tabs.style.cssText = '';
     }
-    var sy       = window.scrollY;
-    cachedTabsTop = tabs.getBoundingClientRect().top  + sy;
-    cachedContTop = container.getBoundingClientRect().top + sy;
-    cachedContH   = container.offsetHeight;
+    var sy        = window.scrollY;
+    cachedTabsTop = tabs.getBoundingClientRect().top + sy;
     cachedTabsH   = tabs.offsetHeight;
     spacer.style.height = cachedTabsH + 'px';
   }
@@ -3453,22 +3467,27 @@ document.addEventListener('DOMContentLoaded', function () {
     ticking = false;
     var sy = window.scrollY;
 
+    /* contTop y contH siempre frescos — no cachear */
+    var contRect  = container.getBoundingClientRect();
+    var contTop   = contRect.top + sy;
+    var contH     = container.offsetHeight;
+    var contBot   = contRect.bottom; /* distancia al viewport bottom */
+
     /* Activar cuando los tabs (en posición natural) tocan el navbar */
     var activateAt = cachedTabsTop - NAVBAR_H;
-    /* Detener cuando la base de los tabs tocaría la base del contenedor */
-    var stopAt     = cachedContTop + cachedContH - cachedTabsH - NAVBAR_H;
-    /* Soltar cuando el contenedor completo salió por arriba */
-    var pastAt     = cachedContTop + cachedContH;
+    /* Parar cuando la base de los tabs tocaría la base del contenedor */
+    var stopAt     = contTop + contH - cachedTabsH - NAVBAR_H;
+    /* Soltar cuando el contenedor completo salió por arriba del viewport */
+    var pastAt     = contTop + contH;
 
     var next = sy < activateAt ? 'normal'
              : sy < stopAt    ? 'fixed'
              : sy < pastAt    ? 'stop'
              :                  'normal';
 
-    /* En stop, ajustar top cada tick */
+    /* En stop: ajustar top dinámicamente cada tick */
     if (next === 'stop' && state === 'stop') {
-      var vb = container.getBoundingClientRect().bottom;
-      tabs.style.top = Math.max(NAVBAR_H, vb - cachedTabsH) + 'px';
+      tabs.style.top = Math.max(NAVBAR_H, contBot - cachedTabsH) + 'px';
       return;
     }
 
@@ -3491,13 +3510,12 @@ document.addEventListener('DOMContentLoaded', function () {
       spacer.style.display = 'block';
       toBody();
       tabs.classList.remove('mob-fixed');
-      var vb = container.getBoundingClientRect().bottom;
       tabs.style.cssText  = '';
       tabs.style.position = 'fixed';
       tabs.style.left     = '0';
       tabs.style.right    = '0';
-      tabs.style.zIndex   = '20';
-      tabs.style.top      = Math.max(NAVBAR_H, vb - cachedTabsH) + 'px';
+      tabs.style.zIndex   = '31';
+      tabs.style.top      = Math.max(NAVBAR_H, contBot - cachedTabsH) + 'px';
     }
   }
 
@@ -3517,7 +3535,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }, 1500);
   hookLenis();
 
-  /* Resize: si pasan a desktop, destruir comportamiento mobile */
+  /* Resize: si rotan a landscape > 768px, desactivar */
   window.addEventListener('resize', function () {
     if (window.innerWidth > 768) {
       toOrigin();
@@ -3528,13 +3546,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }, { passive: true });
 
-  /* Init: esperar a que AOS termine de animar antes de medir */
+  /* Init: esperar a que AOS termine antes de medir tabsTop */
   function init() {
-    cacheMetrics();
+    cacheTabsMetrics();
     requestAnimationFrame(update);
   }
-  if (document.readyState === 'complete') setTimeout(init, 200);
-  else window.addEventListener('load', function () { setTimeout(init, 200); });
+  if (document.readyState === 'complete') setTimeout(init, 300);
+  else window.addEventListener('load', function () { setTimeout(init, 300); });
 
 })();
 </script>

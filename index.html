@@ -3447,6 +3447,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!headerEl || !container || !tabs) return;
 
   var originalParent = tabs.parentNode;
+  var benefitsNav    = container.querySelector('.benefits-nav');
 
   var spacer = document.createElement('div');
   spacer.setAttribute('aria-hidden', 'true');
@@ -3462,9 +3463,9 @@ document.addEventListener('DOMContentLoaded', function () {
     return b > 0 ? b : 0;
   }
 
-  /* left/width exactos del contenedor de beneficios */
+  /* left/width exactos: usar originalParent (ya está dentro del p-6 del section) */
   function containerGeometry() {
-    var r = container.getBoundingClientRect();
+    var r = originalParent.getBoundingClientRect();
     return { left: r.left, width: r.width };
   }
 
@@ -3549,7 +3550,10 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      next = contBot > (cachedTabsH + 380) ? 'stop' : 'normal';
+      /* Salir cuando el benefits-nav (o fallback 300px antes del fondo) entra en viewport */
+      var navRect   = benefitsNav ? benefitsNav.getBoundingClientRect() : null;
+      var exitPoint = navRect ? navRect.top : (contBot - 300);
+      next = exitPoint > cachedTabsH ? 'stop' : 'normal';
     }
 
     /* En fixed/stop: actualizar posición cada tick (el contenedor puede moverse) */

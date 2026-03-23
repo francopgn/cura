@@ -3119,31 +3119,30 @@ document.addEventListener('DOMContentLoaded', function () {
   /* =============================================
      FORMULARIO CONTACTO
   ============================================== */
-const formContact = document.getElementById('contact-form');
+document.addEventListener("DOMContentLoaded", () => {
+  const formContact = document.getElementById('contact-form');
 
-if (formContact) {
   formContact.addEventListener('submit', async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
+    console.log("OK SUBMIT"); // 👈 clave
+
     const fd = new FormData(formContact);
 
-    try {
-      const r = await fetch('/api/contact', {
-        method: 'POST',
-        body: fd
-      });
+    const r = await fetch('/api/contact', {
+      method: 'POST',
+      body: fd
+    });
 
-      if (!r.ok) throw new Error();
-
+    if (r.ok) {
       abrirModalContact();
       formContact.reset();
-
-    } catch {
-      alert('Ocurrió un error. Intentá nuevamente.');
+    } else {
+      alert("Error");
     }
   });
-}
+});
   /* =============================================
      FORMULARIO SUMATE
   ============================================== */

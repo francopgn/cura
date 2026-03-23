@@ -378,7 +378,7 @@ transform:translateY(0);
     .actor-panel { display: none; }
     .actor-panel.active { display: grid; }
 
-    /* --- STICKY TABS --- */
+    /* --- STICKY TABS — DESKTOP --- */
     .actor-tabs {
       position: sticky;
       top: 92px;
@@ -387,12 +387,7 @@ transform:translateY(0);
       padding: 8px 0;
       border-bottom: 1px solid rgba(0,194,255,0.18);
     }
-
-    /*
-     * Desktop full-bleed: compensar md:p-8 (2rem) del section #beneficios.
-     * Solo en >=769px para no interferir con el JS mobile.
-     * El padding-lateral mantiene el contenido alineado con el resto de la sección.
-     */
+    /* Desktop full-bleed: compensar md:p-8 del section */
     @media (min-width: 769px) {
       .actor-tabs {
         margin-left:  -2rem;
@@ -402,21 +397,25 @@ transform:translateY(0);
       }
     }
 
-    /* Mobile sticky — estado flotante inyectado por JS */
+    /* Mobile sticky — estado flotante inyectado por JS.
+       NO redefinir visuales aquí — los hereda de #beneficios-tabs abajo. */
     #beneficios-tabs.mob-fixed {
       position: fixed;
       left: 0;
       right: 0;
       z-index: 31;
-      box-shadow: 0 4px 20px rgba(0,78,133,0.5), 0 1px 0 rgba(0,194,255,0.18);
     }
 
-    /* ─── MOBILE VISUAL OVERRIDES ───────────────────────────── */
+    /* ─── MOBILE VISUAL ─────────────────────────────────────────
+       FUENTE DE VERDAD ÚNICA: todos los estados comparten estos
+       estilos. Ningún estado sobreescribe background/shadow/radius.
+       Así no hay salto visual al pasar de normal → flotante.
+    ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Contenedor: scroll horizontal sin padding lateral.
-         El espacio al inicio/fin lo dan los márgenes de los botones extremos. */
+      /* Estilos base + visuales — idénticos en TODOS los estados */
       #beneficios-tabs {
+        /* Layout */
         display: flex !important;
         flex-wrap: nowrap !important;
         justify-content: flex-start !important;
@@ -425,41 +424,52 @@ transform:translateY(0);
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 8px !important;
-        padding: 8px 0 !important;        /* sin padding lateral */
-        background: linear-gradient(to bottom, rgba(13,71,110,0.65), rgba(13,71,110,0.85)) !important;
+        padding: 8px 0 !important;
+
+        /* Visual — UNA sola definición, no se repite en ningún estado */
+        background: linear-gradient(
+          to bottom,
+          rgba(13,71,110,0.60),
+          rgba(13,71,110,0.82)
+        ) !important;
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
         border: 1px solid rgba(255,255,255,0.04) !important;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
-        box-shadow: none !important;
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+
+        /* Transición solo de opacidad (salida suave) */
         transition: opacity 0.25s ease;
         opacity: 1;
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* Full-bleed: solo en estado normal (no flotante).
-         El JS controla left/width cuando flota — no pisarlo. */
+      /* Full-bleed en estado normal (el JS pone left/width cuando flota) */
       #beneficios-tabs:not(.is-floating) {
-        margin-left:  -1.5rem !important;  /* compensa p-6 del section */
+        margin-left:  -1.5rem !important;
         margin-right: -1.5rem !important;
       }
 
-      /* Espaciado en los botones extremos (no en el contenedor).
-         Así el scroll arranca y termina exactamente en el borde. */
+      /* Espaciado de botones extremos */
       #beneficios-tabs .actor-tab-btn:first-child { margin-left:  14px; }
       #beneficios-tabs .actor-tab-btn:last-child  { margin-right: 14px; }
 
-      /* is-floating / is-hidden */
+      /* is-floating: NO redefinir nada visual — hereda todo de arriba.
+         Solo reforzar que background/shadow no sean pisados por .mob-fixed. */
       #beneficios-tabs.is-floating {
-        background: linear-gradient(to bottom, rgba(13,71,110,0.65), rgba(13,71,110,0.85)) !important;
-        backdrop-filter: blur(14px) !important;
-        -webkit-backdrop-filter: blur(14px) !important;
-        border: 1px solid rgba(255,255,255,0.04) !important;
-        border-radius: 0 0 20px 20px !important;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+        background: linear-gradient(
+          to bottom,
+          rgba(13,71,110,0.60),
+          rgba(13,71,110,0.82)
+        ) !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
       }
-      #beneficios-tabs.is-hidden   { opacity: 0 !important; pointer-events: none !important; }
+
+      /* Salida suave */
+      #beneficios-tabs.is-hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
 
       /* Botones */
       #beneficios-tabs .actor-tab-btn {

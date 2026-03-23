@@ -3661,24 +3661,24 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
-<!-- Auto-center botón activo en #beneficios-tabs -->
+<!-- Auto-center botón activo en #beneficios-tabs
+     Usa offsetLeft (relativo al contenedor) → funciona en normal y sticky -->
 <script>
 (function () {
   var tabsContainer = document.getElementById('beneficios-tabs');
   if (!tabsContainer) return;
 
+  function centerTab(btn) {
+    var containerWidth = tabsContainer.offsetWidth;
+    var targetScroll   = btn.offsetLeft - (containerWidth / 2) + (btn.offsetWidth / 2);
+    tabsContainer.scrollTo({ left: targetScroll, behavior: 'smooth' });
+  }
+
   tabsContainer.addEventListener('click', function (e) {
     var btn = e.target.closest('button');
     if (!btn) return;
-
-    /* Esperar un frame para que la clase .active ya esté aplicada */
-    requestAnimationFrame(function () {
-      var cRect = tabsContainer.getBoundingClientRect();
-      var bRect = btn.getBoundingClientRect();
-      var offset = bRect.left - cRect.left;
-      var scrollTo = tabsContainer.scrollLeft + offset - (cRect.width / 2) + (bRect.width / 2);
-      tabsContainer.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    });
+    /* rAF: esperar a que .active esté aplicado por switchTab() */
+    requestAnimationFrame(function () { centerTab(btn); });
   });
 })();
 </script>

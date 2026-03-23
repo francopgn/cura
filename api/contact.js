@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ✅ Parseo seguro del body
+    // ✅ Parseo seguro
     const body =
       typeof req.body === "string"
         ? JSON.parse(req.body)
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Email inválido" });
     }
 
-    // 🛑 Honeypot (bots)
+    // 🛑 Honeypot
     if (honeypot) {
       return res.status(400).end();
     }
@@ -42,27 +42,34 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Falta verificación" });
     }
 
-    // ✅ Verificación con Cloudflare (forma correcta)
-    const params = new URLSearchParams();
-    params.append("secret", turnstileSecret);
-    params.append("response", token);
+    // ✅ TURNSTILE (blindado)
+    let captchaData = { success: false };
 
-    const verifyRes = await fetch(
-      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-      {
-        method: "POST",
-        body: params,
-      }
-    );
+    try {
+      const params = new URLSearchParams();
+      params.append("secret", turnstileSecret);
+      params.append("response", token);
 
-    const data = await verifyRes.json();
+      const verifyRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          body: params,
+        }
+      );
 
-    if (!data.success) {
-      console.error("Turnstile fail:", data);
+      captchaData = await verifyRes.json();
+    } catch (err) {
+      console.error("ERROR TURNSTILE:", err);
+      return res.status(500).json({ error: "Error verificando captcha" });
+    }
+
+    if (!captchaData.success) {
+      console.error("Turnstile fail:", captchaData);
       return res.status(403).json({ error: "Captcha inválido" });
     }
 
-    // 🛑 Filtro spam simple (no rompe UX)
+    // 🛑 Filtro anti spam simple
     const texto = (mensaje + email).toLowerCase();
 
     if (
@@ -74,7 +81,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Spam detectado" });
     }
 
-    // 📧 Email
+    // 📧 Email HTML
     const htmlContent = `
       <h2>Nuevo mensaje desde la web - Ley C.U.R.A.</h2>
       <p><strong>Nombre:</strong> ${nombre || "(no informado)"}</p>
@@ -83,9 +90,12 @@ export default async function handler(req, res) {
       <p>${mensaje.replace(/\n/g, "<br>")}</p>
     `;
 
-    const brevoRes = await fetch(
-      "https://api.brevo.com/v3/smtp/email",
-      {
+    // 📧 ENVÍO BREVO
+    let brevoRes;
+    let brevoText = "";
+
+    try {
+      brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
         method: "POST",
         headers: {
           accept: "application/json",
@@ -94,6 +104,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           sender: {
+            // ⚠️ IMPORTANTE: este mail debe estar verificado en Brevo
             email: "contacto@leycura.org",
             name: "Ley C.U.R.A.",
           },
@@ -110,12 +121,18 @@ export default async function handler(req, res) {
           subject: "Nuevo mensaje desde la web",
           htmlContent,
         }),
-      }
-    );
+      });
+
+      brevoText = await brevoRes.text();
+
+    } catch (err) {
+      console.error("ERROR BREVO FETCH:", err);
+      return res.status(500).json({ error: "Error conectando con Brevo" });
+    }
 
     if (!brevoRes.ok) {
-      const text = await brevoRes.text();
-      console.error("Brevo error:", text);
+      console.error("BREVO STATUS:", brevoRes.status);
+      console.error("BREVO RESPONSE:", brevoText);
       return res.status(502).json({ error: "Error al enviar correo" });
     }
 

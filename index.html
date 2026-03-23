@@ -399,49 +399,47 @@ transform:translateY(0);
     }
 
     /* ─── MOBILE VISUAL OVERRIDES ─────────────────────────────
-       Solo estética mobile. Lógica de sticky: intacta.
+       Solo estética. NO tocar nada de esto en desktop.
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Contenedor: scroll horizontal fluido, fondo blur, padding compacto */
+      /*
+       * Estado base en mobile: scroll horizontal, botones chicos.
+       * Fondo sólido igual al contenedor (no se nota que es parte del sticky).
+       */
       #beneficios-tabs {
         display: flex !important;
-        flex-wrap: nowrap !important;       /* una sola fila */
-        justify-content: flex-start !important; /* anula justify-center para que el scroll funcione */
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
         overflow-x: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;             /* Firefox */
+        scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 10px !important;
-        /* fondo semitransparente con blur — se aplica tanto en sticky como en normal */
-        background: rgba(0, 78, 133, 0.65) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(255,255,255,0.08) !important;
-        /* fade lateral derecho */
-        position: relative;
+        background: #065D9B !important;        /* sólido — igual que desktop */
+        border-bottom: none !important;        /* sin borde en estado normal */
+        box-shadow: none !important;
       }
-      #beneficios-tabs::-webkit-scrollbar {
-        display: none;                     /* Chrome/Safari */
+      #beneficios-tabs::-webkit-scrollbar { display: none; }
+
+      /*
+       * Estado flotante (is-floating): cuando el JS lo teleporta a <body>.
+       * Aquí sí aplicamos blur + transparencia + fade + borde.
+       * El fade usa box-shadow inset — NO se clipea con overflow:auto.
+       */
+      #beneficios-tabs.is-floating {
+        background: rgba(0, 78, 133, 0.72) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.10) !important;
+        /* Fade derecho como inset shadow — inmune al overflow:auto */
+        box-shadow: inset -36px 0 18px -8px rgba(0, 52, 92, 0.90) !important;
       }
 
-      /* Fade lateral derecho — efecto "hay más" */
-      #beneficios-tabs::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 32px;
-        height: 100%;
-        background: linear-gradient(to left, rgba(0,78,133,0.85), transparent);
-        pointer-events: none;
-        z-index: 1;
-      }
-
-      /* Botones más chicos y compactos */
+      /* Botones: chicos, no crecen */
       #beneficios-tabs .actor-tab-btn {
-        flex: 0 0 auto !important;         /* NO crecer ni encoger */
+        flex: 0 0 auto !important;
         padding: 5px 12px !important;
         font-size: 0.72rem !important;
         white-space: nowrap !important;
@@ -3486,8 +3484,8 @@ document.addEventListener('DOMContentLoaded', function () {
     spacer.style.height = cachedTabsH + 'px';
   }
 
-  function toBody()   { if (tabs.parentNode !== document.body) document.body.appendChild(tabs); }
-  function toOrigin() { if (tabs.parentNode !== originalParent) originalParent.insertBefore(tabs, spacer); }
+  function toBody()   { if (tabs.parentNode !== document.body) { document.body.appendChild(tabs); tabs.classList.add('is-floating'); } }
+  function toOrigin() { if (tabs.parentNode !== originalParent) { originalParent.insertBefore(tabs, spacer); tabs.classList.remove('is-floating'); } }
 
   /* Aplica posición y dimensiones al tabs flotante */
   function positionTabs(topPx) {
@@ -3545,7 +3543,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      next = contBot > cachedTabsH ? 'stop' : 'normal';
+      next = contBot > (cachedTabsH + 80) ? 'stop' : 'normal';
     }
 
     /* En fixed/stop: actualizar posición cada tick (el contenedor puede moverse) */

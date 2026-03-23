@@ -398,6 +398,56 @@ transform:translateY(0);
       box-shadow: 0 4px 20px rgba(0,78,133,0.5), 0 1px 0 rgba(0,194,255,0.18);
     }
 
+    /* ─── MOBILE VISUAL OVERRIDES ─────────────────────────────
+       Solo estética mobile. Lógica de sticky: intacta.
+    ──────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+
+      /* Contenedor: scroll horizontal fluido, fondo blur, padding compacto */
+      #beneficios-tabs {
+        display: flex !important;
+        flex-wrap: nowrap !important;       /* una sola fila */
+        justify-content: flex-start !important; /* anula justify-center para que el scroll funcione */
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;             /* Firefox */
+        gap: 8px !important;
+        padding: 8px 10px !important;
+        /* fondo semitransparente con blur — se aplica tanto en sticky como en normal */
+        background: rgba(0, 78, 133, 0.65) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+        /* fade lateral derecho */
+        position: relative;
+      }
+      #beneficios-tabs::-webkit-scrollbar {
+        display: none;                     /* Chrome/Safari */
+      }
+
+      /* Fade lateral derecho — efecto "hay más" */
+      #beneficios-tabs::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 32px;
+        height: 100%;
+        background: linear-gradient(to left, rgba(0,78,133,0.85), transparent);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Botones más chicos y compactos */
+      #beneficios-tabs .actor-tab-btn {
+        flex: 0 0 auto !important;         /* NO crecer ni encoger */
+        padding: 5px 12px !important;
+        font-size: 0.72rem !important;
+        white-space: nowrap !important;
+      }
+    }
+
     /* --- NAVEGACIÓN INFERIOR --- */
     .benefits-nav {
       display: flex;
@@ -3464,11 +3514,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function applyFixed(hdrBot) {
     spacer.style.display = 'block';
     toBody();
-    tabs.classList.remove('mob-fixed'); /* no necesitamos la clase CSS, usamos inline */
-    tabs.style.background    = '#065D9B';
-    tabs.style.borderBottom  = '1px solid rgba(0,194,255,0.18)';
-    tabs.style.boxShadow     = '0 4px 20px rgba(0,78,133,0.5)';
-    tabs.style.padding       = '8px 1rem';
+    tabs.classList.remove('mob-fixed');
     positionTabs(hdrBot);
   }
 
@@ -3476,10 +3522,6 @@ document.addEventListener('DOMContentLoaded', function () {
     spacer.style.display = 'block';
     toBody();
     tabs.classList.remove('mob-fixed');
-    tabs.style.background    = '#065D9B';
-    tabs.style.borderBottom  = '1px solid rgba(0,194,255,0.18)';
-    tabs.style.boxShadow     = '0 4px 20px rgba(0,78,133,0.5)';
-    tabs.style.padding       = '8px 1rem';
     positionTabs(Math.max(hdrBot, contBot - cachedTabsH));
   }
 

@@ -1061,11 +1061,7 @@ display:none;
       padding-right: 2rem;
       cursor: pointer;
     }
-    select.cura-form-input option {
-      background: #004E85;
-      color: #fff;
-    }
-    /* Newsletter input inline */
+    select.cura-form-input option { background: #004E85; color: #fff; }
     .cura-newsletter-input {
       flex: 1;
       background: rgba(255,255,255,0.05);
@@ -2215,15 +2211,11 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747., sin fines de lucro.</div>
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">SUMARTE</a> y ser parte de la historia.</div>
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
-<div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
-  <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-  <p class="text-sm text-cura-accentLight">
-    email: 
-    <a href="/cdn-cgi/l/email-protection#e5868a8b918486918aa589809c86909784cb8a9782" class="text-white font-semibold underline">
-      <span class="__cf_email__" data-cfemail="55363a3b213436213a1539302c362027347b3a2732">[email&#160;protected]</span>
-    </a>
-  </p>
-</div>
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
+          <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
+          <p class="text-sm text-cura-accentLight">email: <a href="/cdn-cgi/l/email-protection#45262a2b312426312a0529203c263037246b2a3722" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="e78488899386849388a78b829e84929586c9889580">[email&#160;protected]</span></a></p>
+          <p class="text-xs text-cura-accentLight mt-2">Comunícate con nosotros para más información o para sumarte a la iniciativa.</p>
+        </div>
       </div>
 
       <div data-aos="fade-left">
@@ -2246,18 +2238,10 @@ display:none;
           <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.</p>
         </form>
 
-<div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
-  <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
-  <p class="text-sm text-cura-accentLight">
-    email: 
-    <a href="/cdn-cgi/l/email-protection#5f3c30312b3e3c2b301f333a263c2a2d3e71302d38" class="text-white font-semibold underline">
-      <span class="__cf_email__" data-cfemail="bbd8d4d5cfdad8cfd4fbd7dec2d8cec9da95d4c9dc">[email&#160;protected]</span>
-    </a>
-  </p>
-  <p class="text-xs text-cura-accentLight mt-2">
-    Comunícate con nosotros para más información o para sumarte a la iniciativa.
-  </p>
-</div>
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
+          <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
+          <p class="text-sm text-cura-accentLight">email: <a href="/cdn-cgi/l/email-protection#f1929e9f859092859eb19d948892848390df9e8396" class="text-white font-semibold underline"><span class="__cf_email__" data-cfemail="2e4d41405a4f4d5a416e424b574d5b5c4f00415c49">[email&#160;protected]</span></a></p>
+        </div>
       </div>
     </div>
   </section>
@@ -2272,7 +2256,7 @@ display:none;
     <form id="newsletter-form" class="flex flex-col sm:flex-row gap-2 w-full">
       <input name="email" type="email" required placeholder="Correo electrónico"
              class="flex-1 w-full border border-cura-accent/40 rounded-md px-3 py-2 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent" />
-      <button type="submit" class="w-full sm:w-auto px-4 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
+      <button type="submit" class="cura-form-btn" style="width:auto;padding:0.55rem 1.3rem;">
         MANTENERME INFORMADO
       </button>
     </form>
@@ -2379,7 +2363,7 @@ display:none;
 <!-- =============================================
      SCRIPTS
 ============================================== -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
@@ -2806,7 +2790,7 @@ function switchTab(actorId) {
   const panel = document.getElementById('panel-' + actorId);
   if (panel) {
     panel.classList.add('active');
-
+    
     const tarjetas = panel.querySelectorAll('[data-aos]');
     tarjetas.forEach(t => t.classList.remove('aos-animate'));
     setTimeout(() => {
@@ -2822,7 +2806,7 @@ function switchTab(actorId) {
     }
   });
 
-  // Scroll suave al inicio de #beneficios con easing cúbico (más suave que lineal)
+  // Scroll suave al inicio de #beneficios — easing cúbico (más suave que lineal)
   setTimeout(() => {
     const sec = document.getElementById('beneficios');
     if (!sec) return;
@@ -3795,4 +3779,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* Cuando el sticky JS mueve el nodo (toOrigin/toBody),
-     el scrollLeft puede res
+     el scrollLeft puede resetearse. Restaurarlo via MutationObserver. */
+  var mo = new MutationObserver(function() {
+    if (!hasDesired) return;
+    var c = document.getElementById('beneficios-tabs');
+    if (c && Math.abs(c.scrollLeft - desiredScroll) > 2) {
+      c.scrollLeft = desiredScroll;
+    }
+  });
+  mo.observe(document.body, { childList: true, subtree: false });
+})();
+</script>
+
+</body>
+</html>

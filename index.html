@@ -425,9 +425,9 @@ transform:translateY(0);
     }
 
     /* ─── MOBILE VISUAL ─────────────────────────────────────────
-       position:sticky no funciona en mobile porque <body> tiene
-       overflow-x:hidden (Tailwind), lo que crea un scroll container
-       y confina el sticky. Se usa JS (script abajo) para el sticky.
+       Fondo transparente = integrado con bg-cura-card (#065D9B).
+       Fades laterales en el WRAPPER (.tabs-fade-wrap) creado por JS,
+       porque overflow-x:auto clipea ::before/::after del mismo elemento.
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
@@ -437,7 +437,7 @@ transform:translateY(0);
         margin-right: -1.5rem !important;
       }
 
-      /* Layout scroll horizontal */
+      /* El scroll horizontal vive aquí — fondo transparente */
       #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -448,38 +448,30 @@ transform:translateY(0);
         scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 0 !important;
-        background: linear-gradient(
-          to bottom,
-          rgba(13,71,110,0.60),
-          rgba(13,71,110,0.82)
-        ) !important;
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255,255,255,0.04) !important;
-        border-radius: 0 0 16px 16px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
-        transition: backdrop-filter 0.2s ease, background 0.2s ease, opacity 0.25s ease;
+        /* Transparente: se funde con bg-cura-card del section padre */
+        background: transparent !important;
+        backdrop-filter: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        transition: opacity 0.25s ease;
         opacity: 1;
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* is-floating: hereda todo el visual de arriba */
+      /* is-floating: mantiene transparente — el fondo lo da el spacer */
       #beneficios-tabs.is-floating {
-        background: linear-gradient(
-          to bottom,
-          rgba(13,71,110,0.60),
-          rgba(13,71,110,0.82)
-        ) !important;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+        background: transparent !important;
+        box-shadow: none !important;
       }
 
-      /* Salida suave al llegar al CTA */
+      /* Salida suave */
       #beneficios-tabs.is-hidden {
         opacity: 0 !important;
         pointer-events: none !important;
       }
 
-      /* Espaciado botones extremos */
+      /* Botones extremos */
       #beneficios-tabs .actor-tab-btn:first-child { margin-left:  14px; }
       #beneficios-tabs .actor-tab-btn:last-child  { margin-right: 14px; }
 
@@ -490,6 +482,45 @@ transform:translateY(0);
         padding: 5px 12px !important;
         font-size: 0.72rem !important;
         white-space: nowrap !important;
+      }
+
+      /* ── Wrapper de fade (creado por JS abajo) ──
+         overflow:hidden aquí — los ::before/::after no scrollean
+         porque son del wrapper, no del scroller interno. */
+      .tabs-fade-wrap {
+        position: relative;
+        overflow: hidden;
+        background: #065D9B;  /* mismo que bg-cura-card */
+        border-bottom: 1px solid rgba(0,194,255,0.12);
+        width: 100%;
+      }
+
+      /* Fades laterales sólidos → se funden con el fondo real */
+      .tabs-fade-wrap::before,
+      .tabs-fade-wrap::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 28px;
+        pointer-events: none;
+        z-index: 2;
+      }
+      .tabs-fade-wrap::before {
+        left: 0;
+        background: linear-gradient(to right,
+          #065D9B 0%,
+          rgba(6,93,155,0.7) 50%,
+          rgba(6,93,155,0) 100%
+        );
+      }
+      .tabs-fade-wrap::after {
+        right: 0;
+        background: linear-gradient(to left,
+          #065D9B 0%,
+          rgba(6,93,155,0.7) 50%,
+          rgba(6,93,155,0) 100%
+        );
       }
     }
 
@@ -2105,7 +2136,7 @@ display:none;
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="150">
         <div class="metric-value" data-count="3">3</div>
-        <div class="metric-label">subsistemas integrados (público, OOSS, prepaga)</div>
+        <div class="metric-label">subsistemas integrados (público, OOOO.SS, prepaga)</div>
       </div>
       <div class="metric-item" data-aos="zoom-in" data-aos-delay="200">
         <div class="metric-value" data-count="90" data-suffix="%">90%</div>
@@ -2225,8 +2256,8 @@ display:none;
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
-    <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">
-      contacto@leycura.org
+    <a href="/cdn-cgi/l/email-protection#25464a4b514446514a6549405c465057440b4a5742" class="text-white font-semibold underline">
+      <span class="__cf_email__" data-cfemail="fa9995948e9b998e95ba969f83998f889bd495889d">[email&#160;protected]</span>
     </a>
   </p>
   <p class="text-xs text-cura-accentLight mt-2">
@@ -2261,8 +2292,8 @@ display:none;
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
-    <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">
-      contacto@leycura.org
+    <a href="/cdn-cgi/l/email-protection#70131f1e041113041f301c1509130502115e1f0217" class="text-white font-semibold underline">
+      <span class="__cf_email__" data-cfemail="92f1fdfce6f3f1e6fdd2fef7ebf1e7e0f3bcfde0f5">[email&#160;protected]</span>
     </a>
   </p>
 </div>
@@ -2387,7 +2418,7 @@ display:none;
 <!-- =============================================
      SCRIPTS
 ============================================== -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
@@ -3803,7 +3834,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* Cuando el sticky JS mueve el nodo (toOrigin/toBody),
-     el scrollLeft puede resetearse. Restaurarlo via MutationObserver. */
+     el scrollLeft puede resetablecer. Restaurarlo via MutationObserver. */
   var mo = new MutationObserver(function() {
     if (!hasDesired) return;
     var c = document.getElementById('beneficios-tabs');
@@ -3812,6 +3843,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
   mo.observe(document.body, { childList: true, subtree: false });
+})();
+</script>
+
+<!-- Fade wrapper mobile -->
+<script>
+(function () {
+  if (window.innerWidth > 768) return;
+  var tabs = document.getElementById('beneficios-tabs');
+  if (!tabs || document.querySelector('.tabs-fade-wrap')) return;
+  var wrap = document.createElement('div');
+  wrap.className = 'tabs-fade-wrap';
+  tabs.parentNode.insertBefore(wrap, tabs);
+  wrap.appendChild(tabs);
 })();
 </script>
 

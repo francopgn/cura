@@ -424,17 +424,12 @@ transform:translateY(0);
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
       /*
-       * Estado flotante (is-floating): cuando el JS lo teleporta a <body>.
-       * Aquí sí aplicamos blur + transparencia + fade + borde.
-       * El fade usa box-shadow inset — NO se clipea con overflow:auto.
+       * Estado flotante: mismo aspecto que estático — sin blur, sin transparencia.
+       * Solo se agrega sombra inferior sutil para separarlo del contenido.
        */
       #beneficios-tabs.is-floating {
-        background: rgba(0, 78, 133, 0.72) !important;
-        backdrop-filter: blur(14px) !important;
-        -webkit-backdrop-filter: blur(14px) !important;
-        border-bottom: 1px solid rgba(255,255,255,0.10) !important;
-        /* Fade derecho como inset shadow — inmune al overflow:auto */
-        box-shadow: inset -36px 0 18px -8px rgba(0, 52, 92, 0.90) !important;
+        background: #065D9B !important;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.35), inset -36px 0 18px -8px rgba(4,40,75,0.85) !important;
       }
 
       /* Botones: chicos, no crecen */
@@ -3554,7 +3549,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      next = contBot > (cachedTabsH + 220) ? 'stop' : 'normal';
+      next = contBot > (cachedTabsH + 380) ? 'stop' : 'normal';
     }
 
     /* En fixed/stop: actualizar posición cada tick (el contenedor puede moverse) */

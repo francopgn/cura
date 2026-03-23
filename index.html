@@ -3777,6 +3777,20 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
+<!-- FIX: evita scroll duplicado al clickear tabs de beneficios.
+     CAUSA: al hacer mousedown en un <button>, el browser le asigna foco y
+     scrollea para mantenerlo visible — esto ocurre ANTES de que onclick corra.
+     Luego switchTab lanza su propio lenis.scrollTo, generando el efecto de
+     "baja y vuelve a subir".
+     SOLUCIÓN: preventDefault() en mousedown cancela la asignación de foco
+     (y por tanto el scroll de foco) sin afectar el disparo del onclick. -->
+<script>
+document.addEventListener('mousedown', function (e) {
+  var btn = e.target.closest('#beneficios-tabs button');
+  if (btn) e.preventDefault();
+}, { capture: true });
+</script>
+
 <!-- Auto-center botón activo en #beneficios-tabs -->
 <script>
 (function () {

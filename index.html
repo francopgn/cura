@@ -3397,10 +3397,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- =============================================
-     STICKY MOBILE — BENEFICIOS TABS v7
-     Fix 1: top = headerEl.getBoundingClientRect().bottom (real)
-     Fix 2: margin reset en mob-fixed (no overflow lateral)
-     Fix 3: salida por contRect.bottom <= 0 (sin pastAt)
+     STICKY MOBILE — BENEFICIOS TABS v8
+     Fix: left/width del tabs = ancho real del #beneficios
+          (no full-viewport). Se recalcula en cada tick.
 ============================================= -->
 <script>
 (function () {
@@ -3423,10 +3422,15 @@ document.addEventListener('DOMContentLoaded', function () {
   var cachedTabsTop = 0;
   var cachedTabsH   = 0;
 
-  /* Retorna dónde termina el header en el viewport ahora mismo */
   function headerBottom() {
     var b = headerEl.getBoundingClientRect().bottom;
     return b > 0 ? b : 0;
+  }
+
+  /* left/width exactos del contenedor de beneficios */
+  function containerGeometry() {
+    var r = container.getBoundingClientRect();
+    return { left: r.left, width: r.width };
   }
 
   function cacheTabsMetrics() {
@@ -3444,6 +3448,18 @@ document.addEventListener('DOMContentLoaded', function () {
   function toBody()   { if (tabs.parentNode !== document.body) document.body.appendChild(tabs); }
   function toOrigin() { if (tabs.parentNode !== originalParent) originalParent.insertBefore(tabs, spacer); }
 
+  /* Aplica posición y dimensiones al tabs flotante */
+  function positionTabs(topPx) {
+    var geo = containerGeometry();
+    tabs.style.position = 'fixed';
+    tabs.style.top      = topPx + 'px';
+    tabs.style.left     = geo.left + 'px';
+    tabs.style.right    = 'auto';
+    tabs.style.width    = geo.width + 'px';
+    tabs.style.margin   = '0';
+    tabs.style.zIndex   = '31';
+  }
+
   var state   = 'normal';
   var ticking = false;
 
@@ -3457,43 +3473,38 @@ document.addEventListener('DOMContentLoaded', function () {
   function applyFixed(hdrBot) {
     spacer.style.display = 'block';
     toBody();
-    /* Resetear márgenes negativos del desktop full-bleed */
-    tabs.style.margin = '0';
-    tabs.classList.add('mob-fixed');
-    tabs.style.top = hdrBot + 'px';
+    tabs.classList.remove('mob-fixed'); /* no necesitamos la clase CSS, usamos inline */
+    tabs.style.background    = '#065D9B';
+    tabs.style.borderBottom  = '1px solid rgba(0,194,255,0.18)';
+    tabs.style.boxShadow     = '0 4px 20px rgba(0,78,133,0.5)';
+    tabs.style.padding       = '8px 1rem';
+    positionTabs(hdrBot);
   }
 
-  function applyStop(hdrBot, contBottom) {
+  function applyStop(hdrBot, contBot) {
     spacer.style.display = 'block';
     toBody();
     tabs.classList.remove('mob-fixed');
-    tabs.style.margin   = '0';
-    tabs.style.position = 'fixed';
-    tabs.style.left     = '0';
-    tabs.style.right    = '0';
-    tabs.style.zIndex   = '31';
-    tabs.style.top      = Math.max(hdrBot, contBottom - cachedTabsH) + 'px';
+    tabs.style.background    = '#065D9B';
+    tabs.style.borderBottom  = '1px solid rgba(0,194,255,0.18)';
+    tabs.style.boxShadow     = '0 4px 20px rgba(0,78,133,0.5)';
+    tabs.style.padding       = '8px 1rem';
+    positionTabs(Math.max(hdrBot, contBot - cachedTabsH));
   }
 
   function update() {
     ticking = false;
 
     var sy       = window.scrollY;
-    var hdrBot   = headerBottom(); /* bottom real del header en viewport */
+    var hdrBot   = headerBottom();
     var contRect = container.getBoundingClientRect();
     var contTop  = contRect.top + sy;
     var contH    = container.offsetHeight;
-    var contBot  = contRect.bottom; /* en px desde viewport top */
+    var contBot  = contRect.bottom;
 
-    /*
-     * Salida por posición en viewport (no por scrollY acumulado):
-     * - contBot <= 0       → contenedor fue por encima del viewport
-     * - contRect.top >= vh → contenedor aún no llegó al viewport
-     */
     var outsideViewport = contBot <= 0 || contRect.top >= window.innerHeight;
-
-    var activateAt = cachedTabsTop - hdrBot;
-    var stopAt     = contTop + contH - cachedTabsH - hdrBot;
+    var activateAt      = cachedTabsTop - hdrBot;
+    var stopAt          = contTop + contH - cachedTabsH - hdrBot;
 
     var next;
     if (outsideViewport || sy < activateAt) {
@@ -3501,17 +3512,16 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      /* stop: quedarse pegado al fondo del contenedor */
       next = contBot > cachedTabsH ? 'stop' : 'normal';
     }
 
-    /* Actualizar top en fixed/stop sin cambio de estado */
+    /* En fixed/stop: actualizar posición cada tick (el contenedor puede moverse) */
     if (next === 'fixed' && state === 'fixed') {
-      tabs.style.top = hdrBot + 'px';
+      positionTabs(hdrBot);
       return;
     }
     if (next === 'stop' && state === 'stop') {
-      tabs.style.top = Math.max(hdrBot, contBot - cachedTabsH) + 'px';
+      positionTabs(Math.max(hdrBot, contBot - cachedTabsH));
       return;
     }
 

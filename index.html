@@ -388,32 +388,34 @@ transform:translateY(0);
       border-bottom: 1px solid rgba(0,194,255,0.18);
     }
 
-    /* Mobile sticky — estados inyectados por JS */
+    /*
+     * Desktop full-bleed: compensar md:p-8 (2rem) del section #beneficios.
+     * Solo en >=769px para no interferir con el JS mobile.
+     * El padding-lateral mantiene el contenido alineado con el resto de la sección.
+     */
+    @media (min-width: 769px) {
+      .actor-tabs {
+        margin-left:  -2rem;
+        margin-right: -2rem;
+        padding-left:  2rem;
+        padding-right: 2rem;
+      }
+    }
+
+    /* Mobile sticky — estado flotante inyectado por JS */
     #beneficios-tabs.mob-fixed {
       position: fixed;
-      /* top puesto dinámicamente por JS según altura real del header */
       left: 0;
       right: 0;
-      z-index: 31; /* encima del header z-30 */
+      z-index: 31;
       box-shadow: 0 4px 20px rgba(0,78,133,0.5), 0 1px 0 rgba(0,194,255,0.18);
     }
 
-    /* ─── MOBILE VISUAL OVERRIDES ─────────────────────────────
-       Solo estética mobile. Sin tocar JS ni comportamiento sticky.
-
-       Fade lateral: mask-image es la única forma correcta en CSS puro.
-       ::before/::after dentro de overflow:auto quedan clippeados por
-       el navegador. mask-image opera sobre el elemento ya pintado,
-       independientemente del overflow.
-       Valores: black = opaco, transparent = invisible.
-
-       Ancho: NO se fuerza con width:100% para evitar conflicto con
-       el width inline que aplica el JS cuando el tabs flota.
-    ──────────────────────────────────────────────────────────── */
+    /* ─── MOBILE VISUAL OVERRIDES ───────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Estado base: ocupa el ancho del contenedor de beneficios
-         compensando el p-6 (1.5rem) del section padre. */
+      /* Contenedor: scroll horizontal sin padding lateral.
+         El espacio al inicio/fin lo dan los márgenes de los botones extremos. */
       #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -423,35 +425,32 @@ transform:translateY(0);
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 8px !important;
-        padding: 8px 1.5rem !important;   /* mismo valor que p-6 */
+        padding: 8px 0 !important;        /* sin padding lateral */
         background: #065D9B !important;
         border-bottom: 1px solid rgba(0,194,255,0.18) !important;
         box-shadow: none !important;
         transition: opacity 0.25s ease;
         opacity: 1;
       }
+      #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* Ancho full-bleed solo cuando está en flujo normal (no flotando).
-         Cuando el JS lo flota, pone width/left inline y no necesitamos esto. */
+      /* Full-bleed: solo en estado normal (no flotante).
+         El JS controla left/width cuando flota — no pisarlo. */
       #beneficios-tabs:not(.is-floating) {
         margin-left:  -1.5rem !important;  /* compensa p-6 del section */
         margin-right: -1.5rem !important;
       }
-      #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* is-floating: visual idéntico al estado normal */
-      #beneficios-tabs.is-floating {
-        background: #065D9B !important;
-        box-shadow: none !important;
-      }
+      /* Espaciado en los botones extremos (no en el contenedor).
+         Así el scroll arranca y termina exactamente en el borde. */
+      #beneficios-tabs .actor-tab-btn:first-child { margin-left:  14px; }
+      #beneficios-tabs .actor-tab-btn:last-child  { margin-right: 14px; }
 
-      /* Salida suave al llegar al CTA */
-      #beneficios-tabs.is-hidden {
-        opacity: 0 !important;
-        pointer-events: none !important;
-      }
+      /* is-floating / is-hidden */
+      #beneficios-tabs.is-floating { background: #065D9B !important; box-shadow: none !important; }
+      #beneficios-tabs.is-hidden   { opacity: 0 !important; pointer-events: none !important; }
 
-      /* Botones: no crecen, no encogen */
+      /* Botones */
       #beneficios-tabs .actor-tab-btn {
         flex: 0 0 auto !important;
         flex-shrink: 0 !important;

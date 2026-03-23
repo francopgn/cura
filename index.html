@@ -2309,7 +2309,7 @@ display:none;
   <!-- Turnstile -->
   <div class="cf-turnstile" data-sitekey="0x4AAAAAACvEx07r83cJGm2P"></div>
 
-<button type="button" class="cura-form-btn">
+<button type="submit" class="cura-form-btn">
   Enviar
 </button>
 
@@ -3119,61 +3119,21 @@ document.addEventListener('DOMContentLoaded', function () {
   /* =============================================
      FORMULARIO CONTACTO
   ============================================== */
-document.addEventListener("DOMContentLoaded", () => {
+formContact.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-  const formContact = document.getElementById('contact-form');
-  const modalContact = document.getElementById('success-modal');
-  const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
-  const okBtnContact = document.getElementById('success-modal-ok');
+  const fd = new FormData(formContact);
 
-  function abrirModalContact() {
-    modalContact.classList.remove('hidden');
-    requestAnimationFrame(() => {
-      modalContact.classList.add('show');
-      cardContact.classList.add('show');
-    });
+  const r = await fetch('/api/contact', {
+    method: 'POST',
+    body: fd
+  });
+
+  if (r.ok) {
+    abrirModalContact();
+    formContact.reset();
   }
-
-  function cerrarModalContact() {
-    modalContact.classList.remove('show');
-    cardContact.classList.remove('show');
-    setTimeout(() => modalContact.classList.add('hidden'), 250);
-  }
-
-  if (formContact) {
-    formContact.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const fd = new FormData(formContact);
-
-      try {
-        const r = await fetch('/api/contact', {
-          method: 'POST',
-          body: fd
-        });
-
-        if (!r.ok) throw new Error();
-
-        abrirModalContact();
-        formContact.reset();
-
-      } catch {
-        alert('Ocurrió un error. Intentá nuevamente.');
-      }
-    });
-  }
-
-  if (okBtnContact) {
-    okBtnContact.addEventListener('click', cerrarModalContact);
-  }
-
-  if (modalContact) {
-    modalContact.addEventListener('click', e => {
-      if (e.target === modalContact) cerrarModalContact();
-    });
-  }
-
 });
 
   /* =============================================

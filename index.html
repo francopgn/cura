@@ -406,6 +406,16 @@ transform:translateY(0);
       z-index: 31;
     }
 
+    /* Compensar el espacio cuando el sticky se activa */
+    #beneficios {
+      scroll-margin-top: 80px;
+    }
+
+    /* Transición suave solo en propiedades visuales (NO top/position) */
+    #beneficios-tabs {
+      transition: backdrop-filter 0.2s ease, background 0.2s ease, opacity 0.25s ease;
+    }
+
     /* ─── MOBILE VISUAL ─────────────────────────────────────────
        FUENTE DE VERDAD ÚNICA: todos los estados comparten estos
        estilos. Ningún estado sobreescribe background/shadow/radius.
@@ -3662,7 +3672,8 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- Auto-center botón activo en #beneficios-tabs
-     Usa offsetLeft (relativo al contenedor) → funciona en normal y sticky -->
+     offsetLeft → relativo al contenedor, funciona en normal y sticky.
+     Doble scroll: animado + refuerzo a 100ms para que no lo pise otro script. -->
 <script>
 (function () {
   var tabsContainer = document.getElementById('beneficios-tabs');
@@ -3671,13 +3682,17 @@ document.addEventListener('DOMContentLoaded', function () {
   function centerTab(btn) {
     var containerWidth = tabsContainer.offsetWidth;
     var targetScroll   = btn.offsetLeft - (containerWidth / 2) + (btn.offsetWidth / 2);
+    /* Primer scroll: animado */
     tabsContainer.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    /* Segundo scroll: fija posición final, evita que otros scripts lo pisen */
+    setTimeout(function () {
+      tabsContainer.scrollTo({ left: targetScroll, behavior: 'auto' });
+    }, 100);
   }
 
   tabsContainer.addEventListener('click', function (e) {
     var btn = e.target.closest('button');
     if (!btn) return;
-    /* rAF: esperar a que .active esté aplicado por switchTab() */
     requestAnimationFrame(function () { centerTab(btn); });
   });
 })();

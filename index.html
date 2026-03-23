@@ -399,14 +399,11 @@ transform:translateY(0);
     }
 
     /* ─── MOBILE VISUAL OVERRIDES ─────────────────────────────
-       Solo estética. NO tocar nada de esto en desktop.
+       Solo estética mobile. Lógica de sticky: intacta.
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /*
-       * Estado base en mobile: scroll horizontal, botones chicos.
-       * Fondo sólido igual al contenedor (no se nota que es parte del sticky).
-       */
+      /* Scroll horizontal, sin wrap, fondo idéntico en todos los estados */
       #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -417,20 +414,25 @@ transform:translateY(0);
         scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 10px !important;
-        background: #065D9B !important;        /* sólido — igual que desktop */
-        border-bottom: none !important;        /* sin borde en estado normal */
-        box-shadow: none !important;
+        background: #065D9B !important;
+        border-bottom: 1px solid rgba(0,194,255,0.18) !important;
+        box-shadow: none !important;           /* sin sombra en ningún estado */
+        /* transición de opacidad para la salida suave */
+        transition: opacity 0.25s ease;
+        opacity: 1;
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /*
-       * Estado flotante: mismo aspecto que estático — sin blur, sin transparencia.
-       * Solo se agrega sombra inferior sutil para separarlo del contenido.
-       */
+      /* is-floating: visual 100% idéntico al estado normal */
       #beneficios-tabs.is-floating {
         background: #065D9B !important;
-        /* sin sombra — visual idéntico al estado estático */
-        box-shadow: inset -36px 0 18px -8px rgba(4,40,75,0.85) !important;
+        box-shadow: none !important;
+      }
+
+      /* Clase para salida suave */
+      #beneficios-tabs.is-hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
 
       /* Botones: chicos, no crecen */
@@ -3432,9 +3434,9 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- =============================================
-     STICKY MOBILE — BENEFICIOS TABS v8
-     Fix: left/width del tabs = ancho real del #beneficios
-          (no full-viewport). Se recalcula en cada tick.
+     STICKY MOBILE — BENEFICIOS TABS v15
+     left/width cacheados desde la posición real del tabs.
+     Opacity para salida suave al llegar al CTA.
 ============================================= -->
 <script>
 (function () {
@@ -3448,53 +3450,69 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!headerEl || !container || !tabs) return;
 
   var originalParent = tabs.parentNode;
-  var benefitsNav    = container.querySelector('.benefits-nav');
   var explorarBtn    = container.querySelector('.mt-10.flex.justify-center');
+  var benefitsNav    = container.querySelector('.benefits-nav');
 
+  /* Espaciador: mantiene el hueco en el flujo cuando tabs flota */
   var spacer = document.createElement('div');
   spacer.setAttribute('aria-hidden', 'true');
   spacer.style.cssText = 'display:none;flex-shrink:0;width:100%;';
   originalParent.insertBefore(spacer, tabs.nextSibling);
 
+  /*
+   * Métricas cacheadas del tabs en su posición NATURAL.
+   * cachedTabsLeft y cachedTabsWidth se toman desde el tabs mismo
+   * (no desde el container) para que left/width del estado flotante
+   * coincidan pixel-perfect con el estado estático.
+   */
   var cachedTabsTop    = 0;
+  var cachedTabsLeft   = 0;
+  var cachedTabsWidth  = 0;
   var cachedTabsH      = 0;
-  var tabsTopMeasured  = false; /* lazy: se mide la 1ª vez que update corre en normal */
+  var tabsMeasured     = false;
 
   function headerBottom() {
     var b = headerEl.getBoundingClientRect().bottom;
     return b > 0 ? b : 0;
   }
 
-  /* left/width: usar el section #beneficios completo para coincidir con su borde visual */
-  function containerGeometry() {
-    var r = container.getBoundingClientRect();
-    return { left: r.left, width: r.width };
-  }
-
   function cacheTabsMetrics() {
+    /* Asegurar posición natural antes de medir */
     if (tabs.parentNode !== originalParent) {
       originalParent.insertBefore(tabs, spacer);
-      tabs.classList.remove('mob-fixed');
+      tabs.classList.remove('is-floating');
       tabs.style.cssText = '';
     }
+    var r         = tabs.getBoundingClientRect();
     var sy        = window.scrollY;
-    cachedTabsTop = tabs.getBoundingClientRect().top + sy;
-    cachedTabsH   = tabs.offsetHeight;
+    cachedTabsTop   = r.top + sy;
+    cachedTabsLeft  = r.left;           /* left real en viewport */
+    cachedTabsWidth = r.width;          /* ancho real del tabs */
+    cachedTabsH     = r.height || tabs.offsetHeight;
     spacer.style.height = cachedTabsH + 'px';
-    tabsTopMeasured = true;
+    tabsMeasured = true;
   }
 
-  function toBody()   { if (tabs.parentNode !== document.body) { document.body.appendChild(tabs); tabs.classList.add('is-floating'); } }
-  function toOrigin() { if (tabs.parentNode !== originalParent) { originalParent.insertBefore(tabs, spacer); tabs.classList.remove('is-floating'); } }
+  function toBody() {
+    if (tabs.parentNode !== document.body) {
+      document.body.appendChild(tabs);
+      tabs.classList.add('is-floating');
+    }
+  }
+  function toOrigin() {
+    if (tabs.parentNode !== originalParent) {
+      originalParent.insertBefore(tabs, spacer);
+      tabs.classList.remove('is-floating');
+    }
+  }
 
-  /* Aplica posición y dimensiones al tabs flotante */
+  /* Posicionar el tabs flotante usando las métricas cacheadas */
   function positionTabs(topPx) {
-    var geo = containerGeometry();
     tabs.style.position = 'fixed';
     tabs.style.top      = topPx + 'px';
-    tabs.style.left     = geo.left + 'px';
+    tabs.style.left     = cachedTabsLeft + 'px';   /* siempre el mismo left */
     tabs.style.right    = 'auto';
-    tabs.style.width    = geo.width + 'px';
+    tabs.style.width    = cachedTabsWidth + 'px';  /* siempre el mismo ancho */
     tabs.style.margin   = '0';
     tabs.style.zIndex   = '31';
   }
@@ -3504,22 +3522,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function applyNormal() {
     toOrigin();
-    tabs.classList.remove('mob-fixed');
     tabs.style.cssText   = '';
+    tabs.classList.remove('is-hidden');
     spacer.style.display = 'none';
   }
 
   function applyFixed(hdrBot) {
     spacer.style.display = 'block';
     toBody();
-    tabs.classList.remove('mob-fixed');
+    tabs.classList.remove('is-hidden');
     positionTabs(hdrBot);
   }
 
   function applyStop(hdrBot, contBot) {
     spacer.style.display = 'block';
     toBody();
-    tabs.classList.remove('mob-fixed');
+    tabs.classList.remove('is-hidden');
     positionTabs(Math.max(hdrBot, contBot - cachedTabsH));
   }
 
@@ -3533,12 +3551,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var contH    = container.offsetHeight;
     var contBot  = contRect.bottom;
 
-    /*
-     * Lazy: medir la posición real del tabs la primera vez que update()
-     * corre mientras el tabs está en su lugar normal Y la sección ya es
-     * visible (AOS completó la animación). Así evitamos el desfase por AOS.
-     */
-    if (!tabsTopMeasured && tabs.parentNode === originalParent && contRect.top < window.innerHeight) {
+    /* Lazy: medir métricas del tabs la 1ª vez que la sección entra al viewport */
+    if (!tabsMeasured && tabs.parentNode === originalParent && contRect.top < window.innerHeight) {
       cacheTabsMetrics();
     }
 
@@ -3552,22 +3566,22 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      /* Salir cuando el botón "Explorar" llega al viewport */
-      var exitEl    = explorarBtn || benefitsNav;
-      var exitRect  = exitEl ? exitEl.getBoundingClientRect() : null;
-      var exitPoint = exitRect ? exitRect.top : (contBot - 200);
-      next = exitPoint > cachedTabsH ? 'stop' : 'normal';
+      /* Parar en el fondo del contenedor */
+      next = contBot > cachedTabsH ? 'stop' : 'normal';
     }
 
-    /* En fixed/stop: actualizar posición cada tick (el contenedor puede moverse) */
-    if (next === 'fixed' && state === 'fixed') {
-      positionTabs(hdrBot);
-      return;
+    /* Opacity: ocultar suavemente cuando el botón Explorar entra al viewport */
+    var exitEl   = explorarBtn || benefitsNav;
+    var exitRect = exitEl ? exitEl.getBoundingClientRect() : null;
+    var shouldHide = exitRect && exitRect.top <= (hdrBot + cachedTabsH + 8);
+    if (next !== 'normal') {
+      if (shouldHide) tabs.classList.add('is-hidden');
+      else            tabs.classList.remove('is-hidden');
     }
-    if (next === 'stop' && state === 'stop') {
-      positionTabs(Math.max(hdrBot, contBot - cachedTabsH));
-      return;
-    }
+
+    /* Actualizar posición sin cambio de estado */
+    if (next === 'fixed' && state === 'fixed') { positionTabs(hdrBot); return; }
+    if (next === 'stop'  && state === 'stop')  { positionTabs(Math.max(hdrBot, contBot - cachedTabsH)); return; }
 
     if (next === state) return;
     state = next;
@@ -3581,6 +3595,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!ticking) { requestAnimationFrame(update); ticking = true; }
   }
 
+  /* Solo Lenis + fallback nativo */
   var hooked = false;
   function hookLenis() {
     if (hooked) return;
@@ -3593,21 +3608,14 @@ document.addEventListener('DOMContentLoaded', function () {
   hookLenis();
 
   window.addEventListener('resize', function () {
-    if (window.innerWidth > 768) {
-      applyNormal();
-      state = 'normal';
-    } else {
-      state = '';
-      cacheTabsMetrics();
-      requestAnimationFrame(update);
-    }
+    if (window.innerWidth > 768) { applyNormal(); state = 'normal'; }
+    else { state = ''; tabsMeasured = false; requestAnimationFrame(update); }
   }, { passive: true });
 
   function init() {
-    /* Solo medir tabsH para el spacer — tabsTop se mide lazy en update() */
     cachedTabsH = tabs.offsetHeight;
     spacer.style.height = cachedTabsH + 'px';
-    tabsTopMeasured = false; /* forzar nueva medición */
+    tabsMeasured = false;
     requestAnimationFrame(update);
   }
   if (document.readyState === 'complete') setTimeout(init, 100);

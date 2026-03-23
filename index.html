@@ -3901,6 +3901,35 @@ document.addEventListener('mousedown', function (e) {
   wrap.appendChild(tabs);
 })();
 </script>
+  <script>
+console.log("SCRIPT CARGADO");
+
+const formContact = document.getElementById('contact-form');
+
+console.log("FORM:", formContact);
+
+if (formContact) {
+  formContact.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    console.log("SUBMIT INTERCEPTADO");
+
+    const fd = new FormData(formContact);
+
+    const r = await fetch('/api/contact', {
+      method: 'POST',
+      body: fd
+    });
+
+    if (r.ok) {
+      alert("ENVIADO");
+    } else {
+      alert("ERROR");
+    }
+  });
+}
+</script>
 
 </body>
 </html>

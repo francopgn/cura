@@ -132,12 +132,16 @@ export default async function handler(req, res) {
     }
 
 if (!brevoRes.ok) {
-  console.error("BREVO STATUS:", brevoRes.status);
-
   const text = await brevoRes.text();
-  console.error("BREVO RESPONSE:", text);
 
-  return res.status(502).json({ error: "Error al enviar correo" });
+  console.error("❌ BREVO ERROR STATUS:", brevoRes.status);
+  console.error("❌ BREVO RESPONSE:", text);
+
+  return res.status(500).json({
+    error: "Brevo error",
+    status: brevoRes.status,
+    detail: text
+  });
 }
 
     return res.status(200).json({ success: true });

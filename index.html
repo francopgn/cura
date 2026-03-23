@@ -1003,6 +1003,86 @@ display:none;
     padding-top: 0.5rem; /* Reduce de 40px a 8px en móviles */
   }
 }
+
+    /* ── Formularios estilo portfolio ─────────────────────────── */
+    .cura-form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 0.75rem;
+      padding: 0.58rem 0.85rem;
+      font-size: 0.8rem;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.25s ease-in-out, background 0.25s ease-in-out;
+      font-family: inherit;
+    }
+    .cura-form-input::placeholder { color: rgba(255,255,255,0.26); }
+    .cura-form-input:focus {
+      border-color: rgba(0,194,255,0.52);
+      background: rgba(0,194,255,0.05);
+    }
+    .cura-form-label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #59D2FF;
+      margin-bottom: 0.32rem;
+      letter-spacing: 0.04em;
+    }
+    .cura-form-label-required { color: #f87171; }
+    .cura-form-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      padding: 0.6rem 1.3rem;
+      background: #00C2FF;
+      color: #004E85;
+      font-weight: 700;
+      font-size: 0.82rem;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.25s ease-in-out;
+    }
+    .cura-form-btn:hover {
+      background: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0,194,255,0.25);
+    }
+    select.cura-form-input {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2359D2FF' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      padding-right: 2rem;
+      cursor: pointer;
+    }
+    select.cura-form-input option {
+      background: #004E85;
+      color: #fff;
+    }
+    /* Newsletter input inline */
+    .cura-newsletter-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 9999px;
+      padding: 0.55rem 1rem;
+      font-size: 0.8rem;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.25s ease-in-out, background 0.25s ease-in-out;
+    }
+    .cura-newsletter-input::placeholder { color: rgba(255,255,255,0.26); }
+    .cura-newsletter-input:focus {
+      border-color: rgba(0,194,255,0.52);
+      background: rgba(0,194,255,0.05);
+    }
+    /* ─────────────────────────────────────────────────────────── */
   </style>
 </head>
 
@@ -2067,19 +2147,19 @@ display:none;
 
       <div class="grid md:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-red-400 mb-1">Nombre *</label>
-          <input name="nombre" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters" inputmode="text" autocomplete="given-name" />
+          <label class="cura-form-label cura-form-label-required">Nombre *</label>
+          <input name="nombre" required class="cura-form-input only-letters" inputmode="text" autocomplete="given-name" />
         </div>
         <div>
-          <label class="block text-xs font-medium text-red-400 mb-1">Apellido *</label>
-          <input name="apellido" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary only-letters" inputmode="text" autocomplete="family-name" />
+          <label class="cura-form-label cura-form-label-required">Apellido *</label>
+          <input name="apellido" required class="cura-form-input only-letters" inputmode="text" autocomplete="family-name" />
         </div>
       </div>
 
       <div class="grid md:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-medium text-red-400 mb-1">Provincia *</label>
-          <select name="provincia" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white">
+          <label class="cura-form-label cura-form-label-required">Provincia *</label>
+          <select name="provincia" required class="cura-form-input">
             <option value="">Seleccioná una provincia</option>
             <option>Buenos Aires</option><option>Ciudad Autónoma de Buenos Aires</option>
             <option>Catamarca</option><option>Chaco</option><option>Chubut</option>
@@ -2094,24 +2174,24 @@ display:none;
           </select>
         </div>
         <div>
-          <label class="block text-xs font-medium text-red-400 mb-1">Ciudad *</label>
-          <select name="ciudad" id="ciudad-select" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary bg-white">
+          <label class="cura-form-label cura-form-label-required">Ciudad *</label>
+          <select name="ciudad" id="ciudad-select" required class="cura-form-input">
             <option value="">Seleccioná una ciudad</option>
           </select>
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-medium text-red-400 mb-1">Email de contacto *</label>
-        <input type="email" name="email" required class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" autocomplete="email" />
+        <label class="cura-form-label cura-form-label-required">Email de contacto *</label>
+        <input type="email" name="email" required class="cura-form-input" autocomplete="email" />
       </div>
       <div>
-        <label class="block text-xs font-medium text-cura-accentLight mb-1">DNI (opcional)</label>
-        <input name="dni" id="dni-input" maxlength="8" inputmode="numeric" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8);" />
+        <label class="cura-form-label">DNI (opcional)</label>
+        <input name="dni" id="dni-input" maxlength="8" inputmode="numeric" class="cura-form-input" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8);" />
       </div>
       <div>
-        <label class="block text-xs font-medium text-cura-accentLight mb-1">Número de teléfono (opcional)</label>
-        <input name="telefono" id="telefono-input" maxlength="13" inputmode="numeric" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13);" />
+        <label class="cura-form-label">Número de teléfono (opcional)</label>
+        <input name="telefono" id="telefono-input" maxlength="13" inputmode="numeric" class="cura-form-input" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13);" />
       </div>
 
       <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold transition hover:bg-cura-accentLight hover:text-cura-primaryDark">
@@ -2149,18 +2229,18 @@ display:none;
       <div data-aos="fade-left">
         <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="/api/contact" method="POST">
           <div>
-            <label class="block text-xs font-medium text-cura-accentLight mb-1">Nombre</label>
-            <input type="text" name="nombre" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent" />
+            <label class="cura-form-label">Nombre</label>
+            <input type="text" name="nombre" class="cura-form-input" />
           </div>
           <div>
-            <label class="block text-xs font-medium text-cura-accentLight mb-1">Correo electrónico *</label>
-            <input type="email" required name="email" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent" />
+            <label class="cura-form-label cura-form-label-required">Correo electrónico *</label>
+            <input type="email" required name="email" class="cura-form-input" />
           </div>
           <div>
-            <label class="block text-xs font-medium text-cura-accentLight mb-1">Mensaje</label>
-            <textarea rows="4" name="mensaje" class="w-full border border-cura-accent/40 rounded-md px-2 py-1.5 text-sm text-cura-primary focus:outline-none focus:ring-1 focus:ring-cura-accent"></textarea>
+            <label class="cura-form-label">Mensaje</label>
+            <textarea rows="4" name="mensaje" class="cura-form-input" style="resize:vertical;min-height:90px;"></textarea>
           </div>
-          <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold hover:bg-cura-accentLight hover:text-cura-primaryDark transition">
+          <button type="submit" class="cura-form-btn">
             Enviar
           </button>
           <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.</p>
@@ -2722,35 +2802,55 @@ function switchTab(actorId) {
   document.querySelectorAll('.actor-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.actor-tab-btn').forEach(b => b.classList.remove('active'));
 
-  // Activar el panel y botón correspondiente
+  // Activar el panel y botón correspondiente (SIN animar tarjetas todavía)
   const panel = document.getElementById('panel-' + actorId);
   if (panel) {
     panel.classList.add('active');
-    
-    const tarjetas = panel.querySelectorAll('[data-aos]');
-    tarjetas.forEach(t => t.classList.remove('aos-animate'));
-    setTimeout(() => {
-      tarjetas.forEach(t => t.classList.add('aos-animate'));
-    }, 50);
+    // Resetear animaciones — se dispararán luego del scroll
+    panel.querySelectorAll('[data-aos]').forEach(t => t.classList.remove('aos-animate'));
   }
 
-  // Activar el botón que fue clickeado
-  const buttons = document.querySelectorAll('.actor-tab-btn');
-  buttons.forEach(b => {
-    if (b.getAttribute('onclick') === "switchTab('" + actorId + "')") {
-      b.classList.add('active');
-    }
+  // Activar el botón
+  document.querySelectorAll('.actor-tab-btn').forEach(b => {
+    if (b.getAttribute('onclick') === "switchTab('" + actorId + "')") b.classList.add('active');
   });
 
-  // Scroll suave al inicio de #beneficios — delay para que el panel termine de renderizar
+  // Decidir si hace falta scrollear:
+  // Si los tabs ya son visibles en el viewport (sticky activo o sección visible),
+  // NO scrollear — solo cambiar el contenido suavemente.
+  const sec   = document.getElementById('beneficios');
+  const tabs  = document.getElementById('beneficios-tabs');
+  const secRect  = sec  ? sec.getBoundingClientRect()  : null;
+  const tabsRect = tabs ? tabs.getBoundingClientRect() : null;
+
+  // Los tabs son visibles si su top está entre 0 y la altura del viewport
+  const tabsVisible = tabsRect && tabsRect.top >= 0 && tabsRect.top < window.innerHeight;
+  // La sección es visible si parte de ella está en el viewport
+  const secVisible  = secRect  && secRect.top < window.innerHeight && secRect.bottom > 0;
+
+  // Animar tarjetas DESPUÉS de que llegue el scroll
+  function afterScroll() {
+    if (panel) {
+      panel.querySelectorAll('[data-aos]').forEach((t, i) => {
+        setTimeout(() => t.classList.add('aos-animate'), i * 40);
+      });
+    }
+  }
+
+  // Siempre scrollear, con easing suave — tarjetas se animan al llegar
   setTimeout(() => {
-    const sec = document.getElementById('beneficios');
     if (!sec) return;
     if (window.lenis) {
-      window.lenis.scrollTo(sec, { offset: -90, duration: 1.0 });
+      window.lenis.scrollTo(sec, {
+        offset: -90,
+        duration: 0.9,
+        easing: (t) => t < 0.5 ? 2*t*t : -1+(4-2*t)*t,
+        onComplete: afterScroll
+      });
     } else {
       const top = sec.getBoundingClientRect().top + window.scrollY - 90;
       window.scrollTo({ top, behavior: 'smooth' });
+      setTimeout(afterScroll, 700);
     }
   }, 60);
 
@@ -3711,17 +3811,4 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* Cuando el sticky JS mueve el nodo (toOrigin/toBody),
-     el scrollLeft puede resetearse. Restaurarlo via MutationObserver. */
-  var mo = new MutationObserver(function() {
-    if (!hasDesired) return;
-    var c = document.getElementById('beneficios-tabs');
-    if (c && Math.abs(c.scrollLeft - desiredScroll) > 2) {
-      c.scrollLeft = desiredScroll;
-    }
-  });
-  mo.observe(document.body, { childList: true, subtree: false });
-})();
-</script>
-
-</body>
-</html>
+     el scrollLeft puede res

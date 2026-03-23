@@ -399,54 +399,53 @@ transform:translateY(0);
     }
 
     /* ─── MOBILE VISUAL OVERRIDES ─────────────────────────────
-       Solo estética mobile. Lógica de sticky: intacta.
+       Solo estética mobile. Sin tocar JS ni comportamiento sticky.
+
+       Fade lateral: mask-image es la única forma correcta en CSS puro.
+       ::before/::after dentro de overflow:auto quedan clippeados por
+       el navegador. mask-image opera sobre el elemento ya pintado,
+       independientemente del overflow.
+       Valores: black = opaco, transparent = invisible.
+
+       Ancho: NO se fuerza con width:100% para evitar conflicto con
+       el width inline que aplica el JS cuando el tabs flota.
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Scroll horizontal, ancho completo, fondo idéntico en todos los estados */
       #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
         justify-content: flex-start !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
         overflow-x: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 8px !important;
-        /* padding lateral genera espacio visible antes del 1er botón y después del último */
-        padding: 8px 12px !important;
+        padding: 8px 14px !important;
         background: #065D9B !important;
         border-bottom: 1px solid rgba(0,194,255,0.18) !important;
         box-shadow: none !important;
         transition: opacity 0.25s ease;
         opacity: 1;
-        /*
-         * Fade lateral con mask-image.
-         * Usar mask en vez de ::before/::after porque el overflow:auto
-         * clipea los pseudoelementos absolutamente posicionados.
-         * Resultado: botones del borde se desvanecen — efecto app premium.
-         */
+        /* Fade lateral: black=opaco, transparent=difuminado */
         -webkit-mask-image: linear-gradient(
           to right,
-          transparent 0px,
-          #065D9B 14px,
-          #065D9B calc(100% - 14px),
+          transparent  0px,
+          black       18px,
+          black  calc(100% - 18px),
           transparent 100%
         );
         mask-image: linear-gradient(
           to right,
-          transparent 0px,
-          #065D9B 14px,
-          #065D9B calc(100% - 14px),
+          transparent  0px,
+          black       18px,
+          black  calc(100% - 18px),
           transparent 100%
         );
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* is-floating: 100% idéntico al estado normal */
+      /* is-floating: visual idéntico al estado normal */
       #beneficios-tabs.is-floating {
         background: #065D9B !important;
         box-shadow: none !important;
@@ -458,9 +457,10 @@ transform:translateY(0);
         pointer-events: none !important;
       }
 
-      /* Botones: chicos, no crecen */
+      /* Botones: no crecen, no encogen */
       #beneficios-tabs .actor-tab-btn {
         flex: 0 0 auto !important;
+        flex-shrink: 0 !important;
         padding: 5px 12px !important;
         font-size: 0.72rem !important;
         white-space: nowrap !important;

@@ -410,10 +410,10 @@ transform:translateY(0);
     /* Mobile sticky — estados inyectados por JS */
     #beneficios-tabs.mob-fixed {
       position: fixed;
-      top: 70px;
+      /* top puesto dinámicamente por JS según altura real del header */
       left: 0;
       right: 0;
-      z-index: 31; /* encima del header (z-30) */
+      z-index: 31; /* encima del header z-30 */
       box-shadow: 0 4px 20px rgba(0,78,133,0.5), 0 1px 0 rgba(0,194,255,0.18);
     }
 
@@ -3407,11 +3407,10 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- =============================================
-     STICKY MOBILE — BENEFICIOS TABS v5
-     Solo activa en ≤768px. Desktop usa position:sticky
-     nativo (intacto). Teleport a <body> para evitar
-     conflicto con transforms de AOS en mobile.
-     Fix: contTop/contH frescos en cada update().
+     STICKY MOBILE — BENEFICIOS TABS v6
+     - NAVBAR_H medido dinámicamente (logo mobile ~110px)
+     - top del tabs puesto via style (no CSS hardcodeado)
+     - contRect.bottom < 0 como condición extra de salida
 ============================================= -->
 <script>
 (function () {
@@ -3420,36 +3419,37 @@ document.addEventListener('DOMContentLoaded', function () {
   /* Solo mobile */
   if (window.innerWidth > 768) return;
 
-  var NAVBAR_H = 70; // coincide con top en CSS .mob-fixed
-
+  var headerEl  = document.querySelector('header');
   var container = document.getElementById('beneficios');
   var tabs      = document.getElementById('beneficios-tabs');
-  if (!container || !tabs) return;
+  if (!headerEl || !container || !tabs) return;
 
   var originalParent = tabs.parentNode;
 
-  /* Espaciador: reserva el hueco cuando tabs sale del flujo */
+  /* Espaciador */
   var spacer = document.createElement('div');
   spacer.setAttribute('aria-hidden', 'true');
   spacer.style.cssText = 'display:none;flex-shrink:0;width:100%;';
   originalParent.insertBefore(spacer, tabs.nextSibling);
 
-  /*
-   * Solo cachedTabsTop y cachedTabsH se cachean (se necesitan cuando
-   * el tabs ya está en <body> y no podemos medir su posición natural).
-   * contTop y contH se calculan frescos en cada update() usando
-   * getBoundingClientRect(), que refleja la posición real actual.
-   */
+  /* Solo se cachea la posición natural del tabs (inamovible post-carga) */
   var cachedTabsTop = 0;
   var cachedTabsH   = 0;
+  var NAVBAR_H      = 0; /* se mide dinámicamente */
+
+  function measureNavbar() {
+    /* Medir el header real en el momento actual */
+    NAVBAR_H = headerEl.offsetHeight;
+  }
 
   function cacheTabsMetrics() {
-    /* Asegurar posición normal antes de medir el tabs */
+    /* Volver a posición original antes de medir */
     if (tabs.parentNode !== originalParent) {
       originalParent.insertBefore(tabs, spacer);
       tabs.classList.remove('mob-fixed');
       tabs.style.cssText = '';
     }
+    measureNavbar();
     var sy        = window.scrollY;
     cachedTabsTop = tabs.getBoundingClientRect().top + sy;
     cachedTabsH   = tabs.offsetHeight;
@@ -3463,67 +3463,89 @@ document.addEventListener('DOMContentLoaded', function () {
   var state   = 'normal';
   var ticking = false;
 
+  function applyNormal() {
+    toOrigin();
+    tabs.classList.remove('mob-fixed');
+    tabs.style.cssText   = '';
+    spacer.style.display = 'none';
+  }
+
+  function applyFixed() {
+    spacer.style.display = 'block';
+    toBody();
+    tabs.classList.add('mob-fixed');
+    /* top dinámico — no depende de CSS hardcodeado */
+    tabs.style.top = NAVBAR_H + 'px';
+  }
+
+  function applyStop(contBottom) {
+    spacer.style.display = 'block';
+    toBody();
+    tabs.classList.remove('mob-fixed');
+    tabs.style.position = 'fixed';
+    tabs.style.left     = '0';
+    tabs.style.right    = '0';
+    tabs.style.zIndex   = '31';
+    tabs.style.top      = Math.max(NAVBAR_H, contBottom - cachedTabsH) + 'px';
+  }
+
   function update() {
     ticking = false;
-    var sy = window.scrollY;
+    measureNavbar(); /* re-medir si el header cambió de tamaño */
 
-    /* contTop y contH siempre frescos — no cachear */
-    var contRect  = container.getBoundingClientRect();
-    var contTop   = contRect.top + sy;
-    var contH     = container.offsetHeight;
-    var contBot   = contRect.bottom; /* distancia al viewport bottom */
+    var sy       = window.scrollY;
+    var contRect = container.getBoundingClientRect();
+    var contTop  = contRect.top + sy;   /* posición absoluta del contenedor */
+    var contH    = container.offsetHeight;
+    var contBot  = contRect.bottom;     /* px desde viewport top */
 
-    /* Activar cuando los tabs (en posición natural) tocan el navbar */
+    /*
+     * Condición de salida extra:
+     * Si el contenedor está completamente fuera del viewport
+     * (arriba o abajo) → estado normal.
+     */
+    var contBelowViewport = contRect.top  >  window.innerHeight;
+    var contAboveViewport = contRect.bottom < 0;
+
     var activateAt = cachedTabsTop - NAVBAR_H;
-    /* Parar cuando la base de los tabs tocaría la base del contenedor */
     var stopAt     = contTop + contH - cachedTabsH - NAVBAR_H;
-    /* Soltar cuando el contenedor completo salió por arriba del viewport */
     var pastAt     = contTop + contH;
 
-    var next = sy < activateAt ? 'normal'
-             : sy < stopAt    ? 'fixed'
-             : sy < pastAt    ? 'stop'
-             :                  'normal';
+    var next;
+    if (contAboveViewport || contBelowViewport || sy < activateAt) {
+      next = 'normal';
+    } else if (sy < stopAt) {
+      next = 'fixed';
+    } else if (sy < pastAt) {
+      next = 'stop';
+    } else {
+      next = 'normal';
+    }
 
-    /* En stop: ajustar top dinámicamente cada tick */
+    /* En stop: ajustar top cada tick sin cambio de estado */
     if (next === 'stop' && state === 'stop') {
       tabs.style.top = Math.max(NAVBAR_H, contBot - cachedTabsH) + 'px';
+      return;
+    }
+    /* En fixed: mantener top sincronizado con navbar real */
+    if (next === 'fixed' && state === 'fixed') {
+      tabs.style.top = NAVBAR_H + 'px';
       return;
     }
 
     if (next === state) return;
     state = next;
 
-    if (next === 'normal') {
-      toOrigin();
-      tabs.classList.remove('mob-fixed');
-      tabs.style.cssText   = '';
-      spacer.style.display = 'none';
-
-    } else if (next === 'fixed') {
-      spacer.style.display = 'block';
-      toBody();
-      tabs.style.cssText = '';
-      tabs.classList.add('mob-fixed');
-
-    } else { /* stop */
-      spacer.style.display = 'block';
-      toBody();
-      tabs.classList.remove('mob-fixed');
-      tabs.style.cssText  = '';
-      tabs.style.position = 'fixed';
-      tabs.style.left     = '0';
-      tabs.style.right    = '0';
-      tabs.style.zIndex   = '31';
-      tabs.style.top      = Math.max(NAVBAR_H, contBot - cachedTabsH) + 'px';
-    }
+    if      (next === 'normal') applyNormal();
+    else if (next === 'fixed')  applyFixed();
+    else                        applyStop(contBot);
   }
 
   function onScroll() {
     if (!ticking) { requestAnimationFrame(update); ticking = true; }
   }
 
-  /* Solo Lenis + fallback nativo */
+  /* Solo Lenis + fallback */
   var hooked = false;
   function hookLenis() {
     if (hooked) return;
@@ -3535,18 +3557,20 @@ document.addEventListener('DOMContentLoaded', function () {
   }, 1500);
   hookLenis();
 
-  /* Resize: si rotan a landscape > 768px, desactivar */
+  /* Resize */
   window.addEventListener('resize', function () {
+    measureNavbar();
     if (window.innerWidth > 768) {
-      toOrigin();
-      tabs.classList.remove('mob-fixed');
-      tabs.style.cssText   = '';
-      spacer.style.display = 'none';
+      applyNormal();
       state = 'normal';
+    } else {
+      state = '';
+      cacheTabsMetrics();
+      requestAnimationFrame(update);
     }
   }, { passive: true });
 
-  /* Init: esperar a que AOS termine antes de medir tabsTop */
+  /* Init: esperar a AOS */
   function init() {
     cacheTabsMetrics();
     requestAnimationFrame(update);

@@ -3119,31 +3119,26 @@ document.addEventListener('DOMContentLoaded', function () {
   /* =============================================
      FORMULARIO CONTACTO
   ============================================== */
-  const formContact = document.getElementById('contact-form');
-  const modalContact = document.getElementById('success-modal');
-  const cardContact  = modalContact ? modalContact.querySelector('.modal-card') : null;
-  const okBtnContact = document.getElementById('success-modal-ok');
-  function abrirModalContact() {
-    modalContact.classList.remove('hidden');
-    requestAnimationFrame(() => { modalContact.classList.add('show'); cardContact.classList.add('show'); });
-  }
-  function cerrarModalContact() {
-    modalContact.classList.remove('show'); cardContact.classList.remove('show');
-    setTimeout(() => modalContact.classList.add('hidden'), 250);
-  }
-  if (formContact) {
-    formContact.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const fd = new FormData(formContact);
-      try {
-        const r = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ nombre: fd.get('nombre') || '', email: fd.get('email') || '', mensaje: fd.get('mensaje') || '' }) });
-        if (!r.ok) throw new Error();
-        abrirModalContact(); formContact.reset();
-      } catch { alert('Ocurrió un error. Intentá nuevamente.'); }
+ formContact.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const fd = new FormData(formContact);
+
+  try {
+    const r = await fetch('/api/contact', {
+      method: 'POST',
+      body: fd
     });
-    okBtnContact.addEventListener('click', cerrarModalContact);
-    modalContact.addEventListener('click', e => { if (e.target === modalContact) cerrarModalContact(); });
+
+    if (!r.ok) throw new Error();
+
+    abrirModalContact();
+    formContact.reset();
+
+  } catch {
+    alert('Ocurrió un error. Intentá nuevamente.');
   }
+});
 
   /* =============================================
      FORMULARIO SUMATE

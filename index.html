@@ -399,17 +399,21 @@ transform:translateY(0);
     }
 
     /* ─── MOBILE VISUAL OVERRIDES ─────────────────────────────
-       Solo estética mobile. Lógica de sticky: intacta.
+       Solo estética mobile. Sin tocar JS ni comportamiento sticky.
 
-       El fade lateral se hace con un wrapper div (#tabs-fade-wrap)
-       inyectado por el JS de fade (abajo). El wrapper tiene
-       overflow:hidden + ::before/::after con color sólido.
-       El #beneficios-tabs scrollea dentro del wrapper.
-       Así los pseudoelementos NO quedan clippeados por el overflow.
+       Fade lateral: mask-image es la única forma correcta en CSS puro.
+       ::before/::after dentro de overflow:auto quedan clippeados por
+       el navegador. mask-image opera sobre el elemento ya pintado,
+       independientemente del overflow.
+       Valores: black = opaco, transparent = invisible.
+
+       Ancho: NO se fuerza con width:100% para evitar conflicto con
+       el width inline que aplica el JS cuando el tabs flota.
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* El scroll está en #beneficios-tabs; el fade en el wrapper */
+      /* Estado base: ocupa el ancho del contenedor de beneficios
+         compensando el p-6 (1.5rem) del section padre. */
       #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -419,73 +423,41 @@ transform:translateY(0);
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 8px !important;
-        padding: 8px 14px !important;
+        padding: 8px 1.5rem !important;   /* mismo valor que p-6 */
         background: #065D9B !important;
         border-bottom: 1px solid rgba(0,194,255,0.18) !important;
         box-shadow: none !important;
         transition: opacity 0.25s ease;
         opacity: 1;
-        width: 100%;
+      }
+
+      /* Ancho full-bleed solo cuando está en flujo normal (no flotando).
+         Cuando el JS lo flota, pone width/left inline y no necesitamos esto. */
+      #beneficios-tabs:not(.is-floating) {
+        margin-left:  -1.5rem !important;  /* compensa p-6 del section */
+        margin-right: -1.5rem !important;
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* is-floating / is-hidden: controlados por el sticky JS */
-      #beneficios-tabs.is-floating { background: #065D9B !important; box-shadow: none !important; }
-      #beneficios-tabs.is-hidden   { opacity: 0 !important; pointer-events: none !important; }
+      /* is-floating: visual idéntico al estado normal */
+      #beneficios-tabs.is-floating {
+        background: #065D9B !important;
+        box-shadow: none !important;
+      }
 
-      /* Botones */
+      /* Salida suave al llegar al CTA */
+      #beneficios-tabs.is-hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      /* Botones: no crecen, no encogen */
       #beneficios-tabs .actor-tab-btn {
         flex: 0 0 auto !important;
         flex-shrink: 0 !important;
         padding: 5px 12px !important;
         font-size: 0.72rem !important;
         white-space: nowrap !important;
-      }
-
-      /* ── Wrapper de fade ──────────────────────────────────────
-         El JS (script de fade abajo) crea #tabs-fade-wrap y mueve
-         el #beneficios-tabs adentro. Aquí definimos su estilo.
-      ─────────────────────────────────────────────────────────── */
-      #tabs-fade-wrap {
-        position: relative;
-        overflow: hidden;           /* clipea los gradientes */
-        width: 100%;
-        background: #065D9B;
-        border-bottom: 1px solid rgba(0,194,255,0.18);
-      }
-
-      /* Fades laterales: pseudoelementos del WRAPPER, no del scroller.
-         Como el wrapper no tiene overflow:auto, NO quedan clippeados.
-         Color = #065D9B (fondo exacto del contenedor de beneficios). */
-      #tabs-fade-wrap::before,
-      #tabs-fade-wrap::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 28px;
-        height: 100%;
-        pointer-events: none;
-        z-index: 2;
-      }
-      #tabs-fade-wrap::before {
-        left: 0;
-        background: linear-gradient(
-          to right,
-          #065D9B                0%,
-          rgba(6,93,155,0.85)   40%,
-          rgba(6,93,155,0.3)    75%,
-          rgba(6,93,155,0)     100%
-        );
-      }
-      #tabs-fade-wrap::after {
-        right: 0;
-        background: linear-gradient(
-          to left,
-          #065D9B                0%,
-          rgba(6,93,155,0.85)   40%,
-          rgba(6,93,155,0.3)    75%,
-          rgba(6,93,155,0)     100%
-        );
       }
     }
 
@@ -3666,38 +3638,6 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.readyState === 'complete') setTimeout(init, 100);
   else window.addEventListener('load', function () { setTimeout(init, 100); });
 
-})();
-</script>
-
-<!-- Fade wrapper mobile — solo visual, sin tocar sticky JS -->
-<script>
-(function() {
-  if (window.innerWidth > 768) return;
-  var tabs = document.getElementById('beneficios-tabs');
-  if (!tabs || document.getElementById('tabs-fade-wrap')) return;
-
-  /* Crear wrapper y envolver el tabs */
-  var wrap = document.createElement('div');
-  wrap.id = 'tabs-fade-wrap';
-
-  /* Copiar las clases de transición/opacity que el sticky JS gestiona
-     via el tabs — el wrapper hereda opacity del tabs usando CSS */
-  tabs.parentNode.insertBefore(wrap, tabs);
-  wrap.appendChild(tabs);
-
-  /* Sincronizar opacity del wrapper con el tabs cuando is-hidden cambia.
-     Observamos el tabs y propagamos opacity al wrapper para que el
-     fade también desaparezca suavemente. */
-  var observer = new MutationObserver(function() {
-    if (tabs.classList.contains('is-hidden')) {
-      wrap.style.opacity = '0';
-      wrap.style.pointerEvents = 'none';
-    } else {
-      wrap.style.opacity = '';
-      wrap.style.pointerEvents = '';
-    }
-  });
-  observer.observe(tabs, { attributes: true, attributeFilter: ['class'] });
 })();
 </script>
 

@@ -3672,37 +3672,47 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- Auto-center botón activo en #beneficios-tabs
-     ResizeObserver: recalcula cuando el layout termina de cambiar
-     (sticky, teleport, scroll). Así el cálculo siempre usa valores reales. -->
+     Lee el contenedor SIEMPRE en el momento de centrar (no referencia vieja).
+     El sticky JS mueve el nodo — al releer con getElementById siempre
+     obtenemos el nodo actual en el DOM, sea donde sea que esté. -->
 <script>
 (function () {
-  var tabsContainer = document.getElementById('beneficios-tabs');
-  if (!tabsContainer) return;
+  /* Verificar que el elemento existe al cargar */
+  if (!document.getElementById('beneficios-tabs')) return;
 
   var activeTab = null;
 
   function centerTab(btn) {
     if (!btn) return;
-    var cRect  = tabsContainer.getBoundingClientRect();
+    /* Releer siempre — el nodo puede haber sido movido por el sticky JS */
+    var c = document.getElementById('beneficios-tabs');
+    if (!c) return;
+    var cRect  = c.getBoundingClientRect();
     var bRect  = btn.getBoundingClientRect();
-    var target = (bRect.left - cRect.left) + tabsContainer.scrollLeft
+    var target = (bRect.left - cRect.left) + c.scrollLeft
                  + (bRect.width / 2) - (cRect.width / 2);
-    tabsContainer.scrollTo({ left: target, behavior: 'smooth' });
+    c.scrollTo({ left: target, behavior: 'smooth' });
   }
 
-  /* Guardar tab activo en cada click */
-  tabsContainer.addEventListener('click', function (e) {
-    var btn = e.target.closest('button');
+  /* Delegación desde document — funciona aunque el nodo cambie de padre */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('#beneficios-tabs button');
     if (!btn) return;
     activeTab = btn;
     requestAnimationFrame(function () { centerTab(activeTab); });
   });
 
-  /* Recentrar cuando el layout cambia (sticky, resize, teleport) */
+  /* ResizeObserver: recentrar cuando el layout cambia tras el teleport */
   if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(function () {
-      if (activeTab) centerTab(activeTab);
-    }).observe(tabsContainer);
+    var ro = new ResizeObserver(function () {
+      if (activeTab) {
+        var c = document.getElementById('beneficios-tabs');
+        if (c) { var ro2 = c; } /* forzar relecture */ 
+        centerTab(activeTab);
+      }
+    });
+    /* Observar el document.body para capturar el nodo cuando está en body */
+    ro.observe(document.body);
   }
 })();
 </script>

@@ -2270,8 +2270,8 @@ display:none;
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
-    <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">
-      contacto@leycura.org
+    <a href="/cdn-cgi/l/email-protection#a6c5c9c8d2c7c5d2c9e6cac3dfc5d3d4c788c9d4c1" class="text-white font-semibold underline">
+      <span class="__cf_email__" data-cfemail="573438392336342338173b322e3422253679382530">[email&#160;protected]</span>
     </a>
   </p>
   <p class="text-xs text-cura-accentLight mt-2">
@@ -2284,7 +2284,7 @@ display:none;
 <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
 
   <!-- Script de Cloudflare -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <!-- Honeypot (oculto) -->
   <input type="text" name="website" style="display:none">
@@ -2323,8 +2323,8 @@ display:none;
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
-    <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">
-      contacto@leycura.org
+    <a href="/cdn-cgi/l/email-protection#afccc0c1dbceccdbc0efc3cad6ccdaddce81c0ddc8" class="text-white font-semibold underline">
+      <span class="__cf_email__" data-cfemail="b6d5d9d8c2d7d5c2d9f6dad3cfd5c3c4d798d9c4d1">[email&#160;protected]</span>
     </a>
   </p>
 </div>
@@ -2449,7 +2449,7 @@ display:none;
 <!-- =============================================
      SCRIPTS
 ============================================== -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
 <script>
@@ -3130,6 +3130,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fd = new FormData(formContact);
 
+    // ✅ Verificar que Turnstile haya cargado y el usuario haya pasado el challenge
+    const token = fd.get('cf-turnstile-response');
+    if (!token) {
+      alert("Por favor, completá la verificación de seguridad antes de enviar.");
+      return;
+    }
+
     const r = await fetch('/api/contact', {
       method: 'POST',
       headers: {
@@ -3139,7 +3146,7 @@ document.addEventListener("DOMContentLoaded", () => {
         nombre: fd.get('nombre'),
         email: fd.get('email'),
         mensaje: fd.get('mensaje'),
-        "cf-turnstile-response": fd.get('cf-turnstile-response'),
+        "cf-turnstile-response": token,
         website: fd.get('website')
       })
     });
@@ -3149,9 +3156,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (r.ok) {
       abrirModalContact();
       formContact.reset();
+      // Resetear widget de Turnstile para el próximo envío
+      if (window.turnstile) window.turnstile.reset();
     } else {
       console.error("ERROR BACKEND:", data);
-      alert(data.error || "Error");
+      alert(data.error || "Error al enviar el mensaje");
+      // Resetear Turnstile para que el usuario pueda reintentar
+      if (window.turnstile) window.turnstile.reset();
     }
   });
 });
@@ -3916,32 +3927,4 @@ document.addEventListener('mousedown', function (e) {
   <script>
 console.log("SCRIPT CARGADO");
 
-const formContact = document.getElementById('contact-form');
-
-console.log("FORM:", formContact);
-
-if (formContact) {
-  formContact.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    console.log("SUBMIT INTERCEPTADO");
-
-    const fd = new FormData(formContact);
-
-    const r = await fetch('/api/contact', {
-      method: 'POST',
-      body: fd
-    });
-
-    if (r.ok) {
-      alert("ENVIADO");
-    } else {
-      alert("ERROR");
-    }
-  });
-}
-</script>
-
-</body>
-</html>
+const formContact = doc

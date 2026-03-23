@@ -130,11 +130,14 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "Error conectando con Brevo" });
     }
 
-    if (!brevoRes.ok) {
-      console.error("BREVO STATUS:", brevoRes.status);
-      console.error("BREVO RESPONSE:", brevoText);
-      return res.status(502).json({ error: "Error al enviar correo" });
-    }
+if (!brevoRes.ok) {
+  console.error("BREVO STATUS:", brevoRes.status);
+
+  const text = await brevoRes.text();
+  console.error("BREVO RESPONSE:", text);
+
+  return res.status(502).json({ error: "Error al enviar correo" });
+}
 
     return res.status(200).json({ success: true });
 

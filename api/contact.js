@@ -1,4 +1,3 @@
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -129,15 +128,13 @@ const honeypot = body?.website;
     }
 
 if (!brevoRes.ok) {
-  const text = await brevoRes.text();
-
   console.error("❌ BREVO ERROR STATUS:", brevoRes.status);
-  console.error("❌ BREVO RESPONSE:", text);
+  console.error("❌ BREVO RESPONSE:", brevoText);
 
   return res.status(500).json({
     error: "Brevo error",
     status: brevoRes.status,
-    detail: text
+    detail: brevoText   // ← usar el texto ya leído arriba
   });
 }
 

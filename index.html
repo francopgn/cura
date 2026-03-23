@@ -2281,26 +2281,43 @@ display:none;
       </div>
 
       <div data-aos="fade-left">
-        <form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="/api/contact" method="POST">
-          <div>
-            <label class="cura-form-label">Nombre</label>
-            <input type="text" name="nombre" class="cura-form-input" />
-          </div>
-          <div>
-            <label class="cura-form-label">
-  Correo electrónico <span class="cura-form-label-required">*</span>
-</label>
-            <input type="email" required name="email" class="cura-form-input" />
-          </div>
-          <div>
-            <label class="cura-form-label">Mensaje</label>
-            <textarea rows="4" name="mensaje" class="cura-form-input" style="resize:vertical;min-height:90px;"></textarea>
-          </div>
-          <button type="submit" class="cura-form-btn">
-            Enviar
-          </button>
-          <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.</p>
-        </form>
+<form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3" action="/api/contact" method="POST">
+
+  <!-- Script de Cloudflare -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <!-- Honeypot (oculto) -->
+  <input type="text" name="website" style="display:none">
+
+  <div>
+    <label class="cura-form-label">Nombre</label>
+    <input type="text" name="nombre" class="cura-form-input" />
+  </div>
+
+  <div>
+    <label class="cura-form-label">
+      Correo electrónico <span class="cura-form-label-required">*</span>
+    </label>
+    <input type="email" required name="email" class="cura-form-input" />
+  </div>
+
+  <div>
+    <label class="cura-form-label">Mensaje</label>
+    <textarea rows="4" name="mensaje" class="cura-form-input" style="resize:vertical;min-height:90px;"></textarea>
+  </div>
+
+  <!-- Turnstile -->
+  <div class="cf-turnstile" data-sitekey="0x4AAAAAACvEx07r83cJGm2P"></div>
+
+  <button type="submit" class="cura-form-btn">
+    Enviar
+  </button>
+
+  <p class="text-[10px] text-cura-accentLight mt-1">
+    Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.
+  </p>
+
+</form>
 
 <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>

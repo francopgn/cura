@@ -397,35 +397,34 @@ transform:translateY(0);
       }
     }
 
-    /* Mobile sticky — estado flotante inyectado por JS.
-       NO redefinir visuales aquí — los hereda de #beneficios-tabs abajo. */
-    #beneficios-tabs.mob-fixed {
-      position: fixed;
-      left: 0;
-      right: 0;
-      z-index: 31;
-    }
-
     /* Compensar el espacio cuando el sticky se activa */
     #beneficios {
       scroll-margin-top: 80px;
     }
 
-    /* Transición suave solo en propiedades visuales (NO top/position) */
-    #beneficios-tabs {
-      transition: backdrop-filter 0.2s ease, background 0.2s ease, opacity 0.25s ease;
-    }
-
     /* ─── MOBILE VISUAL ─────────────────────────────────────────
-       FUENTE DE VERDAD ÚNICA: todos los estados comparten estos
-       estilos. Ningún estado sobreescribe background/shadow/radius.
-       Así no hay salto visual al pasar de normal → flotante.
+       UN SOLO ELEMENTO, UN SOLO position:sticky.
+       Sin JS de teleportación. El AOS transform en #beneficios
+       no afecta a sticky (solo afecta a fixed).
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Estilos base + visuales — idénticos en TODOS los estados */
+      /* Sticky mobile: mismo mecanismo que desktop, top = altura real del header.
+         El header mobile tiene logo h-[90px] + padding ≈ 115px. */
+      .actor-tabs {
+        position: sticky !important;
+        top: 115px !important;      /* altura real del header en mobile */
+        z-index: 31 !important;     /* encima del header (z-30) */
+      }
+
+      /* Full-bleed: compensar p-6 (1.5rem) del section */
       #beneficios-tabs {
-        /* Layout */
+        margin-left:  -1.5rem !important;
+        margin-right: -1.5rem !important;
+      }
+
+      /* Layout scroll horizontal */
+      #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
         justify-content: flex-start !important;
@@ -435,8 +434,7 @@ transform:translateY(0);
         scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 0 !important;
-
-        /* Visual — UNA sola definición, no se repite en ningún estado */
+        /* Visual glass */
         background: linear-gradient(
           to bottom,
           rgba(13,71,110,0.60),
@@ -447,39 +445,13 @@ transform:translateY(0);
         border: 1px solid rgba(255,255,255,0.04) !important;
         border-radius: 0 0 16px 16px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
-
-        /* Transición solo de opacidad (salida suave) */
-        transition: opacity 0.25s ease;
-        opacity: 1;
+        transition: backdrop-filter 0.2s ease, background 0.2s ease;
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* Full-bleed en estado normal (el JS pone left/width cuando flota) */
-      #beneficios-tabs:not(.is-floating) {
-        margin-left:  -1.5rem !important;
-        margin-right: -1.5rem !important;
-      }
-
-      /* Espaciado de botones extremos */
+      /* Espaciado botones extremos */
       #beneficios-tabs .actor-tab-btn:first-child { margin-left:  14px; }
       #beneficios-tabs .actor-tab-btn:last-child  { margin-right: 14px; }
-
-      /* is-floating: NO redefinir nada visual — hereda todo de arriba.
-         Solo reforzar que background/shadow no sean pisados por .mob-fixed. */
-      #beneficios-tabs.is-floating {
-        background: linear-gradient(
-          to bottom,
-          rgba(13,71,110,0.60),
-          rgba(13,71,110,0.82)
-        ) !important;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
-      }
-
-      /* Salida suave */
-      #beneficios-tabs.is-hidden {
-        opacity: 0 !important;
-        pointer-events: none !important;
-      }
 
       /* Botones */
       #beneficios-tabs .actor-tab-btn {
@@ -3480,241 +3452,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-<!-- =============================================
-     STICKY MOBILE — BENEFICIOS TABS v15
-     left/width cacheados desde la posición real del tabs.
-     Opacity para salida suave al llegar al CTA.
-============================================= -->
-<script>
-(function () {
-  'use strict';
-
-  if (window.innerWidth > 768) return;
-
-  var headerEl  = document.querySelector('header');
-  var container = document.getElementById('beneficios');
-  var tabs      = document.getElementById('beneficios-tabs');
-  if (!headerEl || !container || !tabs) return;
-
-  var originalParent = tabs.parentNode;
-  var explorarBtn    = container.querySelector('.mt-10.flex.justify-center');
-  var benefitsNav    = container.querySelector('.benefits-nav');
-
-  /* Espaciador: mantiene el hueco en el flujo cuando tabs flota */
-  var spacer = document.createElement('div');
-  spacer.setAttribute('aria-hidden', 'true');
-  spacer.style.cssText = 'display:none;flex-shrink:0;width:100%;';
-  originalParent.insertBefore(spacer, tabs.nextSibling);
-
-  /*
-   * Métricas cacheadas del tabs en su posición NATURAL.
-   * cachedTabsLeft y cachedTabsWidth se toman desde el tabs mismo
-   * (no desde el container) para que left/width del estado flotante
-   * coincidan pixel-perfect con el estado estático.
-   */
-  var cachedTabsTop    = 0;
-  var cachedTabsLeft   = 0;
-  var cachedTabsWidth  = 0;
-  var cachedTabsH      = 0;
-  var tabsMeasured     = false;
-
-  function headerBottom() {
-    var b = headerEl.getBoundingClientRect().bottom;
-    return b > 0 ? b : 0;
-  }
-
-  function cacheTabsMetrics() {
-    /* Asegurar posición natural antes de medir */
-    if (tabs.parentNode !== originalParent) {
-      originalParent.insertBefore(tabs, spacer);
-      tabs.classList.remove('is-floating');
-      tabs.style.cssText = '';
-    }
-    var r         = tabs.getBoundingClientRect();
-    var sy        = window.scrollY;
-    cachedTabsTop   = r.top + sy;
-    cachedTabsLeft  = r.left;           /* left real en viewport */
-    cachedTabsWidth = r.width;          /* ancho real del tabs */
-    cachedTabsH     = r.height || tabs.offsetHeight;
-    spacer.style.height = cachedTabsH + 'px';
-    tabsMeasured = true;
-  }
-
-  function toBody() {
-    if (tabs.parentNode !== document.body) {
-      document.body.appendChild(tabs);
-      tabs.classList.add('is-floating');
-    }
-  }
-  function toOrigin() {
-    if (tabs.parentNode !== originalParent) {
-      originalParent.insertBefore(tabs, spacer);
-      tabs.classList.remove('is-floating');
-    }
-  }
-
-  /* Posicionar el tabs flotante usando las métricas cacheadas */
-  function positionTabs(topPx) {
-    tabs.style.position = 'fixed';
-    tabs.style.top      = topPx + 'px';
-    tabs.style.left     = cachedTabsLeft + 'px';   /* siempre el mismo left */
-    tabs.style.right    = 'auto';
-    tabs.style.width    = cachedTabsWidth + 'px';  /* siempre el mismo ancho */
-    tabs.style.margin   = '0';
-    tabs.style.zIndex   = '31';
-  }
-
-  var state   = 'normal';
-  var ticking = false;
-
-  function applyNormal() {
-    toOrigin();
-    tabs.style.cssText   = '';
-    tabs.classList.remove('is-hidden');
-    spacer.style.display = 'none';
-  }
-
-  function applyFixed(hdrBot) {
-    spacer.style.display = 'block';
-    toBody();
-    tabs.classList.remove('is-hidden');
-    positionTabs(hdrBot);
-  }
-
-  function applyStop(hdrBot, contBot) {
-    spacer.style.display = 'block';
-    toBody();
-    tabs.classList.remove('is-hidden');
-    positionTabs(Math.max(hdrBot, contBot - cachedTabsH));
-  }
-
-  function update() {
-    ticking = false;
-
-    var sy       = window.scrollY;
-    var hdrBot   = headerBottom();
-    var contRect = container.getBoundingClientRect();
-    var contTop  = contRect.top + sy;
-    var contH    = container.offsetHeight;
-    var contBot  = contRect.bottom;
-
-    /* Lazy: medir métricas del tabs la 1ª vez que la sección entra al viewport */
-    if (!tabsMeasured && tabs.parentNode === originalParent && contRect.top < window.innerHeight) {
-      cacheTabsMetrics();
-    }
-
-    var outsideViewport = contBot <= 0 || contRect.top >= window.innerHeight;
-    var activateAt      = cachedTabsTop - hdrBot;
-    var stopAt          = contTop + contH - cachedTabsH - hdrBot;
-
-    var next;
-    if (outsideViewport || sy < activateAt) {
-      next = 'normal';
-    } else if (sy < stopAt) {
-      next = 'fixed';
-    } else {
-      /* Parar en el fondo del contenedor */
-      next = contBot > cachedTabsH ? 'stop' : 'normal';
-    }
-
-    /* Opacity: ocultar suavemente cuando el botón Explorar entra al viewport */
-    var exitEl   = explorarBtn || benefitsNav;
-    var exitRect = exitEl ? exitEl.getBoundingClientRect() : null;
-    var shouldHide = exitRect && exitRect.top <= (hdrBot + cachedTabsH + 8);
-    if (next !== 'normal') {
-      if (shouldHide) tabs.classList.add('is-hidden');
-      else            tabs.classList.remove('is-hidden');
-    }
-
-    /* Actualizar posición sin cambio de estado */
-    if (next === 'fixed' && state === 'fixed') { positionTabs(hdrBot); return; }
-    if (next === 'stop'  && state === 'stop')  { positionTabs(Math.max(hdrBot, contBot - cachedTabsH)); return; }
-
-    if (next === state) return;
-    state = next;
-
-    if      (next === 'normal') applyNormal();
-    else if (next === 'fixed')  applyFixed(hdrBot);
-    else                        applyStop(hdrBot, contBot);
-  }
-
-  function onScroll() {
-    if (!ticking) { requestAnimationFrame(update); ticking = true; }
-  }
-
-  /* Solo Lenis + fallback nativo */
-  var hooked = false;
-  function hookLenis() {
-    if (hooked) return;
-    if (window.lenis) { window.lenis.on('scroll', onScroll); hooked = true; }
-    else setTimeout(hookLenis, 80);
-  }
-  setTimeout(function () {
-    if (!hooked) { window.addEventListener('scroll', onScroll, { passive: true }); hooked = true; }
-  }, 1500);
-  hookLenis();
-
-  window.addEventListener('resize', function () {
-    if (window.innerWidth > 768) { applyNormal(); state = 'normal'; }
-    else { state = ''; tabsMeasured = false; requestAnimationFrame(update); }
-  }, { passive: true });
-
-  function init() {
-    cachedTabsH = tabs.offsetHeight;
-    spacer.style.height = cachedTabsH + 'px';
-    tabsMeasured = false;
-    requestAnimationFrame(update);
-  }
-  if (document.readyState === 'complete') setTimeout(init, 100);
-  else window.addEventListener('load', function () { setTimeout(init, 100); });
-
-})();
-</script>
-
 <!-- Auto-center botón activo en #beneficios-tabs
-     Solo en click del usuario — el ResizeObserver ajusta sin animación
-     para no duplicar la animación cuando el sticky mueve el nodo. -->
+     El elemento NUNCA se mueve del DOM → offsetLeft siempre es correcto. -->
 <script>
 (function () {
-  if (!document.getElementById('beneficios-tabs')) return;
+  var c = document.getElementById('beneficios-tabs');
+  if (!c) return;
 
-  var activeTab   = null;
-  var isCentering = false;
-
-  function getPos(btn) {
-    var c     = document.getElementById('beneficios-tabs');
-    if (!c || !btn) return null;
-    var cRect = c.getBoundingClientRect();
-    var bRect = btn.getBoundingClientRect();
-    return {
-      c: c,
-      target: (bRect.left - cRect.left) + c.scrollLeft + (bRect.width / 2) - (cRect.width / 2)
-    };
+  function centerTab(btn) {
+    var target = btn.offsetLeft + (btn.offsetWidth / 2) - (c.clientWidth / 2);
+    c.scrollTo({ left: target, behavior: 'smooth' });
   }
 
-  /* Click: animación suave + lock para que el ResizeObserver no interfiera */
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('#beneficios-tabs button');
+  c.addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
     if (!btn) return;
-    activeTab   = btn;
-    isCentering = true;
-    requestAnimationFrame(function () {
-      var p = getPos(activeTab);
-      if (p) p.c.scrollTo({ left: p.target, behavior: 'smooth' });
-      /* liberar lock al terminar la animación (~300ms) */
-      setTimeout(function () { isCentering = false; }, 400);
-    });
+    requestAnimationFrame(function () { centerTab(btn); });
   });
-
-  /* ResizeObserver: reposición SIN animación cuando el sticky mueve el nodo.
-     No ejecuta si hay animación activa (isCentering). */
-  if (typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(function () {
-      if (!activeTab || isCentering) return;
-      var p = getPos(activeTab);
-      if (p) p.c.scrollLeft = p.target; /* sin animación */
-    }).observe(document.body);
-  }
 })();
 </script>
 

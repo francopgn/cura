@@ -1,36 +1,82 @@
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Método no permitido' });
-    return;
+    return res.status(405).json({ error: 'Método no permitido' });
   }
 
   const apiKey = process.env.BREVO_API_KEY;
+  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+
   if (!apiKey) {
-    res.status(500).json({ error: 'Falta configurar BREVO_API_KEY' });
-    return;
+    return res.status(500).json({ error: 'Falta BREVO_API_KEY' });
+  }
+
+  if (!turnstileSecret) {
+    return res.status(500).json({ error: 'Falta TURNSTILE_SECRET_KEY' });
   }
 
   try {
     let body = req.body;
 
-    // A veces llega como string
     if (!body || typeof body === 'string') {
       try {
         body = JSON.parse(body || '{}');
-      } catch (e) {
+      } catch {
         body = {};
       }
     }
 
-    const nombre  = (body.nombre  || '').trim();
-    const email   = (body.email   || '').trim();
+    const nombre  = (body.nombre || '').trim();
+    const email   = (body.email || '').trim();
     const mensaje = (body.mensaje || '').trim();
+    const token   = body["cf-turnstile-response"];
+    const honeypot = body.website;
 
-    if (!email) {
-      res.status(400).json({ error: 'Email inválido' });
-      return;
+    // 🛑 Honeypot
+    if (honeypot) {
+      return res.status(400).end();
     }
 
+    // 🛑 Validar captcha
+    if (!token) {
+      return res.status(400).json({ error: 'Falta verificación' });
+    }
+
+    const verify = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `secret=${turnstileSecret}&response=${token}`
+      }
+    );
+
+    const data = await verify.json();
+
+    if (!data.success) {
+      return res.status(403).json({ error: 'Captcha inválido' });
+    }
+
+    // 🛑 Filtro anti spam básico
+    const texto = (mensaje + email).toLowerCase();
+
+    if (
+      texto.includes("http") ||
+      texto.includes("www") ||
+      texto.includes(".com") ||
+      texto.includes("buy") ||
+      texto.includes("free") ||
+      texto.length < 10
+    ) {
+      return res.status(400).json({ error: 'Spam detectado' });
+    }
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email inválido' });
+    }
+
+    // 📧 EMAIL (igual que el tuyo)
     const htmlContent = `
       <h2>Nuevo mensaje desde el formulario de contacto - Ley C.U.R.A.</h2>
       <p><strong>Nombre:</strong> ${nombre || '(no informado)'}</p>
@@ -42,14 +88,9 @@ export default async function handler(req, res) {
     const payload = {
       sender: {
         email: 'contacto@leycura.org',
-        name:  'Ley C.U.R.A.'
+        name: 'Ley C.U.R.A.'
       },
-      to: [
-        {
-          email: 'contacto@leycura.org',
-          name:  'Ley C.U.R.A.'
-        }
-      ],
+      to: [{ email: 'contacto@leycura.org', name: 'Ley C.U.R.A.' }],
       replyTo: {
         email,
         name: nombre || email
@@ -70,14 +111,14 @@ export default async function handler(req, res) {
 
     if (!brevoRes.ok) {
       const text = await brevoRes.text();
-      console.error('Error al enviar email Brevo /contact:', text);
-      res.status(502).json({ error: 'Error al enviar el correo' });
-      return;
+      console.error('Brevo error:', text);
+      return res.status(502).json({ error: 'Error al enviar el correo' });
     }
 
-    res.status(200).json({ success: true });
+    return res.status(200).json({ success: true });
+
   } catch (err) {
-    console.error('Error en API contacto:', err);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error('Error:', err);
+    return res.status(500).json({ error: 'Error interno' });
   }
 }

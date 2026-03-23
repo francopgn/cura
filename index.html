@@ -426,8 +426,11 @@ transform:translateY(0);
         scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 0 !important;        /* sin padding lateral */
-        background: #065D9B !important;
-        border-bottom: 1px solid rgba(0,194,255,0.18) !important;
+        background: rgba(10, 40, 70, 0.55) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.08) !important;
+        border-radius: 0 0 20px 20px;
         box-shadow: none !important;
         transition: opacity 0.25s ease;
         opacity: 1;
@@ -447,7 +450,14 @@ transform:translateY(0);
       #beneficios-tabs .actor-tab-btn:last-child  { margin-right: 14px; }
 
       /* is-floating / is-hidden */
-      #beneficios-tabs.is-floating { background: #065D9B !important; box-shadow: none !important; }
+      #beneficios-tabs.is-floating {
+        background: rgba(10, 40, 70, 0.55) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255,255,255,0.08) !important;
+        border-radius: 0 0 20px 20px !important;
+        box-shadow: none !important;
+      }
       #beneficios-tabs.is-hidden   { opacity: 0 !important; pointer-events: none !important; }
 
       /* Botones */

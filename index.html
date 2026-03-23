@@ -429,7 +429,8 @@ transform:translateY(0);
        */
       #beneficios-tabs.is-floating {
         background: #065D9B !important;
-        box-shadow: 0 3px 12px rgba(0,0,0,0.35), inset -36px 0 18px -8px rgba(4,40,75,0.85) !important;
+        /* sin sombra — visual idéntico al estado estático */
+        box-shadow: inset -36px 0 18px -8px rgba(4,40,75,0.85) !important;
       }
 
       /* Botones: chicos, no crecen */
@@ -3448,6 +3449,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var originalParent = tabs.parentNode;
   var benefitsNav    = container.querySelector('.benefits-nav');
+  var explorarBtn    = container.querySelector('.mt-10.flex.justify-center');
 
   var spacer = document.createElement('div');
   spacer.setAttribute('aria-hidden', 'true');
@@ -3463,9 +3465,9 @@ document.addEventListener('DOMContentLoaded', function () {
     return b > 0 ? b : 0;
   }
 
-  /* left/width exactos: usar originalParent (ya está dentro del p-6 del section) */
+  /* left/width: usar el section #beneficios completo para coincidir con su borde visual */
   function containerGeometry() {
-    var r = originalParent.getBoundingClientRect();
+    var r = container.getBoundingClientRect();
     return { left: r.left, width: r.width };
   }
 
@@ -3550,9 +3552,10 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      /* Salir cuando el benefits-nav (o fallback 300px antes del fondo) entra en viewport */
-      var navRect   = benefitsNav ? benefitsNav.getBoundingClientRect() : null;
-      var exitPoint = navRect ? navRect.top : (contBot - 300);
+      /* Salir cuando el botón "Explorar" llega al viewport */
+      var exitEl    = explorarBtn || benefitsNav;
+      var exitRect  = exitEl ? exitEl.getBoundingClientRect() : null;
+      var exitPoint = exitRect ? exitRect.top : (contBot - 200);
       next = exitPoint > cachedTabsH ? 'stop' : 'normal';
     }
 

@@ -4,8 +4,7 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.BREVO_API_KEY;
-  const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-
+  const turnstileSecret = 0x4AAAAAACvExxpWxdmURKEWduC6Ht2H_as
   if (!apiKey) {
     return res.status(500).json({ error: 'Falta BREVO_API_KEY' });
   }

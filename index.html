@@ -3458,8 +3458,9 @@ document.addEventListener('DOMContentLoaded', function () {
   spacer.style.cssText = 'display:none;flex-shrink:0;width:100%;';
   originalParent.insertBefore(spacer, tabs.nextSibling);
 
-  var cachedTabsTop = 0;
-  var cachedTabsH   = 0;
+  var cachedTabsTop    = 0;
+  var cachedTabsH      = 0;
+  var tabsTopMeasured  = false; /* lazy: se mide la 1ª vez que update corre en normal */
 
   function headerBottom() {
     var b = headerEl.getBoundingClientRect().bottom;
@@ -3482,6 +3483,7 @@ document.addEventListener('DOMContentLoaded', function () {
     cachedTabsTop = tabs.getBoundingClientRect().top + sy;
     cachedTabsH   = tabs.offsetHeight;
     spacer.style.height = cachedTabsH + 'px';
+    tabsTopMeasured = true;
   }
 
   function toBody()   { if (tabs.parentNode !== document.body) { document.body.appendChild(tabs); tabs.classList.add('is-floating'); } }
@@ -3533,6 +3535,15 @@ document.addEventListener('DOMContentLoaded', function () {
     var contH    = container.offsetHeight;
     var contBot  = contRect.bottom;
 
+    /*
+     * Lazy: medir la posición real del tabs la primera vez que update()
+     * corre mientras el tabs está en su lugar normal Y la sección ya es
+     * visible (AOS completó la animación). Así evitamos el desfase por AOS.
+     */
+    if (!tabsTopMeasured && tabs.parentNode === originalParent && contRect.top < window.innerHeight) {
+      cacheTabsMetrics();
+    }
+
     var outsideViewport = contBot <= 0 || contRect.top >= window.innerHeight;
     var activateAt      = cachedTabsTop - hdrBot;
     var stopAt          = contTop + contH - cachedTabsH - hdrBot;
@@ -3543,7 +3554,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (sy < stopAt) {
       next = 'fixed';
     } else {
-      next = contBot > (cachedTabsH + 80) ? 'stop' : 'normal';
+      next = contBot > (cachedTabsH + 220) ? 'stop' : 'normal';
     }
 
     /* En fixed/stop: actualizar posición cada tick (el contenedor puede moverse) */
@@ -3591,11 +3602,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }, { passive: true });
 
   function init() {
-    cacheTabsMetrics();
+    /* Solo medir tabsH para el spacer — tabsTop se mide lazy en update() */
+    cachedTabsH = tabs.offsetHeight;
+    spacer.style.height = cachedTabsH + 'px';
+    tabsTopMeasured = false; /* forzar nueva medición */
     requestAnimationFrame(update);
   }
-  if (document.readyState === 'complete') setTimeout(init, 300);
-  else window.addEventListener('load', function () { setTimeout(init, 300); });
+  if (document.readyState === 'complete') setTimeout(init, 100);
+  else window.addEventListener('load', function () { setTimeout(init, 100); });
 
 })();
 </script>

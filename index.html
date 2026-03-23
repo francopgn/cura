@@ -3672,47 +3672,48 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- Auto-center botón activo en #beneficios-tabs
-     Lee el contenedor SIEMPRE en el momento de centrar (no referencia vieja).
-     El sticky JS mueve el nodo — al releer con getElementById siempre
-     obtenemos el nodo actual en el DOM, sea donde sea que esté. -->
+     Solo en click del usuario — el ResizeObserver ajusta sin animación
+     para no duplicar la animación cuando el sticky mueve el nodo. -->
 <script>
 (function () {
-  /* Verificar que el elemento existe al cargar */
   if (!document.getElementById('beneficios-tabs')) return;
 
-  var activeTab = null;
+  var activeTab   = null;
+  var isCentering = false;
 
-  function centerTab(btn) {
-    if (!btn) return;
-    /* Releer siempre — el nodo puede haber sido movido por el sticky JS */
-    var c = document.getElementById('beneficios-tabs');
-    if (!c) return;
-    var cRect  = c.getBoundingClientRect();
-    var bRect  = btn.getBoundingClientRect();
-    var target = (bRect.left - cRect.left) + c.scrollLeft
-                 + (bRect.width / 2) - (cRect.width / 2);
-    c.scrollTo({ left: target, behavior: 'smooth' });
+  function getPos(btn) {
+    var c     = document.getElementById('beneficios-tabs');
+    if (!c || !btn) return null;
+    var cRect = c.getBoundingClientRect();
+    var bRect = btn.getBoundingClientRect();
+    return {
+      c: c,
+      target: (bRect.left - cRect.left) + c.scrollLeft + (bRect.width / 2) - (cRect.width / 2)
+    };
   }
 
-  /* Delegación desde document — funciona aunque el nodo cambie de padre */
+  /* Click: animación suave + lock para que el ResizeObserver no interfiera */
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('#beneficios-tabs button');
     if (!btn) return;
-    activeTab = btn;
-    requestAnimationFrame(function () { centerTab(activeTab); });
+    activeTab   = btn;
+    isCentering = true;
+    requestAnimationFrame(function () {
+      var p = getPos(activeTab);
+      if (p) p.c.scrollTo({ left: p.target, behavior: 'smooth' });
+      /* liberar lock al terminar la animación (~300ms) */
+      setTimeout(function () { isCentering = false; }, 400);
+    });
   });
 
-  /* ResizeObserver: recentrar cuando el layout cambia tras el teleport */
+  /* ResizeObserver: reposición SIN animación cuando el sticky mueve el nodo.
+     No ejecuta si hay animación activa (isCentering). */
   if (typeof ResizeObserver !== 'undefined') {
-    var ro = new ResizeObserver(function () {
-      if (activeTab) {
-        var c = document.getElementById('beneficios-tabs');
-        if (c) { var ro2 = c; } /* forzar relecture */ 
-        centerTab(activeTab);
-      }
-    });
-    /* Observar el document.body para capturar el nodo cuando está en body */
-    ro.observe(document.body);
+    new ResizeObserver(function () {
+      if (!activeTab || isCentering) return;
+      var p = getPos(activeTab);
+      if (p) p.c.scrollLeft = p.target; /* sin animación */
+    }).observe(document.body);
   }
 })();
 </script>

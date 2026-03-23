@@ -3671,23 +3671,16 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
-<!-- Auto-center botón activo en #beneficios-tabs
-     offsetLeft → relativo al contenedor, funciona en normal y sticky.
-     Doble scroll: animado + refuerzo a 100ms para que no lo pise otro script. -->
+<!-- Auto-center botón activo en #beneficios-tabs -->
 <script>
 (function () {
   var tabsContainer = document.getElementById('beneficios-tabs');
   if (!tabsContainer) return;
 
   function centerTab(btn) {
-    var containerWidth = tabsContainer.offsetWidth;
-    var targetScroll   = btn.offsetLeft - (containerWidth / 2) + (btn.offsetWidth / 2);
-    /* Primer scroll: animado */
+    var containerWidth = tabsContainer.clientWidth;
+    var targetScroll   = btn.offsetLeft + (btn.offsetWidth / 2) - (containerWidth / 2);
     tabsContainer.scrollTo({ left: targetScroll, behavior: 'smooth' });
-    /* Segundo scroll: fija posición final, evita que otros scripts lo pisen */
-    setTimeout(function () {
-      tabsContainer.scrollTo({ left: targetScroll, behavior: 'auto' });
-    }, 100);
   }
 
   tabsContainer.addEventListener('click', function (e) {

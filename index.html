@@ -403,33 +403,56 @@ transform:translateY(0);
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Scroll horizontal, sin wrap, fondo idéntico en todos los estados */
+      /* Scroll horizontal, ancho completo, fondo idéntico en todos los estados */
       #beneficios-tabs {
         display: flex !important;
         flex-wrap: nowrap !important;
         justify-content: flex-start !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
         overflow-x: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 8px !important;
-        padding: 8px 10px !important;
+        /* padding lateral genera espacio visible antes del 1er botón y después del último */
+        padding: 8px 12px !important;
         background: #065D9B !important;
         border-bottom: 1px solid rgba(0,194,255,0.18) !important;
-        box-shadow: none !important;           /* sin sombra en ningún estado */
-        /* transición de opacidad para la salida suave */
+        box-shadow: none !important;
         transition: opacity 0.25s ease;
         opacity: 1;
+        /*
+         * Fade lateral con mask-image.
+         * Usar mask en vez de ::before/::after porque el overflow:auto
+         * clipea los pseudoelementos absolutamente posicionados.
+         * Resultado: botones del borde se desvanecen — efecto app premium.
+         */
+        -webkit-mask-image: linear-gradient(
+          to right,
+          transparent 0px,
+          #065D9B 14px,
+          #065D9B calc(100% - 14px),
+          transparent 100%
+        );
+        mask-image: linear-gradient(
+          to right,
+          transparent 0px,
+          #065D9B 14px,
+          #065D9B calc(100% - 14px),
+          transparent 100%
+        );
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
 
-      /* is-floating: visual 100% idéntico al estado normal */
+      /* is-floating: 100% idéntico al estado normal */
       #beneficios-tabs.is-floating {
         background: #065D9B !important;
         box-shadow: none !important;
       }
 
-      /* Clase para salida suave */
+      /* Salida suave al llegar al CTA */
       #beneficios-tabs.is-hidden {
         opacity: 0 !important;
         pointer-events: none !important;

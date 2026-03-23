@@ -402,6 +402,16 @@ transform:translateY(0);
       scroll-margin-top: 80px;
     }
 
+    /*
+     * AOS aplica transform:translateY() en #beneficios (data-aos="fade-up").
+     * position:sticky dentro de un ancestro con transform no funciona.
+     * Solución: forzar transform:none — la animación de opacity sigue,
+     * solo se quita el translateY que rompe el sticky en mobile.
+     */
+    #beneficios {
+      transform: none !important;
+    }
+
     /* ─── MOBILE VISUAL ─────────────────────────────────────────
        UN SOLO ELEMENTO, UN SOLO position:sticky.
        Sin JS de teleportación. El AOS transform en #beneficios

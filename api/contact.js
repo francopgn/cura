@@ -62,12 +62,8 @@ export default async function handler(req, res) {
     const texto = (mensaje + email).toLowerCase();
 
     if (
-      texto.includes("http") ||
-      texto.includes("www") ||
-      texto.includes(".com") ||
       texto.includes("buy") ||
       texto.includes("free") ||
-      texto.length < 10
     ) {
       return res.status(400).json({ error: 'Spam detectado' });
     }

@@ -426,12 +426,12 @@ transform:translateY(0);
         scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 0 !important;        /* sin padding lateral */
-        background: rgba(13, 71, 110, 0.75) !important;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.05) !important;
+        background: linear-gradient(to bottom, rgba(13,71,110,0.65), rgba(13,71,110,0.85)) !important;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.04) !important;
         border-radius: 0 0 20px 20px;
-        box-shadow: none !important;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
         box-shadow: none !important;
         transition: opacity 0.25s ease;
         opacity: 1;
@@ -452,12 +452,12 @@ transform:translateY(0);
 
       /* is-floating / is-hidden */
       #beneficios-tabs.is-floating {
-        background: rgba(13, 71, 110, 0.75) !important;
-        backdrop-filter: blur(10px) !important;
-        -webkit-backdrop-filter: blur(10px) !important;
-        border: 1px solid rgba(255,255,255,0.05) !important;
+        background: linear-gradient(to bottom, rgba(13,71,110,0.65), rgba(13,71,110,0.85)) !important;
+        backdrop-filter: blur(14px) !important;
+        -webkit-backdrop-filter: blur(14px) !important;
+        border: 1px solid rgba(255,255,255,0.04) !important;
         border-radius: 0 0 20px 20px !important;
-        box-shadow: none !important;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
       }
       #beneficios-tabs.is-hidden   { opacity: 0 !important; pointer-events: none !important; }
 
@@ -3648,6 +3648,28 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.readyState === 'complete') setTimeout(init, 100);
   else window.addEventListener('load', function () { setTimeout(init, 100); });
 
+})();
+</script>
+
+<!-- Auto-center botón activo en #beneficios-tabs -->
+<script>
+(function () {
+  var tabsContainer = document.getElementById('beneficios-tabs');
+  if (!tabsContainer) return;
+
+  tabsContainer.addEventListener('click', function (e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+
+    /* Esperar un frame para que la clase .active ya esté aplicada */
+    requestAnimationFrame(function () {
+      var cRect = tabsContainer.getBoundingClientRect();
+      var bRect = btn.getBoundingClientRect();
+      var offset = bRect.left - cRect.left;
+      var scrollTo = tabsContainer.scrollLeft + offset - (cRect.width / 2) + (bRect.width / 2);
+      tabsContainer.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    });
+  });
 })();
 </script>
 

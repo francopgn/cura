@@ -3526,9 +3526,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function toOrigin() {
     if (tabs.parentNode !== originalParent) {
+      var savedScroll = tabs.scrollLeft; /* preservar scroll horizontal */
       originalParent.insertBefore(tabs, spacer);
       tabs.classList.remove('is-floating');
       tabs.style.cssText = '';
+      tabs.scrollLeft = savedScroll;     /* restaurar después del reset */
     }
   }
 
@@ -3593,9 +3595,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!ticking) { requestAnimationFrame(update); ticking = true; }
   }
 
-  /* Escuchar SIEMPRE scroll nativo — Lenis lo emite en window también.
-     Sin flag hooked: garantiza que funciona con y sin Lenis. */
+  /* Lenis emite scroll en window Y en el objeto lenis.
+     Escuchar ambos con deduplicación via ticking. */
   window.addEventListener('scroll', onScroll, { passive: true });
+  function tryLenis() {
+    if (window.lenis) window.lenis.on('scroll', onScroll);
+    else setTimeout(tryLenis, 100);
+  }
+  tryLenis();
 
   window.addEventListener('resize', function() {
     if (window.innerWidth > 768) { toOrigin(); state = 'normal'; }
@@ -3616,18 +3623,40 @@ document.addEventListener('DOMContentLoaded', function () {
 <!-- Auto-center botón activo en #beneficios-tabs -->
 <script>
 (function () {
+  /* scrollLeft deseado — se preserva aunque el sticky JS mueva el nodo */
+  var desiredScroll = 0;
+  var hasDesired    = false;
+
+  function calcTarget(btn) {
+    var c = document.getElementById('beneficios-tabs');
+    if (!c) return 0;
+    var cRect = c.getBoundingClientRect();
+    var bRect = btn.getBoundingClientRect();
+    return (bRect.left - cRect.left) + c.scrollLeft + (bRect.width / 2) - (c.clientWidth / 2);
+  }
+
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('#beneficios-tabs button');
     if (!btn) return;
     requestAnimationFrame(function() {
       var c = document.getElementById('beneficios-tabs');
       if (!c) return;
-      var cRect = c.getBoundingClientRect();
-      var bRect = btn.getBoundingClientRect();
-      var target = (bRect.left - cRect.left) + c.scrollLeft + (bRect.width / 2) - (c.clientWidth / 2);
-      c.scrollTo({ left: target, behavior: 'smooth' });
+      desiredScroll = calcTarget(btn);
+      hasDesired    = true;
+      c.scrollTo({ left: desiredScroll, behavior: 'smooth' });
     });
   });
+
+  /* Cuando el sticky JS mueve el nodo (toOrigin/toBody),
+     el scrollLeft puede resetearse. Restaurarlo via MutationObserver. */
+  var mo = new MutationObserver(function() {
+    if (!hasDesired) return;
+    var c = document.getElementById('beneficios-tabs');
+    if (c && Math.abs(c.scrollLeft - desiredScroll) > 2) {
+      c.scrollLeft = desiredScroll;
+    }
+  });
+  mo.observe(document.body, { childList: true, subtree: false });
 })();
 </script>
 

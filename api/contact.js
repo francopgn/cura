@@ -37,7 +37,37 @@ export default async function handler(req, res) {
       return res.status(400).end();
     }
 
+    // 🛑 Token captcha
+    if (!token) {
+      return res.status(400).json({ error: "Falta verificación" });
+    }
 
+    // ✅ TURNSTILE (blindado)
+    let captchaData = { success: false };
+
+    try {
+      const params = new URLSearchParams();
+      params.append("secret", turnstileSecret);
+      params.append("response", token);
+
+      const verifyRes = await fetch(
+        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+        {
+          method: "POST",
+          body: params,
+        }
+      );
+
+      captchaData = await verifyRes.json();
+    } catch (err) {
+      console.error("ERROR TURNSTILE:", err);
+      return res.status(500).json({ error: "Error verificando captcha" });
+    }
+
+    if (!captchaData.success) {
+      console.error("Turnstile fail:", captchaData);
+      return res.status(403).json({ error: "Captcha inválido" });
+    }
 
     // 🛑 Filtro anti spam simple
     const texto = (mensaje + email).toLowerCase();

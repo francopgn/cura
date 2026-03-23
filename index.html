@@ -402,33 +402,15 @@ transform:translateY(0);
       scroll-margin-top: 80px;
     }
 
-    /*
-     * AOS aplica transform:translateY() en #beneficios (data-aos="fade-up").
-     * position:sticky dentro de un ancestro con transform no funciona.
-     * Solución: forzar transform:none — la animación de opacity sigue,
-     * solo se quita el translateY que rompe el sticky en mobile.
-     */
-    #beneficios {
-      transform: none !important;
-    }
-
     /* ─── MOBILE VISUAL ─────────────────────────────────────────
-       UN SOLO ELEMENTO, UN SOLO position:sticky.
-       Sin JS de teleportación. El AOS transform en #beneficios
-       no afecta a sticky (solo afecta a fixed).
+       position:sticky no funciona en mobile porque <body> tiene
+       overflow-x:hidden (Tailwind), lo que crea un scroll container
+       y confina el sticky. Se usa JS (script abajo) para el sticky.
     ──────────────────────────────────────────────────────────── */
     @media (max-width: 768px) {
 
-      /* Sticky mobile: mismo mecanismo que desktop, top = altura real del header.
-         El header mobile tiene logo h-[90px] + padding ≈ 115px. */
-      .actor-tabs {
-        position: sticky !important;
-        top: 115px !important;      /* altura real del header en mobile */
-        z-index: 31 !important;     /* encima del header (z-30) */
-      }
-
       /* Full-bleed: compensar p-6 (1.5rem) del section */
-      #beneficios-tabs {
+      #beneficios-tabs:not(.is-floating) {
         margin-left:  -1.5rem !important;
         margin-right: -1.5rem !important;
       }
@@ -444,7 +426,6 @@ transform:translateY(0);
         scrollbar-width: none;
         gap: 8px !important;
         padding: 8px 0 !important;
-        /* Visual glass */
         background: linear-gradient(
           to bottom,
           rgba(13,71,110,0.60),
@@ -455,9 +436,26 @@ transform:translateY(0);
         border: 1px solid rgba(255,255,255,0.04) !important;
         border-radius: 0 0 16px 16px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
-        transition: backdrop-filter 0.2s ease, background 0.2s ease;
+        transition: backdrop-filter 0.2s ease, background 0.2s ease, opacity 0.25s ease;
+        opacity: 1;
       }
       #beneficios-tabs::-webkit-scrollbar { display: none; }
+
+      /* is-floating: hereda todo el visual de arriba */
+      #beneficios-tabs.is-floating {
+        background: linear-gradient(
+          to bottom,
+          rgba(13,71,110,0.60),
+          rgba(13,71,110,0.82)
+        ) !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12) !important;
+      }
+
+      /* Salida suave al llegar al CTA */
+      #beneficios-tabs.is-hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
 
       /* Espaciado botones extremos */
       #beneficios-tabs .actor-tab-btn:first-child { margin-left:  14px; }
@@ -3462,22 +3460,180 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 
-<!-- Auto-center botón activo en #beneficios-tabs
-     El elemento NUNCA se mueve del DOM → offsetLeft siempre es correcto. -->
+<!-- =============================================
+     STICKY MOBILE — JS puro (overflow-x:hidden en body
+     impide position:sticky nativo en mobile).
+     Teleporta a <body> para evitar esa limitación.
+     Visual idéntico en todos los estados (is-floating).
+============================================= -->
 <script>
 (function () {
-  var c = document.getElementById('beneficios-tabs');
-  if (!c) return;
+  'use strict';
+  if (window.innerWidth > 768) return;
 
-  function centerTab(btn) {
-    var target = btn.offsetLeft + (btn.offsetWidth / 2) - (c.clientWidth / 2);
-    c.scrollTo({ left: target, behavior: 'smooth' });
+  var headerEl    = document.querySelector('header');
+  var container   = document.getElementById('beneficios');
+  var tabs        = document.getElementById('beneficios-tabs');
+  var explorarBtn = container && container.querySelector('.mt-10.flex.justify-center');
+  if (!headerEl || !container || !tabs) return;
+
+  var originalParent = tabs.parentNode;
+
+  /* Espaciador: mantiene el hueco cuando tabs flota */
+  var spacer = document.createElement('div');
+  spacer.setAttribute('aria-hidden', 'true');
+  spacer.style.cssText = 'display:none;flex-shrink:0;width:100%;';
+  originalParent.insertBefore(spacer, tabs.nextSibling);
+
+  /* Métricas — se miden una vez que la sección entra al viewport (post-AOS) */
+  var cachedTabsTop  = 0;
+  var cachedTabsH    = 0;
+  var tabsMeasured   = false;
+
+  function hdrBot() {
+    var b = headerEl.getBoundingClientRect().bottom;
+    return b > 0 ? b : 0;
   }
 
-  c.addEventListener('click', function (e) {
-    var btn = e.target.closest('button');
+  function measureTabs() {
+    if (tabs.parentNode !== originalParent) {
+      originalParent.insertBefore(tabs, spacer);
+      tabs.classList.remove('is-floating');
+      tabs.style.cssText = '';
+    }
+    cachedTabsTop = tabs.getBoundingClientRect().top + window.scrollY;
+    cachedTabsH   = tabs.offsetHeight;
+    spacer.style.height = cachedTabsH + 'px';
+    tabsMeasured = true;
+  }
+
+  function positionTabs(topPx) {
+    var r = container.getBoundingClientRect();
+    tabs.style.position = 'fixed';
+    tabs.style.top      = topPx + 'px';
+    tabs.style.left     = r.left + 'px';
+    tabs.style.width    = r.width + 'px';
+    tabs.style.right    = 'auto';
+    tabs.style.margin   = '0';
+    tabs.style.zIndex   = '31';
+  }
+
+  function toBody() {
+    if (tabs.parentNode !== document.body) {
+      document.body.appendChild(tabs);
+      tabs.classList.add('is-floating');
+    }
+  }
+  function toOrigin() {
+    if (tabs.parentNode !== originalParent) {
+      originalParent.insertBefore(tabs, spacer);
+      tabs.classList.remove('is-floating');
+      tabs.style.cssText = '';
+    }
+  }
+
+  var state = 'normal', ticking = false;
+
+  function update() {
+    ticking = false;
+    var sy      = window.scrollY;
+    var hb      = hdrBot();
+    var cr      = container.getBoundingClientRect();
+    var contTop = cr.top + sy;
+    var contBot = cr.bottom;
+
+    /* Medir lazy — cuando la sección entra al viewport */
+    if (!tabsMeasured && tabs.parentNode === originalParent && cr.top < window.innerHeight) {
+      measureTabs();
+    }
+
+    var outsideVP  = contBot <= 0 || cr.top >= window.innerHeight;
+    var activateAt = cachedTabsTop - hb;
+    var stopAt     = contTop + container.offsetHeight - cachedTabsH - hb;
+
+    /* Salir cuando llega al botón Explorar */
+    var exitEl   = explorarBtn;
+    var exitRect = exitEl ? exitEl.getBoundingClientRect() : null;
+    var shouldHide = exitRect && exitRect.top <= (hb + cachedTabsH + 8);
+
+    var next;
+    if (outsideVP || sy < activateAt) {
+      next = 'normal';
+    } else if (sy < stopAt) {
+      next = 'fixed';
+    } else {
+      next = contBot > (cachedTabsH + 8) ? 'stop' : 'normal';
+    }
+
+    /* Opacity suave al llegar al CTA */
+    if (next !== 'normal') {
+      tabs.classList.toggle('is-hidden', !!shouldHide);
+    }
+
+    if (next === 'fixed' && state === 'fixed') { positionTabs(hb); return; }
+    if (next === 'stop'  && state === 'stop')  { positionTabs(Math.max(hb, contBot - cachedTabsH)); return; }
+    if (next === state) return;
+    state = next;
+
+    if (next === 'normal') {
+      toOrigin();
+      spacer.style.display = 'none';
+    } else if (next === 'fixed') {
+      spacer.style.display = 'block';
+      toBody();
+      positionTabs(hb);
+    } else {
+      spacer.style.display = 'block';
+      toBody();
+      positionTabs(Math.max(hb, contBot - cachedTabsH));
+    }
+  }
+
+  function onScroll() {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }
+
+  var hooked = false;
+  function hookLenis() {
+    if (hooked) return;
+    if (window.lenis) { window.lenis.on('scroll', onScroll); hooked = true; }
+    else setTimeout(hookLenis, 80);
+  }
+  setTimeout(function() {
+    if (!hooked) { window.addEventListener('scroll', onScroll, { passive: true }); hooked = true; }
+  }, 1500);
+  hookLenis();
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) { toOrigin(); state = 'normal'; }
+    else { state = ''; tabsMeasured = false; requestAnimationFrame(update); }
+  }, { passive: true });
+
+  function init() {
+    cachedTabsH = tabs.offsetHeight;
+    spacer.style.height = cachedTabsH + 'px';
+    tabsMeasured = false;
+    requestAnimationFrame(update);
+  }
+  if (document.readyState === 'complete') setTimeout(init, 100);
+  else window.addEventListener('load', function() { setTimeout(init, 100); });
+})();
+</script>
+
+<!-- Auto-center botón activo en #beneficios-tabs -->
+<script>
+(function () {
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('#beneficios-tabs button');
     if (!btn) return;
-    requestAnimationFrame(function () { centerTab(btn); });
+    requestAnimationFrame(function() {
+      var c = document.getElementById('beneficios-tabs');
+      if (!c) return;
+      var cRect = c.getBoundingClientRect();
+      var bRect = btn.getBoundingClientRect();
+      var target = (bRect.left - cRect.left) + c.scrollLeft + (bRect.width / 2) - (c.clientWidth / 2);
+      c.scrollTo({ left: target, behavior: 'smooth' });
+    });
   });
 })();
 </script>

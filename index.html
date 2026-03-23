@@ -3671,15 +3671,22 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
-<!-- Auto-center botón activo en #beneficios-tabs -->
+<!-- Auto-center botón activo en #beneficios-tabs
+     #beneficios-tabs ES el scroll container (overflow-x:auto).
+     No hay .tabs-container interno.
+     Usamos getBoundingClientRect para calcular el offset del botón
+     RELATIVO AL TABS en cualquier estado (normal, sticky, teleportado). -->
 <script>
 (function () {
   var tabsContainer = document.getElementById('beneficios-tabs');
   if (!tabsContainer) return;
 
   function centerTab(btn) {
-    var containerWidth = tabsContainer.clientWidth;
-    var targetScroll   = btn.offsetLeft + (btn.offsetWidth / 2) - (containerWidth / 2);
+    var cRect  = tabsContainer.getBoundingClientRect();
+    var bRect  = btn.getBoundingClientRect();
+    /* offset del botón dentro del viewport del scroller */
+    var btnCenterInContainer = (bRect.left - cRect.left) + tabsContainer.scrollLeft + (bRect.width / 2);
+    var targetScroll = btnCenterInContainer - (tabsContainer.clientWidth / 2);
     tabsContainer.scrollTo({ left: targetScroll, behavior: 'smooth' });
   }
 

@@ -3672,29 +3672,38 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <!-- Auto-center botón activo en #beneficios-tabs
-     #beneficios-tabs ES el scroll container (overflow-x:auto).
-     No hay .tabs-container interno.
-     Usamos getBoundingClientRect para calcular el offset del botón
-     RELATIVO AL TABS en cualquier estado (normal, sticky, teleportado). -->
+     ResizeObserver: recalcula cuando el layout termina de cambiar
+     (sticky, teleport, scroll). Así el cálculo siempre usa valores reales. -->
 <script>
 (function () {
   var tabsContainer = document.getElementById('beneficios-tabs');
   if (!tabsContainer) return;
 
+  var activeTab = null;
+
   function centerTab(btn) {
+    if (!btn) return;
     var cRect  = tabsContainer.getBoundingClientRect();
     var bRect  = btn.getBoundingClientRect();
-    /* offset del botón dentro del viewport del scroller */
-    var btnCenterInContainer = (bRect.left - cRect.left) + tabsContainer.scrollLeft + (bRect.width / 2);
-    var targetScroll = btnCenterInContainer - (tabsContainer.clientWidth / 2);
-    tabsContainer.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    var target = (bRect.left - cRect.left) + tabsContainer.scrollLeft
+                 + (bRect.width / 2) - (cRect.width / 2);
+    tabsContainer.scrollTo({ left: target, behavior: 'smooth' });
   }
 
+  /* Guardar tab activo en cada click */
   tabsContainer.addEventListener('click', function (e) {
     var btn = e.target.closest('button');
     if (!btn) return;
-    requestAnimationFrame(function () { centerTab(btn); });
+    activeTab = btn;
+    requestAnimationFrame(function () { centerTab(activeTab); });
   });
+
+  /* Recentrar cuando el layout cambia (sticky, resize, teleport) */
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(function () {
+      if (activeTab) centerTab(activeTab);
+    }).observe(tabsContainer);
+  }
 })();
 </script>
 

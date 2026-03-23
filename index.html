@@ -402,6 +402,28 @@ transform:translateY(0);
       scroll-margin-top: 80px;
     }
 
+    /*
+     * FIX STICKY DESKTOP (producción / GitHub Pages):
+     *
+     * Tailwind pone overflow-x:hidden en <body>.
+     * En producción con Lenis, esto puede crear un scroll container
+     * que confina position:sticky al body en lugar del viewport.
+     *
+     * overflow-x:clip hace lo mismo visualmente (corta el desborde)
+     * pero NO crea un scroll container → sticky funciona correctamente.
+     *
+     * También neutralizamos el transform de AOS en #beneficios
+     * que rompe sticky cuando la animación está en progreso.
+     */
+    @media (min-width: 769px) {
+      html, body {
+        overflow-x: clip !important;
+      }
+      #beneficios {
+        transform: none !important;
+      }
+    }
+
     /* ─── MOBILE VISUAL ─────────────────────────────────────────
        position:sticky no funciona en mobile porque <body> tiene
        overflow-x:hidden (Tailwind), lo que crea un scroll container
@@ -2113,7 +2135,7 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747., sin fines de lucro.</div>
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">SUMARTE</a> y ser parte de la historia.</div>
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
-     <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
+<div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
@@ -2144,7 +2166,7 @@ display:none;
           <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.</p>
         </form>
 
-     <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
+<div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 

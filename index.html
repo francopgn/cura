@@ -3126,20 +3126,32 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("OK SUBMIT"); // 👈 clave
+    console.log("OK SUBMIT");
 
     const fd = new FormData(formContact);
 
     const r = await fetch('/api/contact', {
       method: 'POST',
-      body: fd
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nombre: fd.get('nombre'),
+        email: fd.get('email'),
+        mensaje: fd.get('mensaje'),
+        "cf-turnstile-response": fd.get('cf-turnstile-response'),
+        website: fd.get('website')
+      })
     });
+
+    const data = await r.json();
 
     if (r.ok) {
       abrirModalContact();
       formContact.reset();
     } else {
-      alert("Error");
+      console.error("ERROR BACKEND:", data);
+      alert(data.error || "Error");
     }
   });
 });

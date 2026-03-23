@@ -984,7 +984,7 @@ display:none;
   </style>
 </head>
 
-<body class="font-sans bg-cura-primary text-white">
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden">
 
 
   <!-- ========= scroll dots --->
@@ -2113,16 +2113,13 @@ display:none;
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747., sin fines de lucro.</div>
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">SUMARTE</a> y ser parte de la historia.</div>
         <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
-  <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
+     <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
     <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">
       contacto@leycura.org
     </a>
-  </p>
-  <p class="text-xs text-cura-accentLight mt-2">
-    Comunícate con nosotros para más información o para sumarte a la iniciativa.
   </p>
 </div>
       </div>
@@ -2147,13 +2144,16 @@ display:none;
           <p class="text-[10px] text-cura-accentLight mt-1">Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.</p>
         </form>
 
- <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
+     <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
     email: 
     <a href="mailto:contacto@leycura.org" class="text-white font-semibold underline">
       contacto@leycura.org
     </a>
+  </p>
+  <p class="text-xs text-cura-accentLight mt-2">
+    Comunícate con nosotros para más información o para sumarte a la iniciativa.
   </p>
 </div>
       </div>
@@ -3647,6 +3647,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return (bRect.left - cRect.left) + c.scrollLeft + (bRect.width / 2) - (c.clientWidth / 2);
   }
 
+  /* Click directo en el tabs */
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('#beneficios-tabs button');
     if (!btn) return;
@@ -3658,6 +3659,34 @@ document.addEventListener('DOMContentLoaded', function () {
       c.scrollTo({ left: desiredScroll, behavior: 'smooth' });
     });
   });
+
+  /* Cuando switchTab() activa un botón desde los nav prev/next,
+     el click ocurre fuera del tabs. Detectamos el cambio de .active
+     via MutationObserver y centramos el botón recién activado. */
+  var tabsEl = document.getElementById('beneficios-tabs');
+  if (tabsEl) {
+    var classObs = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        if (m.type === 'attributes' && m.attributeName === 'class') {
+          var btn = m.target;
+          if (btn.classList.contains('active') && btn.closest('#beneficios-tabs')) {
+            /* Esperar a que switchTab termine el lenis.scrollTo y el DOM se estabilice */
+            setTimeout(function() {
+              var c = document.getElementById('beneficios-tabs');
+              if (!c) return;
+              desiredScroll = calcTarget(btn);
+              hasDesired    = true;
+              c.scrollTo({ left: desiredScroll, behavior: 'smooth' });
+            }, 120);
+          }
+        }
+      });
+    });
+    /* Observar cambios de clase en los botones del tabs */
+    tabsEl.querySelectorAll('button').forEach(function(btn) {
+      classObs.observe(btn, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
 
   /* Cuando el sticky JS mueve el nodo (toOrigin/toBody),
      el scrollLeft puede resetearse. Restaurarlo via MutationObserver. */

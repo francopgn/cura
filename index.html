@@ -3593,16 +3593,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!ticking) { requestAnimationFrame(update); ticking = true; }
   }
 
-  var hooked = false;
-  function hookLenis() {
-    if (hooked) return;
-    if (window.lenis) { window.lenis.on('scroll', onScroll); hooked = true; }
-    else setTimeout(hookLenis, 80);
-  }
-  setTimeout(function() {
-    if (!hooked) { window.addEventListener('scroll', onScroll, { passive: true }); hooked = true; }
-  }, 1500);
-  hookLenis();
+  /* Escuchar SIEMPRE scroll nativo — Lenis lo emite en window también.
+     Sin flag hooked: garantiza que funciona con y sin Lenis. */
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   window.addEventListener('resize', function() {
     if (window.innerWidth > 768) { toOrigin(); state = 'normal'; }

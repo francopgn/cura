@@ -1,4 +1,4 @@
-console.log("API KEY:", process.env.BREVO_API_KEY);
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método no permitido" });
@@ -6,16 +6,13 @@ export default async function handler(req, res) {
 
   try {
     // ✅ Parseo seguro
-    const body =
-      typeof req.body === "string"
-        ? JSON.parse(req.body)
-        : req.body;
-
-    const nombre = (body.nombre || "").trim();
-    const email = (body.email || "").trim();
-    const mensaje = (body.mensaje || "").trim();
-    const token = body["cf-turnstile-response"];
-    const honeypot = body.website;
+const body = req.body || {};
+    
+const nombre = (req.body?.nombre || "").trim();
+const email = (req.body?.email || "").trim();
+const mensaje = (req.body?.mensaje || "").trim();
+const token = req.body?.["cf-turnstile-response"];
+const honeypot = req.body?.website;
 
     const apiKey = process.env.BREVO_API_KEY;
     const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;

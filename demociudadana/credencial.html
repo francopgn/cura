@@ -26,8 +26,22 @@
 
     .curaid-code { font-size:10px; letter-spacing:3px; text-transform:uppercase; opacity:0.5; margin-bottom:16px; }
 
-    .barcode-wrapper { background:white; padding:14px 15px 10px; border-radius:22px; display:block; width:fit-content; margin:0 auto; }
+.barcode-wrapper {
+  background:white;
+  padding:14px 15px 10px;
+  border-radius:22px;
+  display:block;
+  width:100%;
+  max-width:100%;
+  margin:0 auto;
+  overflow:hidden;
+}
     .barcode-wrapper svg { display:block; }
+    #barcode {
+  width: 100% !important;
+  height: auto;
+  display: block;
+}
 
     /* FRANJA RESUMEN CLÍNICO */
     .rcf-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:16px; }
@@ -56,6 +70,8 @@
 
     .modal-backdrop { position:fixed; inset:0; background:rgba(0,52,92,0.4); backdrop-filter:blur(10px); display:none; justify-content:center; align-items:center; padding:20px; z-index:2000; }
     .modal { background:#ffffff; width:100%; max-width:360px; border-radius:35px; padding:28px; box-shadow:0 20px 50px rgba(0,0,0,0.3); color:#0d2b52; max-height:88vh; overflow-y:auto; }
+  
+  
   </style>
 </head>
 <body>
@@ -70,15 +86,15 @@
 
       <!-- TARJETA C.U.S. -->
       <div class="qr-card">
-        <div class="cus-label">Credencial Única de Salud</div>
-        <div class="cus-title">C.U.S. · Art. 2b Ley C.U.R.A.</div>
+        <div class="cus-label">Sistema Nacional C.U.R.A.</div>
+        <div class="cus-title">Credencial Única de Salud</div>
 
         <!-- QR generado en SVG inline — no depende de imagen externa -->
         <div class="qr-wrapper">
           <svg id="qrSvg" width="168" height="168" viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
 
-        <div class="curaid-code">CURAID-41316202</div>
+       <div id="barcodeText" class="barcode-text"></div>
 
         <div class="barcode-wrapper">
           <svg id="barcode"></svg>
@@ -97,7 +113,7 @@
       <div class="rcf-card">
         <div class="rcf-header">
           <i class="ph-bold ph-identification-card" style="color:var(--accent);font-size:18px"></i>
-          <div class="rcf-title">Resumen Clínico Federal · Art. 3 TER</div>
+          <div class="rcf-title">Resumen Clínico Federal</div>
         </div>
         <div class="rcf-grid">
           <div class="rcf-item">
@@ -216,17 +232,19 @@
 
     // ── BARCODE Code128 ──
     function drawBarcode() {
-      JsBarcode("#barcode", "CURAID-41316202", {
-        format: "CODE128",
-        width: 1.8,
-        height: 60,
-        displayValue: false,
-        margin: 0,
-        marginLeft: 4,
-        marginRight: 4,
-        lineColor: "#0d2b52",
-        background: "#ffffff"
-      });
+     const codigo = "019501690339";
+
+// generar barcode
+JsBarcode("#barcode", codigo, {
+  format: "CODE128",
+  width: 1.2,
+  height: 60,
+  displayValue: false
+});
+
+// mostrar texto formateado
+const textoFormateado = codigo.match(/.{1,2}/g).join(" ");
+document.getElementById("barcodeText").textContent = textoFormateado;
     }
 
     // ── DESCARGAR ──

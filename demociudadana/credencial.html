@@ -30,11 +30,13 @@
   background:white;
   padding:14px 15px 10px;
   border-radius:22px;
-  display:block;
+  display:flex;
   width:100%;
   max-width:100%;
   margin:0 auto;
   overflow:hidden;
+   justify-content: center;
+  align-items: center;
 }
     .barcode-wrapper svg { display:block;  max-width: 100%;}
 
@@ -231,10 +233,12 @@
      const codigo = "019501690339";
 
 // generar barcode
+const isMobile = window.innerWidth < 400;
+
 JsBarcode("#barcode", codigo, {
   format: "CODE128",
-  width: 1.2,
-  height: 60,
+  width: isMobile ? 1.4 : 1.8,
+  height: isMobile ? 45 : 60,
   displayValue: false
 });
 

@@ -2281,42 +2281,37 @@ display:none;
       </div>
 
       <div data-aos="fade-left">
-<form id="contact-form" method="POST" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
-
-  <!-- Script de Cloudflare -->
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-
-  <!-- Honeypot (oculto) -->
+<form id="contact-form" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+  <!-- Honeypot oculto para bots -->
   <input type="text" name="website" style="display:none">
 
   <div>
     <label class="cura-form-label">Nombre</label>
-    <input type="text" name="nombre" class="cura-form-input" />
+    <input type="text" name="nombre" class="cura-form-input" autocomplete="name">
   </div>
 
   <div>
     <label class="cura-form-label">
       Correo electrónico <span class="cura-form-label-required">*</span>
     </label>
-    <input type="email" required name="email" class="cura-form-input" />
+    <input type="email" name="email" required class="cura-form-input" autocomplete="email">
   </div>
 
   <div>
     <label class="cura-form-label">Mensaje</label>
-    <textarea rows="4" name="mensaje" class="cura-form-input" style="resize:vertical;min-height:90px;"></textarea>
+    <textarea name="mensaje" rows="4" class="cura-form-input" style="resize:vertical;min-height:90px;"></textarea>
   </div>
 
-  <!-- Turnstile -->
+  <!-- Cloudflare Turnstile widget -->
   <div class="cf-turnstile" data-sitekey="0x4AAAAAACvEx07r83cJGm2P"></div>
 
-<button type="submit" class="cura-form-btn">
-  Enviar
-</button>
+  <button type="submit" class="cura-form-btn">
+    Enviar
+  </button>
 
   <p class="text-[10px] text-cura-accentLight mt-1">
     Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.
   </p>
-
 </form>
 
 <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md block md:hidden mt-6">
@@ -3149,59 +3144,95 @@ if (contactModal) {
     input.addEventListener('input', () => { input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]/g, ''); });
   });
 
-  /* =============================================
-     FORMULARIO CONTACTO
-  ============================================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const formContact = document.getElementById('contact-form');
+// =============================================
+// FORMULARIO CONTACTO (NUEVO)
+// =============================================
+const contactForm = document.getElementById('contact-form');
+const successModal = document.getElementById('success-modal');
+const successOk = document.getElementById('success-modal-ok');
 
-  formContact.addEventListener('submit', async (e) => {
+function openSuccessModal() {
+  if (!successModal) return;
+  successModal.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    successModal.classList.add('show');
+    const card = successModal.querySelector('.modal-card');
+    if (card) card.classList.add('show');
+  });
+}
+function closeSuccessModal() {
+  if (!successModal) return;
+  successModal.classList.remove('show');
+  const card = successModal.querySelector('.modal-card');
+  if (card) card.classList.remove('show');
+  setTimeout(() => successModal.classList.add('hidden'), 250);
+}
+if (successOk) successOk.addEventListener('click', closeSuccessModal);
+if (successModal) {
+  successModal.addEventListener('click', (e) => {
+    if (e.target === successModal) closeSuccessModal();
+  });
+}
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    e.stopPropagation();
 
-    console.log("OK SUBMIT");
-
-    const fd = new FormData(formContact);
-
-    // ✅ Verificar que Turnstile haya cargado y el usuario haya pasado el challenge
-    const token = fd.get('cf-turnstile-response');
+    // Obtener token de Turnstile
+    const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
     if (!token) {
-      alert("Por favor, completá la verificación de seguridad antes de enviar.");
+      alert('Por favor, completa la verificación de seguridad antes de enviar.');
       return;
     }
 
-    const r = await fetch('/api/contact', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    nombre: fd.get('nombre'),
-    email: fd.get('email'),
-    mensaje: fd.get('mensaje'),
-    "cf-turnstile-response": token,
-    website: fd.get('website')
-  })
-});
+    const formData = new FormData(contactForm);
+    const payload = {
+      nombre: formData.get('nombre') || '',
+      email: formData.get('email') || '',
+      mensaje: formData.get('mensaje') || '',
+      "cf-turnstile-response": token,
+      website: formData.get('website') || ''
+    };
 
-let data;
-try {
-  data = await r.json();
-} catch (e) {
-  console.error('Respuesta no JSON', e);
-  alert('Error del servidor. Revisa la consola.');
-  return;
-}
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
 
-if (r.ok) {
-  abrirModalContact();
-  formContact.reset();
-  if (window.turnstile) window.turnstile.reset();
-} else {
-  console.error('Error backend:', data);
-  alert(data.error || 'Error al enviar el mensaje');
-  if (window.turnstile) window.turnstile.reset();
-}
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      let data;
+      try { data = await res.json(); } catch (err) { data = {}; }
+
+      if (res.ok) {
+        contactForm.reset();
+        openSuccessModal();
+        if (window.turnstile) window.turnstile.reset();
+      } else {
+        console.error('Error backend:', data);
+        alert(data.error || 'Error al enviar el mensaje');
+        if (window.turnstile) window.turnstile.reset();
+      }
+    } catch (error) {
+      console.error('Error de red:', error);
+      alert('Error de conexión. Intenta de nuevo más tarde.');
+      if (window.turnstile) window.turnstile.reset();
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
   });
-});
+}
+
+
+
+
+  
   /* =============================================
      FORMULARIO SUMATE
   ============================================== */

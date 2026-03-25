@@ -253,7 +253,8 @@ JsBarcode("#barcode", codigo, {
 });
 
 // mostrar texto formateado
-const textoFormateado = codigo.match(/.{1,2}/g).join(" ");
+const textoFormateado = codigo.replace(/^(\d{2})(\d{4})(\d{3})(\d{3})$/, "$1 $2 $3 $4");
+
 document.getElementById("barcodeText").textContent = textoFormateado;
     }
 

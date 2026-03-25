@@ -1,147 +1,117 @@
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método no permitido" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Método no permitido' });
   }
 
   try {
-    // ✅ Parseo seguro
-const body = req.body;
+    const { nombre, email, mensaje, 'cf-turnstile-response': token, website } = req.body || {};
 
-const nombre = (body?.nombre || "").trim();
-const email = (body?.email || "").trim();
-const mensaje = (body?.mensaje || "").trim();
-const token = body?.["cf-turnstile-response"];
-const honeypot = body?.website;
-
-    const apiKey = process.env.BREVO_API_KEY;
-    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
-
-    // 🔴 Validaciones básicas
-    if (!apiKey) {
-      return res.status(500).json({ error: "Falta BREVO_API_KEY" });
+    // Validaciones básicas
+    if (!email || !email.trim()) {
+      return res.status(400).json({ error: 'El email es obligatorio' });
     }
 
-    if (!turnstileSecret) {
-      return res.status(500).json({ error: "Falta TURNSTILE_SECRET_KEY" });
+    // Honeypot: si el campo website tiene valor, es un bot
+    if (website && website.trim() !== '') {
+      return res.status(400).end(); // responder silenciosamente
     }
 
-    if (!email) {
-      return res.status(400).json({ error: "Email inválido" });
-    }
-
-    // 🛑 Honeypot
-    if (honeypot) {
-      return res.status(400).end();
-    }
-
-    // 🛑 Token captcha
+    // Verificar Turnstile
     if (!token) {
-      return res.status(400).json({ error: "Falta verificación" });
+      return res.status(400).json({ error: 'Verificación de seguridad incompleta' });
     }
 
-    // ✅ TURNSTILE (blindado)
-    let captchaData = { success: false };
+    const turnstileSecret = process.env.TURNSTILE_SECRET_KEY;
+    if (!turnstileSecret) {
+      console.error('Falta TURNSTILE_SECRET_KEY en entorno');
+      return res.status(500).json({ error: 'Error de configuración del servidor' });
+    }
 
+    let captchaValid = false;
     try {
       const params = new URLSearchParams();
-      params.append("secret", turnstileSecret);
-      params.append("response", token);
+      params.append('secret', turnstileSecret);
+      params.append('response', token);
 
-      const verifyRes = await fetch(
-        "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-        {
-          method: "POST",
-          body: params,
-        }
-      );
-
-      captchaData = await verifyRes.json();
+      const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+        method: 'POST',
+        body: params
+      });
+      const verifyData = await verifyRes.json();
+      captchaValid = verifyData.success === true;
     } catch (err) {
-      console.error("ERROR TURNSTILE:", err);
-      return res.status(500).json({ error: "Error verificando captcha" });
+      console.error('Error verificando Turnstile:', err);
+      return res.status(500).json({ error: 'Error verificando seguridad' });
     }
 
-    if (!captchaData.success) {
-      console.error("Turnstile fail:", captchaData);
-      return res.status(403).json({ error: "Captcha inválido" });
+    if (!captchaValid) {
+      console.error('Turnstile falló');
+      return res.status(403).json({ error: 'Verificación de seguridad fallida' });
     }
 
-    // 🛑 Filtro anti spam simple
-    const texto = (mensaje + email).toLowerCase();
-
-    if (
-      texto.includes("http") ||
-      texto.includes("www") ||
-      texto.includes("buy") ||
-      texto.includes("free")
-    ) {
-      return res.status(400).json({ error: "Spam detectado" });
+    // Filtro anti‑spam simple
+    const textoCompleto = (mensaje + email).toLowerCase();
+    if (textoCompleto.includes('http') || textoCompleto.includes('www') || textoCompleto.includes('buy') || textoCompleto.includes('free')) {
+      return res.status(400).json({ error: 'Contenido no permitido' });
     }
 
-    // 📧 Email HTML
+    // Preparar email HTML
     const htmlContent = `
       <h2>Nuevo mensaje desde la web - Ley C.U.R.A.</h2>
-      <p><strong>Nombre:</strong> ${nombre || "(no informado)"}</p>
-      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Nombre:</strong> ${nombre ? escapeHtml(nombre) : '(no informado)'}</p>
+      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
       <p><strong>Mensaje:</strong></p>
-      <p>${mensaje.replace(/\n/g, "<br>")}</p>
+      <p>${escapeHtml(mensaje).replace(/\n/g, '<br>')}</p>
     `;
 
-    // 📧 ENVÍO BREVO
-    let brevoRes;
-    let brevoText = "";
-
-    try {
-      brevoRes = await fetch("https://api.brevo.com/v3/smtp/email", {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "api-key": apiKey,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          sender: {
-            // ⚠️ IMPORTANTE: este mail debe estar verificado en Brevo
-            email: "contacto@leycura.org",
-            name: "Ley C.U.R.A.",
-          },
-          to: [
-            {
-              email: "contacto@leycura.org",
-              name: "Ley C.U.R.A.",
-            },
-          ],
-          replyTo: {
-            email,
-            name: nombre || email,
-          },
-          subject: "Nuevo mensaje desde la web",
-          htmlContent,
-        }),
-      });
-
-      brevoText = await brevoRes.text();
-
-    } catch (err) {
-      console.error("ERROR BREVO FETCH:", err);
-      return res.status(500).json({ error: "Error conectando con Brevo" });
+    const brevoApiKey = process.env.BREVO_API_KEY;
+    if (!brevoApiKey) {
+      console.error('Falta BREVO_API_KEY en entorno');
+      return res.status(500).json({ error: 'Error de configuración del servidor' });
     }
 
-if (!brevoRes.ok) {
-  console.error("❌ BREVO ERROR STATUS:", brevoRes.status);
-  console.error("❌ BREVO RESPONSE:", brevoText);
+    // Enviar a Brevo
+    const brevoRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'api-key': brevoApiKey,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        sender: {
+          email: 'contacto@leycura.org',
+          name: 'Ley C.U.R.A.'
+        },
+        to: [{ email: 'contacto@leycura.org', name: 'Ley C.U.R.A.' }],
+        replyTo: { email, name: nombre || email },
+        subject: 'Nuevo mensaje desde la web',
+        htmlContent
+      })
+    });
 
-  return res.status(500).json({
-    error: "Brevo error",
-    status: brevoRes.status,
-    detail: brevoText   // ← usar el texto ya leído arriba
-  });
-}
+    const brevoText = await brevoRes.text();
+
+    if (!brevoRes.ok) {
+      console.error('Brevo error:', brevoRes.status, brevoText);
+      return res.status(500).json({ error: 'Error al enviar el mensaje' });
+    }
 
     return res.status(200).json({ success: true });
 
   } catch (err) {
-    console.error("ERROR API CONTACT:", err);
-    return res.status(500).json({ error: "Error interno" });
+    console.error('Error general en contact:', err);
+    return res.status(500).json({ error: 'Error interno del servidor' });
   }
+}
+
+// Función auxiliar para escapar HTML
+function escapeHtml(str) {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

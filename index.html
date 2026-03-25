@@ -2976,7 +2976,40 @@ function closeBenefitModal() {
    DOMCONTENTLOADED — inicialización principal
 ============================================== */
 document.addEventListener('DOMContentLoaded', function () {
+// Abrir modal de éxito del formulario de contacto
+function abrirModalContact() {
+  const modal = document.getElementById('success-modal');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    modal.classList.add('show');
+    const card = modal.querySelector('.modal-card');
+    if (card) card.classList.add('show');
+  });
+}
 
+function cerrarModalContact() {
+  const modal = document.getElementById('success-modal');
+  if (!modal) return;
+  modal.classList.remove('show');
+  const card = modal.querySelector('.modal-card');
+  if (card) card.classList.remove('show');
+  setTimeout(() => modal.classList.add('hidden'), 250);
+}
+
+// Asignar el evento al botón "OK" del modal
+const contactOkBtn = document.getElementById('success-modal-ok');
+if (contactOkBtn) {
+  contactOkBtn.addEventListener('click', cerrarModalContact);
+}
+
+// Cerrar al hacer clic fuera del modal
+const contactModal = document.getElementById('success-modal');
+if (contactModal) {
+  contactModal.addEventListener('click', (e) => {
+    if (e.target === contactModal) cerrarModalContact();
+  });
+}
   /* --- Estado inicial de notificaciones --- */
   const KEY = 'visto_novedades_v1';
   if (localStorage.getItem(KEY) === 'true') {
@@ -3138,32 +3171,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const r = await fetch('/api/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        nombre: fd.get('nombre'),
-        email: fd.get('email'),
-        mensaje: fd.get('mensaje'),
-        "cf-turnstile-response": token,
-        website: fd.get('website')
-      })
-    });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    nombre: fd.get('nombre'),
+    email: fd.get('email'),
+    mensaje: fd.get('mensaje'),
+    "cf-turnstile-response": token,
+    website: fd.get('website')
+  })
+});
 
-    const data = await r.json();
+let data;
+try {
+  data = await r.json();
+} catch (e) {
+  console.error('Respuesta no JSON', e);
+  alert('Error del servidor. Revisa la consola.');
+  return;
+}
 
-    if (r.ok) {
-      abrirModalContact();
-      formContact.reset();
-      // Resetear widget de Turnstile para el próximo envío
-      if (window.turnstile) window.turnstile.reset();
-    } else {
-      console.error("ERROR BACKEND:", data);
-      alert(data.error || "Error al enviar el mensaje");
-      // Resetear Turnstile para que el usuario pueda reintentar
-      if (window.turnstile) window.turnstile.reset();
-    }
+if (r.ok) {
+  abrirModalContact();
+  formContact.reset();
+  if (window.turnstile) window.turnstile.reset();
+} else {
+  console.error('Error backend:', data);
+  alert(data.error || 'Error al enviar el mensaje');
+  if (window.turnstile) window.turnstile.reset();
+}
   });
 });
   /* =============================================
@@ -3924,6 +3960,7 @@ document.addEventListener('mousedown', function (e) {
   wrap.appendChild(tabs);
 })();
 </script>
+  
 
 </body>
 </html>

@@ -28,8 +28,8 @@
 
 .barcode-wrapper {
   background:white;
-  padding:14px 15px 10px;
-  border-radius:22px;
+ padding: 8px 8px 6px;   /* ⬅️ mucho más compacto */
+  border-radius: 18px;    /* opcional: un poco menos redondeado */
   display:flex;
   width:100%;
   max-width:100%;
@@ -40,7 +40,16 @@
 }
     .barcode-wrapper svg { display:block;  max-width: 100%;}
 
-
+.barcode-text {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+  margin-top: 4px;
+  margin-bottom: 16px;  /* ⬅️ ESTE es el que genera el espacio tipo QR */
+  color: white;
+  font-weight: 600;
+  opacity: 0.7;
+}
     /* FRANJA RESUMEN CLÍNICO */
     .rcf-card { background:var(--glass); backdrop-filter:blur(10px); border:1px solid var(--glass-border); border-radius:24px; padding:20px; margin-bottom:16px; }
     .rcf-header { display:flex; align-items:center; gap:8px; margin-bottom:14px; }
@@ -237,9 +246,10 @@ const isMobile = window.innerWidth < 400;
 
 JsBarcode("#barcode", codigo, {
   format: "CODE128",
-  width: isMobile ? 1.4 : 1.8,
-  height: isMobile ? 45 : 60,
-  displayValue: false
+  width: isMobile ? 2.2 : 2.6,
+  height: isMobile ? 45 : 55,
+  displayValue: false,
+  margin: 0
 });
 
 // mostrar texto formateado

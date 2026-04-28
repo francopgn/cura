@@ -4019,5 +4019,69 @@ document.addEventListener('mousedown', function (e) {
 </script>
   
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+  <script>
+// Reemplaza la función original para posicionar el menú dinámicamente
+(function() {
+  // Referencias
+  const menu = document.getElementById('notificationMenu');
+  if (!menu) return;
+
+  // Ocultar badge al abrir (misma lógica)
+  function hideBadge() {
+    document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
+    localStorage.setItem('visto_novedades_v1', 'true');
+  }
+
+  // Posicionar menú debajo del botón clickeado
+  function positionMenu(button) {
+    const rect = button.getBoundingClientRect();
+    const menuRect = menu.getBoundingClientRect();
+    const top = rect.bottom + 8; // 8px separación
+    const left = rect.right - menuRect.width;
+    menu.style.position = 'fixed';
+    menu.style.top = `${top}px`;
+    menu.style.left = `${left}px`;
+    menu.style.right = 'auto';
+    menu.style.bottom = 'auto';
+    menu.style.margin = '0';
+  }
+
+  // Función global para togglear el menú
+  window.toggleMenuNovedades = function(event) {
+    event.stopPropagation();
+    const button = event.currentTarget;
+    const isVisible = menu.classList.contains('show');
+    
+    if (isVisible) {
+      menu.classList.remove('show');
+      menu.style.removeProperty('top');
+      menu.style.removeProperty('left');
+      menu.style.removeProperty('position');
+      return;
+    }
+    
+    // Posicionar y mostrar
+    positionMenu(button);
+    menu.classList.add('show');
+    hideBadge();
+    
+    // Cerrar al hacer clic fuera
+    const closeHandler = function(e) {
+      if (!menu.contains(e.target) && !button.contains(e.target)) {
+        menu.classList.remove('show');
+        document.removeEventListener('click', closeHandler);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', closeHandler), 0);
+  };
+  
+  // Asignar event listeners a los botones de campana (por si se llaman desde HTML)
+  document.querySelectorAll('button[onclick="toggleMenuNovedades()"]').forEach(btn => {
+    btn.removeAttribute('onclick');
+    btn.addEventListener('click', window.toggleMenuNovedades);
+  });
+})();
+</script>
 </body>
 </html>

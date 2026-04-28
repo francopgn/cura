@@ -1151,6 +1151,7 @@ display:none;
 <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
   <div class="max-w-5xl mx-auto px-4 pt-4 pb-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0 sm:gap-4 relative">
 
+    <!-- Logo y título -->
     <div class="flex items-center justify-between w-full sm:w-auto z-10">
       <a href="#inicio" class="nav-inicio-link flex items-center gap-3 sm:gap-2 group cursor-pointer text-left">
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-[90px] sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
@@ -1162,26 +1163,24 @@ display:none;
           </p>
         </div>
       </a>
-      
       <div class="sm:hidden relative ml-3 shrink-0 flex items-center">
         <button onclick="toggleMenuNovedades()" class="relative text-cura-accentLight hover:text-white transition-colors focus:outline-none">
-         <i class="ph-bold ph-bell text-[30px]"></i>
+          <i class="ph-bold ph-bell text-[30px]"></i>
           <span class="notification-badge-ui">1</span>
         </button>
       </div>
     </div>
 
+    <!-- Navegación -->
     <nav class="flex items-center gap-4 text-sm font-medium whitespace-nowrap justify-between sm:justify-end -mt-3 sm:mt-0 w-full sm:w-auto relative z-20">
       <div class="flex gap-4">
-        <a href="#explicacion"      class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
-        <a href="#beneficios"  class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
+        <a href="#explicacion" class="text-cura-accentLight hover:text-white transition-colors">Sistema</a>
+        <a href="#beneficios" class="text-cura-accentLight hover:text-white transition-colors">Beneficios</a>
         <a href="/Informacion/informacion.html" class="text-cura-accentLight hover:text-white transition-colors hidden sm:block">Información</a>
-        <a href="#contacto"    class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
+        <a href="#contacto" class="text-cura-accentLight hover:text-white transition-colors">Contacto</a>
       </div>
       <div class="flex items-center gap-3">
-        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">
-          Demo
-        </a>
+        <a href="/demo.html" class="inline-flex items-center gap-1 text-cura-primary bg-cura-accent rounded-full px-4 py-1.5 text-xs font-bold hover:bg-white transition shadow-lg">Demo</a>
         <div class="hidden sm:block relative">
           <button onclick="toggleMenuNovedades()" class="flex items-center justify-center w-[34px] h-[34px] text-cura-accentLight hover:text-white transition-colors focus:outline-none">
             <i class="ph-bold ph-bell text-xl"></i>
@@ -1191,67 +1190,54 @@ display:none;
       </div>
     </nav>
 
-  </div>
-    <!-- Menú novedades (ORIGINAL) -->
-<div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
-  
-  <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
-    <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>
-    <span class="text-[9px] text-gray-400 font-medium">Actualizado: 17/03/26</span>
-  </div>
-
-  <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
-    
- <div class="p-4 hover:bg-blue-50/50 transition-colors border-b border-gray-100 border-l-4 cursor-default text-left" 
-     style="border-l-color: #00345c; background-color: rgba(0, 194, 255, 0.15);">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-scales text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-xs font-bold" style="color: #00345c;">Estado del Proyecto C.U.R.A.</p>
- <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">17/03/26</span>
+    <!-- ✅ MENÚ DE NOVEDADES – AHORA DENTRO DEL CONTENEDOR RELATIVO -->
+    <div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
+      <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+        <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>
+        <span class="text-[9px] text-gray-400 font-medium">Actualizado: 17/03/26</span>
+      </div>
+      <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
+        <div class="p-4 hover:bg-blue-50/50 transition-colors border-b border-gray-100 border-l-4 cursor-default text-left" style="border-left-color: #00345c; background-color: rgba(0, 194, 255, 0.15);">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-scales text-lg" style="color: #004e85;"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-xs font-bold" style="color: #00345c;">Estado del Proyecto C.U.R.A.</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">17/03/26</span>
+              </div>
+              <p class="text-gray-700 text-[11px] leading-relaxed">El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular.</p>
+            </div>
           </div>
-          <p class="text-gray-700 text-[11px] leading-relaxed">
-            El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular.
-          </p>
+        </div>
+        <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-file-pdf text-lg" style="color: #004e85;"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">13/03/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento acorde a la expansión de la ley.</p>
+            </div>
+          </div>
+        </div>
+        <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
+          <div class="flex gap-3">
+            <i class="ph-bold ph-robot text-lg" style="color: #004e85;"></i>
+            <div class="flex-1">
+              <div class="flex justify-between items-start mb-1">
+                <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
+                <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
+              </div>
+              <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
+            </div>
+          </div>
         </div>
       </div>
+      <button onclick="toggleMenuNovedades()" class="w-full text-center py-2.5 text-[10px] font-bold hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase" style="color: #004e85;">Cerrar</button>
     </div>
 
-    <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-file-pdf text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">13/03/26</span>
-          </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">Se actualizó el documento acorde a la expansión de la ley.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-robot text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">¡Nuevo Chat con IA!</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">24/01/26</span>
-          </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">Consultá detalles técnicos de la ley con nuestro asistente inteligente.</p>
-        </div>
-      </div>
-    </div>
-
-  
-
-  </div> <button onclick="toggleMenuNovedades()" 
-          class="w-full text-center py-2.5 text-[10px] font-bold hover:bg-gray-100 transition-colors border-t border-gray-100 uppercase"
-          style="color: #004e85;">
-    Cerrar
-  </button>
-</div>
+  </div> <!-- cierre del div relativo -->
 </header>
 
 <!-- =============================================
@@ -4020,68 +4006,6 @@ document.addEventListener('mousedown', function (e) {
   
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <script>
-// Reemplaza la función original para posicionar el menú dinámicamente
-(function() {
-  // Referencias
-  const menu = document.getElementById('notificationMenu');
-  if (!menu) return;
 
-  // Ocultar badge al abrir (misma lógica)
-  function hideBadge() {
-    document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
-    localStorage.setItem('visto_novedades_v1', 'true');
-  }
-
-  // Posicionar menú debajo del botón clickeado
-  function positionMenu(button) {
-    const rect = button.getBoundingClientRect();
-    const menuRect = menu.getBoundingClientRect();
-    const top = rect.bottom + 8; // 8px separación
-    const left = rect.right - menuRect.width;
-    menu.style.position = 'fixed';
-    menu.style.top = `${top}px`;
-    menu.style.left = `${left}px`;
-    menu.style.right = 'auto';
-    menu.style.bottom = 'auto';
-    menu.style.margin = '0';
-  }
-
-  // Función global para togglear el menú
-  window.toggleMenuNovedades = function(event) {
-    event.stopPropagation();
-    const button = event.currentTarget;
-    const isVisible = menu.classList.contains('show');
-    
-    if (isVisible) {
-      menu.classList.remove('show');
-      menu.style.removeProperty('top');
-      menu.style.removeProperty('left');
-      menu.style.removeProperty('position');
-      return;
-    }
-    
-    // Posicionar y mostrar
-    positionMenu(button);
-    menu.classList.add('show');
-    hideBadge();
-    
-    // Cerrar al hacer clic fuera
-    const closeHandler = function(e) {
-      if (!menu.contains(e.target) && !button.contains(e.target)) {
-        menu.classList.remove('show');
-        document.removeEventListener('click', closeHandler);
-      }
-    };
-    setTimeout(() => document.addEventListener('click', closeHandler), 0);
-  };
-  
-  // Asignar event listeners a los botones de campana (por si se llaman desde HTML)
-  document.querySelectorAll('button[onclick="toggleMenuNovedades()"]').forEach(btn => {
-    btn.removeAttribute('onclick');
-    btn.addEventListener('click', window.toggleMenuNovedades);
-  });
-})();
-</script>
 </body>
 </html>

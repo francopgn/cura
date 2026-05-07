@@ -41,7 +41,6 @@
       border: 1px dashed rgba(255, 255, 255, 0.1);
       cursor: not-allowed;
     }
-    /* Animación sutil para candados */
     .coming-soon:hover svg {
       transform: scale(1.1);
       opacity: 0.5;
@@ -51,7 +50,7 @@
 </head>
 <body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark overflow-x-hidden">
 
- <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
       <div class="flex items-center gap-2">
         <img src="/Informacion/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
@@ -61,8 +60,9 @@
         </div>
       </div>
       <nav class="flex items-center gap-6 text-sm font-medium">
-          <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
-        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
+        <a href="/Informacion/informacion.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+          <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver
+        </a>
         <a href="https://www.leycura.org/#sumate" class="text-cura-accentLight hover:text-white transition-colors uppercase font-bold nav-scroll-link">Sumarme</a>
         <a href="/demo.html" class="bg-cura-accent text-cura-primaryDark px-4 py-1.5 rounded-full text-xs font-bold hover:bg-white transition">Demostración</a>
       </nav>
@@ -76,7 +76,7 @@
           Recursos
         </h1>
         <span class="text-[10px] font-mono bg-white/10 border border-white/20 px-3 py-1 rounded-full uppercase tracking-widest text-cura-accentLight">
-          Actualizado: 12/03/2026
+          Actualizado: 29/04/2026
         </span>
       </div>
 
@@ -99,45 +99,41 @@
             </div>
           </a>
         </div>
-<!-- Disponible: Artículo Periodístico -->
-<div data-aos="fade-up" data-aos-delay="400">
-  <a href="/Informacion/documentos/articulo.html" class="group flex items-center justify-between p-6 bg-cura-accent/10 border border-cura-accent/30 rounded-2xl hover:bg-cura-accent hover:border-cura-accent transition-all duration-300 hover:-translate-y-1">
-    <div>
-      <p class="text-[10px] font-bold uppercase tracking-widest text-cura-accent group-hover:text-cura-primaryDark">
-        Investigación Periodística
-      </p>
-      <h3 class="text-xl font-bold group-hover:text-cura-primaryDark">
-        Medicina a ciegas
-      </h3>
-      <p class="text-sm opacity-60 group-hover:text-cura-primaryDark/80">
-        El costo humano de los sistemas de salud que no se hablan en América Latina
-      </p>
-    </div>
-    <div class="bg-cura-accent text-cura-primaryDark p-3 rounded-full group-hover:bg-white transition-colors">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h14M5 8h14M5 12h14M5 16h10"/>
-      </svg>
-    </div>
-  </a>
-</div>
-              <!-- Disponible: Web interactiva sobre la ley -->
-        <div data-aos="fade-up" data-aos-delay="400">
-        <a href="documentos/web_interactiva.html" class="group flex items-center justify-between p-6 bg-cura-accent/10 border border-cura-accent/30 rounded-2xl hover:bg-cura-accent hover:border-cura-accent transition-all duration-300 hover:-translate-y-1">
+
+        <!-- Disponible: Artículo Periodístico -->
+        <div data-aos="fade-up" data-aos-delay="450">
+          <a href="/Informacion/documentos/articulo.html" class="group flex items-center justify-between p-6 bg-cura-accent/10 border border-cura-accent/30 rounded-2xl hover:bg-cura-accent hover:border-cura-accent transition-all duration-300 hover:-translate-y-1">
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-widest text-cura-accent group-hover:text-cura-primaryDark">Investigación Periodística</p>
+              <h3 class="text-xl font-bold group-hover:text-cura-primaryDark">Medicina a ciegas</h3>
+              <p class="text-sm opacity-60 group-hover:text-cura-primaryDark/80">El costo humano de los sistemas de salud que no se hablan en América Latina</p>
+            </div>
+            <div class="bg-cura-accent text-cura-primaryDark p-3 rounded-full group-hover:bg-white transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4h14M5 8h14M5 12h14M5 16h10"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+
+        <!-- Disponible: Web interactiva sobre la ley -->
+        <div data-aos="fade-up" data-aos-delay="500">
+          <a href="documentos/web_interactiva.html" class="group flex items-center justify-between p-6 bg-cura-accent/10 border border-cura-accent/30 rounded-2xl hover:bg-cura-accent hover:border-cura-accent transition-all duration-300 hover:-translate-y-1">
             <div>
               <p class="text-[10px] font-bold uppercase tracking-widest text-cura-accent group-hover:text-cura-primaryDark">WEB Interactiva</p>
               <h3 class="text-xl font-bold group-hover:text-cura-primaryDark">Ley C.U.R.A.</h3>
               <p class="text-sm opacity-60 group-hover:text-cura-primaryDark/80">Visualizador interactivo de la ley • Estructura completa con descripciones breves por artículo.</p>
             </div>
-         <div class="bg-cura-accent text-cura-primaryDark p-3 rounded-full group-hover:bg-white transition-colors">
-  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 019-9" />
-  </svg>
-</div>
+            <div class="bg-cura-accent text-cura-primaryDark p-3 rounded-full group-hover:bg-white transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.66 0 3-4 3-9s-1.34-9-3-9m0 18c-1.66 0-3-4-3-9s1.34-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+            </div>
           </a>
         </div>
 
         <!-- Próximamente: Texto completo de la Ley -->
-        <div data-aos="fade-up" data-aos-delay="500">
+        <div data-aos="fade-up" data-aos-delay="550">
           <div class="coming-soon p-6 rounded-2xl flex items-center justify-between h-full">
             <div>
               <p class="text-[10px] font-bold uppercase tracking-widest text-white/30">Próximamente</p>
@@ -148,22 +144,25 @@
           </div>
         </div>
 
-       
-        <!-- Material audiovisual -->
-     <div data-aos="fade-up" data-aos-delay="1100">
-  <a href="documentos/material.html" class="group flex items-center justify-between p-6 bg-cura-accent/10 border border-cura-accent/30 rounded-2xl hover:bg-cura-accent hover:border-cura-accent transition-all duration-300 hover:-translate-y-1 h-full">
+        <!-- Material audiovisual (CORREGIDO - ahora como los primeros) -->
+        <div data-aos="fade-up" data-aos-delay="600">
+          <a href="documentos/material.html" class="group flex items-center justify-between p-6 bg-cura-accent/10 border border-cura-accent/30 rounded-2xl hover:bg-cura-accent hover:border-cura-accent transition-all duration-300 hover:-translate-y-1 h-full">
             <div>
-              <p class="text-[10px] font-bold uppercase tracking-widest text-white/30">YA DISPONIBLE</p>
-              <h3 class="text-xl font-bold text-white/40">Material Audiovisual</h3>
-              <p class="text-sm text-white/20">Conferencias, videos explicativos y materiales de difusión para ciudadanos, profesionales de la salud y equipos de gestión institucional.</p>
+              <p class="text-[10px] font-bold uppercase tracking-widest text-cura-accent group-hover:text-cura-primaryDark">YA DISPONIBLE</p>
+              <h3 class="text-xl font-bold text-white group-hover:text-cura-primaryDark">Material Audiovisual</h3>
+              <p class="text-sm text-white/60 group-hover:text-cura-primaryDark/80">Conferencias, videos explicativos y materiales de difusión para ciudadanos, profesionales de la salud y equipos de gestión institucional.</p>
             </div>
-            <svg class="w-6 h-6 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-          </div>
+            <div class="bg-cura-accent text-cura-primaryDark p-3 rounded-full group-hover:bg-white transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.5-4.5M15 10l-4.5 4.5M15 10h-10m10 0v10"/>
+              </svg>
+            </div>
+          </a>
         </div>
 
       </div>
 
-      <div class="mt-12 pt-8 border-t border-white/10 text-center" data-aos="fade-up" data-aos-delay="1200">
+      <div class="mt-12 pt-8 border-t border-white/10 text-center" data-aos="fade-up" data-aos-delay="700">
         <a href="/Informacion/informacion" class="inline-flex items-center gap-2 text-sm font-semibold text-cura-accentLight hover:text-white transition group">
           <svg class="w-4 h-4 rotate-180 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
           Volver al índice de información
@@ -172,7 +171,7 @@
     </div>
   </main>
 
-  <footer class="py-12 text-center" data-aos="fade-in" data-aos-delay="900">
+  <footer class="py-12 text-center" data-aos="fade-in" data-aos-delay="800">
     <p class="text-sm text-white/40">Copyright © 2026 C.U.R.A. - Todos los derechos reservados.</p>
   </footer>
 

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest">
+  <title>Medicina a ciegas: fragmentación sanitaria en América Latina | Ley C.U.R.A.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cura: {
+              primary: '#004E85',       
+              primaryDark: '#00345C',   
+              card: '#065D9B',         
+              accent: '#00C2FF',       
+              accentLight: '#59D2FF'   
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    .modal-backdrop { opacity: 0; transition: opacity 0.25s ease; }
+    .modal-backdrop.show { opacity: 1; }
+    .modal-card { transform: scale(0.9) translateY(10px); opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+    .modal-card.show { transform: scale(1) translateY(0); opacity: 1; }
+  </style>
+</head>
+
+<body class="font-sans bg-cura-primary text-white overflow-x-hidden flex flex-col min-h-screen">
+
+  <header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
+      <div class="flex items-center gap-2">
+        <img src="/Informacion/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
+        <div class="leading-tight">
+          <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">INVESTIGACIÓN EN SALUD</p>
+          <p class="text-sm font-bold text-white">Fragmentación Sanitaria en América Latina</p>
+        </div>
+      </div>
+      <nav class="flex items-center gap-6 text-sm font-medium">
+        <a href="/index.html" class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span> Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-5xl mx-auto px-4 py-10 w-full space-y-12">
+    
+    <!-- HERO SECTION -->
+    <section class="space-y-6" data-aos="fade-down">
+      <div class="flex flex-col items-center md:items-start gap-4">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-cura-accent/20 border border-cura-accent rounded-full text-xs font-bold tracking-wider uppercase text-cura-accentLight">
+          <i class="ph-bold ph-warning-circle"></i>
+          INVESTIGACIÓN PERIODÍSTICA EN SALUD
+        </span>
+        
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight text-center md:text-left">
+          Medicina a ciegas: cuando la información no llega, el paciente paga el precio
+        </h1>
+        
+        <p class="text-lg md:text-xl font-bold text-cura-accentLight text-center md:text-left max-w-4xl">
+          "En América Latina, el paciente carga su historia clínica porque el sistema no puede."
+        </p>
+
+        <p class="text-base text-cura-accentLight text-center md:text-left max-w-4xl border-l-4 border-cura-accent pl-4 italic">
+          Sin historia clínica, no hay medicina.
+        </p>
+      </div>
+
+      <!-- METADATA -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-cura-card border border-cura-accent/40 rounded-xl p-6 shadow-lg">
+        <div class="flex items-start gap-3">
+          <i class="ph-bold ph-user-circle text-cura-accent text-2xl shrink-0"></i>
+          <div>
+            <p class="text-xs text-cura-accentLight uppercase tracking-wider">Autor</p>
+            <p class="text-sm font-semibold text-white">Franco A. Paganini</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i class="ph-bold ph-calendar text-cura-accent text-2xl shrink-0"></i>
+          <div>
+            <p class="text-xs text-cura-accentLight uppercase tracking-wider">Publicación</p>
+            <p class="text-sm font-semibold text-white">Noviembre 2025</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i class="ph-bold ph-git-branch text-cura-accent text-2xl shrink-0"></i>
+          <div>
+            <p class="text-xs text-cura-accentLight uppercase tracking-wider">Versión</p>
+            <p class="text-sm font-semibold text-white">1.0</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <i class="ph-bold ph-clock text-cura-accent text-2xl shrink-0"></i>
+          <div>
+            <p class="text-xs text-cura-accentLight uppercase tracking-wider">Lectura</p>
+            <p class="text-sm font-semibold text-white">20-25 minutos</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTONES PRINCIPALES -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start" data-aos="fade-up">
+        <a href="#descargar-pdf" class="group inline-flex items-center justify-center gap-3 px-6 py-3 bg-white hover:bg-gray-100 text-cura-primary font-bold text-sm rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/50 hover:-translate-y-1 ring-2 ring-transparent hover:ring-cura-accent/50">
+          <i class="ph-bold ph-download text-xl group-hover:scale-110 transition-transform"></i>
+          Descargar PDF
+        </a>
+        <a href="#resumen-ejecutivo" class="group inline-flex items-center justify-center gap-3 px-6 py-3 bg-cura-card hover:bg-cura-card/80 text-white font-bold text-sm rounded-full border border-cura-accent/40 hover:border-cura-accent transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1">
+          <i class="ph-bold ph-article text-xl group-hover:scale-110 transition-transform"></i>
+          Leer Resumen
+        </a>
+        <a href="#visor-completo" class="group inline-flex items-center justify-center gap-3 px-6 py-3 bg-cura-accent/20 hover:bg-cura-accent/30 text-cura-accentLight font-bold text-sm rounded-full border border-cura-accent hover:border-white transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-1">
+          <i class="ph-bold ph-book-open text-xl group-hover:scale-110 transition-transform"></i>
+          Ver publicación completa
+        </a>
+      </div>
+    </section>
+
+    <!-- HISTORIA: EL DÍA QUE MARÍA CASI MUERE -->
+    <section class="space-y-6" data-aos="fade-up">
+      <div class="bg-gradient-to-br from-cura-card to-cura-primary border border-cura-accent/40 rounded-xl p-8 shadow-lg">
+        
+        <div class="flex items-center gap-3 mb-6">
+          <i class="ph-bold ph-heartbeat text-cura-accent text-3xl animate-pulse"></i>
+          <h2 class="text-2xl font-bold text-white">El día que María casi muere</h2>
+        </div>
+        
+        <div class="space-y-4 text-cura-accentLight leading-relaxed">
+          <p>
+            María llegó a la guardia con dolor torácico. El sistema la marcaba como paciente nueva. <strong class="text-white">No lo era.</strong>
+            Tenía antecedentes, medicación, alergias. Nada de eso estaba disponible para el médico que la atendía.
+          </p>
+          
+          <p>
+            El médico dudó. Miró el electrocardiograma. Miró la guardia llena. Sin información clínica previa, decidió con lo que tenía.
+            <strong class="text-white">Podía estar tomando una decisión equivocada. No tenía forma de saberlo.</strong>
+          </p>
+          
+          <p class="text-xl font-semibold text-cura-accentLight italic border-l-4 border-cura-accent pl-4">
+            "Trabajó a ciegas. Y lo sabía."
+          </p>
+          
+          <p class="text-sm text-cura-accent/80">
+            Esta no es una historia excepcional. Es el lunes en cualquier hospital de América Latina.
+          </p>
+          
+          <p class="text-base text-white font-medium mt-4 italic">
+            Porque cuando el sistema no guarda la información, alguien tiene que hacerlo.
+          </p>
+        </div>
+
+        <div class="mt-6 pt-6 border-t border-cura-accent/20">
+          <p class="text-base text-white font-semibold leading-relaxed">
+            No fue un error aislado. Fue un sistema que no pudo ver lo que ya sabía.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FRASE DE CONTEXTO ANTES DE PROBLEMÁTICA REGIONAL -->
+    <section class="space-y-6" data-aos="fade-up">
+      <div class="bg-cura-accent/10 border border-cura-accent/30 rounded-xl p-6 text-center">
+        <p class="text-xl font-semibold text-cura-accentLight">
+          <i class="ph-bold ph-magnifying-glass text-cura-accent mr-2"></i>
+          Lo que le pasó a María tiene nombre: <strong class="text-white">fragmentación sanitaria.</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- FRASES CLAVE -->
+    <section class="space-y-6" data-aos="fade-up">
+      <div class="grid md:grid-cols-2 gap-4">
+        
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-quotes text-cura-accent text-4xl shrink-0"></i>
+            <p class="text-xl font-semibold text-white leading-relaxed">
+              “En América Latina, el paciente es su propia historia clínica ambulante.”
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-quotes text-cura-accent text-4xl shrink-0"></i>
+            <p class="text-xl font-semibold text-white leading-relaxed">
+              “La fragmentación no es una falla aislada. Es el sistema.”
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg md:col-span-2">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-warning-octagon text-cura-accent text-4xl shrink-0"></i>
+            <p class="text-lg font-medium text-cura-accentLight leading-relaxed">
+              <strong class="text-white">“La mayoría de los errores clínicos evitables no ocurren por falta de conocimiento, sino por falta de información.”</strong>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABSTRACT / RESUMEN EJECUTIVO -->
+    <section id="resumen-ejecutivo" class="scroll-mt-24">
+      <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-8 shadow-lg" data-aos="fade-up">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="ph-bold ph-file-text text-cura-accent text-3xl"></i>
+          <h2 class="text-2xl font-bold text-white">Resumen Ejecutivo</h2>
+        </div>
+        <div class="prose prose-invert max-w-none text-cura-accentLight leading-relaxed space-y-4">
+          <p class="text-base">En América Latina, millones de pacientes transitan sistemas de salud fragmentados donde la información clínica no circula. Esta investigación analiza el impacto real de esa desconexión: médicos que toman decisiones sin antecedentes, tratamientos duplicados, errores evitables y continuidad asistencial interrumpida.</p>
+          <p class="text-base">A partir de casos clínicos plausibles, evidencia regional y análisis comparado, el trabajo muestra que la fragmentación no es una falla aislada, sino una característica estructural de los sistemas sanitarios. En ausencia de interoperabilidad, el paciente se convierte en el único portador de su historia clínica, trasladando información crítica entre instituciones que no se comunican.</p>
+          <p class="text-base">El estudio examina cómo esta dinámica afecta la seguridad del paciente, incrementa eventos adversos y genera costos sanitarios innecesarios. También analiza experiencias internacionales y regionales que han avanzado en interoperabilidad, identificando resultados concretos y límites de implementación.</p>
+          <p class="text-base">Finalmente, se presenta el modelo C.U.R.A. como una respuesta posible dentro del marco de infraestructura pública digital en salud, evaluando su viabilidad, desafíos y riesgos. Más que una solución definitiva, el trabajo plantea una pregunta central: ¿cuántos errores clínicos seguimos aceptando como normales en sistemas que no comparten información?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FRASE DE TRANSICIÓN ANTES DE PROBLEMÁTICA REGIONAL -->
+    <section class="space-y-6" data-aos="fade-up">
+      <div class="text-center">
+        <p class="text-lg text-cura-accentLight italic border-t border-b border-cura-accent/30 py-4 inline-block px-6">
+          “No es un problema sin solución. Pero tampoco una solución simple.”
+        </p>
+      </div>
+    </section>
+
+    <!-- PROBLEMÁTICA REGIONAL -->
+    <section class="space-y-6">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Problemática Regional</h2>
+        <p class="text-cura-accentLight text-lg">Desafíos estructurales de la fragmentación sanitaria en América Latina</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-warning text-cura-accent text-3xl shrink-0"></i>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Fragmentación Sistémica</h3>
+              <p class="text-sm text-cura-accentLight">La atención en América Latina está dividida en múltiples subsistemas —público, privado y de seguridad social— que no comparten información entre sí. Esto genera registros clínicos incompletos, duplicación de procesos y falta de coordinación entre profesionales, obligando al paciente a actuar como único vínculo entre instituciones.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="150">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-repeat text-cura-accent text-3xl shrink-0"></i>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Duplicación de Estudios</h3>
+              <p class="text-sm text-cura-accentLight">La ausencia de intercambio de datos clínicos provoca que estudios diagnósticos se repitan innecesariamente. Esto no solo incrementa los costos del sistema, sino que retrasa diagnósticos, expone a los pacientes a riesgos evitables y reduce la eficiencia del gasto sanitario.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-map-pin text-cura-accent text-3xl shrink-0"></i>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Inequidad Territorial</h3>
+              <p class="text-sm text-cura-accentLight">El acceso a servicios de salud varía significativamente según la región. Las zonas rurales o alejadas suelen tener menor disponibilidad de especialistas y tecnología, mientras que la concentración de servicios en grandes centros urbanos profundiza la desigualdad en la atención.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="250">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-first-aid text-cura-accent text-3xl shrink-0"></i>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Discontinuidad Asistencial</h3>
+              <p class="text-sm text-cura-accentLight">La falta de interoperabilidad rompe el seguimiento clínico del paciente. Cada consulta comienza desde cero, sin acceso a antecedentes relevantes, lo que aumenta el riesgo de errores, especialmente en enfermedades crónicas o tratamientos prolongados.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="300">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-prohibit text-cura-accent text-3xl shrink-0"></i>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Barreras de Acceso</h3>
+              <p class="text-sm text-cura-accentLight">Los sistemas fragmentados generan obstáculos administrativos y burocráticos que dificultan el acceso oportuno a la atención. A esto se suma la exclusión digital, que afecta principalmente a poblaciones vulnerables.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="350">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-eye-slash text-cura-accent text-3xl shrink-0"></i>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Opacidad Informacional</h3>
+              <p class="text-sm text-cura-accentLight">La información clínica no es trazable ni auditable de forma integral. Esto limita la capacidad de evaluar resultados, dificulta la vigilancia epidemiológica y reduce la calidad de las decisiones en políticas públicas.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTEXTO PREVIO A PROPUESTA (NEUTRALIZACIÓN DE PROTAGONISMO C.U.R.A.) -->
+    <section class="space-y-6" data-aos="fade-up">
+      <div class="bg-cura-accent/10 border border-cura-accent/30 rounded-xl p-6">
+        <p class="text-base text-cura-accentLight leading-relaxed">
+          Entre las posibles respuestas a esta fragmentación, distintos países exploran modelos de interoperabilidad con diferentes enfoques técnicos y regulatorios. C.U.R.A. es una de estas propuestas.
+        </p>
+      </div>
+    </section>
+
+    <!-- MODELO C.U.R.A. -->
+    <section class="space-y-6">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Propuesta: El Modelo C.U.R.A.</h2>
+        <p class="text-cura-accentLight text-lg">Infraestructura pública digital para la salud federal</p>
+      </div>
+
+      <div class="space-y-4">
+        
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-share-network text-cura-accent text-4xl shrink-0"></i>
+            <div class="flex-1">
+              <h3 class="text-xl font-bold text-white mb-3">Interoperabilidad Semántica</h3>
+              <p class="text-sm text-cura-accentLight leading-relaxed">El modelo propone el uso de estándares internacionales que permitan que la información clínica sea comprendida de forma uniforme entre sistemas, evitando ambigüedades y errores en la interpretación de datos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg" data-aos="fade-up" data-aos-delay="150">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-shield-check text-cura-accent text-4xl shrink-0"></i>
+            <div class="flex-1">
+              <h3 class="text-xl font-bold text-white mb-3">Soberanía de Datos</h3>
+              <p class="text-sm text-cura-accentLight leading-relaxed">Se plantea una infraestructura que garantice que los datos sensibles permanezcan bajo jurisdicción nacional, con control estatal y mecanismos claros de protección y acceso.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-robot text-cura-accent text-4xl shrink-0"></i>
+            <div class="flex-1">
+              <h3 class="text-xl font-bold text-white mb-3">IA Auditada y Transparente</h3>
+              <p class="text-sm text-cura-accentLight leading-relaxed">La integración de inteligencia artificial se basa en principios de trazabilidad, auditabilidad y supervisión ética, evitando decisiones automatizadas sin control humano.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg" data-aos="fade-up" data-aos-delay="250">
+          <div class="flex items-start gap-4">
+            <i class="ph-bold ph-network text-cura-accent text-4xl shrink-0"></i>
+            <div class="flex-1">
+              <h3 class="text-xl font-bold text-white mb-3">Arquitectura Híbrida Federada</h3>
+              <p class="text-sm text-cura-accentLight leading-relaxed">El sistema se organiza en nodos distribuidos que permiten compartir información sin centralizarla completamente, asegurando disponibilidad, escalabilidad y resiliencia.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- IMPACTO REGIONAL -->
+    <section class="space-y-6">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Impacto Regional Proyectado</h2>
+        <p class="text-cura-accentLight text-lg">Transformación sanitaria en América Latina</p>
+      </div>
+
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-8 shadow-lg" data-aos="fade-up">
+        <div class="prose prose-invert max-w-none text-cura-accentLight leading-relaxed space-y-4">
+          <p class="text-base">La implementación de modelos interoperables en América Latina podría mejorar significativamente la continuidad asistencial, reducir eventos adversos evitables y optimizar el uso de recursos sanitarios. Experiencias regionales muestran que la integración de datos clínicos disminuye la duplicación de estudios y mejora la calidad de la atención.</p>
+          <p class="text-base">Además, la interoperabilidad fortalece la capacidad de los sistemas para responder a emergencias sanitarias, mejora la toma de decisiones basada en datos y permite avanzar hacia modelos de cobertura universal más equitativos.</p>
+          <p class="text-base">Sin embargo, su impacto depende de factores como la gobernanza, la adopción de estándares y la coordinación entre actores públicos y privados.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARCO METODOLÓGICO -->
+    <section class="space-y-6">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Marco Metodológico</h2>
+        <p class="text-cura-accentLight text-lg">Aproximación analítica y fundamentos del estudio</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-cura-accent/20 flex items-center justify-center shrink-0">
+              <span class="text-cura-accent font-bold text-xl">01</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Análisis Comparado</h3>
+              <p class="text-sm text-cura-accentLight">Se analizaron experiencias internacionales de interoperabilidad en Europa, América del Norte y América Latina, identificando modelos exitosos y sus condiciones de implementación.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="150">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-cura-accent/20 flex items-center justify-center shrink-0">
+              <span class="text-cura-accent font-bold text-xl">02</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Estándares Internacionales</h3>
+              <p class="text-sm text-cura-accentLight">El estudio se apoya en estándares reconocidos como HL7 FHIR, DICOM e IHE, junto con terminologías clínicas como SNOMED-CT y LOINC, que permiten estructurar y compartir información de manera consistente.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-cura-accent/20 flex items-center justify-center shrink-0">
+              <span class="text-cura-accent font-bold text-xl">03</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Gobernanza Digital</h3>
+              <p class="text-sm text-cura-accentLight">Se evaluaron marcos regulatorios, políticas de datos y modelos de gobernanza necesarios para garantizar interoperabilidad, protección de datos y sostenibilidad institucional.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-6 shadow-md hover:border-cura-accent transition-all duration-300 hover:shadow-lg hover:-translate-y-1" data-aos="fade-up" data-aos-delay="250">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-cura-accent/20 flex items-center justify-center shrink-0">
+              <span class="text-cura-accent font-bold text-xl">04</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white mb-2">Salud Pública Basada en Evidencia</h3>
+              <p class="text-sm text-cura-accentLight">Se integró análisis de datos sanitarios, literatura científica y reportes de organismos internacionales para evaluar el impacto de la fragmentación en resultados de salud.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FRASE ANTES DEL VISOR PDF -->
+    <section class="space-y-6" data-aos="fade-up">
+      <div class="text-center">
+        <p class="text-lg text-cura-accentLight italic bg-cura-accent/10 rounded-xl p-6 border border-cura-accent/30">
+          <i class="ph-bold ph-question text-cura-accent mr-2"></i>
+          “Este documento intenta responder una pregunta simple: ¿cuántos errores estamos aceptando como normales?”
+        </p>
+      </div>
+    </section>
+
+    <!-- VISOR PDF -->
+    <section id="visor-completo" class="space-y-6 scroll-mt-24">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Publicación Completa</h2>
+        <p class="text-cura-accentLight text-lg">Visor del documento en formato PDF</p>
+      </div>
+
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-lg" data-aos="fade-up">
+        <div class="bg-white rounded-lg overflow-hidden" style="height: 600px;">
+          <iframe 
+            src="paper.pdf" 
+            class="w-full h-full"
+            title="Medicina a ciegas - Fragmentación sanitaria e interoperabilidad en América Latina"
+          ></iframe>
+        </div>
+        <p class="text-xs text-cura-accentLight text-center mt-3">
+          <i class="ph-bold ph-info"></i> Si el visor no carga correctamente, descargue el PDF completo desde el botón inferior
+        </p>
+      </div>
+    </section>
+
+    <!-- DESCARGA DEL PAPER -->
+    <section id="descargar-pdf" class="scroll-mt-24">
+      <div class="bg-gradient-to-br from-cura-card to-cura-primary border border-cura-accent/40 rounded-xl p-8 shadow-xl text-center" data-aos="zoom-in">
+        <i class="ph-bold ph-file-pdf text-6xl text-cura-accent mb-4"></i>
+        <h3 class="text-2xl font-bold text-white mb-3">Descargar Versión Completa</h3>
+        <p class="text-cura-accentLight mb-6">Acceda al paper completo en formato PDF de alta calidad</p>
+        
+        <a href="paper.pdf" download="Medicina_a_ciegas_fragmentacion_sanitaria_LATAM.pdf" 
+           class="group inline-flex items-center gap-3 px-8 py-4 bg-white hover:bg-gray-100 text-cura-primary font-bold text-base rounded-full transition-all duration-300 shadow-lg hover:shadow-cura-accent/50 hover:-translate-y-1 ring-2 ring-transparent hover:ring-cura-accent/50">
+          <i class="ph-bold ph-download-simple text-2xl group-hover:scale-110 transition-transform"></i>
+          Descargar PDF
+        </a>
+
+        <div class="flex items-center justify-center gap-6 mt-6 text-sm text-cura-accentLight">
+          <span class="flex items-center gap-2">
+            <i class="ph-bold ph-file"></i> 3.2 MB
+          </span>
+          <span class="flex items-center gap-2">
+            <i class="ph-bold ph-article"></i> PDF
+          </span>
+          <span class="flex items-center gap-2">
+            <i class="ph-bold ph-git-branch"></i> Versión 1.0
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOBRE EL AUTOR (VERSIÓN REDUCIDA) -->
+    <section class="space-y-6">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Sobre el Autor</h2>
+      </div>
+
+      <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-8 shadow-lg" data-aos="fade-up">
+        <div class="flex flex-col md:flex-row gap-6 items-center md:items-start">
+          
+          <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-cura-accent shadow-md bg-white shrink-0">
+            <img src="/ID01-41316202/profile.png" alt="Franco Agustin Paganini" class="w-full h-full object-cover">
+          </div>
+
+          <div class="flex-1">
+            <h3 class="text-2xl font-bold text-white mb-2">Franco A. Paganini</h3>
+            <a href="https://linkedin.com/in/franco-paganini" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-[#0077b5] hover:bg-[#005e93] text-white text-sm font-semibold rounded-md transition-colors mb-4">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              LinkedIn
+            </a>
+
+            <div class="text-sm text-cura-accentLight space-y-4 leading-relaxed">
+              <p>
+                <strong>Franco Agustín Paganini</strong> es Especialista en Gestión de Salud Digital (ADEN Business School / George Washington University) y profesional de tecnologías de la información con más de diez años de trayectoria. Su formación combina arquitectura técnica con estrategia sanitaria, complementada con certificaciones de la OPS en Sistemas de Información para la Salud y el estándar HL7 FHIR.
+              </p>
+              <p>
+                Cuenta con especializaciones en Derecho Presupuestario y Análisis de Legislación con eje en Salud (Congreso de la Nación), y es Experto en Técnica Normativa y Legislativa (Universidad Tecnológica Nacional). Es autor intelectual de la Ley C.U.R.A., iniciativa que nace de su experiencia personal al enfrentar la fragmentación del sistema, con el objetivo de que nadie vuelva a atravesar las barreras de un sistema desconectado.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERENCIAS -->
+    <section class="space-y-6">
+      <div class="text-center md:text-left" data-aos="fade-down">
+        <h2 class="text-3xl font-bold text-white mb-3">Referencias Institucionales</h2>
+        <p class="text-cura-accentLight text-lg">Organismos y estándares internacionales citados</p>
+      </div>
+
+      <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-8 shadow-lg" data-aos="fade-up">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-globe text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">OMS</span>
+            <span class="text-xs text-cura-accentLight text-center">Organización Mundial de la Salud</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-globe-hemisphere-west text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">OPS</span>
+            <span class="text-xs text-cura-accentLight text-center">Organización Panamericana de la Salud</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-code text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">HL7 FHIR</span>
+            <span class="text-xs text-cura-accentLight text-center">Fast Healthcare Interoperability Resources</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-chart-line text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">OECD</span>
+            <span class="text-xs text-cura-accentLight text-center">Organización para la Cooperación y el Desarrollo Económicos</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-shield-check text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">EHDS</span>
+            <span class="text-xs text-cura-accentLight text-center">European Health Data Space</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-bank text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">Banco Mundial</span>
+            <span class="text-xs text-cura-accentLight text-center">World Bank Group</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-pulse text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">The Lancet</span>
+            <span class="text-xs text-cura-accentLight text-center">Revista médica internacional</span>
+          </div>
+
+          <div class="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300">
+            <i class="ph-bold ph-buildings text-cura-accent text-3xl"></i>
+            <span class="text-sm font-semibold text-white text-center">BID / CEPAL</span>
+            <span class="text-xs text-cura-accentLight text-center">Banco Interamericano de Desarrollo / Comisión Económica para América Latina</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-cura-primaryDark py-8 border-t border-cura-accent/20 text-center text-xs text-cura-accentLight">
+    <p>© 2025 Ley C.U.R.A. - Investigación en Fragmentación Sanitaria</p>
+  </footer>
+
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script> 
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Inicializar AOS
+    document.addEventListener('DOMContentLoaded', function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50
+      });
+    });
+
+    // Inicializar Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true
+    });
+
+    lenis.on('scroll', AOS.refresh);
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  </script>
+</body>
+</html>

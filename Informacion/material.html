@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Conferencias | Ley C.U.R.A.</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cura: {
+              primary: '#004E85',
+              primaryDark: '#00345C',
+              card: '#065D9B',
+              accent: '#00C2FF',
+              accentLight: '#59D2FF'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #004E85;
+    }
+
+    .glass-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+
+<body class="text-white font-sans selection:bg-cura-accent selection:text-cura-primaryDark overflow-x-hidden">
+
+<header class="sticky top-0 z-30 bg-cura-primaryDark text-white border-b border-cura-accent/40 shadow-sm">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
+
+    <div class="flex items-center gap-2">
+      <img src="/Informacion/logo.png" alt="Logo C.U.R.A." class="h-16 w-auto object-contain shrink-0" />
+
+      <div class="leading-tight">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-cura-accentLight">
+          CONFERENCIAS
+        </p>
+
+        <p class="text-sm font-bold text-white">
+          Infraestructura e Interoperabilidad Sanitaria
+        </p>
+      </div>
+    </div>
+
+    <nav class="flex items-center gap-6 text-sm font-medium">
+
+      <a href="/Informacion/recursos.html"
+         class="group text-cura-accentLight hover:text-white transition-all duration-300 flex items-center gap-1 hover:-translate-y-0.5">
+
+        <span class="transition-transform duration-300 group-hover:-translate-x-1 font-bold text-lg">←</span>
+        Volver
+      </a>
+
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 py-12">
+
+  <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl">
+
+    <!-- HERO -->
+    <div class="mb-12" data-aos="fade-up">
+
+      <img src="/banner-leycura.png"
+           alt="ASIGODE"
+           class="w-full rounded-2xl border border-cura-accent/30 shadow-xl mb-8">
+
+      <div class="space-y-4">
+
+        <span class="text-cura-accentLight uppercase tracking-[0.25em] text-xs font-bold">
+          Conferencia Internacional
+        </span>
+
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+          Infraestructura e interoperabilidad del sistema de salud pública de Argentina
+        </h1>
+
+        <p class="text-white/70 max-w-3xl text-lg leading-relaxed">
+          Presentación realizada en la Conferencia Internacional ASIGODE 2026
+          (Asociación Internacional de Estudios en Gobierno y Desarrollo),
+          centrada en interoperabilidad sanitaria, infraestructura pública digital
+          y continuidad asistencial en América Latina.
+        </p>
+
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+    <section class="mb-16" data-aos="zoom-in">
+
+      <div class="aspect-video rounded-2xl overflow-hidden border border-cura-accent/30 shadow-2xl">
+
+        <iframe
+          class="w-full h-full"
+          src="https://www.youtube.com/embed/W1IDuu3B5fw"
+          title="Infraestructura e interoperabilidad del sistema de salud pública de Argentina"
+          frameborder="0"
+          allowfullscreen>
+        </iframe>
+
+      </div>
+
+    </section>
+
+    <!-- INFO -->
+    <section class="grid md:grid-cols-3 gap-6 mb-16">
+
+      <div class="glass-card rounded-2xl p-6" data-aos="fade-up">
+        <p class="text-cura-accentLight text-xs uppercase tracking-widest mb-2">
+          Organización
+        </p>
+
+        <h3 class="text-xl font-bold mb-2">
+          ASIGODE
+        </h3>
+
+        <p class="text-white/70 text-sm">
+          Asociación Internacional de Estudios en Gobierno y Desarrollo.
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="100">
+        <p class="text-cura-accentLight text-xs uppercase tracking-widest mb-2">
+          Modalidad
+        </p>
+
+        <h3 class="text-xl font-bold mb-2">
+          Online
+        </h3>
+
+        <p class="text-white/70 text-sm">
+          Conferencia internacional transmitida digitalmente.
+        </p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-6" data-aos="fade-up" data-aos-delay="200">
+        <p class="text-cura-accentLight text-xs uppercase tracking-widest mb-2">
+          Temática
+        </p>
+
+        <h3 class="text-xl font-bold mb-2">
+          Salud Digital
+        </h3>
+
+        <p class="text-white/70 text-sm">
+          Infraestructura pública digital e interoperabilidad sanitaria.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ASIGODE -->
+    <section data-aos="fade-up">
+
+      <div class="glass-card rounded-2xl p-8 border border-cura-accent/20">
+
+        <img src="/banner.png"
+             alt="ASIGODE"
+             class="w-full max-w-2xl rounded-xl mb-6">
+
+        <p class="text-white/80 leading-relaxed mb-6">
+          ASIGODE es una organización internacional orientada al análisis,
+          investigación y desarrollo de políticas públicas, gobernanza e innovación institucional.
+        </p>
+
+        <a href="https://www.asigode.org"
+           target="_blank"
+           class="inline-flex items-center gap-2 bg-cura-accent text-cura-primaryDark px-6 py-3 rounded-full font-bold hover:bg-white transition">
+
+          Visitar ASIGODE
+
+        </a>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+<footer class="py-12 text-center">
+  <p class="text-sm text-white/40">
+    Copyright © 2026 C.U.R.A. - Todos los derechos reservados.
+  </p>
+</footer>
+
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+
+  AOS.init({
+    duration: 800,
+    once: true,
+    offset: 50
+  });
+</script>
+
+</body>
+</html>

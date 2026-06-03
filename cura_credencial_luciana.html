@@ -1,0 +1,336 @@
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; }
+
+  .wave-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .proto-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #f1f1f1;
+    color: #888;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 0.5px solid #ddd;
+    text-transform: uppercase;
+  }
+
+  .card-wrap {
+    font-family: -apple-system, 'Inter', sans-serif;
+    background: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 0.5px solid #e0e7ef;
+    position: relative;
+    max-width: 390px;
+    margin: 0 auto;
+  }
+
+  .header-strip {
+    background: #004E85;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .vital-section {
+    background: #fff;
+    padding: 16px 16px 4px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .vital-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .vital-card {
+    border-radius: 14px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vital-card.blood {
+    background: #FFF0F0;
+    border: 1px solid #ffd6d6;
+    grid-column: span 1;
+  }
+
+  .vital-card.allergy {
+    background: #FFFBEB;
+    border: 1px solid #fde68a;
+    grid-column: span 1;
+  }
+
+  .vital-card.meds {
+    background: #F0F7FF;
+    border: 1px solid #bfdbfe;
+    grid-column: span 2;
+  }
+
+  .vital-card.conditions {
+    background: #F5F0FF;
+    border: 1px solid #ddd6fe;
+    grid-column: span 2;
+  }
+
+  .vital-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .vital-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  .vital-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1;
+  }
+
+  .vital-value.small {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #1a1a1a;
+  }
+
+  .vital-value.inline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .tag.red { background: #fee2e2; color: #b91c1c; }
+  .tag.amber { background: #fef3c7; color: #92400e; }
+  .tag.blue { background: #dbeafe; color: #1e40af; }
+  .tag.purple { background: #ede9fe; color: #5b21b6; }
+
+  .divider {
+    height: 0.5px;
+    background: #e5e7eb;
+    margin: 0 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .person-section {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e0eaf4;
+    border: 2px solid #b8d0e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #004E85;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .person-info .name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.2;
+  }
+
+  .person-info .meta {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 3px;
+    line-height: 1.6;
+  }
+
+  .emergency-section {
+    padding: 0 16px 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .emergency-btn {
+    width: 100%;
+    background: #004E85;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 13px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+  }
+
+  .footer-strip {
+    background: #f8fafc;
+    border-top: 0.5px solid #e5e7eb;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-id {
+    font-size: 10px;
+    color: #9ca3af;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+</style>
+
+<h2 class="sr-only">Credencial médica de emergencias – Luciana Tello Viera, datos clínicos críticos ordenados por prioridad</h2>
+
+<div style="padding: 12px 0;">
+
+  <div style="text-align:center; margin-bottom: 10px;">
+    <span class="proto-badge">
+      <i class="ti ti-shield-off" aria-hidden="true" style="font-size:10px;"></i>
+      Prototipo conceptual · Sin validez legal
+    </span>
+  </div>
+
+  <div class="card-wrap">
+
+    <div class="header-strip">
+      <div class="header-text">Credencial Única de Salud · C.U.R.A.</div>
+      <div class="header-text" style="opacity:0.7;">Nivel 2 — Urgencias</div>
+    </div>
+
+    <div class="wave-bg">
+      <svg width="390" height="100%" viewBox="0 0 390 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,60 Q120,40 240,80 T390,60 L390,500 L0,500 Z" fill="#EAF3FB" opacity="0.35"/>
+        <path d="M0,90 Q100,70 200,100 T390,85 L390,500 L0,500 Z" fill="#DDEEF9" opacity="0.25"/>
+      </svg>
+    </div>
+
+    <div class="vital-section">
+      <div class="vital-grid">
+
+        <div class="vital-card blood">
+          <span class="vital-label"><i class="ti ti-droplet" aria-hidden="true"></i> Sangre</span>
+          <span class="vital-value">A+</span>
+        </div>
+
+        <div class="vital-card allergy">
+          <span class="vital-label"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Alergias</span>
+          <span class="vital-value small" style="color:#92400e;">Sin alergias<br>registradas</span>
+        </div>
+
+        <div class="vital-card meds">
+          <span class="vital-label"><i class="ti ti-pill" aria-hidden="true"></i> Medicación activa</span>
+          <div class="vital-value inline-tags">
+            <span class="tag blue">Sertralina 100mg/día</span>
+            <span class="tag blue">Clonazepam 1mg/día</span>
+          </div>
+        </div>
+
+        <div class="vital-card conditions">
+          <span class="vital-label"><i class="ti ti-heart-rate-monitor" aria-hidden="true"></i> Condiciones clínicas</span>
+          <div class="vital-value inline-tags">
+            <span class="tag purple">Trastorno de ansiedad</span>
+            <span class="tag amber">Tratamiento psiquiátrico activo</span>
+          </div>
+          <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+            <span class="tag" style="background:#e0f0e8; color:#1a5c35; font-size:11px;">Apendicectomía — jul 2015</span>
+            <span class="tag" style="background:#e0f0e8; color:#1a5c35; font-size:11px;">Colecistectomía — feb 2025</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="person-section">
+      <div class="avatar">LT</div>
+      <div class="person-info">
+        <div class="name">Luciana Tello Viera</div>
+        <div class="meta">
+          DNI 42.721.702<br>
+          Nac. 26/07/2000 · 25 años
+        </div>
+      </div>
+    </div>
+
+    <div class="emergency-section">
+      <button class="emergency-btn" onclick="window.location.href='tel:+5491157595097'">
+        <i class="ti ti-phone-outgoing" aria-hidden="true" style="font-size:18px;"></i>
+        Llamar contacto de emergencia
+      </button>
+    </div>
+
+    <div class="footer-strip">
+      <span class="footer-id">ID C.U.R.A.: 02-42721702</span>
+      <span class="footer-id">leycura.org</span>
+    </div>
+
+  </div>
+</div>

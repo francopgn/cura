@@ -1,345 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>C.U.R.A. | Luciana Tello Viera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  /* Forzar body a ocupar toda la pantalla sin márgenes */
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-  }
-
-  .cura-wrap {
-    font-family: -apple-system, 'Segoe UI', sans-serif;
-    background: #ffffff;
-    width: 100%;
-    height: 100%;           /* ← cambio clave: usa toda la altura disponible */
-    min-height: 100vh;     /* respaldo para navegadores */
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* El body-area ocupa el espacio restante entre wave-sep y footer-bar */
-  .body-area {
-    flex: 1;               /* ← ocupa todo el espacio vertical sobrante */
-    padding: 0 16px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  /* Para que el último elemento (emerg-btn) no quede flotando,
-     se puede agregar margin-top automático al final si hay espacio extra,
-     pero con flex:1 ya se distribuye. Opcional: justificar contenido */
-  .body-area {
-    justify-content: space-between;  /* opcional: separa elementos verticalmente */
-  }
-
-  /* El resto de tu CSS se mantiene igual */
-  .proto-bar {
-    background: #f0f2f4;
-    text-align: center;
-    padding: 5px 12px;
-    font-size: 11px;
-    color: #7a8a99;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    border-bottom: 1px solid #dde3ea;
-  }
-
-  .top-bar {
-    background: #004E85;
-    padding: 10px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .top-bar-left {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .top-bar-title {
-    font-size: 11px;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-  }
-
-  .top-bar-sub {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.65);
-    letter-spacing: 0.05em;
-  }
-
-  .top-bar-right {
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.7);
-    text-align: right;
-    letter-spacing: 0.04em;
-  }
-
-  .wave-sep {
-    display: block;
-    width: 100%;
-    height: 32px;
-    background: #004E85;
-  }
-
-  .wave-sep svg {
-    display: block;
-    width: 100%;
-    height: 32px;
-  }
-
-  .vital-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .vcard {
-    border-radius: 14px;
-    padding: 13px 14px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    border: 1px solid transparent;
-  }
-
-  .vcard.blood { background: #EAF3FB; border-color: #B5D4F4; }
-  .vcard.allergy { background: #FFF8E6; border-color: #FAC775; }
-  .vcard.full { grid-column: span 2; }
-  .vcard.meds { background: #EAF3FB; border-color: #B5D4F4; }
-  .vcard.cond { background: #EAF3FB; border-color: #B5D4F4; }
-
-  .vcard-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .blood .vcard-label { color: #185FA5; }
-  .allergy .vcard-label { color: #854F0B; }
-  .meds .vcard-label { color: #185FA5; }
-  .cond .vcard-label { color: #185FA5; }
-
-  .vcard-big {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1;
-    color: #0C447C;
-  }
-
-  .vcard-none {
-    font-size: 13px;
-    font-weight: 600;
-    color: #854F0B;
-    line-height: 1.4;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-top: 2px;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .tag-blue { background: #B5D4F4; color: #0C447C; }
-  .tag-amber { background: #FAC775; color: #633806; }
-  .tag-green { background: #C0DD97; color: #27500A; }
-  .tag-mid { background: #dde8f4; color: #185FA5; }
-
-  .div-line {
-    height: 1px;
-    background: #dde8f4;
-    margin: 2px 0;
-  }
-
-  .person-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: #EAF3FB;
-    border: 1px solid #B5D4F4;
-    border-radius: 14px;
-    padding: 14px;
-  }
-
-  .avatar-circle {
-    width: 58px;
-    height: 58px;
-    min-width: 58px;
-    border-radius: 50%;
-    background: #B5D4F4;
-    border: 2px solid #004E85;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    font-weight: 800;
-    color: #004E85;
-    overflow: hidden;
-  }
-
-  .person-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: #042C53;
-    line-height: 1.2;
-  }
-
-  .person-meta {
-    font-size: 12px;
-    color: #185FA5;
-    margin-top: 4px;
-    line-height: 1.6;
-  }
-
-  .emerg-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    background: #004E85;
-    color: #ffffff;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 18px;
-    font-size: 14px;
-    font-weight: 700;
-    width: 100%;
-    cursor: pointer;
-    letter-spacing: 0.02em;
-  }
-
-  .footer-bar {
-    background: #EAF3FB;
-    border-top: 1px solid #B5D4F4;
-    padding: 8px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-txt {
-    font-size: 10px;
-    color: #185FA5;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  /* Ajuste para pantallas grandes: sin márgenes laterales, siempre full width */
-  @media (min-width: 600px) {
-    .cura-wrap {
-      max-width: 100%;
-      margin: 0;
-      border-left: none;
-      border-right: none;
-    }
-    .vcard-big { font-size: 32px; }
-    .body-area { padding: 0 20px 24px; }
-  }
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;min-height:100vh;background:#ffffff;}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased;}
+.wrap{width:100%;min-height:100vh;display:flex;flex-direction:column;}
+.proto-bar{
+  background:#eceff2;
+  text-align:center;
+  padding:6px 16px;
+  font-size:11px;
+  color:#7a8a99;
+  font-weight:600;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  border-bottom:1px solid #d8dfe6;
+  width:100%;
+}
+.top-bar{
+  background:#004E85;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+.top-bar-title{
+  font-size:13px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+  line-height:1.3;
+}
+.top-bar-sub{
+  font-size:11px;
+  color:rgba(255,255,255,0.65);
+  letter-spacing:0.04em;
+  margin-top:2px;
+}
+.top-bar-right{
+  font-size:11px;
+  color:rgba(255,255,255,0.7);
+  text-align:right;
+  line-height:1.6;
+}
+.wave-sep{
+  display:block;
+  width:100%;
+  height:28px;
+  background:#004E85;
+  flex-shrink:0;
+}
+.wave-sep svg{display:block;width:100%;height:28px;}
+.body{
+  flex:1;
+  padding:14px 16px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  width:100%;
+}
+.vital-row{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.vc{
+  border-radius:16px;
+  padding:15px 16px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.vc.blood{background:#EAF3FB;border:1.5px solid #B5D4F4;}
+.vc.allergy{background:#FFF8E6;border:1.5px solid #FAC775;}
+.vc.full{grid-column:span 2;}
+.vc.meds{background:#EAF3FB;border:1.5px solid #B5D4F4;}
+.vc.cond{background:#EAF3FB;border:1.5px solid #B5D4F4;}
+.vc-label{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.blood .vc-label,.meds .vc-label,.cond .vc-label{color:#185FA5;}
+.allergy .vc-label{color:#854F0B;}
+.vc-big{
+  font-size:38px;
+  font-weight:800;
+  line-height:1;
+  color:#004E85;
+  margin-top:2px;
+}
+.vc-none{
+  font-size:14px;
+  font-weight:600;
+  color:#854F0B;
+  line-height:1.4;
+}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.tag{
+  display:inline-block;
+  padding:5px 12px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:600;
+}
+.tb{background:#B5D4F4;color:#042C53;}
+.ta{background:#FAC775;color:#412402;}
+.tg{background:#C0DD97;color:#173404;}
+.sep{height:1px;background:#dde8f4;}
+.sub-label{
+  font-size:11px;
+  color:#185FA5;
+  font-weight:700;
+  letter-spacing:0.07em;
+  text-transform:uppercase;
+}
+.person-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  background:#EAF3FB;
+  border:1.5px solid #B5D4F4;
+  border-radius:16px;
+  padding:16px;
+}
+.avatar{
+  width:64px;
+  height:64px;
+  min-width:64px;
+  border-radius:50%;
+  background:#B5D4F4;
+  border:2.5px solid #004E85;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  font-weight:800;
+  color:#004E85;
+  overflow:hidden;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.pname{font-size:17px;font-weight:700;color:#042C53;line-height:1.2;}
+.pmeta{font-size:13px;color:#185FA5;margin-top:5px;line-height:1.7;}
+.ebtn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  background:#004E85;
+  color:#fff;
+  border:none;
+  border-radius:14px;
+  padding:17px 18px;
+  font-size:16px;
+  font-weight:700;
+  width:100%;
+  cursor:pointer;
+  letter-spacing:0.01em;
+  text-decoration:none;
+}
+.ebtn i{font-size:22px;}
+.ebtn:active{opacity:0.85;}
+.footer{
+  background:#EAF3FB;
+  border-top:1.5px solid #B5D4F4;
+  padding:10px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+.ftxt{
+  font-size:11px;
+  color:#185FA5;
+  font-weight:600;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+}
+@media(min-width:600px){
+  .wrap{max-width:480px;margin:0 auto;min-height:100vh;border-left:1px solid #dde3ea;border-right:1px solid #dde3ea;}
+  .vc-big{font-size:44px;}
+}
 </style>
-<div class="cura-wrap">
+</head>
+<body>
+
+<div class="wrap">
 
   <div class="proto-bar">
-    Prototipo conceptual · Sin validez legal
+    <i class="ti ti-shield-off"></i>&nbsp;Prototipo conceptual · Sin validez legal
   </div>
 
   <div class="top-bar">
-    <div class="top-bar-left">
-      <span class="top-bar-title">Sistema C.U.R.A.</span>
-      <span class="top-bar-sub">Credencial Única de Salud · Nivel 2 Urgencias</span>
+    <div>
+      <div class="top-bar-title">Sistema C.U.R.A.</div>
+      <div class="top-bar-sub">Credencial Única de Salud · Nivel 2 Urgencias</div>
     </div>
     <div class="top-bar-right">leycura.org<br>ID: 02-42721702</div>
   </div>
 
   <div class="wave-sep">
-    <svg viewBox="0 0 400 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0,0 L400,0 L400,8 Q300,32 200,20 Q100,8 0,28 Z" fill="#004E85"/>
+    <svg viewBox="0 0 400 28" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 L400,0 L400,6 Q300,28 200,18 Q100,6 0,24 Z" fill="#004E85"/>
     </svg>
   </div>
 
-  <div class="body-area">
+  <div class="body">
 
     <div class="vital-row">
-      <div class="vcard blood">
-        <span class="vcard-label">SANGRE</span>
-        <span class="vcard-big">A+</span>
+      <div class="vc blood">
+        <span class="vc-label"><i class="ti ti-droplet"></i>Sangre</span>
+        <span class="vc-big">A+</span>
       </div>
-      <div class="vcard allergy">
-        <span class="vcard-label">ALERGIAS</span>
-        <span class="vcard-none">Sin alergias registradas</span>
+      <div class="vc allergy">
+        <span class="vc-label"><i class="ti ti-alert-triangle"></i>Alergias</span>
+        <span class="vc-none">Sin alergias<br>registradas</span>
       </div>
     </div>
 
-    <div class="vcard full meds">
-      <span class="vcard-label">MEDICACIÓN ACTIVA</span>
+    <div class="vc full meds">
+      <span class="vc-label"><i class="ti ti-pill"></i>Medicación activa</span>
       <div class="tags">
-        <span class="tag tag-blue">Sertralina 100 mg/día</span>
-        <span class="tag tag-blue">Clonazepam 1 mg/día</span>
+        <span class="tag tb">Sertralina 100 mg/día</span>
+        <span class="tag tb">Clonazepam 1 mg/día</span>
       </div>
-      <div class="div-line" style="margin-top:8px;"></div>
-      <span style="font-size:11px;color:#185FA5;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-top:2px;">ISRS + BENZODIACEPINA</span>
+      <div class="sep" style="margin-top:8px;"></div>
+      <span class="sub-label">ISRS + Benzodiacepina</span>
     </div>
 
-    <div class="vcard full cond">
-      <span class="vcard-label">Condiciones clínicas</span>
+    <div class="vc full cond">
+      <span class="vc-label"><i class="ti ti-heart-rate-monitor"></i>Condiciones clínicas</span>
       <div class="tags">
-        <span class="tag tag-blue">Trastorno de ansiedad</span>
-        <span class="tag tag-amber">Tratamiento psiquiátrico activo</span>
+        <span class="tag tb">Trastorno de ansiedad</span>
+        <span class="tag ta">Tratamiento psiquiátrico activo</span>
       </div>
-      <div class="div-line" style="margin-top:8px;"></div>
-      <span style="font-size:11px;color:#185FA5;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-top:2px;">Antecedentes quirúrgicos</span>
-      <div class="tags" style="margin-top:4px;">
-        <span class="tag tag-green">Apendicectomía · jul 2015</span>
-        <span class="tag tag-green">Colecistectomía · feb 2025</span>
+      <div class="sep" style="margin-top:8px;"></div>
+      <span class="sub-label" style="margin-bottom:4px;">Antecedentes quirúrgicos</span>
+      <div class="tags">
+        <span class="tag tg">Apendicectomía · jul 2015</span>
+        <span class="tag tg">Colecistectomía · feb 2025</span>
       </div>
     </div>
 
-    <div class="div-line"></div>
+    <div class="sep"></div>
 
     <div class="person-row">
-      <div class="avatar-circle">FP</div>
+      <div class="avatar">LT</div>
       <div>
-        <div class="person-name">Franco Agustín Paganini</div>
-        <div class="person-meta">
-          DNI 41.316.202<br>
-          Nac. 17/10/1998 · 27 años<br>
+        <div class="pname">Luciana Tello Viera</div>
+        <div class="pmeta">
+          DNI 42.721.702<br>
+          Nac. 26/07/2000 · 25 años
         </div>
       </div>
     </div>
 
-    <button class="emerg-btn" onclick="window.location.href='tel:+5491157595097'">
-      📞 Llamar contacto de emergencia
-    </button>
+    <a class="ebtn" href="tel:+5491157595097">
+      <i class="ti ti-phone-outgoing"></i>
+      Llamar contacto de emergencia
+    </a>
 
   </div>
 
-  <div class="footer-bar">
-    <span class="footer-txt">Acceso Nivel 2</span>
-    <span class="footer-txt">República Argentina</span>
+  <div class="footer">
+    <span class="ftxt"><i class="ti ti-lock" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>Acceso Nivel 2</span>
+    <span class="ftxt">República Argentina</span>
   </div>
 
 </div>
+
+</body>
+</html>

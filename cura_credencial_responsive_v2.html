@@ -1,0 +1,291 @@
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  .cura-wrap{
+    font-family:-apple-system,'Segoe UI',sans-serif;
+    background:#ffffff;
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .proto-bar{
+    background:#f0f2f4;
+    text-align:center;
+    padding:5px 12px;
+    font-size:11px;
+    color:#7a8a99;
+    font-weight:500;
+    letter-spacing:0.05em;
+    border-bottom:1px solid #dde3ea;
+  }
+  .top-bar{
+    background:#004E85;
+    padding:10px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .top-bar-left{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+  }
+  .top-bar-title{
+    font-size:11px;
+    font-weight:700;
+    color:#ffffff;
+    letter-spacing:0.07em;
+    text-transform:uppercase;
+  }
+  .top-bar-sub{
+    font-size:10px;
+    color:rgba(255,255,255,0.65);
+    letter-spacing:0.05em;
+  }
+  .top-bar-right{
+    font-size:10px;
+    color:rgba(255,255,255,0.7);
+    text-align:right;
+    letter-spacing:0.04em;
+  }
+  .wave-sep{
+    display:block;
+    width:100%;
+    height:32px;
+    background:#004E85;
+  }
+  .wave-sep svg{
+    display:block;
+    width:100%;
+    height:32px;
+  }
+  .body-area{
+    flex:1;
+    padding:0 16px 20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .vital-row{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+  .vcard{
+    border-radius:14px;
+    padding:13px 14px 12px;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    border:1px solid transparent;
+  }
+  .vcard.blood{background:#EAF3FB;border-color:#B5D4F4;}
+  .vcard.allergy{background:#FFF8E6;border-color:#FAC775;}
+  .vcard.full{grid-column:span 2;}
+  .vcard.meds{background:#EAF3FB;border-color:#B5D4F4;}
+  .vcard.cond{background:#EAF3FB;border-color:#B5D4F4;}
+  .vcard-label{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .blood .vcard-label{color:#185FA5;}
+  .allergy .vcard-label{color:#854F0B;}
+  .meds .vcard-label{color:#185FA5;}
+  .cond .vcard-label{color:#185FA5;}
+  .vcard-big{
+    font-size:28px;
+    font-weight:800;
+    line-height:1;
+    color:#0C447C;
+  }
+  .vcard-none{
+    font-size:13px;
+    font-weight:600;
+    color:#854F0B;
+    line-height:1.4;
+  }
+  .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+  .tag{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+  }
+  .tag-blue{background:#B5D4F4;color:#0C447C;}
+  .tag-amber{background:#FAC775;color:#633806;}
+  .tag-green{background:#C0DD97;color:#27500A;}
+  .tag-mid{background:#dde8f4;color:#185FA5;}
+  .div-line{
+    height:1px;
+    background:#dde8f4;
+    margin:2px 0;
+  }
+  .person-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#EAF3FB;
+    border:1px solid #B5D4F4;
+    border-radius:14px;
+    padding:14px;
+  }
+  .avatar-circle{
+    width:58px;
+    height:58px;
+    min-width:58px;
+    border-radius:50%;
+    background:#B5D4F4;
+    border:2px solid #004E85;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:800;
+    color:#004E85;
+    overflow:hidden;
+  }
+  .person-name{
+    font-size:15px;
+    font-weight:700;
+    color:#042C53;
+    line-height:1.2;
+  }
+  .person-meta{
+    font-size:12px;
+    color:#185FA5;
+    margin-top:4px;
+    line-height:1.6;
+  }
+  .emerg-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    background:#004E85;
+    color:#ffffff;
+    border:none;
+    border-radius:12px;
+    padding:14px 18px;
+    font-size:14px;
+    font-weight:700;
+    width:100%;
+    cursor:pointer;
+    letter-spacing:0.02em;
+  }
+  .emerg-btn i{font-size:20px;}
+  .footer-bar{
+    background:#EAF3FB;
+    border-top:1px solid #B5D4F4;
+    padding:8px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .footer-txt{
+    font-size:10px;
+    color:#185FA5;
+    font-weight:500;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  @media(min-width:600px){
+    .cura-wrap{max-width:480px;margin:0 auto;border-left:1px solid #dde3ea;border-right:1px solid #dde3ea;}
+    .vcard-big{font-size:32px;}
+    .body-area{padding:0 20px 24px;}
+  }
+</style>
+
+<h2 class="sr-only">Credencial médica de emergencias CURA – Luciana Tello Viera, datos clínicos ordenados por prioridad</h2>
+
+<div class="cura-wrap">
+
+  <div class="proto-bar">
+    <i class="ti ti-shield-off" aria-hidden="true"></i>
+    &nbsp;Prototipo conceptual · Sin validez legal
+  </div>
+
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <span class="top-bar-title">Sistema C.U.R.A.</span>
+      <span class="top-bar-sub">Credencial Única de Salud · Nivel 2 Urgencias</span>
+    </div>
+    <div class="top-bar-right">leycura.org<br>ID: 02-42721702</div>
+  </div>
+
+  <div class="wave-sep">
+    <svg viewBox="0 0 400 32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,0 L400,0 L400,8 Q300,32 200,20 Q100,8 0,28 Z" fill="#004E85"/>
+    </svg>
+  </div>
+
+  <div class="body-area">
+
+    <div class="vital-row">
+      <div class="vcard blood">
+        <span class="vcard-label"><i class="ti ti-droplet" aria-hidden="true" style="font-size:14px;"></i> Sangre</span>
+        <span class="vcard-big">A+</span>
+      </div>
+      <div class="vcard allergy">
+        <span class="vcard-label"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:14px;"></i> Alergias</span>
+        <span class="vcard-none">Sin alergias registradas</span>
+      </div>
+    </div>
+
+    <div class="vcard full meds">
+      <span class="vcard-label"><i class="ti ti-pill" aria-hidden="true" style="font-size:14px;"></i> Medicación activa</span>
+      <div class="tags">
+        <span class="tag tag-blue">Sertralina 100 mg/día</span>
+        <span class="tag tag-blue">Clonazepam 1 mg/día</span>
+      </div>
+      <div class="div-line" style="margin-top:8px;"></div>
+      <span style="font-size:11px;color:#185FA5;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-top:2px;">ISRS + Benzodiacepina</span>
+    </div>
+
+    <div class="vcard full cond">
+      <span class="vcard-label"><i class="ti ti-heart-rate-monitor" aria-hidden="true" style="font-size:14px;"></i> Condiciones clínicas</span>
+      <div class="tags">
+        <span class="tag tag-blue">Trastorno de ansiedad</span>
+        <span class="tag tag-amber">Tratamiento psiquiátrico activo</span>
+      </div>
+      <div class="div-line" style="margin-top:8px;"></div>
+      <span style="font-size:11px;color:#185FA5;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;margin-top:2px;">Antecedentes quirúrgicos</span>
+      <div class="tags" style="margin-top:4px;">
+        <span class="tag tag-green">Apendicectomía · jul 2015</span>
+        <span class="tag tag-green">Colecistectomía · feb 2025</span>
+      </div>
+    </div>
+
+    <div class="div-line"></div>
+
+    <div class="person-row">
+      <div class="avatar-circle">LT</div>
+      <div>
+        <div class="person-name">Luciana Tello Viera</div>
+        <div class="person-meta">
+          DNI 42.721.702<br>
+          Nac. 26/07/2000 · 25 años<br>
+          Sangre A+
+        </div>
+      </div>
+    </div>
+
+    <button class="emerg-btn" onclick="window.location.href='tel:+5491157595097'">
+      <i class="ti ti-phone-outgoing" aria-hidden="true"></i>
+      Llamar contacto de emergencia
+    </button>
+
+  </div>
+
+  <div class="footer-bar">
+    <span class="footer-txt"><i class="ti ti-lock" aria-hidden="true" style="font-size:12px;vertical-align:-1px;margin-right:3px;"></i>Acceso Nivel 2</span>
+    <span class="footer-txt">República Argentina</span>
+  </div>
+
+</div>

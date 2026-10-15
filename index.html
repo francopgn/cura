@@ -14,9 +14,9 @@
   <!-- =============================================
        TÍTULO Y META
   ============================================== -->
-  <title>Ley C.U.R.A. | Infraestructura Sanitaria Digital Argentina</title>
+  <title>C.U.R.A. | Marco normativo para una infraestructura pública de salud interoperable</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Ley C.U.R.A. — La primera infraestructura pública nacional de datos de salud de Argentina. Un sistema interoperable que conecta hospitales, farmacias, laboratorios, obras sociales y pacientes." />
+  <meta name="description" content="C.U.R.A. — Marco normativo federal para una infraestructura pública de salud interoperable en Argentina. Proyecto en actualización: federalización de la interoperabilidad sanitaria, con un piso común que respeta las competencias provinciales y los sistemas existentes." />
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&family=Vazirmatn:wght@400;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -1110,6 +1110,20 @@ display:none;
       background: rgba(0,194,255,0.05);
     }
     /* ─────────────────────────────────────────────────────────── */
+
+    /* ── Actualización C.U.R.A.: gráfico de red federada (Gráfico A) ── */
+    .mesh-wrap { position: relative; width: 100%; aspect-ratio: 1 / 1; max-width: 560px; margin: 0 auto; }
+    .mesh-svg  { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .mesh-line { stroke: #00C2FF; stroke-opacity: 0.45; stroke-width: 0.4; stroke-dasharray: 2 1.4; animation: meshFlow 3s linear infinite; }
+    @keyframes meshFlow { to { stroke-dashoffset: -7; } }
+    .mesh-node { position: absolute; transform: translate(-50%, -50%); width: 27%; min-width: 74px; padding: 0.6rem 0.4rem; background: #00345C; z-index: 2; }
+    .mesh-node .flow-node-label { font-size: 0.62rem; }
+    .mesh-center-label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(89,210,255,0.8); text-align: center; width: 30%; line-height: 1.3; }
+    .mesh-legend { display: inline-block; width: 22px; height: 0; border-top: 2px dashed; vertical-align: middle; margin-right: 4px; }
+    .mesh-legend-inner { border-color: #00C2FF; }
+    .mesh-legend-outer { border-color: #59D2FF; opacity: .6; }
+    @media (prefers-reduced-motion: reduce) { .mesh-line { animation: none; } }
+    @media (max-width: 480px) { .mesh-node { width: 29%; min-width: 66px; } .mesh-node .flow-node-icon { font-size: 1.35rem; } }
   </style>
 </head>
 
@@ -1123,13 +1137,13 @@ display:none;
 
   <div class="scroll-dots">
   <a href="#inicio" class="dot" data-label="Inicio"></a>
-  <a href="#explicacion" class="dot" data-label="¿Qué es la Ley C.U.R.A.?"></a>
+  <a href="#avances" class="dot" data-label="Problema y avances"></a>
+  <a href="#explicacion" class="dot" data-label="¿Qué es C.U.R.A.?"></a>
   <a href="#como-funciona" class="dot" data-label="Funcionamiento"></a>
+  <a href="#derechos" class="dot" data-label="Derechos y seguridad"></a>
   <a href="#beneficios" class="dot" data-label="Beneficios"></a>
-      <a href="#datos" class="dot" data-label="Datos"></a>
-     <a href="#sumate" class="dot" data-label="Sumarse"></a>
-      <a href="#contacto" class="dot" data-label="Contacto"></a>
-    
+  <a href="#documentos" class="dot" data-label="Documentos"></a>
+  <a href="#contacto" class="dot" data-label="Contacto"></a>
   </div>
 
 </div>
@@ -1156,10 +1170,10 @@ display:none;
       <a href="#inicio" class="nav-inicio-link flex items-center gap-3 sm:gap-2 group cursor-pointer text-left">
         <img src="/logo.png" alt="Logo C.U.R.A." class="h-[90px] sm:h-16 w-auto object-contain shrink-0 transition-transform group-hover:scale-105" />
         <div class="leading-tight">
-          <p class="text-[16px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors mb-0.5 sm:mb-0">LEY NACIONAL</p>
+          <p class="text-[16px] sm:text-[11px] uppercase tracking-[0.25em] text-cura-accentLight group-hover:text-white transition-colors mb-0.5 sm:mb-0">MARCO NORMATIVO</p>
           <p class="text-[15px] sm:text-sm font-bold text-white leading-tight">
-            <span class="block sm:inline">Transformación Digital</span>
-            <span class="block sm:inline">Sanitaria Argentina</span>
+            <span class="block sm:inline">Federalización de la</span>
+            <span class="block sm:inline">Interoperabilidad sanitaria</span>
           </p>
         </div>
       </a>
@@ -1193,17 +1207,41 @@ display:none;
 <div id="notificationMenu" class="hidden absolute right-4 top-[90%] sm:top-full mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 animate-fade-in">
   <div class="bg-gray-50 px-4 py-2 border-b border-gray-100 flex justify-between items-center">
     <span class="font-bold text-xs uppercase tracking-wider" style="color: #00345c;">Novedades</span>
-    <span class="text-[9px] text-gray-400 font-medium">Actualizado: 01/08/26</span>
+    <span class="text-[9px] text-gray-400 font-medium">Actualizado: 13/10/26</span>
   </div>
 
   <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
 
-    <!-- Nueva novedad -->
+    <!-- Nueva novedad: actualización -->
+    <a href="#actualizacion"
+       class="block p-4 border-b border-gray-100 text-left transition-all duration-200 hover:bg-blue-50 hover:scale-[1.01] hover:shadow-sm cursor-pointer"
+       style="background-color: rgba(0, 194, 255, 0.15);">
+
+      <div class="flex gap-3">
+        <i class="ph-bold ph-arrows-clockwise text-lg" style="color: #004e85;"></i>
+
+        <div class="flex-1">
+          <div class="flex justify-between items-start mb-1">
+            <p class="text-xs font-bold" style="color: #00345c;">
+              C.U.R.A. en proceso de actualización
+            </p>
+            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">
+              13/10/26
+            </span>
+          </div>
+
+          <p class="text-gray-700 text-[11px] leading-relaxed">
+            La propuesta se encuentra en revisión jurídica y técnica. Los documentos anteriores no constituyen normativa vigente.
+          </p>
+        </div>
+      </div>
+    </a>
+
+    <!-- Novedad anterior (versión anterior del proyecto) -->
     <a href="Informacion/documentos/LEY_CURA_04-05-26.pdf"
        target="_blank"
        rel="noopener noreferrer"
-       class="block p-4 border-b border-gray-100 text-left transition-all duration-200 hover:bg-blue-50 hover:scale-[1.01] hover:shadow-sm cursor-pointer"
-       style="background-color: rgba(0, 194, 255, 0.15);">
+       class="block p-4 border-b border-gray-100 text-left transition-all duration-200 hover:bg-blue-50 hover:scale-[1.01] hover:shadow-sm cursor-pointer">
 
       <div class="flex gap-3">
         <i class="ph-bold ph-file-pdf text-lg" style="color: #004e85;"></i>
@@ -1221,6 +1259,7 @@ display:none;
           <p class="text-gray-700 text-[11px] leading-relaxed">
             Ya se encuentra disponible el proyecto de Ley C.U.R.A. en formato PDF para su consulta y revisión. Haga clic aquí para acceder al documento.
           </p>
+          <p class="text-[9px] font-bold uppercase tracking-wide mt-1" style="color: #004e85;">Versión anterior</p>
         </div>
       </div>
     </a>
@@ -1236,6 +1275,7 @@ display:none;
           <p class="text-gray-600 text-[11px] leading-relaxed">
             Se actualizó el documento acorde a la expansión de la ley.
           </p>
+          <p class="text-[9px] font-bold uppercase tracking-wide mt-1" style="color: #004e85;">Versión anterior</p>
         </div>
       </div>
     </div>
@@ -1251,6 +1291,7 @@ display:none;
           <p class="text-gray-600 text-[11px] leading-relaxed">
             Consultá detalles técnicos de la ley con nuestro asistente inteligente.
           </p>
+          <p class="text-[9px] font-bold uppercase tracking-wide mt-1" style="color: #004e85;">Versión anterior</p>
         </div>
       </div>
     </div>
@@ -1262,6 +1303,7 @@ display:none;
           style="color: #004e85;">
     Cerrar
   </button>
+</div>
 </div>
 </header>
 
@@ -1282,18 +1324,18 @@ display:none;
       <!-- Badge de tipo de proyecto -->
       <div class="inline-flex items-center gap-2 mb-4 w-fit">
         <span class="text-[10px] font-bold tracking-[0.2em] text-cura-accentLight uppercase border border-cura-accent/40 rounded-full px-3 py-1">
-          LEY C.U.R.A. · INFRAESTRUCTURA PÚBLICA NACIONAL DE SALUD
+          MARCO NORMATIVO · INFRAESTRUCTURA PÚBLICA DE SALUD · EN ACTUALIZACIÓN
         </span>
       </div>
 
       <!-- NUEVO TÍTULO: posicionamiento de infraestructura -->
-      <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-3 drop-shadow">
-      Conectividad Unificada en Salud
+      <h1 class="text-2xl md:text-[1.75rem] font-extrabold text-white leading-tight mb-3 drop-shadow">
+      La salud necesita información conectada. Argentina necesita un marco federal para hacerlo posible.
       </h1>
 
       <!-- NUEVO SUBTÍTULO -->
      <p class="text-sm md:text-base text-white/80 mb-2 leading-relaxed">
-  El estándar digital único que integra a todo el ecosistema médico: hospitales, obras sociales y farmacias. Una infraestructura nacional diseñada para asegurar el federalismo y la autonomía tecnológica provincial.
+  Marco normativo para una infraestructura pública de salud interoperable que conecta hospitales, obras sociales, farmacias y laboratorios de todo el país, respetando la autonomía de cada provincia.
       </p>
 
 <div class="mb-6 border-l-2 border-cura-accent/40 pl-3" style="height:3.6rem;overflow:hidden;display:flex;align-items:center;">
@@ -1335,9 +1377,9 @@ display:none;
     
   </div>
 
-  <button id="btn-sumate" type="button" class="w-full inline-flex items-center justify-center px-6 py-4 rounded-[40px] bg-white text-cura-primaryDark text-[16px] sm:text-lg font-extrabold tracking-wide shadow-lg hover:bg-gray-100 transition cursor-pointer">
-    APOYAR PROYECTO
-  </button>
+  <a id="btn-conocer" href="#explicacion" class="w-full inline-flex items-center justify-center px-6 py-4 rounded-[40px] bg-white text-cura-primaryDark text-[16px] sm:text-lg font-extrabold tracking-wide shadow-lg hover:bg-gray-100 transition cursor-pointer">
+    CONOCER EL PROYECTO
+  </a>
   
 
   <p class="mt-2 text-[11px] text-cura-accentLight leading-tight">
@@ -1483,6 +1525,92 @@ display:none;
   </section>
 
   <!-- ==========================================
+       AVISO VISIBLE: ESTADO DE ACTUALIZACIÓN
+  =========================================== -->
+  <aside id="actualizacion" class="bg-cura-primaryDark border border-cura-accent/50 rounded-2xl p-5 md:p-6 shadow-lg" role="note" aria-label="Estado de actualización del proyecto" data-aos="fade-up">
+    <div class="flex items-start gap-4">
+      <i class="ph-bold ph-arrows-clockwise text-3xl text-cura-accent shrink-0 mt-1"></i>
+      <div>
+        <h2 class="text-base md:text-lg font-bold text-white mb-2">C.U.R.A. está en proceso de actualización</h2>
+        <p class="text-sm text-white/80 leading-relaxed mb-2">
+          La propuesta, elaborada en 2025, se actualiza para incorporar los grandes avances de la Nación en salud digital, interoperabilidad y regulación sanitaria.
+        </p>
+        <p class="text-sm text-white/70 leading-relaxed mb-2">
+          El objetivo continúa siendo el mismo: un marco normativo federal para una infraestructura pública de salud interoperable, que establece condiciones mínimas comunes para el intercambio seguro de información sanitaria entre las jurisdicciones argentinas, respetando sus competencias y los sistemas existentes.
+        </p>
+        <p class="text-xs text-cura-accentLight leading-relaxed">
+          El proyecto de ley de la versión anterior está disponible para su consulta y se encuentra en proceso de actualización.
+        </p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================
+       EL PROBLEMA Y LOS AVANCES
+  =========================================== -->
+  <section id="avances" class="space-y-8" data-aos="fade-up">
+
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">EL PROBLEMA Y LOS AVANCES</p>
+      <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-4">La digitalización es un avance. <span class="text-cura-accent">La interoperabilidad es el siguiente desafío.</span></h2>
+      <p class="text-sm md:text-base text-white/80 leading-relaxed mb-3">
+        Argentina cuenta con normas, programas e iniciativas orientados a la digitalización de la información sanitaria y a mejorar el intercambio de datos. Estos avances son una base importante y deben ser reconocidos e integrados en cualquier nueva propuesta.
+      </p>
+      <p class="text-sm text-white/70 leading-relaxed mb-3">
+        Sin embargo, digitalizar información no garantiza por sí solo que los sistemas puedan intercambiarla, interpretarla y utilizarla de forma segura y consistente. La interoperabilidad requiere acuerdos técnicos, semánticos, organizativos y jurídicos, además de mecanismos de gobernanza y actualización.
+      </p>
+      <p class="text-sm text-white/70 leading-relaxed">
+        Una persona puede recibir atención en diferentes establecimientos o jurisdicciones. Para favorecer la continuidad asistencial, los sistemas necesitan condiciones compatibles que permitan consultar e intercambiar la información pertinente, conforme a las reglas de acceso, privacidad y seguridad aplicables.
+      </p>
+    </div>
+
+    <!-- Gráfico B: digitalización vs interoperabilidad -->
+    <figure class="max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+      <div class="grid md:grid-cols-[1fr_auto_1fr] gap-4 items-stretch">
+
+        <div class="pilar-card">
+          <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+            <i class="ph-bold ph-file-text text-cura-accent text-xl"></i> Digitalización
+          </h3>
+          <ul class="space-y-2 text-xs text-white/75 leading-relaxed">
+            <li class="flex gap-2"><i class="ph-bold ph-check text-cura-accent mt-0.5 shrink-0"></i>La información se registra o conserva en formato digital.</li>
+            <li class="flex gap-2"><i class="ph-bold ph-check text-cura-accent mt-0.5 shrink-0"></i>Puede funcionar dentro de una institución o plataforma.</li>
+            <li class="flex gap-2"><i class="ph-bold ph-check text-cura-accent mt-0.5 shrink-0"></i>No garantiza por sí sola el intercambio entre jurisdicciones.</li>
+          </ul>
+        </div>
+
+        <div class="hidden md:flex items-center justify-center text-cura-accent/60 text-3xl" aria-hidden="true">
+          <i class="ph-bold ph-arrow-right"></i>
+        </div>
+
+        <div class="pilar-card" style="border-color:rgba(0,194,255,0.55);background:rgba(0,194,255,0.07)">
+          <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+            <i class="ph-bold ph-arrows-merge text-cura-accent text-xl"></i> Interoperabilidad
+          </h3>
+          <ul class="space-y-2 text-xs text-white/75 leading-relaxed">
+            <li class="flex gap-2"><i class="ph-bold ph-check text-cura-accent mt-0.5 shrink-0"></i>Los sistemas pueden intercambiar información con significado compartido.</li>
+            <li class="flex gap-2"><i class="ph-bold ph-check text-cura-accent mt-0.5 shrink-0"></i>Requiere acuerdos técnicos, semánticos, organizativos y jurídicos.</li>
+            <li class="flex gap-2"><i class="ph-bold ph-check text-cura-accent mt-0.5 shrink-0"></i>Busca facilitar el intercambio autorizado y la continuidad de la atención entre instituciones y jurisdicciones.</li>
+          </ul>
+        </div>
+
+      </div>
+    </figure>
+
+    <!-- Marco y avances existentes -->
+    <div class="max-w-4xl mx-auto bg-cura-card border border-cura-accent/40 rounded-2xl p-5 md:p-6 shadow-md" data-aos="fade-up" data-aos-delay="150">
+      <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-scales text-cura-accent text-lg"></i> Marco y avances existentes</h3>
+      <p class="text-sm text-white/80 leading-relaxed mb-3">
+        Argentina cuenta con normas, programas y avances relevantes en salud digital. C.U.R.A. parte de ese trabajo y propone las condiciones jurídicas y de gobernanza comunes que fortalecen la interoperabilidad entre jurisdicciones, respetando las competencias existentes y evitando duplicar iniciativas.
+      </p>
+      <p class="text-xs text-white/70 leading-relaxed">
+        La Ley 27.706 (Programa Federal Único de Informatización y Digitalización de las Historias Clínicas de la República Argentina), su reglamentación y las iniciativas de salud digital e interoperabilidad de la Nación son la base sobre la que se actualiza esta propuesta. El marco normativo de C.U.R.A. integra esos avances y resuelve lo que sigue pendiente: la federalización de la interoperabilidad sanitaria.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- ==========================================
        NUEVA SECCIÓN: ¿QUÉ ES C.U.R.A.?
        Con animación de red sanitaria en canvas
   =========================================== -->
@@ -1503,6 +1631,9 @@ display:none;
         <p class="text-sm md:text-base text-white/80 leading-relaxed">
           Igual que la red eléctrica o la infraestructura de telecomunicaciones, C.U.R.A. (Conectividad Unificada para Redes Asistenciales) es la red digital pública que permite que todo el sistema de salud funcione conectado.
           La información médica deja de quedar cautiva en una institución y pasa a acompañar al paciente a lo largo de todo el sistema sanitario.
+        </p>
+        <p class="text-sm md:text-base text-white/80 leading-relaxed mt-3">
+          C.U.R.A. es el marco normativo federal de esa infraestructura: establece un piso común de interoperabilidad que respeta las competencias de cada jurisdicción, integra los avances que ya realizó la Nación y no impone una plataforma única ni concentra la información en una base de datos central. Elaborado en 2025, se está actualizando para incorporar esos avances y reforzar su punto central: la federalización de la interoperabilidad sanitaria.
         </p>
       </div>
 
@@ -1593,6 +1724,78 @@ display:none;
 
       </div>
 
+      <!-- Un piso común, no un sistema único -->
+      <div class="mt-12" data-aos="fade-up" data-aos-delay="100">
+        <div class="text-center max-w-3xl mx-auto mb-6">
+          <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">EL MARCO NORMATIVO FEDERAL</p>
+          <h3 class="text-xl md:text-2xl font-extrabold text-white mb-3">Una base común para una salud verdaderamente conectada</h3>
+          <p class="text-sm text-white/75 leading-relaxed">
+            C.U.R.A. establece las condiciones mínimas para el intercambio seguro y significativo de información sanitaria entre las distintas jurisdicciones de la Argentina. No sustituye los sistemas provinciales, municipales o institucionales existentes: fija reglas comunes para que esos sistemas se comuniquen, interpreten la información intercambiada y sostengan la continuidad de la atención.
+          </p>
+        </div>
+        <p class="text-center text-xs font-bold tracking-[0.2em] text-cura-accentLight uppercase mb-4">Un piso común, no un sistema único</p>
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="pilar-card">
+          <div class="pilar-number">01</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-translate text-cura-accent text-lg"></i>
+            Estándares de interoperabilidad
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">Formatos, terminologías, perfiles y requisitos técnicos comunes para el intercambio de información clínica.</p>
+        </div>
+          <div class="pilar-card">
+          <div class="pilar-number">02</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-clipboard-text text-cura-accent text-lg"></i>
+            Conjunto mínimo de información
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">Datos esenciales para la continuidad asistencial, definidos mediante criterios clínicos y acuerdos federales.</p>
+        </div>
+          <div class="pilar-card">
+          <div class="pilar-number">03</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-identification-badge text-cura-accent text-lg"></i>
+            Identificación y calidad de los datos
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">Mecanismos compatibles para asociar correctamente la información con la persona y su contexto asistencial.</p>
+        </div>
+          <div class="pilar-card">
+          <div class="pilar-number">04</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-lock-key text-cura-accent text-lg"></i>
+            Seguridad y protección de datos
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">Reglas sobre acceso autorizado, finalidad, confidencialidad, trazabilidad y responsabilidad.</p>
+        </div>
+          <div class="pilar-card">
+          <div class="pilar-number">05</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-users-three text-cura-accent text-lg"></i>
+            Gobernanza federal
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">Mecanismos de participación, coordinación y actualización que incluyan a las jurisdicciones y a los actores pertinentes del sistema de salud.</p>
+        </div>
+          <div class="pilar-card">
+          <div class="pilar-number">06</div>
+          <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="ph-bold ph-path text-cura-accent text-lg"></i>
+            Implementación gradual y equitativa
+          </h3>
+          <p class="text-xs text-white/70 leading-relaxed">Plazos, asistencia técnica, capacitación y mecanismos de evaluación acordes con las capacidades de cada jurisdicción.</p>
+        </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4 mt-4">
+          <div class="pilar-card">
+            <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-plugs-connected text-cura-accent text-lg"></i> Conectar lo que ya existe</h3>
+            <p class="text-xs text-white/70 leading-relaxed">La interoperabilidad federal no requiere que todas las instituciones utilicen el mismo software. Requiere que los sistemas intercambien la información necesaria mediante reglas compartidas, con garantías jurídicas y técnicas que permitan confiar en su origen, integridad, significado y uso legítimo.</p>
+          </div>
+          <div class="pilar-card">
+            <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-handshake text-cura-accent text-lg"></i> Un acuerdo que trasciende las tecnologías</h3>
+            <p class="text-xs text-white/70 leading-relaxed">Las plataformas cambian y los estándares evolucionan. El marco normativo ofrece continuidad, establece responsabilidades y permite que los avances tecnológicos se integren sin perder compatibilidad, seguridad ni respeto por las competencias jurisdiccionales.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Frase potente del discurso -->
 <div class="mt-8 text-center" data-aos="fade-up" data-aos-delay="100">
   <blockquote id="cita-dinamica" class="text-sm md:text-base italic text-white/70 border-t border-cura-accent/20 pt-6 transition-opacity duration-500 ease-in-out">
@@ -1607,78 +1810,162 @@ display:none;
   </section>
 
   <!-- ==========================================
-       NUEVA SECCIÓN: CÓMO FUNCIONA EL SISTEMA
+       CÓMO FUNCIONARÍA
   =========================================== -->
   <section id="como-funciona" class="space-y-6" data-aos="fade-up">
 
     <div class="text-center max-w-2xl mx-auto">
-      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">EL ECOSISTEMA</p>
-      <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">Cómo funciona C.U.R.A.</h2>
+      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">CÓMO FUNCIONARÍA</p>
+      <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">Sistemas autónomos, reglas compartidas</h2>
       <p class="text-sm text-white/70 leading-relaxed">
-        Una arquitectura híbrida federada. Cada provincia mantiene sus datos en su propio nodo. La Capa de Intercambio Federada permite que la información circule cuando es necesaria, con seguridad y trazabilidad total.
+        C.U.R.A. no propone que todas las provincias adopten el mismo sistema informático. Propone un conjunto de condiciones mínimas comunes para que los sistemas existentes intercambien información sanitaria de forma segura y comprensible.
       </p>
     </div>
 
-    <!-- Diagrama de flujo vertical -->
+    <figure class="max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+      <div class="mesh-wrap" role="img" aria-label="Esquema conceptual: seis tipos de sistemas autónomos (hospitales, atención primaria, clínicas, laboratorios, farmacias y sistemas provinciales o institucionales) conectados entre sí mediante flechas bidireccionales, rodeados por una capa de estándares compartidos y otra de seguridad, permisos y trazabilidad. No hay una base de datos central.">
+        <svg class="mesh-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <defs>
+            <marker id="mesh-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="3.2" markerHeight="3.2" orient="auto-start-reverse">
+              <path d="M 1 1 L 9 5 L 1 9 z" fill="#00C2FF"/>
+            </marker>
+          </defs>
+          <circle cx="50" cy="50" r="49" fill="none" stroke="#59D2FF" stroke-opacity="0.45" stroke-width="0.35" stroke-dasharray="1.2 1.8"/>
+          <circle cx="50" cy="50" r="22" fill="none" stroke="#00C2FF" stroke-opacity="0.55" stroke-width="0.5" stroke-dasharray="3 1.6"/>
+      <line class="mesh-line" x1="50.00" y1="14.00" x2="81.18" y2="32.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="50.00" y1="14.00" x2="81.18" y2="68.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="81.18" y1="32.00" x2="81.18" y2="68.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="81.18" y1="32.00" x2="50.00" y2="86.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="81.18" y1="68.00" x2="50.00" y2="86.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="81.18" y1="68.00" x2="18.82" y2="68.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="50.00" y1="86.00" x2="18.82" y2="68.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="50.00" y1="86.00" x2="18.82" y2="32.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="18.82" y1="68.00" x2="18.82" y2="32.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="18.82" y1="68.00" x2="50.00" y2="14.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="18.82" y1="32.00" x2="50.00" y2="14.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+      <line class="mesh-line" x1="18.82" y1="32.00" x2="81.18" y2="32.00" marker-start="url(#mesh-arrow)" marker-end="url(#mesh-arrow)"/>
+        </svg>
+      <div class="flow-node mesh-node" style="left:50.00%;top:14.00%">
+        <i class="flow-node-icon ph-bold ph-hospital"></i>
+        <span class="flow-node-label">Hospitales</span>
+      </div>
+      <div class="flow-node mesh-node" style="left:81.18%;top:32.00%">
+        <i class="flow-node-icon ph-bold ph-first-aid-kit"></i>
+        <span class="flow-node-label">Atención primaria</span>
+      </div>
+      <div class="flow-node mesh-node" style="left:81.18%;top:68.00%">
+        <i class="flow-node-icon ph-bold ph-buildings"></i>
+        <span class="flow-node-label">Clínicas</span>
+      </div>
+      <div class="flow-node mesh-node" style="left:50.00%;top:86.00%">
+        <i class="flow-node-icon ph-bold ph-flask"></i>
+        <span class="flow-node-label">Laboratorios</span>
+      </div>
+      <div class="flow-node mesh-node" style="left:18.82%;top:68.00%">
+        <i class="flow-node-icon ph-bold ph-pill"></i>
+        <span class="flow-node-label">Farmacias</span>
+      </div>
+      <div class="flow-node mesh-node" style="left:18.82%;top:32.00%">
+        <i class="flow-node-icon ph-bold ph-map-trifold"></i>
+        <span class="flow-node-label">Sistemas provinciales o institucionales</span>
+      </div>
+        <span class="mesh-center-label">Intercambio autorizado</span>
+      </div>
+      <figcaption class="text-[11px] text-cura-accentLight/80 text-center mt-3 space-y-1">
+        <span class="block"><span class="mesh-legend mesh-legend-inner"></span> Capa transversal de estándares compartidos &nbsp;·&nbsp; <span class="mesh-legend mesh-legend-outer"></span> Capa de seguridad, permisos y trazabilidad</span>
+      </figcaption>
+    </figure>
+
+    <p class="text-center text-xs font-bold tracking-[0.2em] text-cura-accentLight uppercase pt-2">El modelo articula</p>
+
     <div class="max-w-2xl mx-auto space-y-3" data-aos="fade-up" data-aos-delay="100">
-
-      <!-- Nivel 1: Ciudadano -->
       <div class="flex items-center gap-4 bg-white/5 border border-cura-accent/30 rounded-xl px-5 py-4">
-        <i class="ph-bold ph-user-circle text-3xl text-cura-accent flex-shrink-0"></i>
+        <i class="ph-bold ph-hospital text-3xl text-cura-accent flex-shrink-0"></i>
         <div>
-          <p class="text-sm font-bold text-white">Ciudadano / Paciente</p>
-          <p class="text-xs text-white/60">Accede a su historia clínica completa con el C.U.R.A.-ID</p>
+          <p class="text-sm font-bold text-white">1. Sistemas de origen</p>
+          <p class="text-xs text-white/65">Hospitales, centros de atención primaria, clínicas, laboratorios, farmacias y otros prestadores que generan o gestionan información sanitaria.</p>
         </div>
-        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5">Control total</span>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 whitespace-nowrap hidden sm:inline-block">Existentes</span>
       </div>
-
-      <!-- Flecha -->
       <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-cura-accent/60 to-transparent"></div></div>
-
-      <!-- Nivel 2: C.U.R.A.-ID -->
       <div class="flex items-center gap-4 bg-cura-accent/10 border border-cura-accent/60 rounded-xl px-5 py-4">
-        <i class="ph-bold ph-identification-badge text-3xl text-cura-accent flex-shrink-0"></i>
+        <i class="ph-bold ph-translate text-3xl text-cura-accent flex-shrink-0"></i>
         <div>
-          <p class="text-sm font-bold text-cura-accent">C.U.R.A.-ID</p>
-          <p class="text-xs text-white/70">Identificador Único de Paciente seudonimizado, vinculado al RENAPER</p>
+          <p class="text-sm font-bold text-white">2. Estándares comunes</p>
+          <p class="text-xs text-white/65">Especificaciones técnicas y semánticas que permiten estructurar e interpretar la información intercambiada.</p>
         </div>
-        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5">Art. 17</span>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 whitespace-nowrap hidden sm:inline-block">Estándares</span>
       </div>
-
-      <!-- Flecha -->
       <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-cura-accent/60 to-transparent"></div></div>
-
-      <!-- Nivel 3: Capa de intercambio -->
-      <div class="flex items-center gap-4 bg-white/5 border border-white/20 rounded-xl px-5 py-4">
-        <i class="ph-bold ph-network text-3xl text-white/70 flex-shrink-0"></i>
+      <div class="flex items-center gap-4 bg-white/5 border border-cura-accent/30 rounded-xl px-5 py-4">
+        <i class="ph-bold ph-network text-3xl text-cura-accent flex-shrink-0"></i>
         <div>
-          <p class="text-sm font-bold text-white">Capa de Intercambio Federada (CIF)</p>
-          <p class="text-xs text-white/60">APIs seguras con OAuth 2.0, cifrado extremo a extremo y auditoría sellada digitalmente</p>
+          <p class="text-sm font-bold text-white">3. Mecanismos de intercambio</p>
+          <p class="text-xs text-white/65">Servicios y acuerdos compatibles para localizar, solicitar, transmitir o consultar datos cuando existe autorización y fundamento legítimo.</p>
         </div>
-        <span class="ml-auto text-xs font-bold text-white/60 bg-white/5 border border-white/10 rounded-full px-2 py-0.5">HL7 FHIR</span>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 whitespace-nowrap hidden sm:inline-block">Intercambio</span>
       </div>
-
-      <!-- Flecha ramificada -->
-      <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-white/20 to-transparent"></div></div>
-
-      <!-- Nivel 4: Actores del sistema -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-        <div class="flow-node"><i class="flow-node-icon ph-bold ph-hospital"></i><span class="flow-node-label">Hospital<br>Público</span></div>
-        <div class="flow-node"><i class="flow-node-icon ph-bold ph-buildings"></i><span class="flow-node-label">Clínica<br>Privada</span></div>
-        <div class="flow-node"><i class="flow-node-icon ph-bold ph-hand-heart"></i><span class="flow-node-label">Obras<br>Sociales</span></div>
-        <div class="flow-node"><i class="flow-node-icon ph-bold ph-first-aid-kit"></i><span class="flow-node-label">Farmacias</span></div>
-        <div class="flow-node"><i class="flow-node-icon ph-bold ph-flask"></i><span class="flow-node-label">Labora-<br>torios</span></div>
-        <div class="flow-node"><i class="flow-node-icon ph-bold ph-building-office"></i><span class="flow-node-label">PAMI /<br>Estado</span></div>
+      <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-cura-accent/60 to-transparent"></div></div>
+      <div class="flex items-center gap-4 bg-white/5 border border-cura-accent/30 rounded-xl px-5 py-4">
+        <i class="ph-bold ph-shield-check text-3xl text-cura-accent flex-shrink-0"></i>
+        <div>
+          <p class="text-sm font-bold text-white">4. Controles de seguridad</p>
+          <p class="text-xs text-white/65">Autenticación, autorización, trazabilidad, protección de datos y mecanismos para responder ante incidentes.</p>
+        </div>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 whitespace-nowrap hidden sm:inline-block">Seguridad</span>
       </div>
-
-      <!-- Nota de soberanía -->
-      <div class="text-center mt-2">
-        <span class="text-xs text-cura-accentLight/70">
-          <i class="ph-bold ph-shield-check"></i>
-          Datos clínicos con residencia exclusiva en territorio argentino · Soberanía digital garantizada por ley
-        </span>
+      <div class="flex justify-center"><div class="w-0.5 h-6 bg-gradient-to-b from-cura-accent/60 to-transparent"></div></div>
+      <div class="flex items-center gap-4 bg-white/5 border border-cura-accent/30 rounded-xl px-5 py-4">
+        <i class="ph-bold ph-users-three text-3xl text-cura-accent flex-shrink-0"></i>
+        <div>
+          <p class="text-sm font-bold text-white">5. Gobernanza y supervisión</p>
+          <p class="text-xs text-white/65">Reglas para acordar cambios, resolver incompatibilidades, evaluar resultados y actualizar los estándares.</p>
+        </div>
+        <span class="ml-auto text-xs font-bold text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 whitespace-nowrap hidden sm:inline-block">Gobernanza</span>
       </div>
+    </div>
+  </section>
 
+  <!-- ==========================================
+       DERECHOS, SEGURIDAD Y GOBERNANZA
+  =========================================== -->
+  <section id="derechos" class="space-y-6" data-aos="fade-up">
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">DERECHOS, SEGURIDAD Y GOBERNANZA</p>
+      <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-3">La interoperabilidad fortalece la confianza</h2>
+      <p class="text-sm text-white/70 leading-relaxed">
+        El intercambio de información sanitaria solo es sostenible si se apoya en garantías claras para las personas y responsabilidades definidas para las instituciones y los actores que participan. El marco de C.U.R.A. establece, como mínimo, los siguientes aspectos:
+      </p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-aos="fade-up" data-aos-delay="100">
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-key text-cura-accent text-lg"></i> Acceso legítimo</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Define quién puede acceder a cada tipo de información, con qué fundamento, para qué finalidad y bajo qué condiciones.</p>
+      </div>
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-lock-key text-cura-accent text-lg"></i> Confidencialidad y protección de datos</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Aplica las normas vigentes y establece salvaguardas proporcionales al riesgo.</p>
+      </div>
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-magnifying-glass text-cura-accent text-lg"></i> Trazabilidad</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Registra los accesos y las operaciones relevantes de forma que puedan auditarse.</p>
+      </div>
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-seal-check text-cura-accent text-lg"></i> Calidad e integridad</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Preserva la procedencia, el contexto y la integridad de los datos intercambiados.</p>
+      </div>
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-user-check text-cura-accent text-lg"></i> Derechos de las personas</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Explica de forma comprensible los derechos aplicables, los mecanismos de consulta y las vías de reclamo.</p>
+      </div>
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-first-aid text-cura-accent text-lg"></i> Acceso excepcional</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Fija las condiciones, límites, justificación y registro de los accesos en situaciones de emergencia.</p>
+      </div>
+      <div class="pilar-card">
+        <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i class="ph-bold ph-gavel text-cura-accent text-lg"></i> Responsabilidades y supervisión</h3>
+        <p class="text-xs text-white/70 leading-relaxed">Determina las obligaciones de cada actor y los mecanismos para investigar incumplimientos.</p>
+      </div>
     </div>
   </section>
 
@@ -2143,136 +2430,33 @@ display:none;
   </section>
 
   <!-- ==========================================
-       MÉTRICAS / IMPACTO DEL SISTEMA
+       DOCUMENTOS Y VERSIONES
   =========================================== -->
-  <section id="datos" class="space-y-6" data-aos="fade-up">
-    <div class="text-center">
-      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">EL PROYECTO EN NÚMEROS</p>
-      <h2 class="text-xl md:text-2xl font-extrabold text-white">Una ley de escala histórica</h2>
-    </div>
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      <div class="metric-item" data-aos="zoom-in" data-aos-delay="50">
-        <div class="metric-value" data-count="260">260</div>
-        <div class="metric-label">páginas de documento técnico-legislativo</div>
-      </div>
-      <div class="metric-item" data-aos="zoom-in" data-aos-delay="100">
-        <div class="metric-value" data-count="5">5</div>
-        <div class="metric-label">fases de implementación certificadas</div>
-      </div>
-      <div class="metric-item" data-aos="zoom-in" data-aos-delay="150">
-        <div class="metric-value" data-count="3">3</div>
-        <div class="metric-label">subsistemas integrados (público, OOSS, prepaga)</div>
-      </div>
-      <div class="metric-item" data-aos="zoom-in" data-aos-delay="200">
-        <div class="metric-value" data-count="90" data-suffix="%">90%</div>
-        <div class="metric-label">operatividad mínima para avanzar de fase</div>
-      </div>
-      <div class="metric-item" data-aos="zoom-in" data-aos-delay="250">
-        <div class="metric-value" data-count="100" data-suffix="%">100%</div>
-        <div class="metric-label">soberanía de datos clínicos en Argentina</div>
-      </div>
-      <div class="metric-item" data-aos="zoom-in" data-aos-delay="300">
-        <div class="metric-value">#1</div>
-        <div class="metric-label">potencial en América Latina en infraestructura pública de salud digital</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================
-       BANNER LEADERBOARD (728x90)
-  =========================================== -->
-<!-- BANNER LEADERBOARD (728x90) -->
-<div class="flex justify-center my-8 px-4" data-aos="fade-up">
-  <a href="https://youtu.be/W1IDuu3B5fw" target="_blank" rel="noopener noreferrer" 
-     class="block w-full max-w-[728px] transition-transform hover:scale-[1.01] duration-300">
-    <img src="/img/banner-leycura.png" alt="Ley C.U.R.A. – Video explicativo" 
-         class="w-full h-auto rounded-xl shadow-lg border border-cura-accent/30">
-  </a>
-</div>
- 
-  <!-- ==========================================
-       FORMULARIO SUMATE (ORIGINAL INTACTO)
-  =========================================== -->
-  <section id="sumate" class="space-y-6" data-aos="fade-up">
-    <div class="max-w-2xl">
-      <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Quiero sumarme</h2>
-      <p class="text-sm text-cura-accentLight">Necesitamos reunir firmas para que esto sea una realidad. Completá tus datos para sumarte a la iniciativa y formar parte de la historia.</p>
+  <section id="documentos" class="space-y-6" data-aos="fade-up">
+    <div class="text-center max-w-3xl mx-auto">
+      <p class="text-xs font-bold tracking-[0.25em] text-cura-accentLight uppercase mb-2">DOCUMENTOS Y VERSIONES</p>
+      <h2 class="text-xl md:text-2xl font-bold text-white mb-2">El proyecto ya existe y está disponible</h2>
+      <p class="text-sm text-cura-accentLight">El proyecto de ley elaborado en 2025 se encuentra disponible para su consulta y en proceso de actualización por los grandes avances de la Nación en salud digital.</p>
     </div>
 
-    <form id="sumate-form"
-          action="https://formsubmit.co/contacto@leycura.org"
-          method="POST"
-          class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md space-y-3">
+    <div class="grid md:grid-cols-2 gap-4">
 
-      <input type="hidden" name="_subject"  value="Nuevo ciudadano sumado - LeyCURA">
-      <input type="hidden" name="_template" value="box">
-      <input type="hidden" name="_captcha"  value="false">
-      <input type="hidden" name="_next"     value="https://www.leycura.org/gracias-sumate.html">
-
-      <div class="grid md:grid-cols-2 gap-3">
-        <div>
-      <label class="cura-form-label">
-  Nombre <span class="cura-form-label-required">*</span>
-</label>
-          <input name="nombre" required class="cura-form-input only-letters" inputmode="text" autocomplete="given-name" />
-        </div>
-        <div>
-         <label class="cura-form-label">
-  Apellido <span class="cura-form-label-required">*</span>
-</label>
-          <input name="apellido" required class="cura-form-input only-letters" inputmode="text" autocomplete="family-name" />
-        </div>
+      <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-5 shadow-md">
+        <span class="inline-block text-[10px] font-bold tracking-wider uppercase text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 mb-2">Antecedentes de C.U.R.A. · versión anterior</span>
+        <ul class="space-y-3">
+          <li class="text-xs text-white/75 leading-relaxed"><a href="/Informacion/documentos/LEY_CURA_04-05-26.pdf" target="_blank" rel="noopener noreferrer" class="underline font-semibold text-white hover:text-cura-accent">Proyecto de ley C.U.R.A. (versión anterior, elaborada en 2025)</a><span class="block text-[11px] text-cura-accentLight/80 mt-0.5">Disponible para consulta · en proceso de revisión y actualización</span></li>
+          <li class="text-xs text-white/75 leading-relaxed"><a href="/Informacion/documentos/Resumen_Ejecutivo-13-03-26.pdf" target="_blank" rel="noopener noreferrer" class="underline font-semibold text-white hover:text-cura-accent">Resumen ejecutivo (versión anterior)</a><span class="block text-[11px] text-cura-accentLight/80 mt-0.5">Disponible para consulta · se actualizará junto con el proyecto</span></li>
+          <li class="text-xs text-white/75 leading-relaxed"><a href="/Informacion/informacion.html" target="_blank" rel="noopener noreferrer" class="underline font-semibold text-white hover:text-cura-accent">Información técnica y legal (versión anterior)</a><span class="block text-[11px] text-cura-accentLight/80 mt-0.5">Fundamentos, objetivos, alcance, interoperabilidad e infraestructura</span></li>
+          <li class="text-xs text-white/75 leading-relaxed"><a href="https://youtu.be/W1IDuu3B5fw" target="_blank" rel="noopener noreferrer" class="underline font-semibold text-white hover:text-cura-accent">Video explicativo (versión anterior)</a></li>
+        </ul>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-3">
-        <div>
-         <label class="cura-form-label">
-  Provincia <span class="cura-form-label-required">*</span>
-</label>
-          <select name="provincia" required class="cura-form-input">
-            <option value="">Seleccioná una provincia</option>
-            <option>Buenos Aires</option><option>Ciudad Autónoma de Buenos Aires</option>
-            <option>Catamarca</option><option>Chaco</option><option>Chubut</option>
-            <option>Córdoba</option><option>Corrientes</option><option>Entre Ríos</option>
-            <option>Formosa</option><option>Jujuy</option><option>La Pampa</option>
-            <option>La Rioja</option><option>Mendoza</option><option>Misiones</option>
-            <option>Neuquén</option><option>Río Negro</option><option>Salta</option>
-            <option>San Juan</option><option>San Luis</option><option>Santa Cruz</option>
-            <option>Santa Fe</option><option>Santiago del Estero</option>
-            <option>Tierra del Fuego, Antártida e Islas del Atlántico Sur</option>
-            <option>Tucumán</option>
-          </select>
-        </div>
-        <div>
-         <label class="cura-form-label">
-  Ciudad <span class="cura-form-label-required">*</span>
-</label>
-          <select name="ciudad" id="ciudad-select" required class="cura-form-input">
-            <option value="">Seleccioná una ciudad</option>
-          </select>
-        </div>
+      <div class="bg-cura-card border border-cura-accent/40 rounded-xl p-5 shadow-md">
+        <span class="inline-block text-[10px] font-bold tracking-wider uppercase text-cura-accent bg-cura-accent/10 border border-cura-accent/30 rounded-full px-2 py-0.5 mb-2">Versión actualizada</span>
+        <p class="text-xs text-white/75 leading-relaxed">El marco normativo se está actualizando para integrar los avances de la Nación y reforzar la federalización de la interoperabilidad sanitaria. La versión actualizada se publicará en esta sección.</p>
       </div>
 
-      <div>
-     <label class="cura-form-label">
-  Email de contacto <span class="cura-form-label-required">*</span>
-</label>
-        <input type="email" name="email" required class="cura-form-input" autocomplete="email" />
-      </div>
-      <div>
-        <label class="cura-form-label">DNI (opcional)</label>
-        <input name="dni" id="dni-input" maxlength="8" inputmode="numeric" class="cura-form-input" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,8);" />
-      </div>
-      <div>
-        <label class="cura-form-label">Número de teléfono (opcional)</label>
-        <input name="telefono" id="telefono-input" maxlength="13" inputmode="numeric" class="cura-form-input" oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13);" />
-      </div>
-
-      <button type="submit" class="w-full inline-flex justify-center items-center px-3 py-2 rounded-md bg-white text-cura-primary text-sm font-semibold transition hover:bg-cura-accentLight hover:text-cura-primaryDark">
-        Enviar
-      </button>
-      <p class="text-[10px] text-cura-accentLight mt-1">Los campos marcados con * son obligatorios.</p>
-    </form>
+    </div>
   </section>
 
   <!-- ==========================================
@@ -2286,9 +2470,7 @@ display:none;
 
     <div class="grid md:grid-cols-2 gap-8 items-start">
       <div class="space-y-4" data-aos="fade-right">
-        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Proyecto ciudadano presentado según Art. 39 de la Constitución Nacional y Ley 24.747, sin fines de lucro.</div>
-        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Solo va a ser posible con tu firma, por eso te invitamos a <a href="#sumate" class="underline font-semibold">SUMARTE</a></div>
-        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">Esta iniciativa no solicita aportes económicos. Tu apoyo se debe basar en informar, difundir y acompañar el proceso de recolección de firmas.</div>
+        <div class="bg-cura-primaryDark border border-cura-accent/30 rounded-lg p-3 text-xs text-cura-accentLight">C.U.R.A. es un proyecto sin fines de lucro y no solicita aportes económicos.</div>
 <div class="bg-cura-card rounded-xl border border-cura-accent/40 p-4 shadow-md hidden md:block mt-12">
   <h3 class="text-sm font-semibold text-white mb-1">Información de contacto</h3>
   <p class="text-sm text-cura-accentLight">
@@ -2358,7 +2540,7 @@ display:none;
   </button>
 
   <p class="text-[10px] text-cura-accentLight mt-1">
-    Este formulario envía tu mensaje directamente al autor de la Ley C.U.R.A.
+    Este formulario envía tu mensaje directamente al autor del proyecto C.U.R.A.
   </p>
 </form>
 
@@ -2397,12 +2579,12 @@ display:none;
   =========================================== -->
 <section id="novedades" class="bg-cura-card border border-cura-accent/40 rounded-xl p-4 shadow-md mt-16" data-aos="zoom-in">
   <h3 class="text-sm font-semibold text-white mb-4 text-center">Tenemos novedades</h3>
-  
+
  <div class="space-y-4">
     <div class="flex items-start gap-3">
-      <i class="ph-bold ph-scales text-white text-base leading-none mt-[2px] shrink-0"></i>
+      <i class="ph-bold ph-arrows-clockwise text-white text-base leading-none mt-[2px] shrink-0"></i>
       <p class="text-xs text-cura-accentLight leading-snug text-left">
-        <span class="font-bold text-white">Etapa final:</span> El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular.
+        <span class="font-bold text-white">En actualización:</span> el proyecto se encuentra en proceso de actualización para incorporar los avances de la Nación en salud digital.
       </p>
     </div>
 
@@ -2416,7 +2598,7 @@ display:none;
           <span class="font-bold text-white">Conferencia:</span> Próximo evento presencial previsto para Octubre de 2026 (fecha a confirmar)
         </p>
         <p class="mt-2 font-bold text-white/90 italic border-l-2 border-cura-accent/30 pl-2">
-          Un documento de 300 páginas que propone una transformación histórica del sistema de salud.
+          La versión anterior incluía una infraestructura interoperable para toda la Argentina con un marco normativo de 300 páginas. Actualmente se está actualizando para incluir los avances del gobierno actual y mejorar la propuesta, a fin de garantizar la federalización: el punto que resuelve este marco normativo.
         </p>
       </div>
     </div>
@@ -2434,6 +2616,7 @@ display:none;
     <div class="flex flex-wrap gap-3">
       <a href="#explicacion"     class="hover:text-white">Sistema</a>
       <a href="#beneficios" class="hover:text-white">Beneficios</a>
+      <a href="#documentos" class="hover:text-white">Documentos</a>
       <a href="/Informacion/informacion.html" class="hover:text-white">Información</a>
       <a href="#contacto"   class="hover:text-white">Contacto</a>
       <a href="/demo.html" target="_blank" class="hover:text-white">Demostración</a>
@@ -2453,28 +2636,6 @@ display:none;
     <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias!</h2>
     <p class="text-sm text-gray-600 mb-4">Tu mensaje se ha enviado correctamente. Pronto nos pondremos en contacto.</p>
     <button id="success-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold hover:bg-cura-primaryDark transition">OK</button>
-  </div>
-</div>
-
-<div id="sumate-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
-  <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
-    <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-    </div>
-    <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por sumarte!</h2>
-    <p class="text-sm text-gray-600 mb-4">En breve nos contactaremos para enviarte el formulario de junta de firmas.</p>
-    <button id="sumate-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold">OK</button>
-  </div>
-</div>
-
-<div id="newsletter-modal" class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-40 hidden">
-  <div class="modal-card bg-white rounded-2xl shadow-xl max-w-xs w-full p-6 text-center">
-    <div class="mx-auto mb-4 flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-    </div>
-    <h2 class="text-lg font-semibold text-cura-primary mb-1">¡Gracias por suscribirte!</h2>
-    <p class="text-sm text-gray-600 mb-4">Vas a recibir cualquier novedad sobre el proyecto.</p>
-    <button id="newsletter-modal-ok" class="px-4 py-2 rounded-md bg-cura-primary text-white text-sm font-semibold mt-4">OK</button>
   </div>
 </div>
 
@@ -2905,7 +3066,7 @@ const BENEFIT_DATA = {
 function toggleMenuNovedades() {
   const menu   = document.getElementById('notificationMenu');
   const badges = document.querySelectorAll('.notification-badge-ui');
-  const KEY    = 'visto_novedades_v1';
+  const KEY    = 'visto_novedades_v2';
   if (menu) menu.classList.toggle('show');
   badges.forEach(b => b.classList.add('hidden'));
   localStorage.setItem(KEY, 'true');
@@ -3058,7 +3219,7 @@ if (contactModal) {
   });
 }
   /* --- Estado inicial de notificaciones --- */
-  const KEY = 'visto_novedades_v1';
+  const KEY = 'visto_novedades_v2';
   if (localStorage.getItem(KEY) === 'true') {
     document.querySelectorAll('.notification-badge-ui').forEach(b => b.classList.add('hidden'));
   }
@@ -3101,10 +3262,10 @@ if (contactModal) {
 
   if (bannerTextEl) {
     const bannerMessages = [
-      'La ley fue presentada el 28 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
-      'La primera infraestructura pública nacional de datos de salud de Argentina. 300 páginas de transformación histórica.',
-      'Próximo evento presencial previsto para Octubre de 2026 (fecha a confirmar)',
-      'El proyecto se encuentra en su etapa final de revisión, previo a su presentación mediante el mecanismo de iniciativa popular. [04/05/26]'
+      'C.U.R.A. está en proceso de actualización para incorporar los grandes avances de la Nación en salud digital e interoperabilidad.',
+      'Marco normativo federal para una infraestructura pública de salud interoperable. El proyecto de ley de la versión anterior está disponible para su consulta.',
+      'La versión anterior fue presentada el 28 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
+      'Próximo evento presencial previsto para Octubre de 2026 (fecha a confirmar)'
     ];
 
     let bannerIndex = 0;
@@ -3161,36 +3322,17 @@ if (contactModal) {
   }
 
   /* --- Scroll suave: botones hero y nav --- */
-  const btnSumate   = document.getElementById('btn-sumate');
-  const targetSumate  = document.getElementById('sumate');
   const btnInfo     = document.getElementById('btn-info');
   const targetQueEs  = document.getElementById('que-es');
   function smoothScrollTo(el, off = 100) { if (el) lenis.scrollTo(el, { offset: -off }); }
-  if (btnSumate && targetSumate) btnSumate.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(targetSumate); });
   if (btnInfo   && targetQueEs)  btnInfo.addEventListener('click',   e => { e.preventDefault(); smoothScrollTo(targetQueEs, 80); });
   document.querySelectorAll('a[href="#inicio"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); lenis.scrollTo(0); }));
   document.querySelectorAll('a[href="#que-es"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('que-es'), 80); }));
   document.querySelectorAll('a[href="#beneficios"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('beneficios'), 80); }));
   document.querySelectorAll('a[href="#contacto"]').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.getElementById('contacto')); }));
-
-  /* --- Ciudades GeoRef --- */
-  const provinciaSelect = document.querySelector('select[name="provincia"]');
-  const ciudadSelect    = document.getElementById('ciudad-select');
-  async function cargarCiudades() {
-    if (!provinciaSelect || !ciudadSelect) return;
-    const prov = provinciaSelect.value;
-    ciudadSelect.innerHTML = '<option value="">Cargando ciudades...</option>';
-    if (!prov) { ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>'; return; }
-    try {
-      const res  = await fetch('https://apis.datos.gob.ar/georef/api/localidades?campos=nombre&max=5000&provincia=' + encodeURIComponent(prov));
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      const locs = (data.localidades || []).map(l => l.nombre).sort((a, b) => a.localeCompare(b, 'es'));
-      ciudadSelect.innerHTML = '<option value="">Seleccioná una ciudad</option>';
-      locs.forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; ciudadSelect.appendChild(o); });
-    } catch { ciudadSelect.innerHTML = '<option value="">No se pudieron cargar las ciudades</option>'; }
-  }
-  if (provinciaSelect) provinciaSelect.addEventListener('change', cargarCiudades);
+  ['#actualizacion','#avances','#explicacion','#como-funciona','#derechos','#documentos'].forEach(h => {
+    document.querySelectorAll('a[href="' + h + '"]:not(.dot)').forEach(l => l.addEventListener('click', e => { e.preventDefault(); smoothScrollTo(document.querySelector(h), 80); }));
+  });
 
   /* --- Solo letras en campos de nombre --- */
   document.querySelectorAll('input.only-letters').forEach(input => {
@@ -3286,51 +3428,6 @@ if (contactForm) {
 
 
   
-  /* =============================================
-     FORMULARIO SUMATE
-  ============================================== */
-  const sumateForm  = document.getElementById('sumate-form');
-  const sumateModal = document.getElementById('sumate-modal');
-  const sumateCard  = sumateModal ? sumateModal.querySelector('.modal-card') : null;
-  const sumateOkBtn = document.getElementById('sumate-modal-ok');
-  function abrirSumateModal()  { if (!sumateModal) return; sumateModal.classList.remove('hidden'); requestAnimationFrame(() => { sumateModal.classList.add('show'); if (sumateCard) sumateCard.classList.add('show'); }); }
-  function cerrarSumateModal() { if (!sumateModal) return; sumateModal.classList.remove('show'); if (sumateCard) sumateCard.classList.remove('show'); setTimeout(() => sumateModal.classList.add('hidden'), 250); }
-  if (sumateForm && sumateModal && sumateOkBtn) {
-    sumateForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      // Validación manual de campos requeridos
-      if (!sumateForm.checkValidity()) {
-        sumateForm.reportValidity();
-        return;
-      }
-
-      const submitBtn = sumateForm.querySelector('button[type="submit"]');
-      const orig = submitBtn.textContent;
-      submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
-      const fd = new FormData(sumateForm);
-      try {
-        const body = { email: (fd.get('email') || '').trim(), nombre: (fd.get('nombre') || '').trim(), apellido: (fd.get('apellido') || '').trim(), provincia: (fd.get('provincia') || '').toString(), ciudad: (fd.get('ciudad') || '').toString(), dni: (fd.get('dni') || '').trim(), telefono: (fd.get('telefono') || '').trim() };
-        // Enviamos ambos en paralelo — si alguno falla igual mostramos el modal
-        await Promise.allSettled([
-          fetch('/api/sumate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }),
-          fetch(sumateForm.action, { method: 'POST', headers: { 'Accept': 'application/json' }, body: fd })
-        ]);
-        sumateForm.reset();
-        abrirSumateModal();
-      } catch (err) {
-        // Aun así mostramos el modal — el registro se guardó si /api/sumate respondió
-        sumateForm.reset();
-        abrirSumateModal();
-        console.error(err);
-      } finally {
-        submitBtn.disabled = false; submitBtn.textContent = orig;
-      }
-    });
-    sumateOkBtn.addEventListener('click', cerrarSumateModal);
-    sumateModal.addEventListener('click', e => { if (e.target === sumateModal) cerrarSumateModal(); });
-  }
-
   /* =============================================
      FORMULARIO NEWSLETTER
   ============================================== */

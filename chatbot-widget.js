@@ -371,7 +371,7 @@
         </div>
         <div class="leycura-chat-messages" id="leycuraMessages">
           <div class="leycura-message bot shadow-sm">
-            ¡Hola! Soy tu asistente virtual inteligente. Podés elegir una de estas preguntas o escribir la tuya:
+            ¡Hola! Soy tu asistente virtual inteligente. <strong>Aviso:</strong> mis respuestas se basan en la versión anterior del proyecto, que está en proceso de actualización. Podés elegir una de estas preguntas o escribir la tuya:
           </div>
         </div>
         <div class="leycura-chat-input-area">

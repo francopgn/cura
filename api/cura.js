@@ -1,7 +1,7 @@
 // ============================================================
 // cura.js — Sistema RAG para el Chatbot de la Ley C.U.R.A.
 // Compatible con Node.js, Vercel (Edge/Serverless)
-// Modelo: DeepSeek via OpenRouter | Búsqueda: TF-IDF + preguntas sintéticas
+// Modelo: GPT-4o-mini via OpenRouter | Búsqueda: TF-IDF + preguntas sintéticas
 // ============================================================
 
 import chunksData from './cura_rag_chunks.json' with { type: 'json' };
@@ -18,7 +18,7 @@ const CONFIG = {
   BOOST_TEMA: 0.25,
   BOOST_PREGUNTA_SINTETICA: 2.0,  // si la pregunta matchea una pregunta sintética, boost alto
   BOOST_ARTICULO_ESPECIFICO: 5.0, // cuando el usuario pide un artículo por número
-  DEEPSEEK_MODEL: 'deepseek/deepseek-v4-flash',
+  MODEL: 'openai/gpt-4o-mini',
   MAX_TOKENS: 1500,
   TEMPERATURE: 0.2,
 };
@@ -282,7 +282,7 @@ export async function askDeepseek(userQuestion, context, history = []) {
       'X-Title': 'LeyCura Chatbot',
     },
     body: JSON.stringify({
-      model: 'google/gemini-2.0-flash-001',
+      model: CONFIG.MODEL,
       temperature: CONFIG.TEMPERATURE,
       max_tokens: CONFIG.MAX_TOKENS,
       messages,

@@ -18,7 +18,7 @@ const CONFIG = {
   BOOST_TEMA: 0.25,
   BOOST_PREGUNTA_SINTETICA: 2.0,  // si la pregunta matchea una pregunta sintética, boost alto
   BOOST_ARTICULO_ESPECIFICO: 5.0, // cuando el usuario pide un artículo por número
-  DEEPSEEK_MODEL: 'deepseek/deepseek-chat',
+  DEEPSEEK_MODEL: 'deepseek/deepseek-v4-flash',
   MAX_TOKENS: 1500,
   TEMPERATURE: 0.2,
 };

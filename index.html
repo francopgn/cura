@@ -1259,26 +1259,10 @@ display:none;
           <p class="text-gray-700 text-[11px] leading-relaxed">
             Ya se encuentra disponible el proyecto de Ley C.U.R.A. en formato PDF para su consulta y revisión. Haga clic aquí para acceder al documento.
           </p>
-          <p class="text-[9px] font-bold uppercase tracking-wide mt-1" style="color: #004e85;">Versión anterior</p>
+          <p class="text-[9px] font-bold uppercase tracking-wide mt-1" style="color: #004e85;">Versión v1 · Enero 2025</p>
         </div>
       </div>
     </a>
-
-    <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
-      <div class="flex gap-3">
-        <i class="ph-bold ph-file-pdf text-lg" style="color: #004e85;"></i>
-        <div class="flex-1">
-          <div class="flex justify-between items-start mb-1">
-            <p class="text-gray-800 text-xs font-bold">Nueva actualización de Resumen Ejecutivo</p>
-            <span class="text-[9px] text-gray-400 whitespace-nowrap ml-2">13/03/26</span>
-          </div>
-          <p class="text-gray-600 text-[11px] leading-relaxed">
-            Se actualizó el documento acorde a la expansión de la ley.
-          </p>
-          <p class="text-[9px] font-bold uppercase tracking-wide mt-1" style="color: #004e85;">Versión anterior</p>
-        </div>
-      </div>
-    </div>
 
     <div class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-50 cursor-default text-left">
       <div class="flex gap-3">
@@ -1356,7 +1340,7 @@ display:none;
       </div>
     </a>
 
-    <a href="/Informacion/documentos/Resumen_Ejecutivo-13-03-26.pdf" target="_blank"
+    <a href="/resumen-ejecutivo.html"
        class="group flex-1 relative overflow-hidden flex items-center justify-center rounded-full border border-cura-accentLight text-cura-accentLight hover:bg-cura-accent hover:text-white transition">
       <div class="relative flex flex-col items-center justify-center w-full h-full py-3 transition-transform duration-500 ease-in-out group-hover:-translate-y-full">
         
@@ -1369,7 +1353,7 @@ display:none;
         </div>
         
         <div class="absolute top-full flex items-center justify-center w-full h-full text-[11px] sm:text-xs text-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 px-2 leading-tight font-medium">
-          Actualizado:<br>13/03/26
+          Actualizado:<br>16/11/26
         </div>
 
       </div>
@@ -2595,7 +2579,7 @@ display:none;
           <span class="font-bold text-white">Congreso:</span> Presentado por primera vez en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.
         </p>
           <p>
-          <span class="font-bold text-white">Conferencia:</span> Próximo evento presencial previsto para Octubre de 2026 (fecha a confirmar)
+          <span class="font-bold text-white">Evento reciente:</span> Conferencia en Quinto Congreso Latinoamericano sobre Economías Alternativas - Universidad Nacional de Avellaneda 06/11/26 <a href="https://youtu.be/RHwFo99gAuE?si=KtbgR7EOqT_hK3IN" target="_blank" rel="noopener noreferrer" class="underline font-semibold text-white hover:text-cura-accent">Ver conferencia</a>
         </p>
         <p class="mt-2 font-bold text-white/90 italic border-l-2 border-cura-accent/30 pl-2">
           La versión anterior incluía una infraestructura interoperable para toda la Argentina con un marco normativo de 300 páginas. Actualmente se está actualizando para incluir los avances del gobierno actual y mejorar la propuesta, a fin de garantizar la federalización: el punto que resuelve este marco normativo.
@@ -3265,7 +3249,7 @@ if (contactModal) {
       'C.U.R.A. está en proceso de actualización para incorporar los grandes avances de la Nación en salud digital e interoperabilidad.',
       'Marco normativo federal para una infraestructura pública de salud interoperable. El proyecto de ley de la versión anterior está disponible para su consulta.',
       'La versión anterior fue presentada el 28 de abril de 2026 en el V Congreso Internacional sobre Transformaciones en las Administraciones Públicas.',
-      'Próximo evento presencial previsto para Octubre de 2026 (fecha a confirmar)'
+      'Evento reciente: Conferencia en Quinto Congreso Latinoamericano sobre Economías Alternativas - Universidad Nacional de Avellaneda 06/11/26 <a href="https://youtu.be/RHwFo99gAuE?si=KtbgR7EOqT_hK3IN" target="_blank" rel="noopener noreferrer" class="underline font-semibold hover:opacity-80">Ver conferencia</a>'
     ];
 
     let bannerIndex = 0;
@@ -3275,7 +3259,7 @@ if (contactModal) {
  //     if (window.scrollY > 30) bannerActivo = false;
   //  });
 
-    bannerTextEl.textContent = bannerMessages[0];
+    bannerTextEl.innerHTML = bannerMessages[0];
 
     setInterval(() => {
       if (!bannerActivo) return;
@@ -3284,7 +3268,7 @@ if (contactModal) {
 
       setTimeout(() => {
         bannerIndex = (bannerIndex + 1) % bannerMessages.length;
-        bannerTextEl.textContent = bannerMessages[bannerIndex];
+        bannerTextEl.innerHTML = bannerMessages[bannerIndex];
         bannerTextEl.classList.remove('banner-hidden');
       }, 350);
 
